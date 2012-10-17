@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Inventario" table="Inventario" schema="dbo" catalog="intesaDB">
+        <id name="idInventario" type="int">
+            <column name="id_Inventario" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="producto" class="Producto" fetch="select">
+            <column name="id_Producto" not-null="true" />
+        </many-to-one>
+        <property name="td" type="int">
+            <column name="td" not-null="true" />
+        </property>
+        <property name="medida1" type="string">
+            <column name="medida1" length="10" />
+        </property>
+        <property name="medida2" type="string">
+            <column name="medida2" length="10" />
+        </property>
+        <property name="cantidadDisponible" type="double">
+            <column name="cantidad_Disponible" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="cantDisponiblePendienteEntrega" type="double">
+            <column name="cant_Disponible_Pendiente_Entrega" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="loteCompra" type="int">
+            <column name="lote_Compra" not-null="true" />
+        </property>
+        <property name="stockSeguridad" type="int">
+            <column name="stock_Seguridad" not-null="true" />
+        </property>
+        <property name="porcentajeDefectuosos" type="double">
+            <column name="porcentaje_Defectuosos" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="codigoBarras" type="string">
+            <column name="codigo_Barras" length="30" />
+        </property>
+        <set name="reservas" table="Reserva" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Inventario" not-null="true" />
+            </key>
+            <one-to-many class="Reserva" />
+        </set>
+    </class>
+</hibernate-mapping>

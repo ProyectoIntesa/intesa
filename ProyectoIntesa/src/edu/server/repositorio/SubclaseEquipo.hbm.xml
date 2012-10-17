@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="SubclaseEquipo" table="Subclase_Equipo" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="SubclaseEquipoId">
+            <key-property name="idSubclaseEquipo" type="int">
+                <column name="id_Subclase_Equipo" />
+            </key-property>
+            <key-property name="idClaseEquipo" type="int">
+                <column name="id_Clase_Equipo" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="claseEquipo" class="ClaseEquipo" update="false" insert="false" fetch="select">
+            <column name="id_Clase_Equipo" not-null="true" />
+        </many-to-one>
+        <property name="nombreSubclase" type="string">
+            <column name="nombre_Subclase" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" />
+        </property>
+        <set name="equipos" table="Equipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Clase_Equipo" not-null="true" />
+                <column name="id_Subclase_Equipo" not-null="true" />
+            </key>
+            <one-to-many class="Equipo" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Cliente" table="Cliente" schema="dbo" catalog="intesaDB">
+        <id name="idCliente" type="int">
+            <column name="id_Cliente" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="direccion" class="Direccion" fetch="select">
+            <column name="id_Direccion" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="cuit" type="string">
+            <column name="cuit" not-null="true" />
+        </property>
+        <property name="responsable" type="string">
+            <column name="responsable" not-null="true" />
+        </property>
+        <property name="rubro" type="string">
+            <column name="rubro" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" />
+        </property>
+        <property name="mail" type="string">
+            <column name="mail" />
+        </property>
+        <property name="fax" type="string">
+            <column name="fax" />
+        </property>
+        <property name="paginaWeb" type="string">
+            <column name="pagina_Web" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="ordenPedidos" table="Orden_Pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Cliente" />
+            </key>
+            <one-to-many class="OrdenPedido" />
+        </set>
+    </class>
+</hibernate-mapping>

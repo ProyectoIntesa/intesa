@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="OrdenCompraCotizacion" table="Orden_CompraCotizacion" schema="dbo" catalog="intesaDB">
+        <id name="idOrden" type="long">
+            <column name="id_Orden" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="proveedor" class="Proveedor" fetch="select">
+            <column name="id_Proveedor" not-null="true" />
+        </many-to-one>
+        <many-to-one name="modoEnvio" class="ModoEnvio" fetch="select">
+            <column name="id_Modo_Envio" />
+        </many-to-one>
+        <many-to-one name="empleado" class="Empleado" fetch="select">
+            <column name="id_Responsable" not-null="true" />
+        </many-to-one>
+        <property name="ordenCotizacion" type="boolean">
+            <column name="orden_Cotizacion" not-null="true" unique="true" />
+        </property>
+        <property name="nroOrden" type="long">
+            <column name="nro_Orden" not-null="true" unique="true" />
+        </property>
+        <property name="nroPresupuesto" type="string">
+            <column name="nro_Presupuesto" length="30" />
+        </property>
+        <property name="idEstadoOrden" type="int">
+            <column name="id_Estado_Orden" not-null="true" />
+        </property>
+        <property name="fechaEdicion" type="timestamp">
+            <column name="fecha_Edicion" length="23" not-null="true" />
+        </property>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="referente" type="java.lang.Integer">
+            <column name="referente" />
+        </property>
+        <property name="dolar" type="boolean">
+            <column name="dolar" not-null="true" />
+        </property>
+        <property name="cambioDolar" type="java.lang.Double">
+            <column name="cambio_Dolar" precision="53" scale="0" />
+        </property>
+        <property name="bonificacion" type="java.lang.Double">
+            <column name="bonificacion" precision="53" scale="0" />
+        </property>
+        <property name="iva" type="double">
+            <column name="iva" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <property name="formaPago" type="string">
+            <column name="forma_Pago" not-null="true" />
+        </property>
+        <property name="total" type="java.lang.Double">
+            <column name="total" precision="53" scale="0" />
+        </property>
+        <set name="ingresoProductoses" table="Ingreso_Productos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Compra" not-null="true" />
+            </key>
+            <one-to-many class="IngresoProductos" />
+        </set>
+        <set name="ordenFabricacionGenerals" table="Compras_Por_Pedido" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden" not-null="true" />
+            </key>
+            <many-to-many entity-name="OrdenFabricacionGeneral">
+                <column name="nro_Orden_Fabricacion" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="renglonOrdenCompraCotizacions" table="Renglon_Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Compra" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenCompraCotizacion" />
+        </set>
+    </class>
+</hibernate-mapping>

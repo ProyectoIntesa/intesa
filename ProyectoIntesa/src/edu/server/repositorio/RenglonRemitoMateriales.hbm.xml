@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="RenglonRemitoMateriales" table="Renglon_Remito_Materiales" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="RenglonRemitoMaterialesId">
+            <key-property name="idRenglonRemitoInternoMateriales" type="int">
+                <column name="id_Renglon_Remito_Interno_Materiales" />
+            </key-property>
+            <key-property name="idRemitoInternoMateriales" type="long">
+                <column name="id_Remito_Interno_Materiales" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="remitoMateriales" class="RemitoMateriales" update="false" insert="false" fetch="select">
+            <column name="id_Remito_Interno_Materiales" not-null="true" />
+        </many-to-one>
+        <many-to-one name="renglonOrdenProvisionInterna" class="RenglonOrdenProvisionInterna" fetch="select">
+            <column name="id_Renglon_Orden_Provision" not-null="true" />
+            <column name="id_Orden_Provision_Materiables" not-null="true" />
+        </many-to-one>
+        <property name="idProducto" type="int">
+            <column name="id_Producto" not-null="true" />
+        </property>
+        <property name="cantidadEntregada" type="double">
+            <column name="cantidad_Entregada" precision="53" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

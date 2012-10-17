@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="OrdenFabricacionGeneral" table="Orden_Fabricacion_General" schema="dbo" catalog="intesaDB">
+        <id name="nroOrden" type="long">
+            <column name="nro_Orden" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="ordenPedido" class="OrdenPedido" fetch="select">
+            <column name="id_Orden_Pedido" />
+        </many-to-one>
+        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+            <column name="id_Estado_Orden" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleado" class="Empleado" fetch="select">
+            <column name="id_Responsable" not-null="true" />
+        </many-to-one>
+        <property name="fechaEdicion" type="timestamp">
+            <column name="fecha_Edicion" length="23" not-null="true" />
+        </property>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="fechaPrevistaFinalizacion" type="timestamp">
+            <column name="fecha_Prevista_Finalizacion" length="23" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="reservaComponentes" table="Reserva_Componente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nro_Orden_Fabricacion" not-null="true" />
+            </key>
+            <one-to-many class="ReservaComponente" />
+        </set>
+        <set name="renglonOrdenFabricacionGenerals" table="Renglon_Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Fabricacion" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenFabricacionGeneral" />
+        </set>
+        <set name="reservas" table="Reserva" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Fabricacion" not-null="true" />
+            </key>
+            <one-to-many class="Reserva" />
+        </set>
+        <set name="requerimientoMaterialeses" table="Requerimiento_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nro_Orden_Fabricacion" not-null="true" />
+            </key>
+            <one-to-many class="RequerimientoMateriales" />
+        </set>
+        <set name="ordenCompraCotizacions" table="Compras_Por_Pedido" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="nro_Orden_Fabricacion" not-null="true" />
+            </key>
+            <many-to-many entity-name="OrdenCompraCotizacion">
+                <column name="id_Orden" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="ordenTrabajoSectorTerceros" table="Orden_Trabajo_SectorTercero" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Fabricacion_General" not-null="true" />
+            </key>
+            <one-to-many class="OrdenTrabajoSectorTercero" />
+        </set>
+    </class>
+</hibernate-mapping>

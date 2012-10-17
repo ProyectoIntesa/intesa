@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Material" table="Material" schema="dbo" catalog="intesaDB">
+        <id name="idMaterial" type="string">
+            <column name="id_Material" length="2" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="pesoEspecifico" type="double">
+            <column name="peso_Especifico" precision="53" scale="0" not-null="true" />
+        </property>
+        <set name="codigoProductos" table="Codigo_Producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Material" length="2" not-null="true" />
+            </key>
+            <one-to-many class="CodigoProducto" />
+        </set>
+    </class>
+</hibernate-mapping>

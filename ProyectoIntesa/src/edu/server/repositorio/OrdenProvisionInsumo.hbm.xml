@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="OrdenProvisionInsumo" table="Orden_Provision_Insumo" schema="dbo" catalog="intesaDB">
+        <id name="idOrdenProvisionInsumo" type="long">
+            <column name="id_Orden_Provision_Insumo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="empleadoByIdPedidoPara" class="Empleado" fetch="select">
+            <column name="id_Pedido_Para" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleadoByIdPedidoPor" class="Empleado" fetch="select">
+            <column name="id_Pedido_Por" not-null="true" />
+        </many-to-one>
+        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+            <column name="id_Estado_Orden" not-null="true" />
+        </many-to-one>
+        <property name="fechaEdicion" type="timestamp">
+            <column name="fecha_Edicion" length="23" not-null="true" />
+        </property>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="remitoInternoInsumos" table="Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Provision_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RemitoInternoInsumo" />
+        </set>
+        <set name="renglonOrdenProvisionInsumos" table="Renglon_Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Provision_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenProvisionInsumo" />
+        </set>
+    </class>
+</hibernate-mapping>

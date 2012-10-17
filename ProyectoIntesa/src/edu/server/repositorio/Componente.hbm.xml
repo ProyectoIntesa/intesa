@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Componente" table="Componente" schema="dbo" catalog="intesaDB">
+        <id name="idComponente" type="int">
+            <column name="id_Componente" />
+            <generator class="assigned" />
+        </id>
+        <property name="codigoComponente" type="string">
+            <column name="codigo_Componente" length="10" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" />
+        </property>
+        <property name="stockSeguridad" type="int">
+            <column name="stock_Seguridad" not-null="true" />
+        </property>
+        <property name="loteProduccion" type="int">
+            <column name="lote_Produccion" not-null="true" />
+        </property>
+        <property name="cantidadInventario" type="int">
+            <column name="cantidad_Inventario" not-null="true" />
+        </property>
+        <set name="renglonOrdenProvisionInternas" table="Renglon_Orden_Provision_Interna" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Componente" />
+            </key>
+            <one-to-many class="RenglonOrdenProvisionInterna" />
+        </set>
+        <set name="renglonOrdenPedidos" table="Renglon_Orden_Pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Componente" />
+            </key>
+            <one-to-many class="RenglonOrdenPedido" />
+        </set>
+        <set name="renglonOrdenFabricacionGenerals" table="Renglon_Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Componente" />
+            </key>
+            <one-to-many class="RenglonOrdenFabricacionGeneral" />
+        </set>
+        <set name="renglonListaDeMaterialeses" table="Renglon_Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Componente" />
+            </key>
+            <one-to-many class="RenglonListaDeMateriales" />
+        </set>
+        <set name="renglonOrdenTrabajos" table="Renglon_Orden_Trabajo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Componente" />
+            </key>
+            <one-to-many class="RenglonOrdenTrabajo" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="IngresoInsumos" table="Ingreso_Insumos" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="IngresoInsumosId">
+            <key-property name="idOrdenCompraInsumos" type="long">
+                <column name="id_Orden_Compra_Insumos" />
+            </key-property>
+            <key-property name="nroRemitoExterno" type="long">
+                <column name="nro_Remito_Externo" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ordenCompraInsumo" class="OrdenCompraInsumo" update="false" insert="false" fetch="select">
+            <column name="id_Orden_Compra_Insumos" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleado" class="Empleado" fetch="select">
+            <column name="id_Registrado_Por" not-null="true" />
+        </many-to-one>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="fecha_Ingreso" length="23" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="renglonIngresoInsumoses" table="Renglon_Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Compra_Insumos" not-null="true" />
+                <column name="nro_Remito_Externo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonIngresoInsumos" />
+        </set>
+    </class>
+</hibernate-mapping>

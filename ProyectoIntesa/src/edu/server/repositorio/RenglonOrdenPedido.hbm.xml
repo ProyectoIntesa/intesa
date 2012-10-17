@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="RenglonOrdenPedido" table="Renglon_Orden_Pedido" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="RenglonOrdenPedidoId">
+            <key-property name="idRenglonOrdenPedido" type="int">
+                <column name="id_Renglon_Orden_Pedido" />
+            </key-property>
+            <key-property name="idOrdenPedido" type="long">
+                <column name="id_Orden_Pedido" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="componente" class="Componente" fetch="select">
+            <column name="id_Componente" />
+        </many-to-one>
+        <many-to-one name="ordenPedido" class="OrdenPedido" update="false" insert="false" fetch="select">
+            <column name="id_Orden_Pedido" not-null="true" />
+        </many-to-one>
+        <many-to-one name="equipo" class="Equipo" fetch="select">
+            <column name="id_Equipo" />
+        </many-to-one>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true" />
+        </property>
+        <property name="fechaPrevistaFinalizacion" type="timestamp">
+            <column name="fecha_Prevista_Finalizacion" length="23" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

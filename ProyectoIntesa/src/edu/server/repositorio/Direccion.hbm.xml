@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Direccion" table="Direccion" schema="dbo" catalog="intesaDB">
+        <id name="idDireccion" type="int">
+            <column name="id_Direccion" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="localidad" class="Localidad" fetch="select">
+            <column name="id_Localidad" not-null="true" />
+        </many-to-one>
+        <property name="calle" type="string">
+            <column name="calle" not-null="true" />
+        </property>
+        <property name="altura" type="string">
+            <column name="altura" not-null="true" />
+        </property>
+        <property name="piso" type="string">
+            <column name="piso" />
+        </property>
+        <property name="oficina" type="string">
+            <column name="oficina" />
+        </property>
+        <set name="clientes" table="Cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Direccion" not-null="true" />
+            </key>
+            <one-to-many class="Cliente" />
+        </set>
+        <set name="proveedors" table="Proveedor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Direccion" not-null="true" />
+            </key>
+            <one-to-many class="Proveedor" />
+        </set>
+    </class>
+</hibernate-mapping>

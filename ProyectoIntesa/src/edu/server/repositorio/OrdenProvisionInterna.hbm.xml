@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="OrdenProvisionInterna" table="Orden_Provision_Interna" schema="dbo" catalog="intesaDB">
+        <id name="nroOrden" type="long">
+            <column name="nro_Orden" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="empleado" class="Empleado" fetch="select">
+            <column name="id_Empleado_Solicita_Material" not-null="true" />
+        </many-to-one>
+        <many-to-one name="renglonOrdenTrabajo" class="RenglonOrdenTrabajo" fetch="select">
+            <column name="id_Renglon_Orden_Trabajo" not-null="true" />
+            <column name="id_Orden_Trabajo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+            <column name="id_Estado_Orden" not-null="true" />
+        </many-to-one>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" not-null="true" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="renglonOrdenProvisionInternas" table="Renglon_Orden_Provision_Interna" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Provision" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenProvisionInterna" />
+        </set>
+        <set name="remitoMaterialeses" table="Remito_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Provision_Materiales" not-null="true" />
+            </key>
+            <one-to-many class="RemitoMateriales" />
+        </set>
+    </class>
+</hibernate-mapping>

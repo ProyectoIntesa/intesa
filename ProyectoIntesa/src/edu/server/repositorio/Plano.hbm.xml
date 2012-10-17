@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Plano" table="Plano" schema="dbo" catalog="intesaDB">
+        <id name="idPlano" type="int">
+            <column name="id_Plano" />
+            <generator class="assigned" />
+        </id>
+        <property name="codigo" type="string">
+            <column name="codigo" not-null="true" />
+        </property>
+        <property name="remplazadoPor" type="timestamp">
+            <column name="remplazado_Por" length="23" />
+        </property>
+        <property name="remplazaA" type="timestamp">
+            <column name="remplaza_A" length="23" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="23" not-null="true" />
+        </property>
+        <set name="listaDeMaterialeses" table="Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Plano" not-null="true" />
+            </key>
+            <one-to-many class="ListaDeMateriales" />
+        </set>
+    </class>
+</hibernate-mapping>

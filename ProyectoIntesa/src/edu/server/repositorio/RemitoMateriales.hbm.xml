@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="RemitoMateriales" table="Remito_Materiales" schema="dbo" catalog="intesaDB">
+        <id name="idRemitoInternoMateriales" type="long">
+            <column name="id_Remito_Interno_Materiales" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="empleado" class="Empleado" fetch="select">
+            <column name="id_Generado_Por" not-null="true" />
+        </many-to-one>
+        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+            <column name="id_Estado_Remito" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ordenProvisionInterna" class="OrdenProvisionInterna" fetch="select">
+            <column name="id_Orden_Provision_Materiales" not-null="true" />
+        </many-to-one>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" not-null="true" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="recibido" type="boolean">
+            <column name="recibido" not-null="true" />
+        </property>
+        <property name="remitoExterno" type="boolean">
+            <column name="remito_Externo" not-null="true" />
+        </property>
+        <property name="nroRemitoExterno" type="string">
+            <column name="nro_Remito_Externo" length="30" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="renglonRemitoMaterialeses" table="Renglon_Remito_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Remito_Interno_Materiales" not-null="true" />
+            </key>
+            <one-to-many class="RenglonRemitoMateriales" />
+        </set>
+    </class>
+</hibernate-mapping>

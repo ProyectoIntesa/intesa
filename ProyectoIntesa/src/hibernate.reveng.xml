@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Categoria"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Clase"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Clase_Equipo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Cliente"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Codigo_Producto"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Componente"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Compras_Por_Pedido"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Contacto"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Direccion"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Elemento"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Empleado"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Empleado_A_Cargo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Equipo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Estado_Orden"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Ingreso_Insumos"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Ingreso_Productos"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Inventario"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Lista_de_Materiales"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Localidad"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Maquina"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Maquina_de_Tercero"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Marca"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Material"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Modo_Envio"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_CompraCotizacion"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Compra_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Fabricacion_General"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Pedido"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Provision_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Provision_Interna"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Orden_Trabajo_SectorTercero"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Pais"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Plano"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Producto"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Proveedor"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Proveedor_de_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Proveedor_de_Producto"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Provincia"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Remito_Interno_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Remito_Materiales"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Ingreso_Insumos"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Ingreso_Productos"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Lista_de_Materiales"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_CompraCotizacion"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Compra_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Fabricacion_General"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Pedido"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Provision_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Provision_Interna"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Orden_Trabajo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Remito_Interno_Insumo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Renglon_Remito_Materiales"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Requerimiento_Materiales"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Reserva"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Reserva_Componente"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Subclase_Equipo"/>
+  <table-filter match-catalog="intesaDB" match-schema="dbo" match-name="Usuario"/>
+</hibernate-reverse-engineering>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="RenglonRemitoInternoInsumo" table="Renglon_Remito_Interno_Insumo" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="RenglonRemitoInternoInsumoId">
+            <key-property name="idRenglonRemitoInsumo" type="int">
+                <column name="id_Renglon_Remito_Insumo" />
+            </key-property>
+            <key-property name="idRemitoInsumo" type="long">
+                <column name="id_Remito_Insumo" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="insumo" class="Insumo" fetch="select">
+            <column name="id_Insumo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="remitoInternoInsumo" class="RemitoInternoInsumo" update="false" insert="false" fetch="select">
+            <column name="id_Remito_Insumo" not-null="true" />
+        </many-to-one>
+        <property name="cantidadEntregada" type="double">
+            <column name="cantidad_Entregada" precision="53" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

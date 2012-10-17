@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Insumo" table="Insumo" schema="dbo" catalog="intesaDB">
+        <id name="idInsumo" type="int">
+            <column name="id_Insumo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="categoria" class="Categoria" fetch="select">
+            <column name="id_Categoria" not-null="true" />
+        </many-to-one>
+        <many-to-one name="marca" class="Marca" fetch="select">
+            <column name="id_Marca" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true" />
+        </property>
+        <property name="loteCompra" type="int">
+            <column name="lote_Compra" not-null="true" />
+        </property>
+        <property name="stockSeguridad" type="int">
+            <column name="stock_Seguridad" not-null="true" />
+        </property>
+        <property name="necesidadCompra" type="boolean">
+            <column name="necesidad_Compra" not-null="true" />
+        </property>
+        <set name="proveedorDeInsumos" table="Proveedor_de_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="ProveedorDeInsumo" />
+        </set>
+        <set name="renglonRemitoInternoInsumos" table="Renglon_Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonRemitoInternoInsumo" />
+        </set>
+        <set name="renglonIngresoInsumoses" table="Renglon_Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonIngresoInsumos" />
+        </set>
+        <set name="renglonOrdenCompraInsumos" table="Renglon_Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenCompraInsumo" />
+        </set>
+        <set name="renglonOrdenProvisionInsumos" table="Renglon_Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Insumo" not-null="true" />
+            </key>
+            <one-to-many class="RenglonOrdenProvisionInsumo" />
+        </set>
+    </class>
+</hibernate-mapping>
