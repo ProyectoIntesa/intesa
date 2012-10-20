@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="EstadoOrden" table="Estado_Orden" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.EstadoOrden" table="Estado_Orden" schema="dbo" catalog="intesaDB">
         <id name="idEstadoOrden" type="int">
             <column name="id_Estado_Orden" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="string">
             <column name="nombre" not-null="true" />
@@ -15,55 +15,55 @@
             <key>
                 <column name="id_Estado_Remito" not-null="true" />
             </key>
-            <one-to-many class="RemitoMateriales" />
+            <one-to-many class="edu.server.repositorio.RemitoMateriales" />
         </set>
         <set name="remitoInternoInsumos" table="Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Remito" not-null="true" />
             </key>
-            <one-to-many class="RemitoInternoInsumo" />
+            <one-to-many class="edu.server.repositorio.RemitoInternoInsumo" />
         </set>
         <set name="ordenPedidos" table="Orden_Pedido" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenPedido" />
+            <one-to-many class="edu.server.repositorio.OrdenPedido" />
         </set>
         <set name="ordenFabricacionGenerals" table="Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenFabricacionGeneral" />
+            <one-to-many class="edu.server.repositorio.OrdenFabricacionGeneral" />
         </set>
         <set name="ordenProvisionInsumos" table="Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenProvisionInsumo" />
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInsumo" />
         </set>
         <set name="ordenProvisionInternas" table="Orden_Provision_Interna" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenProvisionInterna" />
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInterna" />
         </set>
         <set name="ingresoProductoses" table="Ingreso_Productos" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado" not-null="true" />
             </key>
-            <one-to-many class="IngresoProductos" />
+            <one-to-many class="edu.server.repositorio.IngresoProductos" />
         </set>
         <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenCompraInsumo" />
+            <one-to-many class="edu.server.repositorio.OrdenCompraInsumo" />
         </set>
         <set name="ordenTrabajoSectorTerceros" table="Orden_Trabajo_SectorTercero" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>
-            <one-to-many class="OrdenTrabajoSectorTercero" />
+            <one-to-many class="edu.server.repositorio.OrdenTrabajoSectorTercero" />
         </set>
     </class>
 </hibernate-mapping>

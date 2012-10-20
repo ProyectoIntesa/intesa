@@ -3,15 +3,15 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Insumo" table="Insumo" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Insumo" table="Insumo" schema="dbo" catalog="intesaDB">
         <id name="idInsumo" type="int">
             <column name="id_Insumo" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="categoria" class="Categoria" fetch="select">
+        <many-to-one name="categoria" class="edu.server.repositorio.Categoria" fetch="select">
             <column name="id_Categoria" not-null="true" />
         </many-to-one>
-        <many-to-one name="marca" class="Marca" fetch="select">
+        <many-to-one name="marca" class="edu.server.repositorio.Marca" fetch="select">
             <column name="id_Marca" not-null="true" />
         </many-to-one>
         <property name="nombre" type="string">
@@ -36,31 +36,31 @@
             <key>
                 <column name="id_Insumo" not-null="true" />
             </key>
-            <one-to-many class="ProveedorDeInsumo" />
+            <one-to-many class="edu.server.repositorio.ProveedorDeInsumo" />
         </set>
         <set name="renglonRemitoInternoInsumos" table="Renglon_Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Insumo" not-null="true" />
             </key>
-            <one-to-many class="RenglonRemitoInternoInsumo" />
+            <one-to-many class="edu.server.repositorio.RenglonRemitoInternoInsumo" />
         </set>
         <set name="renglonIngresoInsumoses" table="Renglon_Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Insumo" not-null="true" />
             </key>
-            <one-to-many class="RenglonIngresoInsumos" />
+            <one-to-many class="edu.server.repositorio.RenglonIngresoInsumos" />
         </set>
         <set name="renglonOrdenCompraInsumos" table="Renglon_Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Insumo" not-null="true" />
             </key>
-            <one-to-many class="RenglonOrdenCompraInsumo" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenCompraInsumo" />
         </set>
         <set name="renglonOrdenProvisionInsumos" table="Renglon_Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Insumo" not-null="true" />
             </key>
-            <one-to-many class="RenglonOrdenProvisionInsumo" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenProvisionInsumo" />
         </set>
     </class>
 </hibernate-mapping>

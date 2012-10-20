@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Elemento" table="Elemento" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="ElementoId">
+    <class name="edu.server.repositorio.Elemento" table="Elemento" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.ElementoId">
             <key-property name="idElemento" type="string">
                 <column name="id_Elemento" length="2" />
             </key-property>
@@ -12,7 +12,7 @@
                 <column name="id_Clase" length="2" />
             </key-property>
         </composite-id>
-        <many-to-one name="clase" class="Clase" update="false" insert="false" fetch="select">
+        <many-to-one name="clase" class="edu.server.repositorio.Clase" update="false" insert="false" fetch="select">
             <column name="id_Clase" length="2" not-null="true" />
         </many-to-one>
         <property name="nombre" type="string">
@@ -29,7 +29,7 @@
                 <column name="id_Elemento" length="2" not-null="true" />
                 <column name="id_Clase" length="2" not-null="true" />
             </key>
-            <one-to-many class="CodigoProducto" />
+            <one-to-many class="edu.server.repositorio.CodigoProducto" />
         </set>
     </class>
 </hibernate-mapping>

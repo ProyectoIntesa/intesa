@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Marca" table="Marca" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Marca" table="Marca" schema="dbo" catalog="intesaDB">
         <id name="idMarca" type="int">
             <column name="id_Marca" />
             <generator class="assigned" />
@@ -15,7 +15,7 @@
             <key>
                 <column name="id_Marca" not-null="true" />
             </key>
-            <one-to-many class="Insumo" />
+            <one-to-many class="edu.server.repositorio.Insumo" />
         </set>
     </class>
 </hibernate-mapping>

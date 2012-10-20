@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonIngresoInsumos" table="Renglon_Ingreso_Insumos" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonIngresoInsumosId">
+    <class name="edu.server.repositorio.RenglonIngresoInsumos" table="Renglon_Ingreso_Insumos" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonIngresoInsumosId">
             <key-property name="idRenglonIngresoInsumos" type="int">
                 <column name="id_Renglon_Ingreso_Insumos" />
             </key-property>
@@ -15,11 +15,11 @@
                 <column name="nro_Remito_Externo" />
             </key-property>
         </composite-id>
-        <many-to-one name="ingresoInsumos" class="IngresoInsumos" update="false" insert="false" fetch="select">
+        <many-to-one name="ingresoInsumos" class="edu.server.repositorio.IngresoInsumos" update="false" insert="false" fetch="select">
             <column name="id_Orden_Compra_Insumos" not-null="true" />
             <column name="nro_Remito_Externo" not-null="true" />
         </many-to-one>
-        <many-to-one name="insumo" class="Insumo" fetch="select">
+        <many-to-one name="insumo" class="edu.server.repositorio.Insumo" fetch="select">
             <column name="id_Insumo" not-null="true" />
         </many-to-one>
         <property name="cantidadIngresada" type="double">

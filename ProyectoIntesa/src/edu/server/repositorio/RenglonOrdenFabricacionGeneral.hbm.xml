@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonOrdenFabricacionGeneral" table="Renglon_Orden_Fabricacion_General" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonOrdenFabricacionGeneralId">
+    <class name="edu.server.repositorio.RenglonOrdenFabricacionGeneral" table="Renglon_Orden_Fabricacion_General" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonOrdenFabricacionGeneralId">
             <key-property name="idRenglonOrdenFabricacion" type="int">
                 <column name="id_Renglon_Orden_Fabricacion" />
             </key-property>
@@ -12,13 +12,13 @@
                 <column name="id_Orden_Fabricacion" />
             </key-property>
         </composite-id>
-        <many-to-one name="componente" class="Componente" fetch="select">
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
             <column name="id_Componente" />
         </many-to-one>
-        <many-to-one name="ordenFabricacionGeneral" class="OrdenFabricacionGeneral" update="false" insert="false" fetch="select">
+        <many-to-one name="ordenFabricacionGeneral" class="edu.server.repositorio.OrdenFabricacionGeneral" update="false" insert="false" fetch="select">
             <column name="id_Orden_Fabricacion" not-null="true" />
         </many-to-one>
-        <many-to-one name="equipo" class="Equipo" fetch="select">
+        <many-to-one name="equipo" class="edu.server.repositorio.Equipo" fetch="select">
             <column name="id_Equipo" />
         </many-to-one>
         <property name="cantidad" type="int">

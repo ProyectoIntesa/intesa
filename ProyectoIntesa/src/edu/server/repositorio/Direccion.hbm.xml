@@ -3,12 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Direccion" table="Direccion" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Direccion" table="Direccion" schema="dbo" catalog="intesaDB">
         <id name="idDireccion" type="int">
             <column name="id_Direccion" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="localidad" class="Localidad" fetch="select">
+        <many-to-one name="localidad" class="edu.server.repositorio.Localidad" fetch="select">
             <column name="id_Localidad" not-null="true" />
         </many-to-one>
         <property name="calle" type="string">
@@ -27,13 +27,13 @@
             <key>
                 <column name="id_Direccion" not-null="true" />
             </key>
-            <one-to-many class="Cliente" />
+            <one-to-many class="edu.server.repositorio.Cliente" />
         </set>
         <set name="proveedors" table="Proveedor" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Direccion" not-null="true" />
             </key>
-            <one-to-many class="Proveedor" />
+            <one-to-many class="edu.server.repositorio.Proveedor" />
         </set>
     </class>
 </hibernate-mapping>

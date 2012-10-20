@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ModoEnvio" table="Modo_Envio" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.ModoEnvio" table="Modo_Envio" schema="dbo" catalog="intesaDB">
         <id name="idModoEnvio" type="int">
             <column name="id_Modo_Envio" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="descripcion" type="long">
             <column name="descripcion" not-null="true" />
@@ -15,13 +15,13 @@
             <key>
                 <column name="id_Modo_Envio" />
             </key>
-            <one-to-many class="OrdenCompraCotizacion" />
+            <one-to-many class="edu.server.repositorio.OrdenCompraCotizacion" />
         </set>
         <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Modo_Envio" />
             </key>
-            <one-to-many class="OrdenCompraInsumo" />
+            <one-to-many class="edu.server.repositorio.OrdenCompraInsumo" />
         </set>
     </class>
 </hibernate-mapping>

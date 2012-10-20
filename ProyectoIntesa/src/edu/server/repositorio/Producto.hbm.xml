@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Producto" table="Producto" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Producto" table="Producto" schema="dbo" catalog="intesaDB">
         <id name="idProducto" type="int">
             <column name="id_Producto" />
             <generator class="assigned" />
@@ -24,37 +24,37 @@
             <key>
                 <column name="id_Producto" />
             </key>
-            <one-to-many class="RenglonOrdenProvisionInterna" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenProvisionInterna" />
         </set>
         <set name="renglonListaDeMaterialeses" table="Renglon_Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Producto" />
             </key>
-            <one-to-many class="RenglonListaDeMateriales" />
+            <one-to-many class="edu.server.repositorio.RenglonListaDeMateriales" />
         </set>
         <set name="renglonIngresoProductoses" table="Renglon_Ingreso_Productos" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Producto" not-null="true" />
             </key>
-            <one-to-many class="RenglonIngresoProductos" />
+            <one-to-many class="edu.server.repositorio.RenglonIngresoProductos" />
         </set>
         <set name="inventarios" table="Inventario" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Producto" not-null="true" />
             </key>
-            <one-to-many class="Inventario" />
+            <one-to-many class="edu.server.repositorio.Inventario" />
         </set>
         <set name="renglonOrdenCompraCotizacions" table="Renglon_Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Producto" not-null="true" />
             </key>
-            <one-to-many class="RenglonOrdenCompraCotizacion" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenCompraCotizacion" />
         </set>
         <set name="requerimientoMaterialeses" table="Requerimiento_Materiales" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Producto" not-null="true" />
             </key>
-            <one-to-many class="RequerimientoMateriales" />
+            <one-to-many class="edu.server.repositorio.RequerimientoMateriales" />
         </set>
     </class>
 </hibernate-mapping>

@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Componente" table="Componente" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Componente" table="Componente" schema="dbo" catalog="intesaDB">
         <id name="idComponente" type="int">
             <column name="id_Componente" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="codigoComponente" type="string">
             <column name="codigo_Componente" length="10" not-null="true" />
@@ -27,31 +27,31 @@
             <key>
                 <column name="id_Componente" />
             </key>
-            <one-to-many class="RenglonOrdenProvisionInterna" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenProvisionInterna" />
         </set>
         <set name="renglonOrdenPedidos" table="Renglon_Orden_Pedido" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Componente" />
             </key>
-            <one-to-many class="RenglonOrdenPedido" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenPedido" />
         </set>
         <set name="renglonOrdenFabricacionGenerals" table="Renglon_Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Componente" />
             </key>
-            <one-to-many class="RenglonOrdenFabricacionGeneral" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenFabricacionGeneral" />
         </set>
         <set name="renglonListaDeMaterialeses" table="Renglon_Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Componente" />
             </key>
-            <one-to-many class="RenglonListaDeMateriales" />
+            <one-to-many class="edu.server.repositorio.RenglonListaDeMateriales" />
         </set>
         <set name="renglonOrdenTrabajos" table="Renglon_Orden_Trabajo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Componente" />
             </key>
-            <one-to-many class="RenglonOrdenTrabajo" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenTrabajo" />
         </set>
     </class>
 </hibernate-mapping>

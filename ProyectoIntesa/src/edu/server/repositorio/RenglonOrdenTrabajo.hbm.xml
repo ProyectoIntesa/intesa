@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonOrdenTrabajo" table="Renglon_Orden_Trabajo" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonOrdenTrabajoId">
+    <class name="edu.server.repositorio.RenglonOrdenTrabajo" table="Renglon_Orden_Trabajo" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonOrdenTrabajoId">
             <key-property name="idRenglonOrdenTrabajo" type="int">
                 <column name="id_Renglon_Orden_Trabajo" />
             </key-property>
@@ -12,16 +12,16 @@
                 <column name="id_Orden_Trabajo" />
             </key-property>
         </composite-id>
-        <many-to-one name="componente" class="Componente" fetch="select">
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
             <column name="id_Componente" />
         </many-to-one>
-        <many-to-one name="ordenTrabajoSectorTercero" class="OrdenTrabajoSectorTercero" update="false" insert="false" fetch="select">
+        <many-to-one name="ordenTrabajoSectorTercero" class="edu.server.repositorio.OrdenTrabajoSectorTercero" update="false" insert="false" fetch="select">
             <column name="id_Orden_Trabajo" not-null="true" />
         </many-to-one>
-        <many-to-one name="equipo" class="Equipo" fetch="select">
+        <many-to-one name="equipo" class="edu.server.repositorio.Equipo" fetch="select">
             <column name="id_Equipo" />
         </many-to-one>
-        <many-to-one name="empleado" class="Empleado" fetch="select">
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
             <column name="id_Supervisor" />
         </many-to-one>
         <property name="fechaFinalizacion" type="timestamp">
@@ -38,7 +38,7 @@
                 <column name="id_Renglon_Orden_Trabajo" not-null="true" />
                 <column name="id_Orden_Trabajo" not-null="true" />
             </key>
-            <one-to-many class="OrdenProvisionInterna" />
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInterna" />
         </set>
     </class>
 </hibernate-mapping>

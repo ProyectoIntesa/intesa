@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Maquina" table="Maquina" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Maquina" table="Maquina" schema="dbo" catalog="intesaDB">
         <id name="idMaquina" type="int">
             <column name="id_Maquina" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="descripcion" type="string">
             <column name="descripcion" not-null="true" />
@@ -15,7 +15,7 @@
             <key>
                 <column name="id_Maquina" not-null="true" />
             </key>
-            <many-to-many entity-name="Proveedor">
+            <many-to-many entity-name="edu.server.repositorio.Proveedor">
                 <column name="codigo_Proveedor" not-null="true" />
             </many-to-many>
         </set>

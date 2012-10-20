@@ -3,18 +3,18 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="OrdenCompraCotizacion" table="Orden_CompraCotizacion" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.OrdenCompraCotizacion" table="Orden_CompraCotizacion" schema="dbo" catalog="intesaDB">
         <id name="idOrden" type="long">
             <column name="id_Orden" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="proveedor" class="Proveedor" fetch="select">
+        <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" fetch="select">
             <column name="id_Proveedor" not-null="true" />
         </many-to-one>
-        <many-to-one name="modoEnvio" class="ModoEnvio" fetch="select">
+        <many-to-one name="modoEnvio" class="edu.server.repositorio.ModoEnvio" fetch="select">
             <column name="id_Modo_Envio" />
         </many-to-one>
-        <many-to-one name="empleado" class="Empleado" fetch="select">
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
             <column name="id_Responsable" not-null="true" />
         </many-to-one>
         <property name="ordenCotizacion" type="boolean">
@@ -66,13 +66,13 @@
             <key>
                 <column name="id_Orden_Compra" not-null="true" />
             </key>
-            <one-to-many class="IngresoProductos" />
+            <one-to-many class="edu.server.repositorio.IngresoProductos" />
         </set>
         <set name="ordenFabricacionGenerals" table="Compras_Por_Pedido" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="id_Orden" not-null="true" />
             </key>
-            <many-to-many entity-name="OrdenFabricacionGeneral">
+            <many-to-many entity-name="edu.server.repositorio.OrdenFabricacionGeneral">
                 <column name="nro_Orden_Fabricacion" not-null="true" />
             </many-to-many>
         </set>
@@ -80,7 +80,7 @@
             <key>
                 <column name="id_Orden_Compra" not-null="true" />
             </key>
-            <one-to-many class="RenglonOrdenCompraCotizacion" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenCompraCotizacion" />
         </set>
     </class>
 </hibernate-mapping>

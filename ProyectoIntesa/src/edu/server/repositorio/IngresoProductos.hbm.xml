@@ -3,18 +3,18 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="IngresoProductos" table="Ingreso_Productos" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.IngresoProductos" table="Ingreso_Productos" schema="dbo" catalog="intesaDB">
         <id name="idIngreso" type="long">
             <column name="id_Ingreso" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+        <many-to-one name="estadoOrden" class="edu.server.repositorio.EstadoOrden" fetch="select">
             <column name="id_Estado" not-null="true" />
         </many-to-one>
-        <many-to-one name="empleado" class="Empleado" fetch="select">
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
             <column name="id_Registrado_Por" not-null="true" />
         </many-to-one>
-        <many-to-one name="ordenCompraCotizacion" class="OrdenCompraCotizacion" fetch="select">
+        <many-to-one name="ordenCompraCotizacion" class="edu.server.repositorio.OrdenCompraCotizacion" fetch="select">
             <column name="id_Orden_Compra" not-null="true" />
         </many-to-one>
         <property name="nroRemitoProveedor" type="string">

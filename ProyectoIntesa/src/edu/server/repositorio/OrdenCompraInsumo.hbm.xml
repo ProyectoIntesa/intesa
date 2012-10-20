@@ -3,21 +3,21 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="OrdenCompraInsumo" table="Orden_Compra_Insumo" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.OrdenCompraInsumo" table="Orden_Compra_Insumo" schema="dbo" catalog="intesaDB">
         <id name="nroOrdenCompraInsumo" type="long">
             <column name="nro_Orden_Compra_Insumo" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="empleado" class="Empleado" fetch="select">
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
             <column name="id_Generado_Por" not-null="true" />
         </many-to-one>
-        <many-to-one name="proveedor" class="Proveedor" fetch="select">
+        <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" fetch="select">
             <column name="id_Proveedor" not-null="true" />
         </many-to-one>
-        <many-to-one name="modoEnvio" class="ModoEnvio" fetch="select">
+        <many-to-one name="modoEnvio" class="edu.server.repositorio.ModoEnvio" fetch="select">
             <column name="id_Modo_Envio" />
         </many-to-one>
-        <many-to-one name="estadoOrden" class="EstadoOrden" fetch="select">
+        <many-to-one name="estadoOrden" class="edu.server.repositorio.EstadoOrden" fetch="select">
             <column name="id_Estado_Orden" not-null="true" />
         </many-to-one>
         <property name="fechaEdicion" type="timestamp">
@@ -45,13 +45,13 @@
             <key>
                 <column name="nro_Orden_Compra_Insumo" not-null="true" />
             </key>
-            <one-to-many class="RenglonOrdenCompraInsumo" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenCompraInsumo" />
         </set>
         <set name="ingresoInsumoses" table="Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Orden_Compra_Insumos" not-null="true" />
             </key>
-            <one-to-many class="IngresoInsumos" />
+            <one-to-many class="edu.server.repositorio.IngresoInsumos" />
         </set>
     </class>
 </hibernate-mapping>

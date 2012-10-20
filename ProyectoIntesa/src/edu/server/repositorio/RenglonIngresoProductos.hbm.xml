@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonIngresoProductos" table="Renglon_Ingreso_Productos" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonIngresoProductosId">
+    <class name="edu.server.repositorio.RenglonIngresoProductos" table="Renglon_Ingreso_Productos" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonIngresoProductosId">
             <key-property name="idRenglonIngresoProductos" type="int">
                 <column name="id_Renglon_Ingreso_Productos" />
             </key-property>
@@ -12,7 +12,7 @@
                 <column name="id_Ingreso" />
             </key-property>
         </composite-id>
-        <many-to-one name="producto" class="Producto" fetch="select">
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
             <column name="id_Producto" not-null="true" />
         </many-to-one>
         <property name="cantidad" type="double">

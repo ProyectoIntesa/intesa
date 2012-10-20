@@ -3,12 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ReservaComponente" table="Reserva_Componente" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.ReservaComponente" table="Reserva_Componente" schema="dbo" catalog="intesaDB">
         <id name="idReservaComponente" type="int">
             <column name="id_Reserva_Componente" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="ordenFabricacionGeneral" class="OrdenFabricacionGeneral" fetch="select">
+        <many-to-one name="ordenFabricacionGeneral" class="edu.server.repositorio.OrdenFabricacionGeneral" fetch="select">
             <column name="nro_Orden_Fabricacion" not-null="true" />
         </many-to-one>
         <property name="idComponente" type="int">

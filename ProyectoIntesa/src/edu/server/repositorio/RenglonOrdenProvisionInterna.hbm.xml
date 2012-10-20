@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonOrdenProvisionInterna" table="Renglon_Orden_Provision_Interna" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonOrdenProvisionInternaId">
+    <class name="edu.server.repositorio.RenglonOrdenProvisionInterna" table="Renglon_Orden_Provision_Interna" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonOrdenProvisionInternaId">
             <key-property name="idRenglonOrdenProvision" type="int">
                 <column name="id_Renglon_Orden_Provision" />
             </key-property>
@@ -12,13 +12,13 @@
                 <column name="id_Orden_Provision" />
             </key-property>
         </composite-id>
-        <many-to-one name="componente" class="Componente" fetch="select">
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
             <column name="id_Componente" />
         </many-to-one>
-        <many-to-one name="ordenProvisionInterna" class="OrdenProvisionInterna" update="false" insert="false" fetch="select">
+        <many-to-one name="ordenProvisionInterna" class="edu.server.repositorio.OrdenProvisionInterna" update="false" insert="false" fetch="select">
             <column name="id_Orden_Provision" not-null="true" />
         </many-to-one>
-        <many-to-one name="producto" class="Producto" fetch="select">
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
             <column name="id_Producto" />
         </many-to-one>
         <property name="cantidad" type="int">
@@ -35,7 +35,7 @@
                 <column name="id_Renglon_Orden_Provision" not-null="true" />
                 <column name="id_Orden_Provision_Materiables" not-null="true" />
             </key>
-            <one-to-many class="RenglonRemitoMateriales" />
+            <one-to-many class="edu.server.repositorio.RenglonRemitoMateriales" />
         </set>
     </class>
 </hibernate-mapping>

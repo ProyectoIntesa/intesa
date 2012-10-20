@@ -1,5 +1,8 @@
 package edu.server.repositorio;
 
+
+// Generated 20-oct-2012 16:37:17 by Hibernate Tools 3.4.0.CR1
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,12 +14,12 @@ public class ListaDeMateriales implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5106009514573931974L;
+	private static final long serialVersionUID = 926424970389187282L;
 	private int idListaDeMateriales;
 	private Plano plano;
-	private Integer nroReferencia;
-	private Integer idComponente;
-	private Set <RenglonListaDeMateriales>renglonListaDeMaterialeses = new HashSet<RenglonListaDeMateriales>(0);
+	private Componente componente;
+	private Equipo equipo;
+	private Set<RenglonListaDeMateriales> renglonListaDeMaterialeses = new HashSet<RenglonListaDeMateriales>(0);
 
 	public ListaDeMateriales() {
 	}
@@ -27,12 +30,11 @@ public class ListaDeMateriales implements java.io.Serializable {
 	}
 
 	public ListaDeMateriales(int idListaDeMateriales, Plano plano,
-			Integer nroReferencia, Integer idComponente,
-			Set <RenglonListaDeMateriales>renglonListaDeMaterialeses) {
+			Componente componente, Equipo equipo, Set<RenglonListaDeMateriales> renglonListaDeMaterialeses) {
 		this.idListaDeMateriales = idListaDeMateriales;
 		this.plano = plano;
-		this.nroReferencia = nroReferencia;
-		this.idComponente = idComponente;
+		this.componente = componente;
+		this.equipo = equipo;
 		this.renglonListaDeMaterialeses = renglonListaDeMaterialeses;
 	}
 
@@ -52,20 +54,20 @@ public class ListaDeMateriales implements java.io.Serializable {
 		this.plano = plano;
 	}
 
-	public Integer getNroReferencia() {
-		return this.nroReferencia;
+	public Componente getComponente() {
+		return this.componente;
 	}
 
-	public void setNroReferencia(Integer nroReferencia) {
-		this.nroReferencia = nroReferencia;
+	public void setComponente(Componente componente) {
+		this.componente = componente;
 	}
 
-	public Integer getIdComponente() {
-		return this.idComponente;
+	public Equipo getEquipo() {
+		return this.equipo;
 	}
 
-	public void setIdComponente(Integer idComponente) {
-		this.idComponente = idComponente;
+	public void setEquipo(Equipo equipo) {
+		this.equipo = equipo;
 	}
 
 	public Set<RenglonListaDeMateriales> getRenglonListaDeMaterialeses() {

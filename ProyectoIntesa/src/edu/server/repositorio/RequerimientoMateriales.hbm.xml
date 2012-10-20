@@ -3,15 +3,15 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RequerimientoMateriales" table="Requerimiento_Materiales" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.RequerimientoMateriales" table="Requerimiento_Materiales" schema="dbo" catalog="intesaDB">
         <id name="idRequerientoMateriales" type="long">
             <column name="id_Requeriento_Materiales" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="ordenFabricacionGeneral" class="OrdenFabricacionGeneral" fetch="select">
+        <many-to-one name="ordenFabricacionGeneral" class="edu.server.repositorio.OrdenFabricacionGeneral" fetch="select">
             <column name="nro_Orden_Fabricacion" not-null="true" />
         </many-to-one>
-        <many-to-one name="producto" class="Producto" fetch="select">
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
             <column name="id_Producto" not-null="true" />
         </many-to-one>
         <property name="td" type="int">

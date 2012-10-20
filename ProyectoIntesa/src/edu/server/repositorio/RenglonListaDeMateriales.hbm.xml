@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="RenglonListaDeMateriales" table="Renglon_Lista_de_Materiales" schema="dbo" catalog="intesaDB">
-        <composite-id name="id" class="RenglonListaDeMaterialesId">
+    <class name="edu.server.repositorio.RenglonListaDeMateriales" table="Renglon_Lista_de_Materiales" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonListaDeMaterialesId">
             <key-property name="idListaDeMateriales" type="int">
                 <column name="id_Lista_de_Materiales" />
             </key-property>
@@ -12,13 +12,13 @@
                 <column name="id_Renglon" />
             </key-property>
         </composite-id>
-        <many-to-one name="componente" class="Componente" fetch="select">
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
             <column name="id_Componente" />
         </many-to-one>
-        <many-to-one name="listaDeMateriales" class="ListaDeMateriales" update="false" insert="false" fetch="select">
+        <many-to-one name="listaDeMateriales" class="edu.server.repositorio.ListaDeMateriales" update="false" insert="false" fetch="select">
             <column name="id_Lista_de_Materiales" not-null="true" />
         </many-to-one>
-        <many-to-one name="producto" class="Producto" fetch="select">
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
             <column name="id_Producto" />
         </many-to-one>
         <property name="cantidad" type="int">

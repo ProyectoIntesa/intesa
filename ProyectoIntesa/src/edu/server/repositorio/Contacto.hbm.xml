@@ -3,12 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Contacto" table="Contacto" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Contacto" table="Contacto" schema="dbo" catalog="intesaDB">
         <id name="idContacto" type="int">
             <column name="id_Contacto" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="proveedor" class="Proveedor" fetch="select">
+        <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" fetch="select">
             <column name="id_Empresa" />
         </many-to-one>
         <property name="idCliente" type="java.lang.Integer">

@@ -3,12 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Equipo" table="Equipo" schema="dbo" catalog="intesaDB">
+    <class name="edu.server.repositorio.Equipo" table="Equipo" schema="dbo" catalog="intesaDB">
         <id name="nroReferecncia" type="int">
             <column name="nro_Referecncia" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="subclaseEquipo" class="SubclaseEquipo" fetch="select">
+        <many-to-one name="subclaseEquipo" class="edu.server.repositorio.SubclaseEquipo" fetch="select">
             <column name="id_Clase_Equipo" not-null="true" />
             <column name="id_Subclase_Equipo" not-null="true" />
         </many-to-one>
@@ -28,19 +28,19 @@
             <key>
                 <column name="id_Equipo" />
             </key>
-            <one-to-many class="RenglonOrdenPedido" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenPedido" />
         </set>
         <set name="renglonOrdenTrabajos" table="Renglon_Orden_Trabajo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Equipo" />
             </key>
-            <one-to-many class="RenglonOrdenTrabajo" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenTrabajo" />
         </set>
         <set name="renglonOrdenFabricacionGenerals" table="Renglon_Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Equipo" />
             </key>
-            <one-to-many class="RenglonOrdenFabricacionGeneral" />
+            <one-to-many class="edu.server.repositorio.RenglonOrdenFabricacionGeneral" />
         </set>
     </class>
 </hibernate-mapping>
