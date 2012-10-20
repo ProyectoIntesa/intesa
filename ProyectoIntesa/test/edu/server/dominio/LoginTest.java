@@ -48,15 +48,6 @@ public class LoginTest {
 	}
 
 
-//	@Test
-//	public void testRegistrarUsuario() {
-//	
-//	}
-	
-	@Test
-	public void testidEmpleado() {
-		int result = pruebaLogin.idEmpleado(15);
-		assertNotSame(-1, result);
-	}
+
 
 }
