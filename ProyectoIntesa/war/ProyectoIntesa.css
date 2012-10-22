@@ -1,34 +1,799 @@
-/** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
+	{
+	background: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	vertical-align: middle
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+a {
+	text-decoration: none
 }
 
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
+body {
+	margin: 0;
 }
 
-.dialogVPanel {
-  margin: 5px;
+/*
+
+    .box {
+        position: absolute;
+        background-color: red;
+        height: 300px;       width: 400px;  
+                                            
+        top: 50%;            left: 50%;
+        margin-top: -150px;  margin-left: -200px;
+
+
+*/
+.box {
+	position: absolute;
+	background-image: url(img/fondoLogin.jpg);
 }
 
-.serverResponseLabelError {
-  color: red;
+
+.textoPlano{
+	font-family: Arial;
+	font-size: 12px;
 }
 
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+.panelFondo {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: ridge;
+	background-repeat: repeat;
+	background-image: url(img/images1.jpg);
 }
+
+.panelFondo2 {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: ridge;
+	background-repeat: no-repeat;
+	background-position:center;
+	background-image: url(img/car3.jpg);
+	background-color: black;
+}
+
+.superior {
+	margin: 0px 0px 5px;
+	border: outset;
+	vertical-align: text-bottom;
+	text-align: right;
+	background-repeat: repeat-x;
+	background-image: url(img/fondoSuperior2.png);
+}
+
+.superior2 {
+	//margin: 0px 0px 5px;
+	border: outset;
+	vertical-align: text-bottom;
+	text-align: right;
+	//background-repeat: repeat-x;
+	//background-image: url(img/fondoSuperior2.png);
+	background-color: #B6FCC1;
+}
+
+
+.menuLateral {
+	margin: 0px 5px 0px 0px;
+	padding: 0px;
+	border: inset;
+	vertical-align: text-bottom;
+	text-align: left;
+	background-image: url(img/images1.jpg);
+}
+
+.panelTrabajo {
+	background-color: White;
+}
+
+.imagenLogo {
+	background-repeat: no-repeat;
+	background-image: url(img/nombre.png);
+}
+
+.imagenLogo2 {
+	background-repeat: no-repeat;
+	background-image: url(img/logo2.png);
+}
+
+.imagenIntesa {
+	background-repeat: no-repeat;
+	background-image: url(img/logoIn.png);
+}
+
+.labelSuperior {
+	color: slategrey;
+	font-stretch: extra-expanded;
+	font-variant: small-caps;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: bold;
+	vertical-align: text-top;
+	text-transform: capitalize;
+}
+
+
+
+.labelInfo{
+	background-repeat: no-repeat;
+	background-image: url(img/info16x16.png);
+}
+
+.labelBorrar{
+	background-repeat: no-repeat;
+	background-image: url(img/X16x16.png);
+}
+
+.gwt-Button:active {
+	
+}
+
+.botonSuperior {
+	width: 130px;
+	color: black;
+	font-size: 13px;
+	font-weight: bold;
+	background-color: ghostwhite;
+	/*border-collapse: separate;*/
+	table-layout: auto;
+	border: thin outset lightblue;
+	border-radius: 10px;
+	padding-bottom: 2px;
+}
+
+.botonSuperior:hover {
+	width: 130px;
+	color: black;
+	font-size: 13px;
+	font-weight: bold;
+	background-color: yellow;
+	/*border-collapse: separate;*/
+	table-layout: auto;
+	border: thin outset lightblue;
+	border-radius: 10px;
+	padding-bottom: 2px;
+}
+
+/*
+.botonSuperior:ACTIVE {
+	width: 130px;
+	color: black;
+	border: thin outset lightblue;
+	font-size: 14px;
+	font-weight: bolder;
+	background-color: yellow;
+	border-collapse: separate;
+	table-layout: auto;
+	border-radius: 20px;
+}
+*/
+
+
+/*-------------------------------------- TREE --------------------------------------------------------*/
+.elementoMenu {
+	color: White;
+	border: thin outset;
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+	background-color: rgba(209, 209, 209, 0.33);
+	/*border-radius: 20px;*/
+}
+
+.suElementoMenu {
+	font-family: Arial; 
+	font-size : 12px;
+	font-weight: bold;
+	color: white;
+	border-top: thin ridge;
+	border-right: thin ridge;
+	border-bottom: thin ridge;
+	border-left: thin ridge;
+	border-radius: 10px;
+	background-color: rgba(252, 252, 255, 0.59);
+	cursor: pointer;
+	margin-bottom: 2px;
+}
+
+.suElementoMenu:hover {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+	color: Black;
+	margin-bottom: 2px;
+	border: thin outset;
+	background-color: yellow;
+	cursor: pointer;
+}
+
+/*
+.gwt-Tree .gwt-TreeItem-selected {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: bold;
+	color: #31A26C;
+}
+*/
+/*--------------------------------------  --------------------------------------------------------*/
+.panelFormulario {
+	width: 100%;
+	height: 100%;
+	border: thin groove;
+	background-color: #EBEBEB;
+}
+
+.gwt-Label {
+	margin-left: 2px;
+	margin-right: 2px;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Arial;
+}
+
+/*-------------------------------------- TAB PANEL --------------------------------------------------------*/
+.gwt-TabBar {
+	background: #252525;
+	padding-top: 5px;
+}
+
+.gwt-TabBar .gwt-TabBarFirst {
+	width: 5px; /* first tab distance from the left */
+}
+
+.gwt-TabBar .gwt-TabBarRest {
+	
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+	margin-left: 4px;
+	padding: 4px 8px 4px 8px;
+	cursor: pointer;
+	cursor: hand;
+	color: white;
+	font-weight: normal;
+	text-align: center;
+	background: #8E8E8E;
+	-moz-border-radius: 3px 3px 0px 0px;
+	border-radius: 15px 15px 0px 0px;
+}
+
+.gwt-TabBar .gwt-TabBarItem-selected {
+	cursor: default;
+	background: white;
+	color: #333;
+	font-weight: bold;
+	border: ridge;
+	border-bottom: 0;
+	border-radius: 15px 15px 0px 0px;
+}
+
+.gwt-TabBar .gwt-TabBarItem-disabled {
+	cursor: default;
+	color: #999999;
+}
+
+.gwt-TabPanel {
+	
+}
+
+.gwt-TabPanelBottom {
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 0px 1px 1px;
+	overflow: hidden;
+	padding: 6px;
+}
+
+/*--------------------------------------  FORMULARIOS --------------------------------------------------------*/
+.gwt-TextBox {
+	resize: none;
+	padding: 4px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+}
+
+.gwt-TextArea {
+	resize: none;
+	padding: 4px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+	width: 97%;
+}
+
+/*alineacion derecha para el login*/
+.gwt-LabelFormularioLogin {
+	color: White;
+	margin-right: 2px;
+	margin-left: 5px;
+	padding: 2px;
+	font-size: 17px;
+	font-family: Arial;
+	font-weight: bolder;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.gwt-LabelFormularioLogin2 {
+	color:#333;
+	margin-right: 2px;
+	margin-left: 5px;
+	padding: 2px;
+	font-family:'Helvetica Neue',Arial,sans-serif;
+	font-size:12px;
+	font-weight:700;
+	vertical-align: middle;
+	text-align: right;
+}
+
+/*alineacion izquierda*/
+.gwt-LabelFormulario {
+	margin-right: 2px;
+	margin-left: 5px;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Arial;
+	vertical-align: middle;
+	text-align: left;
+}
+
+/*alineacion derecha*/
+.gwt-LabelFormularioDerecho {
+	margin-right: 5px;
+	margin-left: 2px;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Arial;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.textoCorto {
+	width: 30%;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+}
+
+.formatoFormulario {
+	margin-top: 5px;
+	margin-left: 25px;
+	width: 95%;
+	height: 95%;
+}
+
+.labelTitulo {
+	margin-bottom: 5px;
+	margin-top: 25px;
+	width: 100%;
+	border-bottom: medium ridge;
+	font-size: 14px;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+/*-------------------------------------------------------------- DATES --------------------------------------------------------*/
+.gwt-DateBox {
+	resize: none;
+	padding: 4px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+	text-align: center;
+}
+
+.gwt-DatePicker {
+	border: 1px solid #ccc;
+	border-top: 1px solid #999;
+	cursor: default;
+}
+
+.gwt-DatePicker td,.datePickerMonthSelector td:focus {
+	outline: none;
+}
+
+.datePickerDays {
+	width: 100%;
+	background: white;
+}
+
+.datePickerDay,.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	font-size: 85%;
+	text-align: center;
+	padding: 4px;
+	outline: none;
+	font-weight: bold;
+	color: #333;
+	border-right: 1px solid #EDEDED;
+	border-bottom: 1px solid #EDEDED;
+}
+
+.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	background: #fff;
+	padding: 0px 4px 2px;
+	cursor: default;
+	color: #666;
+	font-size: 70%;
+	font-weight: normal;
+}
+
+.datePickerDay {
+	padding: 4px 7px;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.datePickerDayIsWeekend {
+	background: #f7f7f7;
+}
+
+.datePickerDayIsFiller {
+	color: #999;
+	font-weight: normal;
+}
+
+.datePickerDayIsValue {
+	background: #d7dfe8;
+}
+
+.datePickerDayIsDisabled {
+	color: #AAAAAA;
+	font-style: italic;
+}
+
+.datePickerDayIsHighlighted {
+	background: #F0E68C;
+}
+
+.datePickerDayIsValueAndHighlighted {
+	background: #d7dfe8;
+}
+
+.datePickerDayIsToday {
+	padding: 3px;
+	color: white;
+	background-color: #2E8B94;
+}
+
+.datePickerMonthSelector {
+	width: 100%;
+	padding: 1px 0 5px 0;
+	background: #fff;
+}
+
+td.datePickerMonth {
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	font-size: 100%;
+	font-weight: bold;
+	color: #333;
+}
+
+.datePickerPreviousButton,.datePickerNextButton {
+	font-size: 120%;
+	line-height: 1em;
+	color: #3a6aad;
+	cursor: hand;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 0px 4px;
+	outline: none;
+}
+
+/*-------------------------------------------------------------- CHECK BOX--------------------------------------------------------*/
+.check {
+	text-align: right;
+	margin-right: 2px;
+	padding: 2px;
+	font-family: Arial;
+	font-size: 12px;
+	vertical-align: middle;
+}
+/*--------------------------------------------------------------- LIST BOX ---------------------------------------------------------*/
+.gwt-ListBox {
+	width: 100%;
+	padding: 4px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+}
+
+.textoCorto {
+	width: 30%;
+	padding: 4px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+	font-size: 12px;
+}
+
+/*-------------------------------------------------------------- BUTTON --------------------------------------------------------*/
+.gwt-Button {
+	margin: 0;
+	padding: 5px 7px;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+	font-size: small;
+	border: 1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+
+
+.gwt-ButtonLogin{
+	-webkit-box-shadow:rgba(0,0,0,0.2) 0 1px 0 0;
+	-moz-box-shadow:rgba(0,0,0,0.2) 0 1px 0 0;
+	box-shadow:rgba(0,0,0,0.2) 0 1px 0 0;
+	color:#333;
+	background-color:#EDFF22;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border:none;
+	font-family:'Helvetica Neue',Arial,sans-serif;
+	font-size:12px;
+	font-weight:700;
+	height:32px;
+	padding:4px 16px;
+	text-shadow:#FE6 0 1px 0
+
+}
+
+
+
+/*-------------------------------------------------------------- TABLE --------------------------------------------------------*/
+.tabla {
+	margin: 15px;
+	border: thin ridge;
+	background-color: white;
+}
+
+.tablaEncabezado {
+	font-color: black;
+	border: thin solid Black;
+	font-size: 12px;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: center;
+	background-color: gainsboro;
+}
+
+.tablaRenglon {
+	font-color: black;
+	border: thin solid Black;
+	font-size: 12px;
+	font-family: Arial;
+	text-align: center;
+	background-color: powderblue;
+}
+
+.tablaRenglon2 {
+	font-color: black;
+	border: thin solid Black;
+	font-size: 12px;
+	font-family: Arial;
+	text-align: center;
+}
+
+/*-------------------------------------------------------------- POPUP --------------------------------------------------------*/
+.fondoPopup {
+	background-color: #E9ECEC;
+	padding: 8px;
+	border: ridge;
+}
+
+.gwt-PopupPanelGlass {
+	background-color: #000;
+	opacity: 0.3;
+	filter: alpha(opacity =     30);
+}
+
+/*-------------------------------------------------------------- RADIOBUTTON --------------------------------------------------------*/
+.gwt-RadioButton {
+	text-align: right;
+	margin-right: 2px;
+	padding: 2px;
+	font-family: Arial;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+.gwt-RadioButton-disabled {
+	color: #888;
+	text-align: right;
+	margin-right: 2px;
+	padding: 2px;
+	font-family: Arial;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+/*-------------------------------------------------------------- SUGGEST BOX --------------------------------------------------------*/
+.gwt-SuggestBox {
+
+	resize: none;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	border-radius: 9px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+.gwt-SuggestBoxPopup {
+	
+    border: 1px darkblue solid;
+    border-radius: 9px;
+	background-color: #EAEEF5;
+    padding-left: 2px;
+    padding-right: 2px;
+    
+}
+
+.gwt-SuggestBoxPopup .item {
+	padding: 2px 6px;
+	color: #000;
+	cursor: default;
+	font-size: 12px;
+	font-family: Arial;
+}
+
+
+.gwt-SuggestBoxPopup .item-selected {
+	background: lightblue;
+	border-radius: 9px;
+}
+
+
+/*
+.gwt-SuggestBoxPopup .suggestPopupContent {
+	background: white;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopCenter {
+	border-top: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupBottomCenter {
+	border-bottom: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopCenterInner,.gwt-SuggestBoxPopup .suggestPopupBottomCenterInner
+	{
+	height: 1px;
+	line-height: 1px;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupMiddleLeft {
+	border-left: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupMiddleRight {
+	border-right: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupMiddleLeftInner,.gwt-SuggestBoxPopup .suggestPopupMiddleRightInner
+	{
+	width: 1px;
+	line-height: 1px;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopLeftInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopRightInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupBottomLeftInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupBottomRightInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopLeft {
+	background: url(images/circles.png) no-repeat 0px -6px;
+	-background: url(images/circles_ie6.png) no-repeat 0px -6px;
+	width: 5px;
+	height: 5px;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopRight {
+	background: url(images/circles.png) no-repeat -5px -6px;
+	-background: url(images/circles_ie6.png) no-repeat -5px -6px;
+	width: 5px;
+	height: 5px;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupBottomLeft {
+	background: url(images/circles.png) no-repeat 0px -11px;
+	-background: url(images/circles_ie6.png) no-repeat 0px -11px;
+	width: 5px;
+	height: 5px;
+}
+
+.gwt-SuggestBoxPopup .suggestPopupBottomRight {
+	background: url(images/circles.png) no-repeat -5px -11px;
+	-background: url(images/circles_ie6.png) no-repeat -5px -11px;
+	width: 5px;
+	height: 5px;
+}
+
+* html .gwt-SuggestBoxPopup .suggestPopupTopLeftInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup .suggestPopupTopRightInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup .suggestPopupBottomLeftInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup .suggestPopupBottomRightInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+*/

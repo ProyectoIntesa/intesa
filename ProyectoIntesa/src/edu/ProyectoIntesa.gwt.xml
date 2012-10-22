@@ -2,11 +2,13 @@
 <module rename-to='proyectointesa'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-
+  <inherits name="com.google.gwt.i18n.I18N"/>
+  <extend-property name="locale" values="es_AR"/>   
+  
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
-  <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+  <!-- inherits name='com.google.gwt.user.theme.clean.Clean'/>    -->
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
@@ -21,3 +23,8 @@
   <source path='shared'/>
 
 </module>
+
+
+
+
+  
