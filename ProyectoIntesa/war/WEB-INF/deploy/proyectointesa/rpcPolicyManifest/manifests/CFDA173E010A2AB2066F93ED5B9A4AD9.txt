@@ -1,0 +1,2 @@
+serviceClass: edu.client.LoginService.LoginService
+path: A117D45D624383A19C88CEFFDB7C2603.gwt.rpc
