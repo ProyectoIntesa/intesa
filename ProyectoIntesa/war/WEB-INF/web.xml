@@ -13,8 +13,20 @@
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/proyectointesa/greet</url-pattern>
+    <url-pattern>/ProyectoIntesa/greet</url-pattern>
   </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>edu.server.servicio.LoginServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/proyectointesa/login</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -67,6 +67,13 @@ public class LoginTest {
 		assertEquals("seo", respuesta.rol);
 	}
 	
-
+	@Test
+	public void getUsuarioNuloTest()
+	{
+		UsuarioDTO respuesta = pruebaLogin.getUsuario("xtian", "12345");
+		assertNull(respuesta);
+		
+	}
+	
 
 }

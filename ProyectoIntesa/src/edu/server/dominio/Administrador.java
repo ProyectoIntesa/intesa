@@ -33,7 +33,7 @@ public class Administrador {
 			return false;
 		}
 
-		return respuesta;
+		return respuesta; 
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Administrador {
 
 	/**
 	 * Permite informar si existe un usuario resgistrado con el nombre y
-	 * contraseña pasado
+	 * contraseï¿½a pasado
 	 * 
 	 * @param nombreDeUsuario
 	 * @param pass

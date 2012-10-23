@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -18,10 +19,17 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
+import edu.client.LoginService.LoginService;
+import edu.client.LoginService.LoginServiceAsync;
+import edu.server.servicio.LoginServiceImpl;
+import edu.shared.DTO.UsuarioDTO;
+
 public class P_Login extends Composite {
 
+	final LoginServiceAsync loginServie = GWT.create(LoginService.class);
+	
 	private Constantes constante = GWT.create(Constantes.class);
-
+    
 	private DockPanel contenedor;
 	private LayoutPanel superior;
 	private LayoutPanel centro;
@@ -40,7 +48,7 @@ public class P_Login extends Composite {
 
 	private Button iniciarSesion;
 
-	public P_Login() {
+	public P_Login() { 
 
 		ancho = Window.getClientWidth() - 10;
 		alto = Window.getClientHeight() - 13;
@@ -57,35 +65,59 @@ public class P_Login extends Composite {
 		usuarioTb = new TextBox();
 		usuarioTb.setStyleName("gwt-TextArea");
 		contraseniaTb = new PasswordTextBox();
-		contraseniaTb.setStyleName("gwt-TextArea");
+		contraseniaTb.setStyleName("gwt-TextArea"); 
 
 		iniciarSesion = new Button(constante.iniciarSesion());
+		
 		iniciarSesion.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if (usuarioTb.getText().compareTo("ventas") == 0
-						&& contraseniaTb.getText().compareTo("ventas") == 0) {
-					inicioPantallaVentas();
-				}
-				else if (usuarioTb.getText().compareTo("ingenieria") == 0
-						&& contraseniaTb.getText().compareTo("ingenieria") == 0){
-					inicioPantallaIngenieria();
-				}
-				else if (usuarioTb.getText().compareTo("produccion") == 0
-						&& contraseniaTb.getText().compareTo("produccion") == 0){
-					inicioPantallaProduccion();
-				}
-				else if (usuarioTb.getText().compareTo("compras") == 0
-						&& contraseniaTb.getText().compareTo("compras") == 0){
-					inicioPantallaCompras();
-				}
-				else if (usuarioTb.getText().compareTo("almacen") == 0
-						&& contraseniaTb.getText().compareTo("almacen") == 0){
-					inicioPantallaAlmacen();
-				}				
-				else
-					Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
+			
+			
+			loginServie.getUsuario(usuarioTb.getText(), contraseniaTb.getText(), new AsyncCallback<UsuarioDTO>() 
+					{
+						public void onFailure(Throwable caught) {
+							Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");	
+						}
+
+						public void onSuccess(UsuarioDTO result) {
+							if (result.getRol().compareTo("ventas") == 0) {
+								
+								Window.alert("entro a ventas "+ result.getNombre());	
+								//inicioPantallaVentas();
+							}
+						}
+					});
+				
+				
+//				if (usuarioTb.getText().compareTo("ventas") == 0
+//						&& contraseniaTb.getText().compareTo("ventas") == 0) {
+//					inicioPantallaVentas();
+//				}
+//				else if (usuarioTb.getText().compareTo("ingenieria") == 0
+//						&& contraseniaTb.getText().compareTo("ingenieria") == 0){
+//					inicioPantallaIngenieria();
+//				}
+//				else if (usuarioTb.getText().compareTo("produccion") == 0
+//						&& contraseniaTb.getText().compareTo("produccion") == 0){
+//					inicioPantallaProduccion();
+//				}
+//				else if (usuarioTb.getText().compareTo("compras") == 0
+//						&& contraseniaTb.getText().compareTo("compras") == 0){
+//					inicioPantallaCompras();
+//				}
+//				else if (usuarioTb.getText().compareTo("almacen") == 0
+//						&& contraseniaTb.getText().compareTo("almacen") == 0){
+//					inicioPantallaAlmacen();
+//				}				
+//				else
+//					Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
+				
+								
+				
+				
 			}
 		});
+		
 		iniciarSesion.setStyleName("gwt-ButtonLogin");
 
 		log = new FlexTable();
