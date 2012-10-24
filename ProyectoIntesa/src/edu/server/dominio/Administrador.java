@@ -1,5 +1,7 @@
 package edu.server.dominio;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -33,7 +35,7 @@ public class Administrador {
 			return false;
 		}
 
-		return respuesta; 
+		return respuesta;
 	}
 
 	/**
@@ -61,18 +63,19 @@ public class Administrador {
 
 	/**
 	 * Permite informar si existe un usuario resgistrado con el nombre y
-	 * contrase�a pasado
+	 * contraseñia pasado
 	 * 
 	 * @param nombreDeUsuario
 	 * @param pass
 	 * @return
 	 */
-	public boolean usuarioPassExsistentes(String nombreDeUsuario, String pass) {
+	public boolean usuarioExsistentes(String nombreDeUsuario) {
 		boolean respuesta = false;
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
 		Usuario usuario = new Usuario();
-		usuario = (Usuario) sec.createQuery("from Usuario where usuario="
-				+ nombreDeUsuario + " and contrasenia=" + pass);
+		usuario = (Usuario) sec.createQuery("from Usuario where usuario like '" + nombreDeUsuario + "'").uniqueResult();
+		sec.close();
 		if (usuario == null)
 			respuesta = false;
 		else
@@ -81,25 +84,46 @@ public class Administrador {
 	}
 
 	/**
-	 * Permite obtener el id del empleado con el numero de legajo solicitado
+	 * Permite obtener el id del empleado con el número de legajo solicitado
 	 * 
 	 * @param nroLegajo
 	 * @return
 	 */
 	public int idEmpleado(int nroLegajo) {
-		int id = 0;
+		int id = -1;
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
-
-		Empleado empleadoResultado = new Empleado();
-		empleadoResultado = (Empleado) sec
-				.createQuery("from Empleado where nro_Legajo= " + nroLegajo)
-				.list().get(0);
-		if (empleadoResultado == null)
+		sec.beginTransaction();
+		List<Empleado> empleados = sec.createQuery("from Empleado where nro_Legajo = " + nroLegajo).list();
+		sec.close();
+		if (empleados.isEmpty())
 			id = -1;
-		else
-			id = empleadoResultado.getIdEmpleado();
-
+		else {
+			Empleado empleado = empleados.get(0);
+			id = empleado.getIdEmpleado();
+		}
 		return id;
+	}
+
+	
+	/**
+	 * Elimina un usuario de la base de datos, retorna true si tu exito y flase en caso contrario
+	 * @param usuario
+	 * @return
+	 */
+	public boolean eliminarUsuario(Usuario usuario) {
+		boolean respuesta = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			sec.delete(usuario);
+			sec.getTransaction().commit();
+			respuesta = true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
 	}
 
 }

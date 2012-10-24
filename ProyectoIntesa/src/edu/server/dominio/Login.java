@@ -34,7 +34,7 @@ public UsuarioDTO getUsuario(String nombreUsuario, String pass){
 			
 			Usuario usr= new Usuario();
 			UsuarioDTO respuesta  = new UsuarioDTO();
-			List <Usuario> usuarios = session.createQuery("from Usuario where usuario like '"+nombreUsuario+"' and contrasenia like '"+pass+"'").list(); 
+			List <Usuario> usuarios = session.createQuery("from Usuario where usuario like '"+nombreUsuario+"' and contrasenia like '"+pass+"'").list();  
 						
 			if(!usuarios.isEmpty())
 			{

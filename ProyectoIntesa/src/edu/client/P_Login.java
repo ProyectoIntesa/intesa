@@ -85,6 +85,9 @@ public class P_Login extends Composite {
 								Window.alert("entro a ventas "+ result.getNombre());	
 								//inicioPantallaVentas();
 							}
+							else if (result.getRol().compareTo("administrador") == 0){
+								Window.alert("ingreso el administrador " + result.getNombre());
+							}
 						}
 					});
 				
