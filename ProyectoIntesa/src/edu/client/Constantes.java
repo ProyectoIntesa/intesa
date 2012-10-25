@@ -93,9 +93,6 @@ public interface Constantes extends Constants {
 	
 	  @DefaultStringValue("NUEVO CONTACTO")
 	  String nuevoContacto();
-	
-	  //---------------------------------------------------------
-	  
 	  
 	  @DefaultStringValue("ORDEN DE PEDIDO NRO")
 	  String ordenDePedidoNro();
@@ -252,5 +249,17 @@ public interface Constantes extends Constants {
 	  
 	  @DefaultStringValue("INSUMO A COMPRAR")
 	  String insumoAComprar();
+	  
+	  @DefaultStringValue("EMPLEADO")
+	  String empleado();
+	  
+	  @DefaultStringValue("NRO LEGAJO")
+	  String nroLegajo();
+	  
+	  @DefaultStringValue("APELLIDO")
+	  String apellido();
+	  
+	  @DefaultStringValue("PUESTO")
+	  String puesto();	  
 }
 
