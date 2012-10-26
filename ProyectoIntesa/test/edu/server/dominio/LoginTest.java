@@ -63,8 +63,8 @@ public class LoginTest {
 	public void getUsuarioTest()
 	{
 		UsuarioDTO respuesta = pruebaLogin.getUsuario("arnaldo", "tibaldo");
-		assertEquals("arnaldo tibaldo", respuesta.nombre);
-		assertEquals("seo", respuesta.rol);
+		assertEquals("arnaldo tibaldo", respuesta.getNombre());
+		assertEquals("seo", respuesta.getRol());
 	}
 	
 	@Test

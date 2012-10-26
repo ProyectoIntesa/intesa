@@ -1,5 +1,6 @@
 package edu.server.dominio;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -8,6 +9,7 @@ import org.hibernate.Session;
 import edu.server.repositorio.Empleado;
 import edu.server.repositorio.Usuario;
 import edu.server.util.HibernateUtil;
+import edu.shared.DTO.EmpleadoDTO;
 
 public class Administrador {
 
@@ -124,6 +126,31 @@ public class Administrador {
 		}
 
 		return respuesta;
+	}
+	
+	public List<EmpleadoDTO> getEmpleados()
+	{
+		List<Empleado> listaEmpleados;
+		List<EmpleadoDTO> listaResultado = new LinkedList<EmpleadoDTO>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		listaEmpleados = sec.createQuery("from Empleado ").list();
+		sec.close();
+		
+		if(!listaEmpleados.isEmpty())
+		{
+			for(int i =0; i < listaEmpleados.size();i++)
+			{
+				EmpleadoDTO nuevo= new EmpleadoDTO();
+				nuevo.setNroLegajo(listaEmpleados.get(i).getNroLegajo());
+				nuevo.setNombre(listaEmpleados.get(i).getNombre());
+				nuevo.setApellido(listaEmpleados.get(i).getApellido());
+				nuevo.setPuesto(listaEmpleados.get(i).getPuesto());
+			 listaResultado.add(nuevo);
+			}
+		}
+
+		return listaResultado;
 	}
 
 }

@@ -3,6 +3,8 @@ package edu.server.dominio;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import edu.server.repositorio.Empleado;
 import edu.server.repositorio.Usuario;
 import edu.server.util.HibernateUtil;
+import edu.shared.DTO.EmpleadoDTO;
 
 public class AdministradorTest {
 
@@ -140,6 +143,14 @@ public class AdministradorTest {
 
 		boolean result = pruebaAdministrador.usuarioExsistentes("polinsky");
 		assertEquals(false, result);	
+				
+	}
+	
+	@Test
+	public void getEmpleadosTest() {
+
+		List<EmpleadoDTO> result = pruebaAdministrador.getEmpleados();
+		assertEquals(false, result.isEmpty());	
 				
 	}
 	

@@ -5,8 +5,8 @@ package edu.shared.DTO;
 public class UsuarioDTO implements java.io.Serializable {
 
 	private static final long serialVersionUID = -724522615792528383L;
-	public String nombre;
-	public String rol;
+	private String nombre;
+	private String rol;
 	
 	
 	public UsuarioDTO() {

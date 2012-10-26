@@ -1,11 +1,15 @@
 package edu.client;
 
 import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.user.client.ui.Label;
 
 public interface Constantes extends Constants {
 
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
+	  
+	  @DefaultStringValue("EMPLEADOS")
+	  String empleados();		
 
 	  @DefaultStringValue("NOMBRE")
 	  String nombre();

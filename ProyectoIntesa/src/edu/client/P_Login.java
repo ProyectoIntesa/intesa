@@ -167,7 +167,7 @@ public class P_Login extends Composite {
 		try {
 			this.finalize();
 		} catch (Throwable e) {
-			e.printStackTrace();
+			Window.alert("excepcion: "+e.getMessage());
 		}
 	}
 
