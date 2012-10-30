@@ -16,9 +16,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	private static final long serialVersionUID = -7728818305014735714L;
 
 	@Override
-	public List<EmpleadoDTO> getEmpleados() throws IllegalArgumentException {
+	public List<EmpleadoDTO> getEmpleados(List<EmpleadoDTO> lista) throws IllegalArgumentException {
 		Administrador admin = new Administrador();
-		return admin.getEmpleados();
+		lista = admin.getEmpleados();
+		
+		return lista;
 	}
 
 }

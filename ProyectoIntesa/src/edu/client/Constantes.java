@@ -9,7 +9,16 @@ public interface Constantes extends Constants {
 	  String empresa();
 	  
 	  @DefaultStringValue("EMPLEADOS")
-	  String empleados();		
+	  String empleados();
+	  
+	  @DefaultStringValue("EMPLEADOS A CARGO")
+	  String empleadosACargo();
+	  
+	  @DefaultStringValue("ASIGNAR")
+	  String asignar();
+	  
+	  @DefaultStringValue("USUARIOS")
+	  String usuarios();	
 
 	  @DefaultStringValue("NOMBRE")
 	  String nombre();
@@ -88,6 +97,12 @@ public interface Constantes extends Constants {
 	
 	  @DefaultStringValue("DATOS DE EMPRESA")
 	  String datosEmpresa();
+	  
+	  @DefaultStringValue("DATOS DE USUARIO")
+	  String datosDeUsuario();
+	  
+	  @DefaultStringValue("DATOS DE EMPLEADO")
+	  String datosDeEmpleado();
 	  
 	  @DefaultStringValue("DOMICILIO")
 	  String domicilio();
@@ -264,6 +279,9 @@ public interface Constantes extends Constants {
 	  String apellido();
 	  
 	  @DefaultStringValue("PUESTO")
-	  String puesto();	  
+	  String puesto();
+	  
+	  @DefaultStringValue("ROL")
+	  String rol();	  
 }
 

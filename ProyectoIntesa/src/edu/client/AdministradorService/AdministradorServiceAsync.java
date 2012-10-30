@@ -8,5 +8,5 @@ import edu.shared.DTO.EmpleadoDTO;
 
 public interface AdministradorServiceAsync {
 
-	void getEmpleados(AsyncCallback<List<EmpleadoDTO>> callback)throws IllegalArgumentException;
+	void getEmpleados(List<EmpleadoDTO> lista,AsyncCallback<List<EmpleadoDTO>> callback)throws IllegalArgumentException;
 }

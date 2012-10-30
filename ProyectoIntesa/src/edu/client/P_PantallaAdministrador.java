@@ -15,15 +15,20 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import edu.client.P_NuevoUsuario;
+
 import edu.client.P_BuscarEmpleado;
+import edu.shared.DTO.EmpleadoDTO;
 
 public class P_PantallaAdministrador extends Composite {
 
 	private Constantes constante = GWT.create(Constantes.class);
-
+	
+	private EmpleadoDTO empladoSeleccionadp;
 	private int ancho;
 	private int alto;
 	private int anchoLateral;
@@ -175,27 +180,82 @@ public class P_PantallaAdministrador extends Composite {
 	}
 
 	protected void procesa(SelectionEvent<TreeItem> event) {
-
+		
+		String titulo;
+		ScrollPanel formulario;
+		int tab;
+		
 		if (event.getSelectedItem() == nuevoEmpleado) {
+								
+			titulo = constante.empleado();
+			tab = numeroElemento(titulo);
+			
+			if (tab == -1) {
 
+				formulario = new ScrollPanel();
+				formulario.setTitle(titulo);
+				formulario.setStyleName("panelFormulario");
+				formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
+				P_NuevoEmpleado empleado = new P_NuevoEmpleado(panelTrabajo);
+				formulario.add(empleado);
+				panelTrabajo.add(formulario, titulo, false);
+				panelTrabajo.selectTab(numeroElemento(titulo));
+			} else
+				panelTrabajo.selectTab(tab);
 		}
 
-		if (event.getSelectedItem() == buscarEmpleado) {
-			P_BuscarEmpleado popUp = new P_BuscarEmpleado();
-			popUp.setGlassEnabled(true);
-			popUp.center();
-			popUp.show();	
+		else if (event.getSelectedItem() == buscarEmpleado) {
+				P_BuscarEmpleado popUp = new P_BuscarEmpleado(this.panelTrabajo);
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+		
 		}
 
-		if (event.getSelectedItem() == nuevoUsuario) {
+		else if (event.getSelectedItem() == nuevoUsuario) {
+			
+				titulo = constante.usuario();
+				tab = numeroElemento(titulo);
+			
+				if (tab == -1) {
 
+					formulario = new ScrollPanel();
+					formulario.setTitle(titulo);
+					formulario.setStyleName("panelFormulario");
+					formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
+					P_NuevoUsuario usuario = new P_NuevoUsuario(panelTrabajo);
+					formulario.add(usuario);
+					panelTrabajo.add(formulario, titulo, false);
+					panelTrabajo.selectTab(numeroElemento(titulo));
+				} else
+					panelTrabajo.selectTab(tab);
 		}
+				
 
-		if (event.getSelectedItem() == buscarUsuario) {
-
-		}
-
+		else if (event.getSelectedItem() == buscarUsuario) {
+				P_BuscarUsuario popUp = new P_BuscarUsuario();
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+			}
+		
 	}
+	
+	
+	private int numeroElemento(String titulo) {
 
+		int elemento = -1;
+		int contador = 0;
+
+		while (elemento == -1 && contador < panelTrabajo.getWidgetCount()) {
+
+			if (panelTrabajo.getWidget(contador).getTitle().compareTo(titulo) == 0)
+				elemento = contador;
+			else
+				contador++;
+		}
+
+		return elemento;
+	}
 
 }

@@ -68,12 +68,9 @@ body {
 }
 
 .superior2 {
-	//margin: 0px 0px 5px;
 	border: outset;
 	vertical-align: text-bottom;
 	text-align: right;
-	//background-repeat: repeat-x;
-	//background-image: url(img/fondoSuperior2.png);
 	background-color: #B6FCC1;
 }
 
@@ -623,6 +620,20 @@ td.datePickerMonth {
 	font-family: Arial;
 	text-align: center;
 }
+.celda {
+	text-align : center;
+	border-width : 1px;
+	border-bottom-style : outset;
+	background-color : #F4F4F4;
+}
+
+.renglon{
+	border-width : 1px;
+	background-color : #E4F6FF;
+	text-align : center;
+}
+
+
 
 /*-------------------------------------------------------------- POPUP --------------------------------------------------------*/
 .fondoPopup {
