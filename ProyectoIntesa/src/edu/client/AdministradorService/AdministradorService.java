@@ -10,4 +10,8 @@ import edu.shared.DTO.EmpleadoDTO;
 @RemoteServiceRelativePath("administrador")
 public interface AdministradorService extends RemoteService {
 	List<EmpleadoDTO> getEmpleados(List<EmpleadoDTO> lista) throws IllegalArgumentException;
+	Boolean usuarioExistentes(String nombreUsuario) throws IllegalArgumentException;
 }
+
+
+

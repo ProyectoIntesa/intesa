@@ -68,10 +68,9 @@ public class Administrador {
 	 * contraseñia pasado
 	 * 
 	 * @param nombreDeUsuario
-	 * @param pass
 	 * @return
 	 */
-	public boolean usuarioExsistentes(String nombreDeUsuario) {
+	public boolean usuarioExistentes(String nombreDeUsuario) {
 		boolean respuesta = false;
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
@@ -153,4 +152,51 @@ public class Administrador {
 		return listaResultado;
 	}
 
+	
+	
+	public List<EmpleadoDTO> getEmpleadosSinUsuario()
+	{
+		boolean bandera = false;
+		List<Usuario> listaUsuarios;
+		List<Empleado> listaEmpleados;
+		List<EmpleadoDTO> listaResultado = new LinkedList<EmpleadoDTO>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		listaUsuarios = sec.createQuery("from Usuario").list();
+		listaEmpleados = sec.createQuery("from Empleado").list();
+
+		sec.close();
+		
+		if(!listaEmpleados.isEmpty())
+		{
+			for(int i =0; i < listaEmpleados.size();i++)
+			{
+				for(int j= 0; j<listaUsuarios.size();j++){
+					
+					
+					if(listaEmpleados.get(i).getIdEmpleado()==listaUsuarios.get(j).getEmpleado().getIdEmpleado()){
+						bandera = true;
+						break;
+					}					
+				}
+				
+				if(bandera == false){
+					EmpleadoDTO nuevo= new EmpleadoDTO();
+					nuevo.setNroLegajo(listaEmpleados.get(i).getNroLegajo());
+					nuevo.setNombre(listaEmpleados.get(i).getNombre());
+					nuevo.setApellido(listaEmpleados.get(i).getApellido());
+					nuevo.setPuesto(listaEmpleados.get(i).getPuesto());
+					listaResultado.add(nuevo);		 
+				}
+				bandera = false;
+			}
+		}
+
+		return listaResultado;
+	}
+	
+	
+	
+	
 }

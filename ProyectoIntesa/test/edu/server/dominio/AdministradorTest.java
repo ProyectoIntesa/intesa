@@ -31,8 +31,8 @@ public class AdministradorTest {
 	public static void tearDownAfterClass() throws Exception {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.createQuery("delete from Usuario").executeUpdate();
-		session.createQuery("delete from Empleado").executeUpdate();
+		session.createQuery("delete from Usuario where usuario like 'polsky'").executeUpdate();
+		session.createQuery("delete from Empleado where nro_Legajo = 25").executeUpdate();
 		session.getTransaction().commit();	
 	}
 
@@ -131,17 +131,17 @@ public class AdministradorTest {
 	
 	
 	@Test
-	public void usuarioExsistentesTest() {
+	public void usuarioExistentesTest() {
 
-		boolean result = pruebaAdministrador.usuarioExsistentes("polsky");
+		boolean result = pruebaAdministrador.usuarioExistentes("polsky");
 		assertEquals(true, result);	
 				
 	}
 	
 	@Test
-	public void usuarioExsistentesFalseTest() {
+	public void usuarioExistentesFalseTest() {
 
-		boolean result = pruebaAdministrador.usuarioExsistentes("polinsky");
+		boolean result = pruebaAdministrador.usuarioExistentes("polinsky");
 		assertEquals(false, result);	
 				
 	}
@@ -153,6 +153,29 @@ public class AdministradorTest {
 		assertEquals(false, result.isEmpty());	
 				
 	}
+	
+	
+	
+	@Test
+	public void getEmpleadosSinUsuarioTest() {
+
+		Empleado emp = new Empleado();
+		emp.setApellido("ramirez");
+		emp.setNombre("xtian");
+		emp.setNroLegajo(25);
+		emp.setPuesto("lava platos");
+		
+		pruebaAdministrador.registrarEmpleado(emp);
+		
+		List<EmpleadoDTO> result = pruebaAdministrador.getEmpleadosSinUsuario();
+		assertEquals(false, result.isEmpty());	
+				
+	}
+	
+	
+	
+	
+	
 	
 	
 }

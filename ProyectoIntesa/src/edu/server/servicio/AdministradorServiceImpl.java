@@ -23,4 +23,12 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		return lista;
 	}
 
+	@Override
+	public Boolean usuarioExistentes(String nombreUsuario) throws IllegalArgumentException {
+		Administrador admin = new Administrador();
+		Boolean result = new Boolean(admin.usuarioExistentes(nombreUsuario));
+		return result;
+	}
+	
+	
 }

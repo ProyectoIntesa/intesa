@@ -1,18 +1,28 @@
 package edu.client;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
 import edu.client.Constantes;
+import edu.client.AdministradorService.AdministradorService;
+import edu.client.AdministradorService.AdministradorServiceAsync;
+import edu.shared.DTO.EmpleadoDTO;
 
 public class P_NuevoUsuario extends Composite {
 	
@@ -43,9 +53,31 @@ public class P_NuevoUsuario extends Composite {
 	private Button guardar;
 	private Button salir;
 	
+	public List<EmpleadoDTO> listaEmpleados;
+	
 	public P_NuevoUsuario(TabPanel padre){
 		
 		this.padre = padre;
+		
+		
+		listaEmpleados = new LinkedList<EmpleadoDTO>();
+		
+		AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
+		
+		adminServie.getEmpleados(listaEmpleados,new AsyncCallback<List<EmpleadoDTO>>() {
+			@Override
+			public void onSuccess(List<EmpleadoDTO> result) {
+				cargarListaEmpleados(result);
+				
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se pudo cargar la lista de empleados");
+			}
+		});
+		
+		
 		
 		datosUsuario = new Label(constante.datosDeUsuario());
 		datosUsuario.setStyleName("labelTitulo");
@@ -80,6 +112,13 @@ public class P_NuevoUsuario extends Composite {
 		rolTb.setStyleName("gwt-TextArea");
 		nroLegajoTb = new ListBox();
 		nroLegajoTb.setStyleName("gwt-TextArea");
+		nroLegajoTb.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				nombreEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getNombre());
+				apellidoEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getApellido());
+			}
+		});
+		
 		nombreEmpleadoTb = new TextBox();
 		nombreEmpleadoTb.setStyleName("gwt-TextArea");
 		nombreEmpleadoTb.setEnabled(false);
@@ -95,6 +134,11 @@ public class P_NuevoUsuario extends Composite {
 		});
 		
 		guardar = new Button(constante.guardar());
+		guardar.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				guardar();
+			}
+		});
 		
 		
 		formularioUsuario = new FlexTable();
@@ -140,6 +184,93 @@ public class P_NuevoUsuario extends Composite {
 		
 		
 	}
+	
+
+
+
+	public void cargarListaEmpleados(List<EmpleadoDTO> lista)
+	{
+		listaEmpleados= lista;		
+		for (int i = 0; i < listaEmpleados.size(); i++) {
+			this.nroLegajoTb.addItem(""+listaEmpleados.get(i).getNroLegajo());
+		}
+	}
+	
+	
+	
+	public void guardar(){
+		
+		if(usuarioTb.getText().isEmpty() || contraseniaPtb.getText().isEmpty()){
+			Window.alert("NO SE PERMITEN CAMPOS VACÍOS");
+		}
+		else{
+			
+			AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
+			
+			adminServie.usuarioExistentes(usuarioTb.getText(), new AsyncCallback<Boolean>(){
+				
+				@Override
+				public void onSuccess(Boolean result) {
+		
+					if(result == true)
+						Window.alert("USUARIO YA EXISTENTE");
+					else
+						guardarUsuario();
+				}
+				
+				@Override
+				public void onFailure(Throwable caught){
+					Window.alert("No se pudo buscar el usuario");
+				}
+		
+				
+			});					
+			
+		}
+		
+	
+		
+		
+	}
+	
+	
+	
+	
+	public void guardarUsuario(){
+		
+		
+		
+//		AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
+//		
+//		adminServie.usuarioExistentes(usuarioTb.getText(), new AsyncCallback<Boolean>(){
+//			
+//			public void onSucess(boolean result){
+//				
+//				if(result = true)
+//					Window.alert("USUARIO YA EXISTENTE");
+//				else
+//					guardarUsuario(result);	
+//				
+//			}
+//			
+//			public void onFailure(Throwable caught){
+//				Window.alert("No se pudo cargar buscar el usuario");
+//			}
+//			
+//			
+//		});
+//		
+//		
+//		
+//		padre.remove(numeroElemento(constante.usuario()));
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
