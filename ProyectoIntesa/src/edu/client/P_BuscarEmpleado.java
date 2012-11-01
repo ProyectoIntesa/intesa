@@ -151,6 +151,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 	}
 
 	protected void salir() {
+		
 		this.hide();
 
 	}
@@ -159,5 +160,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 	{
 		return empleadoSeleccionado;
 	}
+
+	
 
 }
