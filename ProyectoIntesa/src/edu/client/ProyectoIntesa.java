@@ -20,7 +20,7 @@ public class ProyectoIntesa implements EntryPoint {
 			@Override
 			public void onUncaughtException(Throwable e) {
 				
-			Window.alert("ERROR: "+ e.getMessage());
+			Window.alert("ERROR: "+ e.getMessage()+" "+e.getCause());
 				e.printStackTrace();
 			}
 		});

@@ -133,7 +133,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER );			
 			tablaElementos.getRowFormatter().addStyleName(i+1, "renglon");
 			info.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event){
+				public void onClick(ClickEvent event){					
 					Cell celda= tablaElementos.getCellForEvent(event);
 					irAEmpleado(listaEmpleados.get(celda.getRowIndex()-1));
 				}

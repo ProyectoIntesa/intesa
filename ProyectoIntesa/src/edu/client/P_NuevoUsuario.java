@@ -55,6 +55,8 @@ public class P_NuevoUsuario extends Composite {
 	
 	public List<EmpleadoDTO> listaEmpleados;
 	
+	
+	
 	public P_NuevoUsuario(TabPanel padre){
 		
 		this.padre = padre;
@@ -185,8 +187,6 @@ public class P_NuevoUsuario extends Composite {
 		
 	}
 	
-
-
 
 	public void cargarListaEmpleados(List<EmpleadoDTO> lista)
 	{

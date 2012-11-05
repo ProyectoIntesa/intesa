@@ -49,7 +49,7 @@ public class P_PantallaAdministrador extends Composite {
 	private TreeItem nuevoUsuario;
 
 	private TabPanel panelTrabajo;
-
+	private ScrollPanel formulario;
 	public P_PantallaAdministrador(String usuarioLogueado) {
 
 		try {
@@ -185,7 +185,6 @@ public class P_PantallaAdministrador extends Composite {
 	protected void procesa(SelectionEvent<TreeItem> event) {
 		
 		String titulo;
-		ScrollPanel formulario;
 		int tab;
 		
 		if (event.getSelectedItem() == nuevoEmpleado) {
@@ -199,7 +198,7 @@ public class P_PantallaAdministrador extends Composite {
 				formulario.setTitle(titulo);
 				formulario.setStyleName("panelFormulario");
 				formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
-				P_NuevoEmpleado empleado = new P_NuevoEmpleado(panelTrabajo);
+				P_NuevoEmpleado empleado = new P_NuevoEmpleado(panelTrabajo,titulo);
 				formulario.add(empleado);
 				panelTrabajo.add(formulario, titulo, false);
 				panelTrabajo.selectTab(numeroElemento(titulo));
@@ -208,20 +207,31 @@ public class P_PantallaAdministrador extends Composite {
 		}
 
 		else if (event.getSelectedItem() == buscarEmpleado) {
-				final P_BuscarEmpleado popUp = new P_BuscarEmpleado(this.panelTrabajo);
-				popUp.setGlassEnabled(true);
-				popUp.center();
-				popUp.show();
-				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+			
+				if(this.numeroElemento(constante.modificarEmpleado())!=-1){
+					Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR EMPLEADO");
+				}
+				else{
+					
+					final P_BuscarEmpleado popUp = new P_BuscarEmpleado(this.panelTrabajo);
+					popUp.setGlassEnabled(true);
+					popUp.center();
+					popUp.show();
+					popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 
-					@Override
-					public void onClose(CloseEvent<PopupPanel> event) {
+						@Override
+						public void onClose(CloseEvent<PopupPanel> event) {
+							
+							empladoSeleccionado= popUp.getEmpleado();
 						
-						empladoSeleccionado= popUp.getEmpleado();
-						Window.alert("Empleado? :"+ empladoSeleccionado.getNombre());
-					}
-				});
-				
+							if (empladoSeleccionado != null)
+							{
+								modificarEmpleado();
+							}
+						}
+					});
+				}
+
 		}
 
 		else if (event.getSelectedItem() == nuevoUsuario) {
@@ -254,6 +264,26 @@ public class P_PantallaAdministrador extends Composite {
 	}
 	
 	
+	protected void modificarEmpleado() {
+		String titulo;
+		int tab;
+		titulo = "MODIFICAR EMPLEADO";//constante.empleado();
+		tab = numeroElemento(titulo);
+		
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
+			P_NuevoEmpleado empleado = new P_NuevoEmpleado(panelTrabajo,empladoSeleccionado,titulo);
+			formulario.add(empleado);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+	}
+
 	private int numeroElemento(String titulo) {
 
 		int elemento = -1;
