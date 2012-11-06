@@ -7,6 +7,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.client.AdministradorService.AdministradorService;
 import edu.server.dominio.Administrador;
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 public class AdministradorServiceImpl extends RemoteServiceServlet implements AdministradorService{
 
@@ -29,6 +30,17 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		Boolean result = new Boolean(admin.usuarioExistentes(nombreUsuario));
 		return result;
 	}
+	
+	@Override
+	public List<UsuarioCompDTO> getUsuarios(List<UsuarioCompDTO> lista) throws IllegalArgumentException {
+		Administrador admin = new Administrador();
+		lista = admin.getUsuarios();
+		
+		return lista;
+	}
+	
+	 
+	
 	
 	
 }

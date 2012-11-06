@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import edu.client.AdministradorService.AdministradorService;
 import edu.client.AdministradorService.AdministradorServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
-
+ 
 public class P_BuscarEmpleado extends PopupPanel {
 
 	TabPanel padre;
@@ -127,8 +127,8 @@ public class P_BuscarEmpleado extends PopupPanel {
 			info.addStyleName("labelInfo");
 			tablaElementos.setWidget(i + 1, COL_NROLEGAJO, new Label("" + listaEmpleados.get(i).getNroLegajo()));
 			tablaElementos.setWidget(i + 1, COL_NOMBRE, new Label(listaEmpleados.get(i).getNombre()));
-			tablaElementos.setWidget(i + 1, COL_APELLIDO, new Label("" + listaEmpleados.get(i).getApellido()));
-			tablaElementos.setWidget(i + 1, COL_PUESTO, new Label("" + listaEmpleados.get(i).getPuesto()));			
+			tablaElementos.setWidget(i + 1, COL_APELLIDO, new Label(listaEmpleados.get(i).getApellido()));
+			tablaElementos.setWidget(i + 1, COL_PUESTO, new Label(listaEmpleados.get(i).getPuesto()));			
 			tablaElementos.setWidget(i + 1, COL_MAS_INFO, info);
 			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER );			
 			tablaElementos.getRowFormatter().addStyleName(i+1, "renglon");

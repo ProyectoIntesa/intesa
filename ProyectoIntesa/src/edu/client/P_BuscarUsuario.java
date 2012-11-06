@@ -14,6 +14,12 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
+
+import edu.client.AdministradorService.AdministradorService;
+import edu.client.AdministradorService.AdministradorServiceAsync;
+import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 
 public class P_BuscarUsuario extends PopupPanel  {
@@ -21,12 +27,17 @@ public class P_BuscarUsuario extends PopupPanel  {
 	
 	private static final int COL_USUARIO = 1;
 	private static final int COL_CONTRASENIA = 2;
-	private static final int COL_ROL = 3;
-	private static final int COL_MAS_INFO = 4;
+	private static final int COL_NOMBRE = 3;
+	private static final int COL_APELLIDO = 4;
+	private static final int COL_ROL = 5;
+	private static final int COL_MAS_INFO = 6;
+	private static final int COL_QUITAR = 7;
 	
 	private FlexTable panel;
 	private FlexTable tablaElementos;
 
+	private UsuarioCompDTO usuarioSeleccionado;
+	
 	private ScrollPanel contenedorTabla;
 
 	private Constantes constante = GWT.create(Constantes.class);
@@ -36,9 +47,28 @@ public class P_BuscarUsuario extends PopupPanel  {
 	
 	private Button salir;
 	
+	public List<UsuarioCompDTO> listaUsuarios;
+	
 	public P_BuscarUsuario(){
 	
 		super(false);
+		listaUsuarios = new LinkedList<UsuarioCompDTO>();
+		
+		AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
+		
+		adminServie.getUsuarios(listaUsuarios,new AsyncCallback<List<UsuarioCompDTO>>() {
+			@Override
+			public void onSuccess(List<UsuarioCompDTO> result) {
+				cargarListaUsuarios(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se pudo cargar la lista de empleados");
+			}
+		});
+		
+		
 		
 		setStyleName("fondoPopup");
 		panel = new FlexTable();
@@ -50,13 +80,20 @@ public class P_BuscarUsuario extends PopupPanel  {
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
 		tablaElementos.setText(0, COL_USUARIO, constante.usuario());
-		tablaElementos.getCellFormatter().setWidth(0, COL_USUARIO, "30%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_USUARIO, "18%");
 		tablaElementos.setText(0, COL_CONTRASENIA, constante.contrasenia());
-		tablaElementos.getCellFormatter().setWidth(0, COL_CONTRASENIA, "30%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_CONTRASENIA, "18%");
+		tablaElementos.setText(0, COL_NOMBRE, constante.nombre());
+		tablaElementos.getCellFormatter().setWidth(0, COL_NOMBRE, "18%");
+		tablaElementos.setText(0, COL_APELLIDO, constante.apellido());
+		tablaElementos.getCellFormatter().setWidth(0, COL_APELLIDO, "18%");
 		tablaElementos.setText(0, COL_ROL, constante.rol());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL, "30%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL, "18%");
 		tablaElementos.setText(0, COL_MAS_INFO, constante.masInformacion());
-		tablaElementos.getCellFormatter().setWidth(0, COL_MAS_INFO, "10%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_MAS_INFO, "5%");
+		tablaElementos.setText(0, COL_QUITAR, constante.quitar());
+		tablaElementos.getCellFormatter().setWidth(0, COL_QUITAR, "5%");
+		
 		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
 		
 		salir = new Button(constante.salir());
@@ -65,7 +102,7 @@ public class P_BuscarUsuario extends PopupPanel  {
 				salir();
 			}
 		});
-		
+		 
 		
 		usuarios = new Label(constante.usuarios());
 		usuarios.setStyleName("labelTitulo");
@@ -97,6 +134,74 @@ public class P_BuscarUsuario extends PopupPanel  {
 	
 	
 	
+	protected void cargarListaUsuarios(List<UsuarioCompDTO> lista) {
+		
+		listaUsuarios= lista;
+		for (int i = 0; i < listaUsuarios.size(); i++) {
+			Label info=new Label("");
+			Label quitar= new Label("");
+			quitar.setSize("16px", "16px");
+			info.setSize("16px", "16px");
+			quitar.addStyleName("labelBorrar");
+			info.addStyleName("labelInfo");
+			tablaElementos.setWidget(i + 1, COL_USUARIO, new Label(listaUsuarios.get(i).getNombreUsu()));
+			tablaElementos.setWidget(i + 1, COL_CONTRASENIA, new Label(listaUsuarios.get(i).getPassUsu()));
+			tablaElementos.setWidget(i + 1, COL_NOMBRE, new Label(listaUsuarios.get(i).getNombreEmp()));
+			tablaElementos.setWidget(i + 1, COL_APELLIDO, new Label(listaUsuarios.get(i).getApellidoEmp()));
+			tablaElementos.setWidget(i + 1, COL_ROL, new Label(listaUsuarios.get(i).getRolUsu()));
+			tablaElementos.setWidget(i + 1, COL_MAS_INFO, info);
+			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER );
+			tablaElementos.setWidget(i + 1, COL_QUITAR, quitar);
+			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_QUITAR, HasHorizontalAlignment.ALIGN_CENTER );
+			tablaElementos.getRowFormatter().addStyleName(i+1, "renglon");
+			info.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event){					
+					Cell celda= tablaElementos.getCellForEvent(event);
+					irAUsuario(listaUsuarios.get(celda.getRowIndex()-1));
+				}
+			});
+			quitar.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event){					
+					Cell celda= tablaElementos.getCellForEvent(event);
+					borrarUsuario(listaUsuarios.get(celda.getRowIndex()-1));
+				}
+			});
+		}
+		
+		
+	}
+
+	
+	
+	
+	protected void borrarUsuario(UsuarioCompDTO usuarioCompDTO) {
+		
+		
+		
+	}
+
+
+
+
+
+
+
+
+	protected void irAUsuario(UsuarioCompDTO usuario) {
+		usuarioSeleccionado = usuario;
+		
+		this.hide();
+	}
+
+
+	public UsuarioCompDTO getUsuario()
+	{
+		return usuarioSeleccionado;
+	}
+
+
+
+
 	protected void salir() {
 		this.hide();
 

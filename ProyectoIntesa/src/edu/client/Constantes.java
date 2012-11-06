@@ -8,11 +8,17 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
 	  
+	  @DefaultStringValue("QUITAR")
+	  String quitar();
+	  
 	  @DefaultStringValue("EMPLEADOS POSIBLES A SER ASIGNADOS")
 	  String empleadosPosiblesASerAsignados();
 	  
 	  @DefaultStringValue("MODIFICAR EMPLEADO")
 	  String modificarEmpleado();
+	  
+	  @DefaultStringValue("MODIFICAR USUARIO")
+	  String modificarUsuario();
 	  
 	  @DefaultStringValue("EMPLEADOS")
 	  String empleados();

@@ -26,12 +26,14 @@ import edu.client.P_NuevoUsuario;
 
 import edu.client.P_BuscarEmpleado;
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 public class P_PantallaAdministrador extends Composite {
 
 	private Constantes constante = GWT.create(Constantes.class);
 	
 	private EmpleadoDTO empladoSeleccionado;
+	private UsuarioCompDTO usuarioSeleccionado;
 	private int ancho;
 	private int alto;
 	private int anchoLateral;
@@ -56,7 +58,7 @@ public class P_PantallaAdministrador extends Composite {
 			ancho = Window.getClientWidth() - 15;
 			alto = Window.getClientHeight() - 13;
 			anchoLateral = 180;
-			contenedor = new DockPanel();
+			contenedor = new DockPanel(); 
 			contenedor.setStyleName("panelFondo");
 			contenedor.setSize(ancho + "px", alto + "px");
 			initWidget(contenedor);
@@ -245,7 +247,7 @@ public class P_PantallaAdministrador extends Composite {
 					formulario.setTitle(titulo);
 					formulario.setStyleName("panelFormulario");
 					formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
-					P_NuevoUsuario usuario = new P_NuevoUsuario(panelTrabajo);
+					P_NuevoUsuario usuario = new P_NuevoUsuario(panelTrabajo, constante.usuario());
 					formulario.add(usuario);
 					panelTrabajo.add(formulario, titulo, false);
 					panelTrabajo.selectTab(numeroElemento(titulo));
@@ -255,10 +257,29 @@ public class P_PantallaAdministrador extends Composite {
 				
 
 		else if (event.getSelectedItem() == buscarUsuario) {
-				P_BuscarUsuario popUp = new P_BuscarUsuario();
+			if(this.numeroElemento(constante.modificarUsuario())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR USUARIO");
+			}
+			else{
+				
+				final P_BuscarUsuario popUp = new P_BuscarUsuario();
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						usuarioSeleccionado= popUp.getUsuario();
+					
+						if (usuarioSeleccionado != null)
+						{
+							modificarUsuario();
+						}
+					}
+				});
+			}
 			}
 		
 	}
@@ -267,7 +288,7 @@ public class P_PantallaAdministrador extends Composite {
 	protected void modificarEmpleado() {
 		String titulo;
 		int tab;
-		titulo = "MODIFICAR EMPLEADO";//constante.empleado();
+		titulo = constante.modificarEmpleado();
 		tab = numeroElemento(titulo);
 		
 		if (tab == -1) {
@@ -283,6 +304,37 @@ public class P_PantallaAdministrador extends Composite {
 		} else
 			panelTrabajo.selectTab(tab);
 	}
+	
+	
+	
+	
+	
+	protected void modificarUsuario() {
+		String titulo;
+		int tab;
+		titulo = constante.modificarUsuario();
+		tab = numeroElemento(titulo);
+		
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px", (alto - 145) + "px");
+			P_NuevoUsuario usuario = new P_NuevoUsuario(panelTrabajo,usuarioSeleccionado,titulo);
+			formulario.add(usuario);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	private int numeroElemento(String titulo) {
 

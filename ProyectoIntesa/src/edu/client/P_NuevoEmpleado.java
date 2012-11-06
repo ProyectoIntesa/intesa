@@ -33,7 +33,7 @@ public class P_NuevoEmpleado extends Composite {
 	private static final int COL_BORRAR = 5;
 	private static final int COL_SELECCIONADO = 5;
 	
-	private Constantes constante = GWT.create(Constantes.class);
+	private Constantes constante = GWT.create(Constantes.class); 
 	private String tituloTab;
 	
 	TabPanel padre;
@@ -69,6 +69,10 @@ public class P_NuevoEmpleado extends Composite {
 	public List<String> listaEmpleadosACargo;
 	
 	
+	
+	
+	
+	
 	public P_NuevoEmpleado(TabPanel padre, String titulo){
 		
 				
@@ -96,16 +100,6 @@ public class P_NuevoEmpleado extends Composite {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		datosEmpleado = new Label(constante.datosDeEmpleado());
 		datosEmpleado.setStyleName("labelTitulo");
 		datosEmpleadoYaCargado = new Label(constante.empleadosPosiblesASerAsignados());
@@ -130,7 +124,7 @@ public class P_NuevoEmpleado extends Composite {
 		nombreTb = new TextBox();
 		puestoTb = new TextBox();
 
-		
+		 
 		
 		
 		salir = new Button(constante.salir());
@@ -231,6 +225,10 @@ public class P_NuevoEmpleado extends Composite {
 		initWidget(formularioEmpleado);	
 
 	}
+	
+	
+	
+	
 	
 	      /**
 	       * constructor para la pantalla modificar empleado!
@@ -412,12 +410,7 @@ public class P_NuevoEmpleado extends Composite {
 
 	
 	public void salir(ClickEvent event) {
-		if (constante.empleado().compareTo(tituloTab )!= 0){
-			padre.remove(numeroElemento(tituloTab));	
-		}	
-		else{
-			padre.remove(numeroElemento(tituloTab));			
-		}
+		padre.remove(numeroElemento(tituloTab));
 
 		
 	}

@@ -16,6 +16,7 @@ import edu.server.repositorio.Empleado;
 import edu.server.repositorio.Usuario;
 import edu.server.util.HibernateUtil;
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 public class AdministradorTest {
 
@@ -173,7 +174,35 @@ public class AdministradorTest {
 	}
 	
 	
+	@Test
+	public void getUsuariosTest(){
+		List<UsuarioCompDTO> result = pruebaAdministrador.getUsuarios();
+		assertEquals(false, result.isEmpty());
+	}
+
 	
+	
+	@Test
+	public void ModificarUsuarioTest(){
+				
+		boolean result = pruebaAdministrador.modificarUsuario("polsky","6336");
+		assertEquals(true, result);		
+	}
+	
+	@Test
+	public void ModificarUsuarioFalseTest(){
+				
+		boolean result = pruebaAdministrador.modificarUsuario("carlos","6336");
+		assertEquals(false, result);		
+	}
+	
+	
+	@Test
+	public void eliminarUsuarioTest(){
+				
+		boolean result = pruebaAdministrador.eliminarElUsuario("polsky");
+		assertEquals(true, result);		
+	}
 	
 	
 	
