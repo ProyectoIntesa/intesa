@@ -1,5 +1,8 @@
 package edu.shared.DTO;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class EmpleadoDTO implements java.io.Serializable{
 	
 	/**
@@ -10,9 +13,11 @@ public class EmpleadoDTO implements java.io.Serializable{
 	private String nombre;
 	private String apellido;
 	private String puesto;
-		
+	private List<EmpleadoDTO> listaEmpACargo; 	
 	
 	public EmpleadoDTO() {
+		
+		listaEmpACargo = new LinkedList<EmpleadoDTO>();
 		
 	}
 	public int getNroLegajo() {
@@ -38,6 +43,12 @@ public class EmpleadoDTO implements java.io.Serializable{
 	}
 	public void setPuesto(String puesto) {
 		this.puesto = puesto;
+	}
+	public List<EmpleadoDTO> getListaEmpACargo() {
+		return listaEmpACargo;
+	}
+	public void setListaEmpACargo(List<EmpleadoDTO> listaEmpACargo) {
+		this.listaEmpACargo = listaEmpACargo;
 	}
 
 }

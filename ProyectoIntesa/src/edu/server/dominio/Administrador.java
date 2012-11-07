@@ -288,6 +288,31 @@ public class Administrador {
 	}
 	
 	
+	public Boolean usuarioTieneEmpleado(int nroLegajo){
+		
+		Boolean result = false;
+		int idEmp = this.idEmpleado(nroLegajo);
+		Usuario resultado = new Usuario();
+		
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			resultado= (Usuario) sec.createQuery("from Usuario where id_Empleado = "+idEmp).uniqueResult();
+			sec.close();
+			if (resultado != null){
+				result = true;
+			}
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		} 
+		
+		return result;	
+	}
+	
+	
+	
 	
 	
 }
