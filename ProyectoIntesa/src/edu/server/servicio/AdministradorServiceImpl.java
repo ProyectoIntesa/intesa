@@ -104,4 +104,24 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		return admin.existeEmpleado(nroLegajo);		
 	}
 	
+	@Override
+	public Boolean modificarEmpleado(EmpleadoDTO emp) throws IllegalArgumentException {
+		
+		Administrador admin = new Administrador();
+			
+		Empleado nuevo = new Empleado();
+		nuevo.setNombre(emp.getNombre());
+		nuevo.setApellido(emp.getApellido());
+		nuevo.setNroLegajo(emp.getNroLegajo());
+		nuevo.setPuesto(emp.getPuesto());
+		
+		for (int i=0; i < emp.getListaEmpACargo().size();i++  ){
+			Empleado empLista = new Empleado();
+			int idEmpleado = admin.idEmpleado(emp.getListaEmpACargo().get(i).getNroLegajo());
+			empLista.setIdEmpleado(idEmpleado);
+			nuevo.getEmpleadosForEmpleado().add(empLista);
+		}
+		return admin.modificarEmpleado(nuevo);
+	}
+	
 }

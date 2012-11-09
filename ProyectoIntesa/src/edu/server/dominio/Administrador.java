@@ -329,4 +329,28 @@ public class Administrador {
 		return result;
 	}
 
+	
+	public Boolean modificarEmpleado(Empleado emp){
+		
+		Boolean result = false;
+		
+		int idEmp = this.idEmpleado(emp.getNroLegajo());
+		
+		emp.setIdEmpleado(idEmp);
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			sec.update(emp);			
+			sec.getTransaction().commit();
+			result = true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}	
+		return result;
+	}
+	
+	
+	
 }

@@ -26,6 +26,8 @@ public interface AdministradorServiceAsync {
 	void guardarEmpleado(EmpleadoDTO emp, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void existeEmpleado(int nroLegajo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void modificarEmpleado(EmpleadoDTO emp, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 	
 	
 	

@@ -271,6 +271,12 @@ public class P_NuevoEmpleado extends Composite {
 		});
 
 		modificar = new Button(constante.modificar());
+		
+		modificar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				modificar();
+			}
+		});
 
 		asignar = new Button(constante.asignar());
 
@@ -356,37 +362,101 @@ public class P_NuevoEmpleado extends Composite {
 
 		refrescarDatos();
 
+		nroLegajoTb.setEnabled(false);
+		
+	}
+
+	protected void modificar() {
+		
+		Validaciones validador = new Validaciones();
+				
+		boolean resultV1 = validador.textBoxSoloLetras(this.apellidoTb.getText());
+				
+		boolean resultV2 = validador.textBoxSoloLetras(this.nombreTb.getText());
+		
+		boolean resultV3 = validador.textBoxVacio(this.apellidoTb.getText());
+		
+		boolean resultV4 = validador.textBoxVacio(this.nombreTb.getText());
+		
+		if(!resultV3 && !resultV4 && resultV1 && resultV2)
+			modificarEmpleado();
+		else
+			Window.alert("ERROR EN EL INGRESO DE LOS DATOS!!!");
+		
+	}
+
+	protected void modificarEmpleado() {
+		
+		EmpleadoDTO emp = new EmpleadoDTO();
+
+		emp.setNombre(this.nombreTb.getText());
+		emp.setApellido(this.apellidoTb.getText());
+		emp.setNroLegajo(empleado.getNroLegajo());
+		emp.setPuesto(this.puestoTb.getText());
+
+		for (int i = 0; i < listaEmpleadosACargo.size(); i++) {
+
+			EmpleadoDTO nuevo = new EmpleadoDTO();
+			Integer numLegajo = new Integer(listaEmpleadosACargo.get(i));
+			nuevo.setNroLegajo(numLegajo);
+			emp.getListaEmpACargo().add(nuevo);
+		}
+
+		AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
+
+		adminService.modificarEmpleado(emp, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR en el servicio");
+
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+
+				if (result == true) {
+					Window.alert("El empleado ha sido guardado de manera exitosa");
+				} else {
+					Window.alert("El empleado no ha sido guardado");
+				}
+
+			}
+		});
+		
+		padre.remove(numeroElemento(tituloTab));
+		
 	}
 
 	private void refrescarDatos() {
-		
+
 		nroLegajoTb.setText("" + this.empleado.getNroLegajo());
 		apellidoTb.setText(this.empleado.getApellido());
 		nombreTb.setText(this.empleado.getNombre());
 		puestoTb.setText(this.empleado.getPuesto());
-		
-		
-		Window.alert("antes de entrar al for "+empleado.getListaEmpACargo().size());
-		for(int i=0; i < empleado.getListaEmpACargo().size(); i++){
-			
-			listaEmpleadosACargo.add(""+empleado.getListaEmpACargo().get(i).getNroLegajo());
-			
+
+		for (int i = 0; i < empleado.getListaEmpACargo().size(); i++) {
+
+			listaEmpleadosACargo.add("" + empleado.getListaEmpACargo().get(i).getNroLegajo());
+
 			Label borrar = new Label("");
 			borrar.setSize("16px", "16px");
 			borrar.addStyleName("labelBorrar");
-			
-			tablaElemento.setWidget(i+1, COL_NROLEGAJO, new Label(""+empleado.getListaEmpACargo().get(i).getNroLegajo()));
-			tablaElemento.setWidget(i+1, COL_NOMBRE, new Label(empleado.getListaEmpACargo().get(i).getNombre()));
-			tablaElemento.setWidget(i+1, COL_APELLIDO, new Label(empleado.getListaEmpACargo().get(i).getApellido()));
-			tablaElemento.setWidget(i+1, COL_PUESTO, new Label(empleado.getListaEmpACargo().get(i).getPuesto()));
-			tablaElemento.setWidget(i+1, COL_BORRAR, borrar);
-			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
-			tablaElemento.getRowFormatter().addStyleName(i+1, "renglon");
-			
-			
+
+			tablaElemento.setWidget(i + 1, COL_NROLEGAJO, new Label("" + empleado.getListaEmpACargo().get(i).getNroLegajo()));
+			tablaElemento.setWidget(i + 1, COL_NOMBRE, new Label(empleado.getListaEmpACargo().get(i).getNombre()));
+			tablaElemento.setWidget(i + 1, COL_APELLIDO, new Label(empleado.getListaEmpACargo().get(i).getApellido()));
+			tablaElemento.setWidget(i + 1, COL_PUESTO, new Label(empleado.getListaEmpACargo().get(i).getPuesto()));
+			tablaElemento.setWidget(i + 1, COL_BORRAR, borrar);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().addStyleName(i + 1, "renglon");
+			borrar.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Cell celda = tablaElemento.getCellForEvent(event);
+					borrarEmpleadoACargo(celda);
+				}
+			});
 		}
-		
-		
 
 	}
 
@@ -421,20 +491,27 @@ public class P_NuevoEmpleado extends Composite {
 	}
 
 	public void cargarListaEmpleados(List<EmpleadoDTO> lista) {
-		
+
 		listaEmpleados = lista;
+
+		if(empleado != null){	
+			for(int j= 0; j < listaEmpleados.size(); j++){
+				if(listaEmpleados.get(j).getNroLegajo() == empleado.getNroLegajo()){
+					listaEmpleados.remove(j);
+				}
+			}
+		}
 		
 		
 		for (int i = 0; i < listaEmpleados.size(); i++) {
-			CheckBox select = new CheckBox();
-
-			tablaElementoAgregar.setWidget(i + 1, COL_NROLEGAJO, new Label("" + listaEmpleados.get(i).getNroLegajo()));
-			tablaElementoAgregar.setWidget(i + 1, COL_NOMBRE, new Label(listaEmpleados.get(i).getNombre()));
-			tablaElementoAgregar.setWidget(i + 1, COL_APELLIDO, new Label("" + listaEmpleados.get(i).getApellido()));
-			tablaElementoAgregar.setWidget(i + 1, COL_PUESTO, new Label("" + listaEmpleados.get(i).getPuesto()));
-			tablaElementoAgregar.setWidget(i + 1, COL_SELECCIONADO, select);
-			tablaElementoAgregar.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_SELECCIONADO, HasHorizontalAlignment.ALIGN_CENTER);
-			tablaElementoAgregar.getRowFormatter().addStyleName(i + 1, "renglon");
+				CheckBox select = new CheckBox();
+				tablaElementoAgregar.setWidget(i + 1, COL_NROLEGAJO, new Label("" + listaEmpleados.get(i).getNroLegajo()));
+				tablaElementoAgregar.setWidget(i + 1, COL_NOMBRE, new Label(listaEmpleados.get(i).getNombre()));
+				tablaElementoAgregar.setWidget(i + 1, COL_APELLIDO, new Label("" + listaEmpleados.get(i).getApellido()));
+				tablaElementoAgregar.setWidget(i + 1, COL_PUESTO, new Label("" + listaEmpleados.get(i).getPuesto()));
+				tablaElementoAgregar.setWidget(i + 1, COL_SELECCIONADO, select);
+				tablaElementoAgregar.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_SELECCIONADO, HasHorizontalAlignment.ALIGN_CENTER);
+				tablaElementoAgregar.getRowFormatter().addStyleName(i + 1, "renglon");
 		}
 
 	}
@@ -516,75 +593,95 @@ public class P_NuevoEmpleado extends Composite {
 		this.listaEmpleadosACargo.remove(codEliminar);
 	}
 
-    protected void guardarEmpleado() {
-	
-    	Integer legajo = new Integer(this.nroLegajoTb.getText());
+	protected void guardarEmpleado() {
 
-    	
-    	//verificar que el nro de legajo del empleado no exista!!!
-    	
-    	AdministradorServiceAsync adminService1 = GWT.create(AdministradorService.class);
-    	
-    	adminService1.existeEmpleado(legajo, new AsyncCallback<Boolean>() {
-    		
-    		@Override
-    		public void onFailure(Throwable caught) {
-    			Window.alert("ERROR en el servicio");    			
-    		}
-    		
-        	@Override
-        	public void onSuccess(Boolean result) {
-        		if(result == false)
-        			guardarNuevoEmpleado();
-        		else
-        			Window.alert("El número de legajo ingresado ya a sido asignado a otro empleado");	
-        	}
-		});	
-    	
-    }
-    
-    private void guardarNuevoEmpleado(){
-    	
-    	EmpleadoDTO emp = new EmpleadoDTO();
-    	
-    	emp.setNombre(this.nombreTb.getText());
-    	emp.setApellido(this.apellidoTb.getText());
-    	Integer legajo = new Integer(this.nroLegajoTb.getText());
-    	emp.setNroLegajo(legajo);
-    	emp.setPuesto(this.puestoTb.getText());
-    	
-    	for(int i = 0; i < listaEmpleadosACargo.size(); i++){
-    	
-    		EmpleadoDTO nuevo = new EmpleadoDTO();
-    		Integer numLegajo = new Integer(listaEmpleadosACargo.get(i));
-    		nuevo.setNroLegajo(numLegajo);
-    		emp.getListaEmpACargo().add(nuevo);   		
-    	}
-    	
-		AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
+		Validaciones validador = new Validaciones();
 		
-		adminService.guardarEmpleado(emp, new AsyncCallback<Boolean>() {
+		boolean resultV1 = validador.textBoxSoloLetras(this.apellidoTb.getText());
+				
+		boolean resultV2 = validador.textBoxSoloLetras(this.nombreTb.getText());
+		
+		boolean resultV3 = validador.textBoxVacio(this.apellidoTb.getText());
+		
+		boolean resultV4 = validador.textBoxVacio(this.nombreTb.getText());
+		
+		boolean resultV5 = validador.textBoxSoloNumeros(this.nroLegajoTb.getText());
+		
+		
+		if(resultV1 && resultV2 && !resultV3 && !resultV4 && resultV5)
+		{
+		
+			Integer legajo = new Integer(this.nroLegajoTb.getText());
+
+			// verificar que el nro de legajo del empleado no exista!!!
+
+			AdministradorServiceAsync adminService1 = GWT.create(AdministradorService.class);
+
+			adminService1.existeEmpleado(legajo, new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR en el servicio");
+				}
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result == false)
+						guardarNuevoEmpleado();
+					else
+						Window.alert("El número de legajo ingresado ya a sido asignado a otro empleado");
+				}
+			}); 
 			
+			
+		}
+		else
+			Window.alert("ERROR EN EL INGRESO DE LOS DATOS!!!");
+		
+	}
+
+	private void guardarNuevoEmpleado() {
+
+		EmpleadoDTO emp = new EmpleadoDTO();
+
+		emp.setNombre(this.nombreTb.getText());
+		emp.setApellido(this.apellidoTb.getText());
+		Integer legajo = new Integer(this.nroLegajoTb.getText());
+		emp.setNroLegajo(legajo);
+		emp.setPuesto(this.puestoTb.getText());
+
+		for (int i = 0; i < listaEmpleadosACargo.size(); i++) {
+
+			EmpleadoDTO nuevo = new EmpleadoDTO();
+			Integer numLegajo = new Integer(listaEmpleadosACargo.get(i));
+			nuevo.setNroLegajo(numLegajo);
+			emp.getListaEmpACargo().add(nuevo);
+		}
+
+		AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
+
+		adminService.guardarEmpleado(emp, new AsyncCallback<Boolean>() {
+
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("ERROR en el servicio");
-				
+
 			}
+
 			@Override
 			public void onSuccess(Boolean result) {
-			
-				if (result == true){
+
+				if (result == true) {
 					Window.alert("El empleado ha sido guardado de manera exitosa");
-				}
-				else{
+				} else {
 					Window.alert("El empleado no ha sido guardado");
 				}
-				
+
 			}
 		});
-    	
-    	
-    }
-    
-    
+
+		padre.remove(numeroElemento(tituloTab));
+	}
+
+	
 }

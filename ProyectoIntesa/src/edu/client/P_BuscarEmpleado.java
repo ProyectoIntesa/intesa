@@ -12,16 +12,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 
 import edu.client.AdministradorService.AdministradorService;
 import edu.client.AdministradorService.AdministradorServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
- 
+
 public class P_BuscarEmpleado extends PopupPanel {
 
 	TabPanel padre;
@@ -30,7 +29,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 	private static final int COL_APELLIDO = 3;
 	private static final int COL_PUESTO = 4;
 	private static final int COL_MAS_INFO = 5;
-	
+
 	private EmpleadoDTO empleadoSeleccionado;
 	private FlexTable panel;
 	private FlexTable tablaElementos;
@@ -47,12 +46,12 @@ public class P_BuscarEmpleado extends PopupPanel {
 	public P_BuscarEmpleado(TabPanel padre) {
 
 		super(false);
-		this.padre=padre;
+		this.padre = padre;
 		listaEmpleados = new LinkedList<EmpleadoDTO>();
-		
+
 		AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
-		
-		adminServie.getEmpleados(listaEmpleados,new AsyncCallback<List<EmpleadoDTO>>() {
+
+		adminServie.getEmpleados(listaEmpleados, new AsyncCallback<List<EmpleadoDTO>>() {
 			@Override
 			public void onSuccess(List<EmpleadoDTO> result) {
 				cargarListaEmpleados(result);
@@ -63,7 +62,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 				Window.alert("ERROR en el servicio, No se pudo cargar la lista de empleados");
 			}
 		});
-		
+
 		setStyleName("fondoPopup");
 		panel = new FlexTable();
 		contenedorTabla = new ScrollPanel();
@@ -83,7 +82,6 @@ public class P_BuscarEmpleado extends PopupPanel {
 		tablaElementos.setText(0, COL_MAS_INFO, constante.masInformacion());
 		tablaElementos.getCellFormatter().setWidth(0, COL_MAS_INFO, "8%");
 		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
-		
 
 		salir = new Button(constante.salir());
 		salir.addClickHandler(new ClickHandler() {
@@ -112,55 +110,46 @@ public class P_BuscarEmpleado extends PopupPanel {
 		setWidget(panel);
 		panel.setSize("850px", "400px");
 
-		
-		
-		
 	}
 
-	public void cargarListaEmpleados(List<EmpleadoDTO> lista)
-	{
-		listaEmpleados= lista;
+	public void cargarListaEmpleados(List<EmpleadoDTO> lista) {
+		listaEmpleados = lista;
 		for (int i = 0; i < listaEmpleados.size(); i++) {
-			Label info=new Label("");
+			Label info = new Label("");
 			info.setSize("16px", "16px");
 			info.addStyleName("labelInfo");
 			tablaElementos.setWidget(i + 1, COL_NROLEGAJO, new Label("" + listaEmpleados.get(i).getNroLegajo()));
 			tablaElementos.setWidget(i + 1, COL_NOMBRE, new Label(listaEmpleados.get(i).getNombre()));
 			tablaElementos.setWidget(i + 1, COL_APELLIDO, new Label(listaEmpleados.get(i).getApellido()));
-			tablaElementos.setWidget(i + 1, COL_PUESTO, new Label(listaEmpleados.get(i).getPuesto()));			
+			tablaElementos.setWidget(i + 1, COL_PUESTO, new Label(listaEmpleados.get(i).getPuesto()));
 			tablaElementos.setWidget(i + 1, COL_MAS_INFO, info);
-			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER );			
-			tablaElementos.getRowFormatter().addStyleName(i+1, "renglon");
-			info.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event){					
-					Cell celda= tablaElementos.getCellForEvent(event);
-					irAEmpleado(listaEmpleados.get(celda.getRowIndex()-1));
+			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElementos.getRowFormatter().addStyleName(i + 1, "renglon");
+			info.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Cell celda = tablaElementos.getCellForEvent(event);
+					irAEmpleado(listaEmpleados.get(celda.getRowIndex() - 1));
 				}
 			});
 		}
-		
+
 	}
-	
-	
-	
+
 	protected void irAEmpleado(EmpleadoDTO empleado) {
-		
+
 		empleadoSeleccionado = empleado;
-		
+
 		this.hide();
 	}
 
 	protected void salir() {
-		
+
 		this.hide();
 
 	}
-	
-	public EmpleadoDTO getEmpleado()
-	{
+
+	public EmpleadoDTO getEmpleado() {
 		return empleadoSeleccionado;
 	}
-
-	
 
 }
