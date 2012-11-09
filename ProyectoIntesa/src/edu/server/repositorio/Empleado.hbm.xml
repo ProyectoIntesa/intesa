@@ -89,7 +89,7 @@
             </key>
             <one-to-many class="edu.server.repositorio.Usuario" />
         </set>
-        <set name="empleadosForEmpleado" table="Empleado_A_Cargo" inverse="false" lazy="true" fetch="select">
+        <set name="empleadosForEmpleado" table="Empleado_A_Cargo" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="responsable" not-null="true" />
             </key>

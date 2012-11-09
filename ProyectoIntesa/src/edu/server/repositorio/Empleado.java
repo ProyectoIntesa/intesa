@@ -29,7 +29,7 @@ public class Empleado implements java.io.Serializable {
 	private Set <RemitoInternoInsumo>remitoInternoInsumos = new HashSet<RemitoInternoInsumo>(0);
 	private Set <OrdenCompraCotizacion>ordenCompraCotizacions = new HashSet<OrdenCompraCotizacion>(0);
 	private Set <Usuario>usuarios = new HashSet<Usuario>(0);
-	private Set empleadosForEmpleado = new HashSet(0);
+	private Set <Empleado>empleadosForEmpleado = new HashSet<Empleado>(0);
 	private Set ordenProvisionInsumosForIdPedidoPara = new HashSet(0);
 	private Set ordenProvisionInsumosForIdPedidoPor = new HashSet(0);
 	private Set <OrdenFabricacionGeneral>ordenFabricacionGenerals = new HashSet<OrdenFabricacionGeneral>(0);
@@ -53,7 +53,7 @@ public class Empleado implements java.io.Serializable {
 			Set <RenglonOrdenTrabajo>renglonOrdenTrabajos, Set <IngresoProductos> ingresoProductoses, Set <OrdenPedido> ordenPedidos,
 			Set <OrdenProvisionInterna>ordenProvisionInternas, Set <OrdenTrabajoSectorTercero>ordenTrabajoSectorTerceros,
 			Set <IngresoInsumos>ingresoInsumoses, Set <RemitoInternoInsumo>remitoInternoInsumos,
-			Set <OrdenCompraCotizacion>ordenCompraCotizacions, Set<Usuario> usuarios, Set empleadosForEmpleado,
+			Set <OrdenCompraCotizacion>ordenCompraCotizacions, Set<Usuario> usuarios, Set<Empleado> empleadosForEmpleado,
 			Set ordenProvisionInsumosForIdPedidoPara,
 			Set ordenProvisionInsumosForIdPedidoPor,
 			Set <OrdenFabricacionGeneral>ordenFabricacionGenerals, Set empleadosForResponsable) {
@@ -217,11 +217,11 @@ public class Empleado implements java.io.Serializable {
 		this.usuarios = usuarios;
 	}
 
-	public Set getEmpleadosForEmpleado() {
+	public Set<Empleado> getEmpleadosForEmpleado() {
 		return this.empleadosForEmpleado;
 	}
 
-	public void setEmpleadosForEmpleado(Set empleadosForEmpleado) {
+	public void setEmpleadosForEmpleado(Set<Empleado> empleadosForEmpleado) {
 		this.empleadosForEmpleado = empleadosForEmpleado;
 	}
 

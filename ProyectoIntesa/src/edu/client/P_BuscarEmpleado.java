@@ -60,13 +60,12 @@ public class P_BuscarEmpleado extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR en el servicio, No se pudo cargar la lista de empleados");
 			}
 		});
 		
 		setStyleName("fondoPopup");
 		panel = new FlexTable();
-
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
 		contenedorTabla.setHeight("350px");
@@ -145,6 +144,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 	
 	
 	protected void irAEmpleado(EmpleadoDTO empleado) {
+		
 		empleadoSeleccionado = empleado;
 		
 		this.hide();

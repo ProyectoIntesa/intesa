@@ -23,7 +23,9 @@ public interface AdministradorServiceAsync {
 
 	void modificarUsuario(String nombreUsu, String passUsu, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	void guardarEmpleado(EmpleadoDTO emp, AsyncCallback<Boolean> callback)throws IllegalArgumentException;
+	void guardarEmpleado(EmpleadoDTO emp, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void existeEmpleado(int nroLegajo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 	
 	
 	

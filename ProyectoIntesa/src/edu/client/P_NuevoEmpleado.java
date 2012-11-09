@@ -359,10 +359,34 @@ public class P_NuevoEmpleado extends Composite {
 	}
 
 	private void refrescarDatos() {
+		
 		nroLegajoTb.setText("" + this.empleado.getNroLegajo());
 		apellidoTb.setText(this.empleado.getApellido());
 		nombreTb.setText(this.empleado.getNombre());
 		puestoTb.setText(this.empleado.getPuesto());
+		
+		
+		Window.alert("antes de entrar al for "+empleado.getListaEmpACargo().size());
+		for(int i=0; i < empleado.getListaEmpACargo().size(); i++){
+			
+			listaEmpleadosACargo.add(""+empleado.getListaEmpACargo().get(i).getNroLegajo());
+			
+			Label borrar = new Label("");
+			borrar.setSize("16px", "16px");
+			borrar.addStyleName("labelBorrar");
+			
+			tablaElemento.setWidget(i+1, COL_NROLEGAJO, new Label(""+empleado.getListaEmpACargo().get(i).getNroLegajo()));
+			tablaElemento.setWidget(i+1, COL_NOMBRE, new Label(empleado.getListaEmpACargo().get(i).getNombre()));
+			tablaElemento.setWidget(i+1, COL_APELLIDO, new Label(empleado.getListaEmpACargo().get(i).getApellido()));
+			tablaElemento.setWidget(i+1, COL_PUESTO, new Label(empleado.getListaEmpACargo().get(i).getPuesto()));
+			tablaElemento.setWidget(i+1, COL_BORRAR, borrar);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().addStyleName(i+1, "renglon");
+			
+			
+		}
+		
+		
 
 	}
 
@@ -397,6 +421,7 @@ public class P_NuevoEmpleado extends Composite {
 	}
 
 	public void cargarListaEmpleados(List<EmpleadoDTO> lista) {
+		
 		listaEmpleados = lista;
 		
 		
@@ -493,7 +518,32 @@ public class P_NuevoEmpleado extends Composite {
 
     protected void guardarEmpleado() {
 	
+    	Integer legajo = new Integer(this.nroLegajoTb.getText());
+
+    	
     	//verificar que el nro de legajo del empleado no exista!!!
+    	
+    	AdministradorServiceAsync adminService1 = GWT.create(AdministradorService.class);
+    	
+    	adminService1.existeEmpleado(legajo, new AsyncCallback<Boolean>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			Window.alert("ERROR en el servicio");    			
+    		}
+    		
+        	@Override
+        	public void onSuccess(Boolean result) {
+        		if(result == false)
+        			guardarNuevoEmpleado();
+        		else
+        			Window.alert("El número de legajo ingresado ya a sido asignado a otro empleado");	
+        	}
+		});	
+    	
+    }
+    
+    private void guardarNuevoEmpleado(){
     	
     	EmpleadoDTO emp = new EmpleadoDTO();
     	
@@ -509,7 +559,6 @@ public class P_NuevoEmpleado extends Composite {
     		Integer numLegajo = new Integer(listaEmpleadosACargo.get(i));
     		nuevo.setNroLegajo(numLegajo);
     		emp.getListaEmpACargo().add(nuevo);   		
-    		
     	}
     	
 		AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
@@ -533,11 +582,9 @@ public class P_NuevoEmpleado extends Composite {
 				
 			}
 		});
-    	 	
-		padre.remove(numeroElemento(tituloTab));
-    	
     	
     	
     }
-
+    
+    
 }

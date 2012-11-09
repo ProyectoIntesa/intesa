@@ -97,6 +97,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		return admin.registrarEmpleado(nuevo);
 	}
 	
-	
+	@Override
+	public Boolean existeEmpleado(int nroLegajo) throws IllegalArgumentException {
+		
+		Administrador admin = new Administrador();
+		return admin.existeEmpleado(nroLegajo);		
+	}
 	
 }
