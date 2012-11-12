@@ -99,6 +99,9 @@ public class P_PantallaAdministrador extends Composite {
 			menu.setSize(anchoLateral + "px", (alto - 90) + "px");
 			contenedor.add(menu, DockPanel.WEST);
 
+			
+			
+			
 			/**
 			 * Arma el menú del panel lateral
 			 * 
@@ -284,7 +287,6 @@ public class P_PantallaAdministrador extends Composite {
 		
 	}
 	
-	
 	protected void modificarEmpleado() {
 		String titulo;
 		int tab;
@@ -304,10 +306,6 @@ public class P_PantallaAdministrador extends Composite {
 		} else
 			panelTrabajo.selectTab(tab);
 	}
-	
-	
-	
-	
 	
 	protected void modificarUsuario() {
 		String titulo;
@@ -329,13 +327,6 @@ public class P_PantallaAdministrador extends Composite {
 			panelTrabajo.selectTab(tab);
 	}
 	
-	
-	
-	
-	
-	
-	
-
 	private int numeroElemento(String titulo) {
 
 		int elemento = -1;

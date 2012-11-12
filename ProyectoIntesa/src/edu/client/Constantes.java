@@ -8,6 +8,21 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
 	  
+	  @DefaultStringValue("VENTAS")
+	  String ventas();
+	  
+	  @DefaultStringValue("PRODUCCION")
+	  String produccion();
+	  
+	  @DefaultStringValue("ALMACEN")
+	  String almacen();
+	  
+	  @DefaultStringValue("INGENIERIA")
+	  String ingenieria();
+	  
+	  @DefaultStringValue("COMPRAS")
+	  String compras();
+	  
 	  @DefaultStringValue("QUITAR")
 	  String quitar();
 	  

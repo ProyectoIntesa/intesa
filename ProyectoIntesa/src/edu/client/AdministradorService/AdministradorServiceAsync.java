@@ -28,6 +28,8 @@ public interface AdministradorServiceAsync {
 	void existeEmpleado(int nroLegajo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void modificarEmpleado(EmpleadoDTO emp, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getEmpleadosSinUsuario(List<EmpleadoDTO> lista, AsyncCallback<List<EmpleadoDTO>> callback) throws IllegalArgumentException;
 	
 	
 	

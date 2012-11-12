@@ -20,5 +20,6 @@ public interface AdministradorService extends RemoteService {
 	Boolean guardarEmpleado(EmpleadoDTO emp) throws IllegalArgumentException;
 	Boolean existeEmpleado(int nroLegajo) throws IllegalArgumentException;
 	Boolean modificarEmpleado(EmpleadoDTO emp) throws IllegalArgumentException;
+	List<EmpleadoDTO> getEmpleadosSinUsuario(List<EmpleadoDTO> lista) throws IllegalArgumentException;
 }
 

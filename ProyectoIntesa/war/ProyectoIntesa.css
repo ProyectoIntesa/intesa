@@ -137,6 +137,48 @@ body {
 	background-image: url(img/X16x16.png);
 }
 
+
+.labelVentas{
+	background-repeat: no-repeat;
+	background-image: url(img/ventas48x48.png);
+}
+
+.labelProduccion{
+	background-repeat: no-repeat;
+	background-image: url(img/produccion48x48.png);
+}
+
+.labelIngenieria1{
+	background-repeat: no-repeat;
+	background-image: url(img/ingenieria1_48x48.png);
+}
+
+.labelIngenieria2{
+	background-repeat: no-repeat;
+	background-image: url(img/ingenieria2_48x48.png);
+}
+
+.labelIngenieria3{
+	background-repeat: no-repeat;
+	background-image: url(img/ingenieria3_48x48.png);
+}
+
+.labelCompras{
+	background-repeat: no-repeat;
+	background-image: url(img/compras48x48.png);
+}
+
+.labelAlmacen{
+	background-repeat: no-repeat;
+	background-image: url(img/almacen48x48.png);
+}
+
+
+
+
+
+
+
 .gwt-Button:active {
 	
 }

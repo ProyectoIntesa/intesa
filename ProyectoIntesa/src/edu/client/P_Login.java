@@ -78,42 +78,47 @@ public class P_Login extends Composite {
 
 					public void onSuccess(UsuarioDTO result) {
 						if (result != null) {
-							if (result.getRol().compareTo("ventas") == 0) {
-
-								Window.alert("entro a ventas " + result.getNombre());
-								// inicioPantallaVentas();
-							} else if (result.getRol().compareTo("administrador") == 0) {
+							if (result.getRol().compareTo("COMPRAS") == 0) {
+								inicioPantallaCompras(result.getNombre());
+							} else if (result.getRol().compareTo("ADMINISTRADOR") == 0) {
 								inicioPantallaAdministrador(result.getNombre());
+							} else if (result.getRol().compareTo("VENTAS") == 0){
+								inicioPantallaVentas(result.getNombre());
+							} else if (result.getRol().compareTo("PRODUCCION") == 0){
+								inicioPantallaProduccion(result.getNombre());
+							} else if (result.getRol().compareTo("INGENIERIA") == 0){
+								inicioPantallaIngenieria(result.getNombre());
+							} else if (result.getRol().compareTo("ALMACEN") == 0){
+								//inicioPantallaAlmacen(result.getNombre());
+							} else if (result.getRol().compareTo("SUPER USUARIO") == 0){
+								
+								final P_SeleccionarUsuario popUp = new P_SeleccionarUsuario();
+								popUp.setGlassEnabled(true);
+								popUp.center();
+								popUp.show();
+								
+								
+//								popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+//
+//									@Override
+//									public void onClose(CloseEvent<PopupPanel> event) {
+//										
+//										usuarioSeleccionado= popUp.getUsuario();
+//									
+//										if (usuarioSeleccionado != null)
+//										{
+//											//modificarUsuario();
+//										}
+//									}
+//								});
+								
+								
 							}
 						} else {
 							Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
 						}
 					}
 				});
-
-				// if (usuarioTb.getText().compareTo("ventas") == 0
-				// && contraseniaTb.getText().compareTo("ventas") == 0) {
-				// inicioPantallaVentas();
-				// }
-				// else if (usuarioTb.getText().compareTo("ingenieria") == 0
-				// && contraseniaTb.getText().compareTo("ingenieria") == 0){
-				// inicioPantallaIngenieria();
-				// }
-				// else if (usuarioTb.getText().compareTo("produccion") == 0
-				// && contraseniaTb.getText().compareTo("produccion") == 0){
-				// inicioPantallaProduccion();
-				// }
-				// else if (usuarioTb.getText().compareTo("compras") == 0
-				// && contraseniaTb.getText().compareTo("compras") == 0){
-				// inicioPantallaCompras();
-				// }
-				// else if (usuarioTb.getText().compareTo("almacen") == 0
-				// && contraseniaTb.getText().compareTo("almacen") == 0){
-				// inicioPantallaAlmacen();
-				// }
-				// else
-				// Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
-
 			}
 		});
 
@@ -171,63 +176,63 @@ public class P_Login extends Composite {
 		}
 	}
 
-	protected void inicioPantallaVentas() {
-		// P_PantallaVentas ventas = new P_PantallaVentas();
-		// RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		// RootPanel.get().add(ventas);
-		// try {
-		// this.finalize();
-		// } catch (Throwable e) {
-		// e.printStackTrace();
-		// }
+	protected void inicioPantallaVentas(String usuario) {
+		 
+		P_PantallaVentas ventas = new P_PantallaVentas(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(ventas);
+		 try {
+		 this.finalize();
+		 } catch (Throwable e) {
+		 e.printStackTrace();
+		 }
 	}
 
-	protected void inicioPantallaIngenieria() {
+	protected void inicioPantallaIngenieria(String usuario) {
 
-		// P_PantallaIngenieria ingenieria = new P_PantallaIngenieria();
-		// RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		// RootPanel.get().add(ingenieria);
-		// try {
-		// this.finalize();
-		// } catch (Throwable e) {
-		// e.printStackTrace();
-		// }
-
-	}
-
-	protected void inicioPantallaProduccion() {
-
-		// P_PantallaProduccion produccion = new P_PantallaProduccion();
-		// RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		// RootPanel.get().add(produccion);
-		// try {
-		// this.finalize();
-		// } catch (Throwable e) {
-		// e.printStackTrace();
-		// }
+		 P_PantallaIngenieria ingenieria = new P_PantallaIngenieria(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(ingenieria);
+		 try {
+		 this.finalize();
+		 } catch (Throwable e) {
+		 e.printStackTrace();
+		 }
 
 	}
 
-	protected void inicioPantallaCompras() {
+	protected void inicioPantallaProduccion(String usuario) {
 
-		// P_PantallaCompras compras = new P_PantallaCompras();
-		// RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		// RootPanel.get().add(compras);
-		// try {
-		// this.finalize();
-		// } catch (Throwable e) {
-		// e.printStackTrace();
-		// }
+		 P_PantallaProduccion produccion = new P_PantallaProduccion(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(produccion);
+		 try {
+		 this.finalize();
+		 } catch (Throwable e) {
+		 e.printStackTrace();
+		 }
 
 	}
 
-	protected void inicioPantallaAlmacen() {
-		/*
-		 * P_PantallaAlmacen almacen = new P_PantallaAlmacen();
-		 * RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		 * RootPanel.get().add(almacen); try { this.finalize(); } catch
-		 * (Throwable e) { e.printStackTrace(); }
-		 */
+	protected void inicioPantallaCompras(String usuario) {
+
+		 P_PantallaCompras compras = new P_PantallaCompras(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(compras);
+		 try {
+		 this.finalize();
+		 } catch (Throwable e) {
+		 e.printStackTrace();
+		 }
+	}
+
+	protected void inicioPantallaAlmacen(String usuario) {
+		
+		 P_PantallaAlmacen almacen = new P_PantallaAlmacen(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(almacen); try { this.finalize(); } catch
+		 (Throwable e) { e.printStackTrace(); }
+		 
 	}
 
 }

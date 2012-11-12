@@ -124,4 +124,13 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		return admin.modificarEmpleado(nuevo);
 	}
 	
+	@Override
+	public List<EmpleadoDTO> getEmpleadosSinUsuario(List<EmpleadoDTO> lista) throws IllegalArgumentException {
+		Administrador admin = new Administrador();
+		lista = admin.getEmpleadosSinUsuario();
+		
+		return lista;
+	}
+	
+	
 }

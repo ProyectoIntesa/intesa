@@ -66,11 +66,11 @@ public class P_NuevoUsuario extends Composite {
 
 		AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
 
-		adminServie.getEmpleados(listaEmpleados, new AsyncCallback<List<EmpleadoDTO>>() {
+		adminServie.getEmpleadosSinUsuario(listaEmpleados, new AsyncCallback<List<EmpleadoDTO>>() {
 			@Override
 			public void onSuccess(List<EmpleadoDTO> result) {
+				
 				cargarListaEmpleados(result);
-
 			}
 
 			@Override
@@ -109,6 +109,7 @@ public class P_NuevoUsuario extends Composite {
 		rolTb.addItem("PRODUCCION");
 		rolTb.addItem("COMPRAS");
 		rolTb.addItem("ALMACEN");
+		rolTb.addItem("SUPER USUARIO");
 		rolTb.setStyleName("gwt-TextArea");
 		nroLegajoTb = new ListBox();
 		nroLegajoTb.setStyleName("gwt-TextArea");
