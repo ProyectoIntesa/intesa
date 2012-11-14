@@ -183,30 +183,30 @@ public class P_PantallaVentas extends Composite {
 
 		if (event.getSelectedItem() == nuevoCliente) {
 
-//			titulo = constante.nuevoCliente();
-//			tab = numeroElemento(titulo);
-//			if (tab == -1) {
-//
-//				formulario = new ScrollPanel();
-//				formulario.setTitle(titulo);
-//				formulario.setStyleName("panelFormulario");
-//				formulario.setSize((ancho - anchoLateral - 25) + "px",
-//						(alto - 145) + "px");
-//				P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo);
-//				formulario.add(cliente);
-//				panelTrabajo.add(formulario, titulo, false);
-//				panelTrabajo.selectTab(numeroElemento(titulo));
-//			} else
-//				panelTrabajo.selectTab(tab);
+			titulo = constante.nuevoCliente();
+			tab = numeroElemento(titulo);
+			if (tab == -1) {
+
+				formulario = new ScrollPanel();
+				formulario.setTitle(titulo);
+				formulario.setStyleName("panelFormulario");
+				formulario.setSize((ancho - anchoLateral - 25) + "px",
+						(alto - 145) + "px");
+				P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo);
+				formulario.add(cliente);
+				panelTrabajo.add(formulario, titulo, false);
+				panelTrabajo.selectTab(numeroElemento(titulo));
+			} else
+				panelTrabajo.selectTab(tab);
 		}
 		if (event.getSelectedItem() == buscarCliente) {
-//			titulo = constante.buscarCliente();
-//			tab = numeroElemento(titulo);
-//			
-//			P_BuscarCliente popUp = new P_BuscarCliente();
-//			popUp.setGlassEnabled(true);
-//			popUp.center();
-//			popUp.show();			
+			titulo = constante.buscarCliente();
+			tab = numeroElemento(titulo);
+			
+			P_BuscarCliente popUp = new P_BuscarCliente();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();			
 				
 		}
 

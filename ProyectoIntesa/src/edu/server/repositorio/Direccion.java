@@ -20,22 +20,32 @@ public class Direccion implements java.io.Serializable {
 	private String altura;
 	private String piso;
 	private String oficina;
+	private String cpa;
 	private Set <Cliente> clientes = new HashSet<Cliente>(0);
 	private Set <Proveedor> proveedors = new HashSet<Proveedor>(0);
 
 	public Direccion() {
 	}
 
+	public String getCpa() {
+		return cpa;
+	}
+
+	public void setCpa(String cpa) {
+		this.cpa = cpa;
+	}
+
 	public Direccion(int idDireccion, Localidad localidad, String calle,
-			String altura) {
+			String altura, String cpa) {
 		this.idDireccion = idDireccion;
 		this.localidad = localidad;
 		this.calle = calle;
 		this.altura = altura;
+		this.cpa = cpa;
 	}
 
 	public Direccion(int idDireccion, Localidad localidad, String calle,
-			String altura, String piso, String oficina, Set<Cliente> clientes,
+			String altura, String piso, String oficina, String cpa, Set<Cliente> clientes,
 			Set <Proveedor>proveedors) {
 		this.idDireccion = idDireccion;
 		this.localidad = localidad;
@@ -43,6 +53,7 @@ public class Direccion implements java.io.Serializable {
 		this.altura = altura;
 		this.piso = piso;
 		this.oficina = oficina;
+		this.cpa = cpa;
 		this.clientes = clientes;
 		this.proveedors = proveedors;
 	}

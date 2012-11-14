@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -17,6 +19,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 
 import edu.client.LoginService.LoginService;
 import edu.client.LoginService.LoginServiceAsync;
@@ -29,6 +32,8 @@ public class P_Login extends Composite {
 
 	private Constantes constante = GWT.create(Constantes.class);
 
+	private String rolSeleccionado;
+	
 	private DockPanel contenedor;
 	private LayoutPanel superior;
 	private LayoutPanel centro;
@@ -96,21 +101,29 @@ public class P_Login extends Composite {
 								popUp.setGlassEnabled(true);
 								popUp.center();
 								popUp.show();
+								final String nombre = result.getNombre();
 								
-								
-//								popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-//
-//									@Override
-//									public void onClose(CloseEvent<PopupPanel> event) {
-//										
-//										usuarioSeleccionado= popUp.getUsuario();
-//									
-//										if (usuarioSeleccionado != null)
-//										{
-//											//modificarUsuario();
-//										}
-//									}
-//								});
+								popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+									@Override
+									public void onClose(CloseEvent<PopupPanel> event) {
+										
+										rolSeleccionado= popUp.devolverRolSeleccionado();
+									
+										if (rolSeleccionado.compareTo("ventas") == 0){
+											inicioPantallaVentas(nombre);
+										} else if (rolSeleccionado.compareTo("produccion") == 0){
+											inicioPantallaProduccion(nombre);
+										} else if (rolSeleccionado.compareTo("ingenieria") == 0){
+											inicioPantallaIngenieria(nombre);
+										} else if (rolSeleccionado.compareTo("compras") == 0){
+											inicioPantallaCompras(nombre);
+										} else if (rolSeleccionado.compareTo("almacen") == 0){
+											//inicioPantallaAlmacen(nombre);
+										}
+										
+									}
+								});
 								
 								
 							}

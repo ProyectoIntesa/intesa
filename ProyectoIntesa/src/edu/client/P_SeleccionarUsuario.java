@@ -46,6 +46,9 @@ public class P_SeleccionarUsuario extends PopupPanel {
 
 	private Button salir;
 
+	
+	public String rolSeleccionado;
+	
 	public P_SeleccionarUsuario() {
 
 		super(false);
@@ -77,8 +80,8 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		panel = new FlexTable();
 
 		contenedorTabla = new ScrollPanel();
-		contenedorTabla.setStyleName("tabla");
-		contenedorTabla.setHeight("350px");
+		contenedorTabla.setStyleName("tablaSeleccionarUsuario");
+		contenedorTabla.setHeight("80px");
 		tablaElementos = new FlexTable();
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
@@ -97,19 +100,50 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		tablaElementos.setWidget(1, COL_ROL_VENTAS, ventas);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_VENTAS, HasHorizontalAlignment.ALIGN_CENTER);
 		
+		ventas.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("ventas");
+			}
+		});		
+		
 		tablaElementos.setWidget(1, COL_ROL_PRODUCCION, produccion);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		produccion.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("produccion");
+			}
+		});
 		
 		tablaElementos.setWidget(1, COL_ROL_INGENIERIA, ingenieria);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_INGENIERIA, HasHorizontalAlignment.ALIGN_CENTER);
 		
+		ingenieria.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("ingenieria");
+			}
+		});
+		
 		tablaElementos.setWidget(1, COL_ROL_COMPRAS, compras);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_COMPRAS, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		compras.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("compras");
+			}
+		});
 		
 		tablaElementos.setWidget(1, COL_ROL_ALMACEN, almacen);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_ALMACEN, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		almacen.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("almacen");
+				
+			}
+		});
+		
+		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezadoSeleccionarUsuario");
 
 		
 		
@@ -121,7 +155,7 @@ public class P_SeleccionarUsuario extends PopupPanel {
 			}
 		});
 
-		rol = new Label("ROL CON EL QUE SE DESEA INGRESAR");
+		rol = new Label("SELECCIONAR EL ROL CON EL QUE SE DESEA INGRESAR");
 		rol.setStyleName("labelTitulo");
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
@@ -139,7 +173,7 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		panel.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_CENTER);
 
 		setWidget(panel);
-		panel.setSize("850px", "400px");
+		panel.setSize("850px", "130px");
 
 	}
 
@@ -149,4 +183,17 @@ public class P_SeleccionarUsuario extends PopupPanel {
 
 	}
 
+	
+	public void rolSeleccionado(String rol){
+		
+		rolSeleccionado = rol;
+		
+		this.hide();
+		
+	}
+	
+	public String devolverRolSeleccionado(){
+		return rolSeleccionado;
+	}
+	
 }

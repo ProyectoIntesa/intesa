@@ -636,6 +636,20 @@ td.datePickerMonth {
 	background-color: white;
 }
 
+.tablaSeleccionarUsuario{
+	margin: 15px;
+	background-color: #E9ECEC;
+}
+
+.tablaEncabezadoSeleccionarUsuario{
+	font-color: #E9ECEC;
+	font-size: 12px;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: center;
+	background-color: #E9ECEC;
+}
+
 .tablaEncabezado {
 	font-color: black;
 	border: thin solid Black;

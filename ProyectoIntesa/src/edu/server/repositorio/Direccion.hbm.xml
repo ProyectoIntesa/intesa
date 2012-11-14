@@ -23,6 +23,9 @@
         <property name="oficina" type="string">
             <column name="oficina" />
         </property>
+        <property name="cpa" type="string">
+            <column name="cpa" />
+        </property>        
         <set name="clientes" table="Cliente" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Direccion" not-null="true" />
