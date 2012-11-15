@@ -38,6 +38,16 @@
     <url-pattern>/proyectointesa/administrador</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>ventasServlet</servlet-name>
+    <servlet-class>edu.server.servicio.VentasServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ventasServlet</servlet-name>
+    <url-pattern>/proyectointesa/ventas</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

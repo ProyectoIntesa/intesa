@@ -1,6 +1,7 @@
 package edu.client;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,6 +15,10 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+
+import edu.shared.DTO.ClienteDTO;
+import edu.shared.DTO.ContactoDTO;
+import edu.shared.DTO.DireccionDTO;
 
 public class P_FormularioCliente extends Composite {
 
@@ -52,6 +57,7 @@ public class P_FormularioCliente extends Composite {
 	private Label altura;
 	private Label piso;
 	private Label oficina;
+	private Label cpa;
 	private Label localidad;
 	private Label codigoPostal;
 	private Label provincia;
@@ -71,6 +77,7 @@ public class P_FormularioCliente extends Composite {
 	private TextBox alturaTb;
 	private TextBox pisoTb;
 	private TextBox oficinaTb;
+	private TextBox cpaTb;
 	private TextBox localidadTb;
 	private TextBox codigoPostalTb;
 	private TextBox provinciaTb;
@@ -119,6 +126,8 @@ public class P_FormularioCliente extends Composite {
 		piso.setStyleName("gwt-LabelFormulario");
 		oficina = new Label(constante.oficina());
 		oficina.setStyleName("gwt-LabelFormulario");
+		cpa = new Label(constante.cpa());
+		cpa.setStyleName("gwt-LabelFormulario");
 		localidad = new Label(constante.localidad());
 		localidad.setStyleName("gwt-LabelFormulario");
 		codigoPostal = new Label(constante.codigoPostal());
@@ -147,6 +156,7 @@ public class P_FormularioCliente extends Composite {
 		pisoTb = new TextBox();
 		pisoTb.setStyleName("textoCorto");
 		oficinaTb = new TextBox();
+		cpaTb = new TextBox();
 		localidadTb = new TextBox();
 		codigoPostalTb = new TextBox();
 		provinciaTb = new TextBox();
@@ -163,12 +173,15 @@ public class P_FormularioCliente extends Composite {
 		btnNuevoContacto.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				agregarContacto(event);
-				
-				//capturarDatos();
 			}
 		});
 		
 		btnAgregar = new Button(constante.agregar());
+		btnAgregar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				agregarCliente(event);
+			}
+		});
 		
 		btnCancelar = new Button(constante.cancelar());
 		btnCancelar.addClickHandler(new ClickHandler() {
@@ -192,7 +205,7 @@ public class P_FormularioCliente extends Composite {
 		formularioCliente.setHeight("637px");		
 		
 		formularioCliente.setWidget(0, 0, datosEmpresa);
-		formularioCliente.getFlexCellFormatter().setColSpan(0, 0, 8);
+		formularioCliente.getFlexCellFormatter().setColSpan(0, 0, 10);
 		
 		formularioCliente.setWidget(1, 0, nombreEmpresa);
 		formularioCliente.setWidget(1, 1, nombreEmpresaTb);
@@ -213,7 +226,7 @@ public class P_FormularioCliente extends Composite {
 		formularioCliente.setWidget(2, 7, webTb);
 		
 		formularioCliente.setWidget(3, 0, datosDideccion);
-		formularioCliente.getFlexCellFormatter().setColSpan(3, 0, 8);
+		formularioCliente.getFlexCellFormatter().setColSpan(3, 0, 10);
 
 		formularioCliente.setWidget(4, 0, calle);
 		formularioCliente.setWidget(4, 1, calleTb);
@@ -223,6 +236,8 @@ public class P_FormularioCliente extends Composite {
 		formularioCliente.setWidget(4, 5, pisoTb);
 		formularioCliente.setWidget(4, 6, oficina);
 		formularioCliente.setWidget(4, 7, oficinaTb);
+		formularioCliente.setWidget(4, 8, cpa);
+		formularioCliente.setWidget(4, 9, cpaTb);
 		
 		formularioCliente.setWidget(5, 0, localidad);
 		formularioCliente.setWidget(5, 1, localidadTb);
@@ -235,22 +250,22 @@ public class P_FormularioCliente extends Composite {
 		formularioCliente.setWidget(6, 3, paisTb);
 
 		formularioCliente.setWidget(7, 0, datosContactos);
-		formularioCliente.getFlexCellFormatter().setColSpan(7, 0, 8);
+		formularioCliente.getFlexCellFormatter().setColSpan(7, 0, 10);
 		
 		formularioCliente.setWidget(8, 4, btnNuevoContacto);
 		
 		formularioCliente.setWidget(9, 0, contenedorTabla);
-		formularioCliente.getFlexCellFormatter().setColSpan(9, 0, 8);		
+		formularioCliente.getFlexCellFormatter().setColSpan(9, 0, 10);		
 
 		formularioCliente.setWidget(10, 0, datosObse);
-		formularioCliente.getFlexCellFormatter().setColSpan(10, 0, 8);
+		formularioCliente.getFlexCellFormatter().setColSpan(10, 0, 10);
 		
 		formularioCliente.setWidget(11, 0, observacion);
 		formularioCliente.setWidget(11, 1, observacionTb);
-		formularioCliente.getFlexCellFormatter().setColSpan(11, 1, 8);
+		formularioCliente.getFlexCellFormatter().setColSpan(11, 1, 10);
 		
 		formularioCliente.setWidget(12, 0, inferior);
-		formularioCliente.getFlexCellFormatter().setColSpan(12, 0, 8);		
+		formularioCliente.getFlexCellFormatter().setColSpan(12, 0, 10);		
 		
 		formularioCliente.setWidget(13, 2, btnAgregar);
 
@@ -284,6 +299,57 @@ public class P_FormularioCliente extends Composite {
 
 	
 	
+	public void agregarCliente(ClickEvent event) {
+		
+		DireccionDTO direccion = new DireccionDTO();
+		direccion.setPais(this.paisTb.getText());
+		direccion.setProvincia(this.provinciaTb.getText());
+		direccion.setLocalidad(this.localidadTb.getText());
+		direccion.setCalle(this.calleTb.getText());
+		direccion.setAltura(this.alturaTb.getText());
+		direccion.setPiso(this.pisoTb.getText());
+		direccion.setOficina(this.oficinaTb.getText());
+		direccion.setCpa(this.cpaTb.getText());
+						
+		ClienteDTO cliente = new ClienteDTO();
+		cliente.setNombre(this.nombreEmpresaTb.getText());
+		cliente.setCuit(this.nroCuitTb.getText());
+		cliente.setResponsable(this.responsableTb.getText());
+		cliente.setRubro(this.rubroTb.getText());
+		cliente.setTelefono(this.telefonoTb.getText());
+		cliente.setFax(this.faxTb.getText());
+		cliente.setMail(this.emailTb.getText());
+		cliente.setPaginaWeb(this.webTb.getText());
+		cliente.setDireccion(direccion);
+		cliente.setObservaciones(this.observacionTb.getText());
+		
+		if(tablaElemento.getRowCount()>1){
+			
+			for(int i = 1; i < tablaElemento.getRowCount(); i++){
+				
+				ContactoDTO contacto = new ContactoDTO();
+				contacto.setNombre(((Label)tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label)tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label)tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label)tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label)tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label)tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label)tablaElemento.getWidget(i, COL_CORREO)).getText());				
+				
+				cliente.getContacto().add(contacto);
+				
+				
+			}
+			
+		}
+		
+		
+			
+		
+	}
+
+
+
 	public void capturarDatos(String nombre, String cargo, String telempresa,String interno,String telParticular,String celular, String correo ) {
 
 		final String nombreContacto= nombre;

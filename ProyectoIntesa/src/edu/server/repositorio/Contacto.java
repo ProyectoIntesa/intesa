@@ -11,7 +11,7 @@ public class Contacto implements java.io.Serializable {
 	private static final long serialVersionUID = -2291351395302753444L;
 	private int idContacto;
 	private Proveedor proveedor;
-	private Integer idCliente;
+	private Cliente cliente;
 	private String nombre;
 	private String cargo;
 	private String telefonoEmpresa;
@@ -28,13 +28,13 @@ public class Contacto implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Contacto(int idContacto, Proveedor proveedor, Integer idCliente,
+	public Contacto(int idContacto, Proveedor proveedor, Cliente cliente,
 			String nombre, String cargo, String telefonoEmpresa,
 			String internoEmpresa, String telefonoParticular, String celular,
 			String mail) {
 		this.idContacto = idContacto;
 		this.proveedor = proveedor;
-		this.idCliente = idCliente;
+		this.cliente = cliente;
 		this.nombre = nombre;
 		this.cargo = cargo;
 		this.telefonoEmpresa = telefonoEmpresa;
@@ -60,12 +60,12 @@ public class Contacto implements java.io.Serializable {
 		this.proveedor = proveedor;
 	}
 
-	public Integer getIdCliente() {
-		return this.idCliente;
+	public Cliente getCliente() {
+		return this.cliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public String getNombre() {

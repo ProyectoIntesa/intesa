@@ -11,9 +11,10 @@
         <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" fetch="select">
             <column name="id_Empresa" />
         </many-to-one>
-        <property name="idCliente" type="java.lang.Integer">
+         <many-to-one name="cliente" class="edu.server.repositorio.Cliente" fetch="select">
             <column name="id_Cliente" />
-        </property>
+        </many-to-one>
+
         <property name="nombre" type="string">
             <column name="nombre" not-null="true" />
         </property>

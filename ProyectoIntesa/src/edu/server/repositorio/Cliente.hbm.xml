@@ -44,5 +44,11 @@
             </key>
             <one-to-many class="edu.server.repositorio.OrdenPedido" />
         </set>
+        <set name="contactos" table="Contacto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Cliente" />
+            </key>
+            <one-to-many class="edu.server.repositorio.Contacto" />
+        </set>
     </class>
 </hibernate-mapping>

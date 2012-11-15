@@ -24,9 +24,14 @@ public class Cliente implements java.io.Serializable {
 	private String paginaWeb;
 	private String observaciones;
 	private Set<OrdenPedido> ordenPedidos = new HashSet<OrdenPedido>(0);
-
+	private Set<Contacto>contactos = new HashSet<Contacto>(0);
+	
+	
 	public Cliente() {
 	}
+	
+	
+
 
 	public Cliente(int idCliente, Direccion direccion, String nombre,
 			String cuit, String responsable) {
@@ -40,7 +45,7 @@ public class Cliente implements java.io.Serializable {
 	public Cliente(int idCliente, Direccion direccion, String nombre,
 			String cuit, String responsable, String rubro, String telefono,
 			String mail, String fax, String paginaWeb, String observaciones,
-			Set <OrdenPedido>ordenPedidos) {
+			Set <OrdenPedido>ordenPedidos, Set <Contacto>contactos) {
 		this.idCliente = idCliente;
 		this.direccion = direccion;
 		this.nombre = nombre;
@@ -53,8 +58,22 @@ public class Cliente implements java.io.Serializable {
 		this.paginaWeb = paginaWeb;
 		this.observaciones = observaciones;
 		this.ordenPedidos = ordenPedidos;
+		this.contactos = contactos;
 	}
 
+	
+	
+	public Set<Contacto> getContactos() {
+		return contactos;
+	}
+
+	public void setContactos(Set<Contacto> contactos) {
+		this.contactos = contactos;
+	}
+
+
+	
+	
 	public int getIdCliente() {
 		return this.idCliente;
 	}
