@@ -11,6 +11,10 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("CPA")
 	  String cpa();
 	  
+	  @DefaultStringValue("Códigos postales con la nueva codificación")
+	  String cpaInfo();
+	  
+	  
 	  @DefaultStringValue("VENTAS")
 	  String ventas();
 	  

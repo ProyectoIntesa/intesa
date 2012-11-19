@@ -394,6 +394,19 @@ body {
 	text-align: right;
 }
 
+.gwt-LabelLink {
+	margin-right: 2px;
+	margin-left: 5px;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Arial;
+	vertical-align: middle;
+	text-align: left;
+	color: blue;
+	cursor: pointer;
+}
+
+
 /*alineacion izquierda*/
 .gwt-LabelFormulario {
 	margin-right: 2px;

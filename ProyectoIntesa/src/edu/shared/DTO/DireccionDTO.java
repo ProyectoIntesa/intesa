@@ -17,8 +17,9 @@ public class DireccionDTO implements java.io.Serializable{
 	private String cpa;
 	private String provincia;
 	private String pais;
+	private String codigoLocalidad;
 	
-	
+
 	public DireccionDTO(){
 		
 	}
@@ -73,7 +74,14 @@ public class DireccionDTO implements java.io.Serializable{
 		this.pais = pais;
 	}
 	
-	
+	public String getCodigoLocalidad() {
+		return codigoLocalidad;
+	}
+
+
+	public void setCodigoLocalidad(String codigoLocalidad) {
+		this.codigoLocalidad = codigoLocalidad;
+	}
 	
 	
 	

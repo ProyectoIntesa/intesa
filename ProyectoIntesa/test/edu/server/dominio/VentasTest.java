@@ -47,19 +47,19 @@ public class VentasTest {
 //		private Set<Contacto>contactos = new HashSet<Contacto>(0);
 		
 		Pais pais = new Pais();
-		pais.setNombre("argentina");
-		pais.setIdPais(1);
+		pais.setNombre("colombia");
+		//pais.setIdPais(1);
 		
 		Provincia prov = new Provincia();
-		prov.setNombre("santa fe");
+		prov.setNombre("zona ss");
 		prov.setPais(pais);
-		prov.setIdProvincia(1);
+		//prov.setIdProvincia(1);
 		
 		Localidad localidad = new Localidad();
-		localidad.setCodigoPostal("3000");
-		localidad.setNombre("santa fe");
+		localidad.setCodigoPostal("4887");
+		localidad.setNombre("bogota");
 		localidad.setProvincia(prov);
-		localidad.setIdLocalidad(1);
+		//localidad.setIdLocalidad(1);
 		
 				
 		Direccion direccion = new Direccion();
@@ -88,11 +88,61 @@ public class VentasTest {
 		respuesta = pruebaVentas.registrarCliente(cliente);
 		
 		assertEquals(true, respuesta);
+
+	}
+	
+	@Test
+	public void registrarClienteDatosEnBaseTest() {
+		
+		boolean respuesta;
+		
+		AdministradorLocalidades adminLoc = new AdministradorLocalidades();
+//		private Set<OrdenPedido> ordenPedidos = new HashSet<OrdenPedido>(0);
+//		private Set<Contacto>contactos = new HashSet<Contacto>(0);
+		
+		Pais pais = new Pais();
+		pais.setNombre("ARGENTINA");
+		pais.setIdPais(adminLoc.paisExtistente("ARGENTINA"));
+		
+		Provincia prov = new Provincia();
+		prov.setNombre("SANTA FE");
+		prov.setPais(pais);
+		prov.setIdProvincia(adminLoc.provinciaExtistente("SANTA FE"));
+		
+		Localidad localidad = new Localidad();
+		localidad.setCodigoPostal("4887");
+		localidad.setNombre("SANTA FE");
+		localidad.setProvincia(prov);
+		localidad.setIdLocalidad(adminLoc.localidadExtistente("SANTA FE","SANTA FE"));
+		
+				
+		Direccion direccion = new Direccion();
+		direccion.setCalle("cullen");
+		direccion.setAltura("6430");
+		direccion.setPiso("-");
+		direccion.setOficina("5");
+		direccion.setCpa("xx3005der");
+		direccion.setLocalidad(localidad);
+		
+		
+		Cliente cliente = new Cliente();
+		cliente.setNombre("forestal maderas s.a.");
+		cliente.setCuit("20-31457274-3");
+		cliente.setResponsable("responsable inscripto");
+		cliente.setRubro("mayorista");
+		cliente.setTelefono("0342-4589685");
+		cliente.setMail("forestalmaderas@gmail.com");
+		cliente.setFax("0342-4895689");
+		cliente.setPaginaWeb("www.forestalmaderas.com.ar");
+		cliente.setObservaciones("no pagan nunca");
+		cliente.setDireccion(direccion);
 		
 		
 		
+		respuesta = pruebaVentas.registrarCliente(cliente);
 		
-		
+		assertEquals(true, respuesta);
+	
 	}
 
 }
