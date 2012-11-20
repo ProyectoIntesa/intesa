@@ -8,7 +8,10 @@ import org.hibernate.Session;
 
 import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Contacto;
+import edu.server.repositorio.Direccion;
 import edu.server.repositorio.Empleado;
+import edu.server.repositorio.Localidad;
+import edu.server.repositorio.Pais;
 import edu.server.repositorio.Provincia;
 import edu.server.util.HibernateUtil;
 
@@ -215,11 +218,23 @@ public class Ventas {
 	public Cliente getEmpresaCompleta(String nombre){
 		
 		Cliente result;
+		Direccion dirResult;
+		Localidad locResult;
+		Provincia provResult;
+		Pais paResult;
 		
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 		
 		result = (Cliente) sec.createQuery("from Cliente where nombre like '"+nombre+"'").uniqueResult();
+		dirResult = (Direccion) sec.createQuery("from Direccion where id_Direccion = "+result.getDireccion().getIdDireccion()).uniqueResult();
+		result.setDireccion(dirResult);
+		locResult = (Localidad) sec.createQuery("from Localidad where id_Localidad = "+dirResult.getLocalidad().getIdLocalidad()).uniqueResult();
+		dirResult.setLocalidad(locResult);
+		provResult = (Provincia) sec.createQuery("from Provincia where id_Provincia = "+locResult.getProvincia().getIdProvincia()).uniqueResult();
+		locResult.setProvincia(provResult);
+		paResult = (Pais) sec.createQuery("from Pais where id_Pais = "+provResult.getPais().getIdPais()).uniqueResult();
+		provResult.setPais(paResult);
 				
 		sec.close();		
 		
@@ -228,6 +243,27 @@ public class Ventas {
 		
 		
 	}
+	
+	public Contacto getContactoCompleto(String nombreContacto, String nombreEmpresa){
+		
+		Contacto contacto;
+		Cliente cliente;
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		cliente = (Cliente) sec.createQuery("from Cliente where nombre like '"+nombreEmpresa+"'").uniqueResult();
+		
+		contacto = (Contacto) sec.createQuery("from Contacto where nombre like '"+nombreContacto+"' and id_Cliente = "+cliente.getIdCliente()).uniqueResult();
+		
+		sec.close();
+		
+		return contacto;		
+		
+	}
+	
+	
+	
 	
 	
 	public Contacto getContactoIdContacto(int idContacto){
@@ -244,6 +280,30 @@ public class Ventas {
 		return result;
 		
 	}
+	
+	public Boolean eliminarContacto(String nombreEmpresa, String nombreContacto){
+		
+		Contacto contacto = this.getContactoCompleto(nombreContacto, nombreEmpresa);
+		Boolean result = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try{
+	
+			sec.beginTransaction();
+			sec.delete(contacto);		
+			sec.getTransaction().commit();
+			result = true;			
+			
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return result;
+		
+		
+	}
+	
 	
 	
 	

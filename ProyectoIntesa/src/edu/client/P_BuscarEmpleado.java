@@ -24,11 +24,11 @@ import edu.shared.DTO.EmpleadoDTO;
 public class P_BuscarEmpleado extends PopupPanel {
 
 	TabPanel padre;
-	private static final int COL_NROLEGAJO = 1;
-	private static final int COL_NOMBRE = 2;
-	private static final int COL_APELLIDO = 3;
-	private static final int COL_PUESTO = 4;
-	private static final int COL_MAS_INFO = 5;
+	private static final int COL_NROLEGAJO = 0;
+	private static final int COL_NOMBRE = 1;
+	private static final int COL_APELLIDO = 2;
+	private static final int COL_PUESTO = 3;
+	private static final int COL_MAS_INFO = 4;
 
 	private EmpleadoDTO empleadoSeleccionado;
 	private FlexTable panel;

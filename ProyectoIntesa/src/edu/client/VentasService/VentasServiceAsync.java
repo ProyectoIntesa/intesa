@@ -26,6 +26,10 @@ public interface VentasServiceAsync {
 
 	void getEmpresaCompleta(String nombre, AsyncCallback<ClienteDTO> callback) throws IllegalArgumentException;
 
+	void getContactoCompleto(String nombreContacto, String nombreEmpresa, AsyncCallback<ContactoDTO> callback) throws IllegalArgumentException;
+
+	void eliminarContacto(String nombreEmpresa, String nombreContacto, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
 
 
 	

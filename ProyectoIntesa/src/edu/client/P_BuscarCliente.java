@@ -48,6 +48,7 @@ public class P_BuscarCliente extends PopupPanel {
 	private RadioButton contacto;
 	private Label pie;
 	private Label info;
+	private Label infoC;
 
 	private SuggestBox empresaSb;
 	private SuggestBox rubroSb;
@@ -122,6 +123,9 @@ public class P_BuscarCliente extends PopupPanel {
 		info = new Label("");
 		info.setSize("16px", "16px");
 		info.setStyleName("labelInfo");
+		infoC = new Label("");
+		infoC.setSize("16px", "16px");
+		infoC.setStyleName("labelInfo");		
 		empresa = new RadioButton(constante.empresa());
 		empresa.setText(constante.empresa());
 		empresa.addClickHandler(new ClickHandler() {
@@ -349,14 +353,14 @@ public class P_BuscarCliente extends PopupPanel {
 			tablaElemento.setWidget(i+1, COL_MAIL, new Label(clientes.get(i).getMail()));
 			tablaElemento.getCellFormatter().setWordWrap(1, COL_MAIL, true);
 			tablaElemento.setWidget(i+1, COL_INFO, info);
-			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(1, COL_INFO,HasHorizontalAlignment.ALIGN_CENTER);
-			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_INFO,HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().setStyleName(i+1, "tablaRenglon");
 			info.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event){
 
 					Cell celda = tablaElemento.getCellForEvent(event);				
 					String nombreEmp = clientes.get(celda.getRowIndex()-1).getNombre(); 
-					
+										
 					VentasServiceAsync ventasService = GWT.create(VentasService.class);
 					ventasService.getEmpresaCompleta(nombreEmp, new AsyncCallback<ClienteDTO>() {
 						
@@ -366,16 +370,18 @@ public class P_BuscarCliente extends PopupPanel {
 						}
 						@Override
 						public void onSuccess(ClienteDTO result) {
-							empresaInfo = result;		
+							empresaInfo = result;
+							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(empresaInfo);
+							datoEmpresa.setGlassEnabled(true);
+							datoEmpresa.center();
+							datoEmpresa.show();		
+							salir();
 						}
 						
 					});
 
 					
-					P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(empresaInfo);
-					datoEmpresa.setGlassEnabled(true);
-					datoEmpresa.center();
-					datoEmpresa.show();	
+
 					
 				}
 			});
@@ -396,15 +402,38 @@ public class P_BuscarCliente extends PopupPanel {
 			tablaElemento.getCellFormatter().setWordWrap(1, COL_NOMBRE, false);
 			tablaElemento.setWidget(i + 1, COL_CARGO, new Label(contactos.get(i).getCargo()));
 			tablaElemento.getCellFormatter().setWordWrap(1, COL_CARGO, true);
-			tablaElemento.setWidget(i + 1, COL_INFO, info);
+			tablaElemento.setWidget(i + 1, COL_INFO, infoC);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
-			info.addClickHandler(new ClickHandler() {
+			infoC.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-//					P_DatoEmpresa datoEmpresa = new P_DatoEmpresa();
-//					datoEmpresa.setGlassEnabled(true);
-//					datoEmpresa.center();
-//					datoEmpresa.show();
+					
+					Cell celda = tablaElemento.getCellForEvent(event);				
+					String nombreCont = contactos.get(celda.getRowIndex()-1).getNombre();
+					final String nombreEmp = contactos.get(celda.getRowIndex()-1).getCliente().getNombre();
+					final String rubroEmp = contactos.get(celda.getRowIndex()-1).getCliente().getRubro();
+					
+					
+					VentasServiceAsync ventasService = GWT.create(VentasService.class);
+					ventasService.getContactoCompleto(nombreCont, nombreEmp, new AsyncCallback<ContactoDTO>() {
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR al buscar empresa");
+						}
+						@Override
+						public void onSuccess(ContactoDTO result) {
+							contactoInfo = result;
+
+							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo,nombreEmp,rubroEmp);
+							datoEmpresa.setGlassEnabled(true);
+							datoEmpresa.center();
+							datoEmpresa.show();	
+							salir();
+						}
+						
+					});
+
 				}
 			});
 

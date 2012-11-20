@@ -2,6 +2,7 @@ package edu.server.dominio;
 
 import static org.junit.Assert.assertEquals;
 
+import org.hibernate.Session;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import edu.server.repositorio.Direccion;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Pais;
 import edu.server.repositorio.Provincia;
+import edu.server.util.HibernateUtil;
 
 public class VentasTest {
 
@@ -25,6 +27,18 @@ public class VentasTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.createQuery("delete from Cliente where nombre like 'forestal maderas s.a.'").executeUpdate();
+		session.createQuery("delete from Direccion where cpa like 'xx3005der'").executeUpdate();
+		session.createQuery("delete from Localidad where codigo_Postal like '4887'").executeUpdate();
+		session.createQuery("delete from Provincia where nombre like 'zona ss'").executeUpdate();
+		session.createQuery("delete from Pais where nombre like 'colombia'").executeUpdate();
+		session.getTransaction().commit();	
+		
+		
+		
 	}
 
 	@Before
@@ -126,7 +140,7 @@ public class VentasTest {
 		
 		
 		Cliente cliente = new Cliente();
-		cliente.setNombre("forestal maderas s.a.");
+		cliente.setNombre("forestal");
 		cliente.setCuit("20-31457274-3");
 		cliente.setResponsable("responsable inscripto");
 		cliente.setRubro("mayorista");
@@ -144,5 +158,26 @@ public class VentasTest {
 		assertEquals(true, respuesta);
 	
 	}
+	
+	
+	@Test
+	public void getEmpresaCompletaTest(){
+		
+		Cliente result = new Cliente();
+		
+		result = pruebaVentas.getEmpresaCompleta("forestal");
+		
+		System.out.println("result: "+result.getDireccion().getCalle());
+		assertEquals(true, result.getNombre().equals("forestal"));
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 
 }

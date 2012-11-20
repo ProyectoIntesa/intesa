@@ -11,7 +11,7 @@
         <property name="nombre" type="string">
             <column name="nombre" not-null="true" />
         </property>
-        <set name="provincias" table="Provincia" inverse="true" lazy="false" fetch="select">
+        <set name="provincias" table="Provincia" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Pais" not-null="true" />
             </key>

@@ -27,6 +27,10 @@ public interface VentasService extends RemoteService {
 
 	ClienteDTO getEmpresaCompleta(String nombre) throws IllegalArgumentException;
 
+	ContactoDTO getContactoCompleto(String nombreContacto, String nombreEmpresa) throws IllegalArgumentException;
+
+	Boolean eliminarContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException;
+
 
 
 }

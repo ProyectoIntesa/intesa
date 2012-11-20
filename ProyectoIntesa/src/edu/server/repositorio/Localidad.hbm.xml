@@ -17,7 +17,7 @@
         <property name="codigoPostal" type="string">
             <column name="codigo_Postal" />
         </property>
-        <set name="direccions" table="Direccion" inverse="true" lazy="false" fetch="select">
+        <set name="direccions" table="Direccion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_Localidad" not-null="true" />
             </key>

@@ -22,13 +22,13 @@ import edu.shared.DTO.UsuarioCompDTO;
 
 public class P_BuscarUsuario extends PopupPanel {
 
-	private static final int COL_USUARIO = 1;
-	private static final int COL_CONTRASENIA = 2;
-	private static final int COL_NOMBRE = 3;
-	private static final int COL_APELLIDO = 4;
-	private static final int COL_ROL = 5;
-	private static final int COL_MAS_INFO = 6;
-	private static final int COL_QUITAR = 7;
+	private static final int COL_USUARIO = 0;
+	private static final int COL_CONTRASENIA = 1;
+	private static final int COL_NOMBRE = 2;
+	private static final int COL_APELLIDO = 3;
+	private static final int COL_ROL = 4;
+	private static final int COL_MAS_INFO = 5;
+	private static final int COL_QUITAR = 6;
 
 	private FlexTable panel;
 	private FlexTable tablaElementos;

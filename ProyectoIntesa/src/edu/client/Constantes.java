@@ -11,6 +11,9 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("CPA")
 	  String cpa();
 	  
+	  @DefaultStringValue("ELIMINAR CONTACTO")
+	  String eliminarContacto();
+	  
 	  @DefaultStringValue("Códigos postales con la nueva codificación")
 	  String cpaInfo();
 	  

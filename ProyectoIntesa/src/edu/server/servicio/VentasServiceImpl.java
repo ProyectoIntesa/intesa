@@ -188,18 +188,13 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 	
 	@Override
 	public ClienteDTO getEmpresaCompleta(String nombre)  throws IllegalArgumentException{
-		
-		Window.alert("por aca paso");
-		
+			
+	
 		Ventas adminVentas = new Ventas();
 		Cliente busqueda = new Cliente();
 		
-		Window.alert("aca llego");
-		
 		busqueda = adminVentas.getEmpresaCompleta(nombre);
-		
-		Window.alert("aca no llego");
-		
+						
 		ClienteDTO result = new ClienteDTO();
 		
 		DireccionDTO dire = new DireccionDTO();
@@ -225,22 +220,68 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 		result.setObservaciones(busqueda.getObservaciones());
 		result.setDireccion(dire);
 		
+		for (Contacto contacto : busqueda.getContactos()) {
+
+			ContactoDTO nuevo = new ContactoDTO();
+			nuevo.setNombre(contacto.getNombre());
+			nuevo.setCargo(contacto.getCargo());
+			nuevo.setCelular(contacto.getCelular());
+			nuevo.setMail(contacto.getMail());
+			nuevo.setTelefonoEmpresa(contacto.getTelefonoEmpresa());
+			nuevo.setTelefonoParticular(contacto.getTelefonoParticular());
+			nuevo.setInternoEmpresa(contacto.getInternoEmpresa());
+			
+			result.getContacto().add(nuevo);
+			
+		}				
 		
-		
-//				
-//		for(int i = 0; i < busqueda.getContactos().size(); i++){
-//			
-//			Contacto nuevo = new Contacto();
-//			nuevo = adminVentas.getContactoIdContacto(busqueda.getContactos().)
-//					
-//					
-//		}
-		
-		
-		
-		
+			
 		return result;
 		
 	}
+	
+	
+	
+	@Override
+	public ContactoDTO getContactoCompleto(String nombreContacto, String nombreEmpresa) throws IllegalArgumentException{
+		
+		Contacto contacto;
+		
+		Ventas adminVentas = new Ventas();
+		contacto = adminVentas.getContactoCompleto(nombreContacto, nombreEmpresa);
+		
+		
+		ContactoDTO nuevo = new ContactoDTO();
+		nuevo.setNombre(contacto.getNombre());
+		nuevo.setCargo(contacto.getCargo());
+		nuevo.setCelular(contacto.getCelular());
+		nuevo.setMail(contacto.getMail());
+		nuevo.setTelefonoEmpresa(contacto.getTelefonoEmpresa());
+		nuevo.setTelefonoParticular(contacto.getTelefonoParticular());
+		nuevo.setInternoEmpresa(contacto.getInternoEmpresa());
+		
+		return nuevo;
+		
+	}
+	
+	
+	
+	@Override
+	public Boolean eliminarContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
+		
+		Ventas adminVentas = new Ventas();
+		 
+		return adminVentas.eliminarContacto(nombreEmpresa, nombreContacto);
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
