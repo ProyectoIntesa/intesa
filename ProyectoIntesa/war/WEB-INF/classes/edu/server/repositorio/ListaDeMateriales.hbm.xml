@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-oct-2012 16:37:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.ListaDeMateriales" table="Lista_de_Materiales" schema="dbo" catalog="intesaDB">
+        <id name="idListaDeMateriales" type="int">
+            <column name="id_Lista_de_Materiales" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="plano" class="edu.server.repositorio.Plano" fetch="select">
+            <column name="id_Plano" not-null="true" />
+        </many-to-one>
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
+            <column name="id_Componente" />
+        </many-to-one>
+        <many-to-one name="equipo" class="edu.server.repositorio.Equipo" fetch="select">
+            <column name="nro_Referencia" />
+        </many-to-one>
+        <set name="renglonListaDeMaterialeses" table="Renglon_Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Lista_de_Materiales" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonListaDeMateriales" />
+        </set>
+    </class>
+</hibernate-mapping>

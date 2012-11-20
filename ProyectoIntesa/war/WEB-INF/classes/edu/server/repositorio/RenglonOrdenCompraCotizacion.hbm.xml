@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.RenglonOrdenCompraCotizacion" table="Renglon_Orden_CompraCotizacion" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonOrdenCompraCotizacionId">
+            <key-property name="idRenglonOrdenCompra" type="int">
+                <column name="id_Renglon_Orden_Compra" />
+            </key-property>
+            <key-property name="idOrdenCompra" type="long">
+                <column name="id_Orden_Compra" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ordenCompraCotizacion" class="edu.server.repositorio.OrdenCompraCotizacion" update="false" insert="false" fetch="select">
+            <column name="id_Orden_Compra" not-null="true" />
+        </many-to-one>
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
+            <column name="id_Producto" not-null="true" />
+        </many-to-one>
+        <property name="td" type="int">
+            <column name="td" not-null="true" />
+        </property>
+        <property name="medida1" type="string">
+            <column name="medida1" length="10" />
+        </property>
+        <property name="medida2" type="string">
+            <column name="medida2" length="10" />
+        </property>
+        <property name="cantidad" type="double">
+            <column name="cantidad" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="precioUnitario" type="java.lang.Double">
+            <column name="precio_Unitario" precision="53" scale="0" />
+        </property>
+        <property name="pesoTotal" type="java.lang.Double">
+            <column name="peso_Total" precision="53" scale="0" />
+        </property>
+        <property name="subtotal" type="java.lang.Double">
+            <column name="subtotal" precision="53" scale="0" />
+        </property>
+        <property name="fechaEntregaPrometida" type="timestamp">
+            <column name="fecha_Entrega_prometida" length="23" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -283,8 +283,7 @@ public class P_FormularioCliente extends Composite {
 		tablaElemento.getCellFormatter().setWidth(0, COL_TELEMPRESA, "14%");
 		tablaElemento.setText(0, COL_INTERNO, constante.interno());
 		tablaElemento.getCellFormatter().setWidth(0, COL_INTERNO, "14%");
-		tablaElemento.setText(0, COL_TELPARTICULAR,
-				constante.telefonoParticular());
+		tablaElemento.setText(0, COL_TELPARTICULAR, constante.telefonoParticular());
 		tablaElemento.getCellFormatter().setWidth(0, COL_TELPARTICULAR, "14%");
 		tablaElemento.setText(0, COL_CELULAR, constante.celular());
 		tablaElemento.getCellFormatter().setWidth(0, COL_CELULAR, "14%");
@@ -335,20 +334,13 @@ public class P_FormularioCliente extends Composite {
 			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
 
 				ContactoDTO contacto = new ContactoDTO();
-				contacto.setNombre(((Label) tablaElemento.getWidget(i,
-						COL_NOMBRE)).getText());
-				contacto.setCargo(((Label) tablaElemento
-						.getWidget(i, COL_CARGO)).getText());
-				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i,
-						COL_TELEMPRESA)).getText());
-				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i,
-						COL_INTERNO)).getText());
-				contacto.setTelefonoParticular(((Label) tablaElemento
-						.getWidget(i, COL_TELPARTICULAR)).getText());
-				contacto.setCelular(((Label) tablaElemento.getWidget(i,
-						COL_CELULAR)).getText());
-				contacto.setMail(((Label) tablaElemento
-						.getWidget(i, COL_CORREO)).getText());
+				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
 
 				cliente.getContacto().add(contacto);
 			}
@@ -356,27 +348,26 @@ public class P_FormularioCliente extends Composite {
 		}
 
 		VentasServiceAsync ventasService = GWT.create(VentasService.class);
-		ventasService.registrarNuevoCliente(cliente,
-				new AsyncCallback<Boolean>() {
+		ventasService.registrarNuevoCliente(cliente, new AsyncCallback<Boolean>() {
 
-					@Override
-					public void onSuccess(Boolean result) {
-						if (result)
-							Window.alert("NUEVO CLIENTE REGISTRADO!!!");
-						else
-							Window.alert("NO SE PUDO REGISTRAR EL CLIENTE");
-					}
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("NUEVO CLIENTE REGISTRADO!!!");
+					padre.remove(numeroElemento(constante.nuevoCliente()));
+				} else
+					Window.alert("NO SE PUDO REGISTRAR EL CLIENTE");
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert("ERROR DE SERVICIO");
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
 
-					}
-				});
+			}
+		});
 	}
 
-	public void capturarDatos(String nombre, String cargo, String telempresa,
-			String interno, String telParticular, String celular, String correo) {
+	public void capturarDatos(String nombre, String cargo, String telempresa, String interno, String telParticular, String celular, String correo) {
 
 		final String nombreContacto = nombre;
 		int fila = tablaElemento.getRowCount();
@@ -394,13 +385,11 @@ public class P_FormularioCliente extends Composite {
 		tablaElemento.setWidget(fila, COL_CARGO, new Label(cargo));
 		tablaElemento.setWidget(fila, COL_TELEMPRESA, new Label(telempresa));
 		tablaElemento.setWidget(fila, COL_INTERNO, new Label(interno));
-		tablaElemento.setWidget(fila, COL_TELPARTICULAR, new Label(
-				telParticular));
+		tablaElemento.setWidget(fila, COL_TELPARTICULAR, new Label(telParticular));
 		tablaElemento.setWidget(fila, COL_CELULAR, new Label(celular));
 		tablaElemento.setWidget(fila, COL_CORREO, new Label(correo));
 		tablaElemento.setWidget(fila, COL_ELIMINAR, eliminar);
-		tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila,
-				COL_ELIMINAR, HasHorizontalAlignment.ALIGN_CENTER);
+		tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_ELIMINAR, HasHorizontalAlignment.ALIGN_CENTER);
 
 		tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
 

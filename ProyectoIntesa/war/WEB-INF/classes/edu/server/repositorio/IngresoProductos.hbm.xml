@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.IngresoProductos" table="Ingreso_Productos" schema="dbo" catalog="intesaDB">
+        <id name="idIngreso" type="long">
+            <column name="id_Ingreso" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="estadoOrden" class="edu.server.repositorio.EstadoOrden" fetch="select">
+            <column name="id_Estado" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
+            <column name="id_Registrado_Por" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ordenCompraCotizacion" class="edu.server.repositorio.OrdenCompraCotizacion" fetch="select">
+            <column name="id_Orden_Compra" not-null="true" />
+        </many-to-one>
+        <property name="nroRemitoProveedor" type="string">
+            <column name="nro_Remito_Proveedor" length="30" not-null="true" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="fecha_Ingreso" length="23" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

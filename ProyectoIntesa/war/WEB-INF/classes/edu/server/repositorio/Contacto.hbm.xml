@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Contacto" table="Contacto" schema="dbo" catalog="intesaDB">
+        <id name="idContacto" type="int">
+            <column name="id_Contacto" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" fetch="select">
+            <column name="id_Empresa" />
+        </many-to-one>
+         <many-to-one name="cliente" class="edu.server.repositorio.Cliente" fetch="select">
+            <column name="id_Cliente" />
+        </many-to-one>
+
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="cargo" type="string">
+            <column name="cargo" />
+        </property>
+        <property name="telefonoEmpresa" type="string">
+            <column name="telefono_Empresa" />
+        </property>
+        <property name="internoEmpresa" type="string">
+            <column name="interno_Empresa" />
+        </property>
+        <property name="telefonoParticular" type="string">
+            <column name="telefono_Particular" />
+        </property>
+        <property name="celular" type="string">
+            <column name="celular" />
+        </property>
+        <property name="mail" type="string">
+            <column name="mail" />
+        </property>
+    </class>
+</hibernate-mapping>

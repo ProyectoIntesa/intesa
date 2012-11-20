@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.RenglonOrdenCompraInsumo" table="Renglon_Orden_Compra_Insumo" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonOrdenCompraInsumoId">
+            <key-property name="idRenglonOrdenCompraInsumo" type="int">
+                <column name="id_Renglon_Orden_Compra_Insumo" />
+            </key-property>
+            <key-property name="nroOrdenCompraInsumo" type="long">
+                <column name="nro_Orden_Compra_Insumo" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="insumo" class="edu.server.repositorio.Insumo" fetch="select">
+            <column name="id_Insumo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ordenCompraInsumo" class="edu.server.repositorio.OrdenCompraInsumo" update="false" insert="false" fetch="select">
+            <column name="nro_Orden_Compra_Insumo" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="double">
+            <column name="cantidad" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="subtotal" type="java.lang.Double">
+            <column name="subtotal" precision="53" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

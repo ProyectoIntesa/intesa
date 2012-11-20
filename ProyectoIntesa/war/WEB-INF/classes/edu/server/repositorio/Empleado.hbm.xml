@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Empleado" table="Empleado" schema="dbo" catalog="intesaDB">
+        <id name="idEmpleado" type="int">
+            <column name="id_Empleado" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="apellido" not-null="true" />
+        </property>
+        <property name="nroLegajo" type="int">
+            <column name="nro_Legajo" not-null="true" />
+        </property>
+        <property name="puesto" type="string">
+            <column name="puesto" not-null="true" />
+        </property>
+        <property name="codigoBarras" type="string">
+            <column name="codigo_Barras" length="30" />
+        </property>
+        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Generado_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenCompraInsumo" />
+        </set>
+        <set name="remitoMaterialeses" table="Remito_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Generado_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RemitoMateriales" />
+        </set>
+        <set name="renglonOrdenTrabajos" table="Renglon_Orden_Trabajo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Supervisor" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonOrdenTrabajo" />
+        </set>
+        <set name="ingresoProductoses" table="Ingreso_Productos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Registrado_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.IngresoProductos" />
+        </set>
+        <set name="ordenPedidos" table="Orden_Pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Responsable" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenPedido" />
+        </set>
+        <set name="ordenProvisionInternas" table="Orden_Provision_Interna" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Empleado_Solicita_Material" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInterna" />
+        </set>
+        <set name="ordenTrabajoSectorTerceros" table="Orden_Trabajo_SectorTercero" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Responsable_Sector" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenTrabajoSectorTercero" />
+        </set>
+        <set name="ingresoInsumoses" table="Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Registrado_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.IngresoInsumos" />
+        </set>
+        <set name="remitoInternoInsumos" table="Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Generado_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RemitoInternoInsumo" />
+        </set>
+        <set name="ordenCompraCotizacions" table="Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Responsable" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenCompraCotizacion" />
+        </set>
+        <set name="usuarios" table="Usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Empleado" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.Usuario" />
+        </set>
+        <set name="empleadosForEmpleado" table="Empleado_A_Cargo" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="responsable" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.server.repositorio.Empleado">
+                <column name="empleado" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="ordenProvisionInsumosForIdPedidoPara" table="Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Pedido_Para" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInsumo" />
+        </set>
+        <set name="ordenProvisionInsumosForIdPedidoPor" table="Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Pedido_Por" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenProvisionInsumo" />
+        </set>
+        <set name="ordenFabricacionGenerals" table="Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Responsable" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenFabricacionGeneral" />
+        </set>
+        <set name="empleadosForResponsable" table="Empleado_A_Cargo" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="empleado" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.server.repositorio.Empleado">
+                <column name="responsable" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

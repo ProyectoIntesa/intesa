@@ -1,5 +1,9 @@
 package edu.server.servicio;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.VentasService.VentasService;
@@ -12,6 +16,7 @@ import edu.server.repositorio.Pais;
 import edu.server.repositorio.Provincia;
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
+import edu.shared.DTO.DireccionDTO;
 
 public class VentasServiceImpl extends RemoteServiceServlet implements
 		VentasService {
@@ -46,7 +51,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 		nuevo.setNombre(cliente.getNombre());
 		nuevo.setCuit(cliente.getCuit());
 		nuevo.setResponsable(cliente.getResponsable());
-		nuevo.setResponsable(cliente.getRubro());
+		nuevo.setRubro(cliente.getRubro());
 		nuevo.setFax(cliente.getFax());
 		nuevo.setTelefono(cliente.getTelefono());
 		nuevo.setPaginaWeb(cliente.getPaginaWeb());
@@ -71,4 +76,171 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 		return adminVnetas.registrarCliente(nuevo);
 
 	}
+	
+	@Override
+	public List<String> getNombresEmpresas() throws IllegalArgumentException {
+		
+		Ventas adminVentas = new Ventas();
+		
+		return adminVentas.getNombresEmpresas();
+		
+	}
+	
+	@Override
+	public List<String> getRubros() throws IllegalArgumentException {
+		
+		Ventas adminVentas = new Ventas();
+		
+		return adminVentas.getRubros();
+		
+	}
+	
+	@Override
+	public List<String> getContactos() throws IllegalArgumentException {
+		
+		Ventas adminVentas = new Ventas();
+		
+		return adminVentas.getContactos();
+		
+	}
+	
+	@Override
+	public List<ClienteDTO> getEmpresas(String nombre) throws IllegalArgumentException{
+		
+		List<ClienteDTO> result = new LinkedList<ClienteDTO>();
+		Ventas adminVentas = new Ventas();
+		List<Cliente> busqueda = adminVentas.getEmpresas(nombre);
+		
+		for (Cliente cliente : busqueda) {
+			
+			ClienteDTO nuevo = new ClienteDTO();
+			nuevo.setNombre(cliente.getNombre());
+			nuevo.setRubro(cliente.getRubro());
+			nuevo.setTelefono(cliente.getTelefono());
+			nuevo.setMail(cliente.getMail());
+			
+			result.add(nuevo);		
+			
+		}
+		
+		return result;
+		
+		
+	}
+	
+	
+	@Override
+	public List<ClienteDTO> getEmpresasPorRubro(String nombre) throws IllegalArgumentException{
+		
+		List<ClienteDTO> result = new LinkedList<ClienteDTO>();
+		Ventas adminVentas = new Ventas();
+		List<Cliente> busqueda = adminVentas.getEmpresasPorRubro(nombre);
+		
+		for (Cliente cliente : busqueda) {
+			
+			ClienteDTO nuevo = new ClienteDTO();
+			nuevo.setNombre(cliente.getNombre());
+			nuevo.setRubro(cliente.getRubro());
+			nuevo.setTelefono(cliente.getTelefono());
+			nuevo.setMail(cliente.getMail());
+			
+			result.add(nuevo);		
+			
+		}
+		
+		return result;
+		
+		
+	}
+	
+	
+	@Override
+	public List<ContactoDTO> getEmpresasPorContacto(String nombre) throws IllegalArgumentException{
+		
+		List<ContactoDTO> result = new LinkedList<ContactoDTO>();
+		Ventas adminVentas = new Ventas();
+		List<Contacto> busqueda = adminVentas.getEmpresasPorContacto(nombre);
+	
+			
+			for (Contacto contacto : busqueda) {
+
+				String[] rubroYempresa = adminVentas.getEmpresaRubroPorIdCliente(contacto.getCliente().getIdCliente());
+
+				ContactoDTO nuevo = new ContactoDTO();
+				ClienteDTO nuevoCliente = new ClienteDTO();
+				nuevoCliente.setNombre(rubroYempresa[0]);
+				nuevoCliente.setRubro(rubroYempresa[1]);
+				nuevo.setNombre(contacto.getNombre());
+				nuevo.setCargo(contacto.getCargo());
+				nuevo.setCliente(nuevoCliente);
+
+				result.add(nuevo);
+
+			}
+
+		
+		return result;
+		
+		
+	}
+	
+	
+	
+	@Override
+	public ClienteDTO getEmpresaCompleta(String nombre)  throws IllegalArgumentException{
+		
+		Window.alert("por aca paso");
+		
+		Ventas adminVentas = new Ventas();
+		Cliente busqueda = new Cliente();
+		
+		Window.alert("aca llego");
+		
+		busqueda = adminVentas.getEmpresaCompleta(nombre);
+		
+		Window.alert("aca no llego");
+		
+		ClienteDTO result = new ClienteDTO();
+		
+		DireccionDTO dire = new DireccionDTO();
+		
+		dire.setCalle(busqueda.getDireccion().getCalle());
+		dire.setAltura(busqueda.getDireccion().getAltura());
+		dire.setOficina(busqueda.getDireccion().getOficina());
+		dire.setPiso(busqueda.getDireccion().getPiso());
+		dire.setCpa(busqueda.getDireccion().getCpa());
+		dire.setLocalidad(busqueda.getDireccion().getLocalidad().getNombre());
+		dire.setProvincia(busqueda.getDireccion().getLocalidad().getProvincia().getNombre());
+		dire.setPais(busqueda.getDireccion().getLocalidad().getProvincia().getPais().getNombre());
+		dire.setCodigoLocalidad(busqueda.getDireccion().getLocalidad().getCodigoPostal());		
+		
+		result.setNombre(busqueda.getNombre());
+		result.setCuit(busqueda.getCuit());
+		result.setRubro(busqueda.getRubro());
+		result.setResponsable(busqueda.getResponsable());
+		result.setTelefono(busqueda.getTelefono());
+		result.setFax(busqueda.getFax());
+		result.setMail(busqueda.getMail());
+		result.setPaginaWeb(busqueda.getPaginaWeb());
+		result.setObservaciones(busqueda.getObservaciones());
+		result.setDireccion(dire);
+		
+		
+		
+//				
+//		for(int i = 0; i < busqueda.getContactos().size(); i++){
+//			
+//			Contacto nuevo = new Contacto();
+//			nuevo = adminVentas.getContactoIdContacto(busqueda.getContactos().)
+//					
+//					
+//		}
+		
+		
+		
+		
+		return result;
+		
+	}
+	
 }

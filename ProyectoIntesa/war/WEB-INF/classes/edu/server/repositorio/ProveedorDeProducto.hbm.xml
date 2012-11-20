@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.ProveedorDeProducto" table="Proveedor_de_Producto" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.ProveedorDeProductoId">
+            <key-property name="idProveedor" type="int">
+                <column name="id_Proveedor" />
+            </key-property>
+            <key-property name="idProducto" type="int">
+                <column name="id_Producto" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="proveedor" class="edu.server.repositorio.Proveedor" update="false" insert="false" fetch="select">
+            <column name="id_Proveedor" not-null="true" />
+        </many-to-one>
+        <property name="precio" type="double">
+            <column name="precio" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

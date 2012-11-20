@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+      
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=intesaDB</property>
+        <property name="hibernate.connection.username">userIntesa</property>
+        <property name="hibernate.connection.password">usr1234</property>
+       
+    	<property name="javax.persistence.validation.mode">none</property>
+  
+  		<property name="hibernate.current_session_context_class">thread</property>
+   		<property name="hibernate.connection.pool_size">1</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+        <property name="show_sql">true</property>
+        
+        
+        <mapping resource="edu/server/repositorio/ProveedorDeInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Maquina.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonRemitoInternoInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/SubclaseEquipo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonIngresoProductos.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Clase.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonListaDeMateriales.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RemitoMateriales.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Contacto.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenTrabajo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Producto.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Direccion.hbm.xml" />
+        <mapping resource="edu/server/repositorio/ListaDeMateriales.hbm.xml" />
+        <mapping resource="edu/server/repositorio/IngresoInsumos.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenProvisionInterna.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenFabricacionGeneral.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Marca.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Localidad.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonRemitoMateriales.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenProvisionInterna.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Inventario.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenPedido.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenTrabajoSectorTercero.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenPedido.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Cliente.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Insumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/ModoEnvio.hbm.xml" />
+        <mapping resource="edu/server/repositorio/IngresoProductos.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenProvisionInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/ProveedorDeProducto.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenCompraCotizacion.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RequerimientoMateriales.hbm.xml" />
+        <mapping resource="edu/server/repositorio/ClaseEquipo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Elemento.hbm.xml" />
+        <mapping resource="edu/server/repositorio/EstadoOrden.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonIngresoInsumos.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Provincia.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Empleado.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Equipo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Usuario.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Material.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RemitoInternoInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/ReservaComponente.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenCompraCotizacion.hbm.xml" />
+        <mapping resource="edu/server/repositorio/OrdenCompraInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenFabricacionGeneral.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Componente.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Categoria.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenCompraInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/RenglonOrdenProvisionInsumo.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Reserva.hbm.xml" />
+        <mapping resource="edu/server/repositorio/CodigoProducto.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Proveedor.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Plano.hbm.xml" />
+        <mapping resource="edu/server/repositorio/Pais.hbm.xml" />
+      
+    </session-factory>
+</hibernate-configuration>

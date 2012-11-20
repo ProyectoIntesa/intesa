@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.RenglonListaDeMateriales" table="Renglon_Lista_de_Materiales" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonListaDeMaterialesId">
+            <key-property name="idListaDeMateriales" type="int">
+                <column name="id_Lista_de_Materiales" />
+            </key-property>
+            <key-property name="idRenglon" type="int">
+                <column name="id_Renglon" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="componente" class="edu.server.repositorio.Componente" fetch="select">
+            <column name="id_Componente" />
+        </many-to-one>
+        <many-to-one name="listaDeMateriales" class="edu.server.repositorio.ListaDeMateriales" update="false" insert="false" fetch="select">
+            <column name="id_Lista_de_Materiales" not-null="true" />
+        </many-to-one>
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
+            <column name="id_Producto" />
+        </many-to-one>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true" />
+        </property>
+        <property name="td" type="int">
+            <column name="td" not-null="true" />
+        </property>
+        <property name="medida1" type="string">
+            <column name="medida1" length="10" />
+        </property>
+        <property name="medida2" type="string">
+            <column name="medida2" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

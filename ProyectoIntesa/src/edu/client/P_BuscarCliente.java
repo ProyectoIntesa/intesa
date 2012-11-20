@@ -1,9 +1,12 @@
 package edu.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -13,6 +16,15 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
+
+import edu.client.AdministradorService.AdministradorService;
+import edu.client.AdministradorService.AdministradorServiceAsync;
+import edu.client.VentasService.VentasService;
+import edu.client.VentasService.VentasServiceAsync;
+import edu.shared.DTO.ClienteDTO;
+import edu.shared.DTO.ContactoDTO;
+import edu.shared.DTO.EmpleadoDTO;
 
 public class P_BuscarCliente extends PopupPanel {
 
@@ -23,7 +35,7 @@ public class P_BuscarCliente extends PopupPanel {
 	private static final int COL_INFO = 4;
 	private static final int COL_NOMBRE = 2;
 	private static final int COL_CARGO = 3;
-	
+
 	private FlexTable contenedor;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
@@ -48,6 +60,12 @@ public class P_BuscarCliente extends PopupPanel {
 	private Button buscar;
 	private Button salir;
 
+	private List<ContactoDTO> contactos;
+	private List<ClienteDTO> clientes;
+	
+	private ClienteDTO empresaInfo;
+	private ContactoDTO contactoInfo;
+
 	public P_BuscarCliente() {
 
 		super(false);
@@ -59,25 +77,43 @@ public class P_BuscarCliente extends PopupPanel {
 		listaRubros = new MultiWordSuggestOracle();
 		listaContactos = new MultiWordSuggestOracle();
 
-		// LLAMAR FUNCION PARA QUE CARGUE LAS LISTAS, LO QUE ESTA ENTRE
-		// COMENTARIOS ES MOMENTANEO
-		// ----------------------------------------------------
-		listaEmpresas.add("INTESA");
-		listaEmpresas.add("SAN JERONIMO");
-		listaEmpresas.add("EQUITEC");
-		listaEmpresas.add("SANCOR");
+		VentasServiceAsync ventasService = GWT.create(VentasService.class);
 
-		listaRubros.add("METALURGICA");
-		listaRubros.add("MADERERA");
-		listaRubros.add("MOSAICO");
+		ventasService.getNombresEmpresas(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaEmpresas(result);
+			}
 
-		listaContactos.add("cristian");
-		listaContactos.add("pablo");
-		listaContactos.add("daniel");
-		listaContactos.add("danilo");
-		listaContactos.add("carlos");
-		listaContactos.add("chiche");
-		// ----------------------------------------------------
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se ha podido cargar la lista de sugerencias");
+			}
+		});
+
+		ventasService.getRubros(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaRubros(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se ha podido cargar la lista de sugerencias");
+			}
+		});
+
+		ventasService.getContactos(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaContactos(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se ha podido cargar la lista de sugerencias");
+			}
+		});
 
 		encabezado = new Label(constante.buscarPor());
 		encabezado.setStyleName("labelTitulo");
@@ -88,29 +124,28 @@ public class P_BuscarCliente extends PopupPanel {
 		info.setStyleName("labelInfo");
 		empresa = new RadioButton(constante.empresa());
 		empresa.setText(constante.empresa());
-		empresa.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
+		empresa.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 				seleccionEmpresa();
 			}
 		});
-		
+
 		rubro = new RadioButton(constante.rubro());
 		rubro.setText(constante.rubro());
-		rubro.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
+		rubro.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 				seleccionRubro();
 			}
 		});
-		
+
 		contacto = new RadioButton(constante.nombreContacto());
 		contacto.setText(constante.nombreContacto());
-		contacto.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
+		contacto.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 				seleccionContacto();
 			}
 		});
 
-		
 		empresaSb = new SuggestBox(listaEmpresas);
 		empresaSb.getTextBox().setEnabled(false);
 		rubroSb = new SuggestBox(listaRubros);
@@ -118,7 +153,6 @@ public class P_BuscarCliente extends PopupPanel {
 		contactoSb = new SuggestBox(listaContactos);
 		contactoSb.getTextBox().setEnabled(false);
 
-		
 		buscar = new Button(constante.buscar());
 		buscar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -155,8 +189,7 @@ public class P_BuscarCliente extends PopupPanel {
 
 		contenedor.setWidget(3, 0, buscar);
 		contenedor.getFlexCellFormatter().setColSpan(3, 0, 4);
-		contenedor.getCellFormatter().setHorizontalAlignment(3, 0,
-				HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		contenedor.setWidget(4, 0, contenedorTabla);
 		contenedor.getFlexCellFormatter().setColSpan(4, 0, 4);
@@ -166,20 +199,45 @@ public class P_BuscarCliente extends PopupPanel {
 
 		contenedor.setWidget(6, 0, salir);
 		contenedor.getFlexCellFormatter().setColSpan(6, 0, 4);
-		contenedor.getCellFormatter().setHorizontalAlignment(6, 0,
-				HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		setWidget(contenedor);
 		contenedor.setSize("600px", "300px");
 		tablaElemento.setWidth("600px");
-		
+
+	}
+
+	protected void cargarSugerenciaContactos(List<String> result) {
+
+		for (String sugerencia : result) {
+			listaContactos.add(sugerencia);
+		}
+
+	}
+
+	protected void cargarSugerenciaRubros(List<String> result) {
+
+		for (String sugerencia : result) {
+			listaRubros.add(sugerencia);
+		}
+
+	}
+
+	protected void cargarSugerenciaEmpresas(List<String> result) {
+
+		for (String sugerencia : result) {
+			listaEmpresas.add(sugerencia);
+		}
 
 	}
 
 	protected void cargarTabla() {
-		
-		if(contacto.getValue()==true){
-			//ARMA EL ENCABEZADO DE LA LISTA
+
+		if (contacto.getValue() == true) {
+
+			String contacto = contactoSb.getText();
+
+			// ARMA EL ENCABEZADO DE LA LISTA
 			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
 			tablaElemento.getCellFormatter().setWidth(0, COL_RUBRO, "145px");
 			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
@@ -190,63 +248,172 @@ public class P_BuscarCliente extends PopupPanel {
 			tablaElemento.getCellFormatter().setWidth(0, COL_CARGO, "145px");
 			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
 			tablaElemento.getCellFormatter().setWidth(0, COL_INFO, "20px");
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");	
-			//REALIZA LA BÚSQUEDA Y CARGA EL RESULTADO EN LA LISTA
+			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+
+			ventasService.getEmpresasPorContacto(contacto, new AsyncCallback<List<ContactoDTO>>() {
+				@Override
+				public void onSuccess(List<ContactoDTO> result) {
+					if (result.size() > 0) {
+						contactos = result;
+						cargarContactos();
+					} else
+						Window.alert("No se han encontrado resultados");
+
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR al buscar contacto");
+				}
+			});
+
+		} else if (rubro.getValue() == true) {
+
+			String rubro = rubroSb.getText();
+
+			// ARMA EL ENCABEZADO DE LA LISTA
+			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+			tablaElemento.setText(0, COL_MAIL, constante.eMail());
+			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+
+			ventasService.getEmpresasPorRubro(rubro, new AsyncCallback<List<ClienteDTO>>() {
+				@Override
+				public void onSuccess(List<ClienteDTO> result) {
+
+					if (result.size() > 0) {
+						clientes = result;
+						cargarClientes();
+					} else
+						Window.alert("No se han encontrado resultados");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR al buscar empresa");
+				}
+			});
+
+		} else if (empresa.getValue() == true) {
+
+			String empresa = empresaSb.getText();
+
+			// ARMA EL ENCABEZADO DE LA LISTA
+			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+			tablaElemento.setText(0, COL_MAIL, constante.eMail());
+			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+
+			ventasService.getEmpresas(empresa, new AsyncCallback<List<ClienteDTO>>() {
+				@Override
+				public void onSuccess(List<ClienteDTO> result) {
+
+					if (result.size() > 0) {
+						clientes = result;
+						cargarClientes();
+					} else
+						Window.alert("No se han encontrado resultados");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR al buscar empresa");
+				}
+			});
+
+		} else
+			Window.alert("DEBE SELECCIONAR UN TIPO DE BUSQUEDA");
+
+	}
+
+	protected void cargarClientes() {
+		
+		for (int i = 0; i < clientes.size(); i++) {
 			
-			//POR CADA ELEMENTO RECUPERADO DEL SISTEMA
-			tablaElemento.setWidget(1, COL_RUBRO, new Label("MADERERA"));
+			tablaElemento.setWidget(i+1, COL_RUBRO, new Label(clientes.get(i).getRubro()));
 			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
-			tablaElemento.setWidget(1, COL_EMPRESA, new Label("FORESTAL"));
+			tablaElemento.setWidget(i+1, COL_EMPRESA, new Label(clientes.get(i).getNombre()));
 			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
-			tablaElemento.setWidget(1, COL_NOMBRE, new Label("CARLOS LOPEZ"));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_NOMBRE, false);
-			tablaElemento.setWidget(1, COL_CARGO, new Label("GERENTE"));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_CARGO, true);
-			tablaElemento.setWidget(1, COL_INFO, info);
+			tablaElemento.setWidget(i+1, COL_TELEFONO, new Label(clientes.get(i).getTelefono()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_TELEFONO, false);
+			tablaElemento.setWidget(i+1, COL_MAIL, new Label(clientes.get(i).getMail()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_MAIL, true);
+			tablaElemento.setWidget(i+1, COL_INFO, info);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(1, COL_INFO,HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
 			info.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event){
-					P_DatoEmpresa datoEmpresa = new P_DatoEmpresa();
+
+					Cell celda = tablaElemento.getCellForEvent(event);				
+					String nombreEmp = clientes.get(celda.getRowIndex()-1).getNombre(); 
+					
+					VentasServiceAsync ventasService = GWT.create(VentasService.class);
+					ventasService.getEmpresaCompleta(nombreEmp, new AsyncCallback<ClienteDTO>() {
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR al buscar empresa");
+						}
+						@Override
+						public void onSuccess(ClienteDTO result) {
+							empresaInfo = result;		
+						}
+						
+					});
+
+					
+					P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(empresaInfo);
 					datoEmpresa.setGlassEnabled(true);
 					datoEmpresa.center();
 					datoEmpresa.show();	
+					
 				}
 			});
-			
+				
 		}
-		else if(rubro.getValue()==true){
-			//ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
-			tablaElemento.setText(0, COL_MAIL, constante.eMail());
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
-			
-			//REALIZA LA BÚSQUEDA Y CARGA EL RESULTADO EN LA LISTA
-			
-			
+	}
+
+
+	protected void cargarContactos() {
+
+		for (int i = 0; i < contactos.size(); i++) {
+
+			tablaElemento.setWidget(i + 1, COL_RUBRO, new Label(contactos.get(i).getCliente().getRubro()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
+			tablaElemento.setWidget(i + 1, COL_EMPRESA, new Label(contactos.get(i).getCliente().getNombre()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
+			tablaElemento.setWidget(i + 1, COL_NOMBRE, new Label(contactos.get(i).getNombre()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_NOMBRE, false);
+			tablaElemento.setWidget(i + 1, COL_CARGO, new Label(contactos.get(i).getCargo()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_CARGO, true);
+			tablaElemento.setWidget(i + 1, COL_INFO, info);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
+			info.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+//					P_DatoEmpresa datoEmpresa = new P_DatoEmpresa();
+//					datoEmpresa.setGlassEnabled(true);
+//					datoEmpresa.center();
+//					datoEmpresa.show();
+				}
+			});
+
 		}
-		else if(empresa.getValue()==true){
-			//ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
-			tablaElemento.setText(0, COL_MAIL, constante.eMail());
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
-			
-			//REALIZA LA BÚSQUEDA Y CARGA EL RESULTADO EN LA LISTA
-			
-		}
-		else
-			Window.alert("DEBE SELECCIONAR UN TIPO DE BUSQUEDA");
-		
+
 	}
 
 	protected void seleccionContacto() {
-		if(contacto.getValue()==true){
+		if (contacto.getValue() == true) {
 			empresa.setValue(false);
 			rubro.setValue(false);
 			contactoSb.getTextBox().setEnabled(true);
@@ -255,8 +422,7 @@ public class P_BuscarCliente extends PopupPanel {
 			rubroSb.getTextBox().setValue("");
 			rubroSb.getTextBox().setEnabled(false);
 
-		}
-		else{
+		} else {
 			empresa.setValue(false);
 			rubro.setValue(false);
 			contacto.setValue(false);
@@ -264,11 +430,11 @@ public class P_BuscarCliente extends PopupPanel {
 			empresaSb.getTextBox().setEnabled(true);
 			rubroSb.getTextBox().setEnabled(true);
 		}
-		
+
 	}
 
 	protected void seleccionRubro() {
-		if(rubro.getValue()==true){
+		if (rubro.getValue() == true) {
 			contacto.setValue(false);
 			empresa.setValue(false);
 			rubroSb.getTextBox().setEnabled(true);
@@ -276,20 +442,19 @@ public class P_BuscarCliente extends PopupPanel {
 			empresaSb.getTextBox().setEnabled(false);
 			contactoSb.getTextBox().setValue("");
 			contactoSb.getTextBox().setEnabled(false);
-		}
-		else{
+		} else {
 			empresa.setValue(false);
 			rubro.setValue(false);
 			contacto.setValue(false);
 			contactoSb.getTextBox().setEnabled(true);
 			empresaSb.getTextBox().setEnabled(true);
 			rubroSb.getTextBox().setEnabled(true);
-		}	
-		
+		}
+
 	}
 
 	protected void seleccionEmpresa() {
-		if(empresa.getValue()==true){
+		if (empresa.getValue() == true) {
 			contacto.setValue(false);
 			rubro.setValue(false);
 			empresaSb.getTextBox().setEnabled(true);
@@ -297,8 +462,7 @@ public class P_BuscarCliente extends PopupPanel {
 			contactoSb.getTextBox().setEnabled(false);
 			rubroSb.getTextBox().setValue("");
 			rubroSb.getTextBox().setEnabled(false);
-		}
-		else{
+		} else {
 			empresa.setValue(false);
 			rubro.setValue(false);
 			contacto.setValue(false);
@@ -306,7 +470,7 @@ public class P_BuscarCliente extends PopupPanel {
 			empresaSb.getTextBox().setEnabled(true);
 			rubroSb.getTextBox().setEnabled(true);
 		}
-		
+
 	}
 
 	protected void salir() {

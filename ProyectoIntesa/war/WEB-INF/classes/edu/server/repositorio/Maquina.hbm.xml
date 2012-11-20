@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Maquina" table="Maquina" schema="dbo" catalog="intesaDB">
+        <id name="idMaquina" type="int">
+            <column name="id_Maquina" />
+            <generator class="identity" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" not-null="true" />
+        </property>
+        <set name="proveedors" table="Maquina_de_Tercero" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_Maquina" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.server.repositorio.Proveedor">
+                <column name="codigo_Proveedor" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

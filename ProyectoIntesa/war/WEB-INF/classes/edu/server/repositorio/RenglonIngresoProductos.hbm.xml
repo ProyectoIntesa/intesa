@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.RenglonIngresoProductos" table="Renglon_Ingreso_Productos" schema="dbo" catalog="intesaDB">
+        <composite-id name="id" class="edu.server.repositorio.RenglonIngresoProductosId">
+            <key-property name="idRenglonIngresoProductos" type="int">
+                <column name="id_Renglon_Ingreso_Productos" />
+            </key-property>
+            <key-property name="idIngreso" type="long">
+                <column name="id_Ingreso" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="producto" class="edu.server.repositorio.Producto" fetch="select">
+            <column name="id_Producto" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="double">
+            <column name="cantidad" precision="53" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

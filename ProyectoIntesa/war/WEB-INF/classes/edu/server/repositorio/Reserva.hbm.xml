@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Reserva" table="Reserva" schema="dbo" catalog="intesaDB">
+        <id name="idReserva" type="int">
+            <column name="id_Reserva" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="ordenFabricacionGeneral" class="edu.server.repositorio.OrdenFabricacionGeneral" fetch="select">
+            <column name="id_Orden_Fabricacion" not-null="true" />
+        </many-to-one>
+        <many-to-one name="inventario" class="edu.server.repositorio.Inventario" fetch="select">
+            <column name="id_Inventario" not-null="true" />
+        </many-to-one>
+        <property name="cantidadReservada" type="double">
+            <column name="cantidad_Reservada" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="cantReservadaPendienteEntrega" type="java.lang.Double">
+            <column name="cant_Reservada_Pendiente_Entrega" precision="53" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

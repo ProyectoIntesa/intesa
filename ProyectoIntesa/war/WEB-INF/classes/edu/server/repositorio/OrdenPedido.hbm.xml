@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.OrdenPedido" table="Orden_Pedido" schema="dbo" catalog="intesaDB">
+        <id name="nroOrden" type="long">
+            <column name="nro_Orden" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="estadoOrden" class="edu.server.repositorio.EstadoOrden" fetch="select">
+            <column name="id_Estado_Orden" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cliente" class="edu.server.repositorio.Cliente" fetch="select">
+            <column name="id_Cliente" />
+        </many-to-one>
+        <many-to-one name="empleado" class="edu.server.repositorio.Empleado" fetch="select">
+            <column name="id_Responsable" not-null="true" />
+        </many-to-one>
+        <property name="fechaEdicion" type="timestamp">
+            <column name="fecha_Edicion" length="23" not-null="true" />
+        </property>
+        <property name="fechaGeneracion" type="timestamp">
+            <column name="fecha_Generacion" length="23" />
+        </property>
+        <property name="fechaCierre" type="timestamp">
+            <column name="fecha_Cierre" length="23" />
+        </property>
+        <property name="fechaPrevistaEntrega" type="timestamp">
+            <column name="fecha_Prevista_Entrega" length="23" />
+        </property>
+        <property name="planificada" type="boolean">
+            <column name="planificada" not-null="true" />
+        </property>
+        <property name="ordenCompra" type="string">
+            <column name="orden_Compra" />
+        </property>
+        <property name="presupuesto" type="string">
+            <column name="presupuesto" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" />
+        </property>
+        <set name="renglonOrdenPedidos" table="Renglon_Orden_Pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Pedido" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonOrdenPedido" />
+        </set>
+        <set name="ordenFabricacionGenerals" table="Orden_Fabricacion_General" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Orden_Pedido" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenFabricacionGeneral" />
+        </set>
+    </class>
+</hibernate-mapping>

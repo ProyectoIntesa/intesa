@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Producto" table="Producto" schema="dbo" catalog="intesaDB">
+        <id name="idProducto" type="int">
+            <column name="id_Producto" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="medida" type="string">
+            <column name="medida" not-null="true" />
+        </property>
+        <property name="pesoUnitario" type="double">
+            <column name="peso_Unitario" precision="53" scale="0" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="renglonOrdenProvisionInternas" table="Renglon_Orden_Provision_Interna" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonOrdenProvisionInterna" />
+        </set>
+        <set name="renglonListaDeMaterialeses" table="Renglon_Lista_de_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonListaDeMateriales" />
+        </set>
+        <set name="renglonIngresoProductoses" table="Renglon_Ingreso_Productos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonIngresoProductos" />
+        </set>
+        <set name="inventarios" table="Inventario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.Inventario" />
+        </set>
+        <set name="renglonOrdenCompraCotizacions" table="Renglon_Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RenglonOrdenCompraCotizacion" />
+        </set>
+        <set name="requerimientoMaterialeses" table="Requerimiento_Materiales" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Producto" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.RequerimientoMateriales" />
+        </set>
+    </class>
+</hibernate-mapping>

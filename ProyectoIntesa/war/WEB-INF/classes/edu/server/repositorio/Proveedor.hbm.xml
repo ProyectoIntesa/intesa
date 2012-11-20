@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-oct-2012 11:52:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="edu.server.repositorio.Proveedor" table="Proveedor" schema="dbo" catalog="intesaDB">
+        <id name="codigoProveedor" type="int">
+            <column name="codigo_Proveedor" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="direccion" class="edu.server.repositorio.Direccion" fetch="select">
+            <column name="id_Direccion" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="cuit" type="string">
+            <column name="cuit" not-null="true" />
+        </property>
+        <property name="responsable" type="string">
+            <column name="responsable" not-null="true" />
+        </property>
+        <property name="rubro" type="string">
+            <column name="rubro" />
+        </property>
+        <property name="tipoProveedor" type="string">
+            <column name="tipo_Proveedor" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" />
+        </property>
+        <property name="mail" type="string">
+            <column name="mail" />
+        </property>
+        <property name="fax" type="string">
+            <column name="fax" />
+        </property>
+        <property name="paginaWeb" type="string">
+            <column name="pagina_Web" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="proveedorDeInsumos" table="Proveedor_de_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Proveedor" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.ProveedorDeInsumo" />
+        </set>
+        <set name="ordenTrabajoSectorTerceros" table="Orden_Trabajo_SectorTercero" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Proveedor" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenTrabajoSectorTercero" />
+        </set>
+        <set name="maquinas" table="Maquina_de_Tercero" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigo_Proveedor" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.server.repositorio.Maquina">
+                <column name="id_Maquina" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Proveedor" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenCompraInsumo" />
+        </set>
+        <set name="proveedorDeProductos" table="Proveedor_de_Producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Proveedor" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.ProveedorDeProducto" />
+        </set>
+        <set name="ordenCompraCotizacions" table="Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Proveedor" not-null="true" />
+            </key>
+            <one-to-many class="edu.server.repositorio.OrdenCompraCotizacion" />
+        </set>
+        <set name="contactos" table="Contacto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_Empresa" />
+            </key>
+            <one-to-many class="edu.server.repositorio.Contacto" />
+        </set>
+    </class>
+</hibernate-mapping>
