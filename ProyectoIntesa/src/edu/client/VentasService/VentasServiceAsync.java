@@ -30,6 +30,14 @@ public interface VentasServiceAsync {
 
 	void eliminarContacto(String nombreEmpresa, String nombreContacto, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
+	void registrarCambioCliente(ClienteDTO cliente, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void eliminarEmpresa(String nombreEmpresa, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void modificarContacto(ContactoDTO contacto, int idContacto, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void retornaIdContacto(String nombreEmpresa, String nombreContacto, AsyncCallback<Integer> callback) throws IllegalArgumentException;
+
 
 
 	

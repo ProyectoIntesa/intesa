@@ -78,6 +78,58 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
+	public Boolean registrarCambioCliente(ClienteDTO cliente) throws IllegalArgumentException{
+		Pais pais = new Pais();
+		Provincia provincia = new Provincia();
+		Localidad local = new Localidad();
+		Direccion domicilio = new Direccion();
+		Cliente nuevo = new Cliente();
+		pais.setNombre(cliente.getDireccion().getPais().toUpperCase());
+		provincia.setNombre(cliente.getDireccion().getProvincia().toUpperCase());
+		local.setNombre(cliente.getDireccion().getLocalidad().toUpperCase());
+		local.setCodigoPostal(cliente.getDireccion().getCodigoLocalidad());
+		provincia.setPais(pais);
+		local.setProvincia(provincia);
+		
+		domicilio.setCalle(cliente.getDireccion().getCalle());
+		domicilio.setAltura(cliente.getDireccion().getAltura());
+		domicilio.setPiso(cliente.getDireccion().getPiso());
+		domicilio.setOficina(cliente.getDireccion().getOficina());
+		domicilio.setCpa(cliente.getDireccion().getCpa());
+		domicilio.setLocalidad(local);
+
+		nuevo.setNombre(cliente.getNombre());
+		nuevo.setCuit(cliente.getCuit());
+		nuevo.setResponsable(cliente.getResponsable());
+		nuevo.setRubro(cliente.getRubro());
+		nuevo.setFax(cliente.getFax());
+		nuevo.setTelefono(cliente.getTelefono());
+		nuevo.setPaginaWeb(cliente.getPaginaWeb());
+		nuevo.setMail(cliente.getMail());
+		nuevo.setObservaciones(cliente.getObservaciones());
+		nuevo.setDireccion(domicilio);
+		if (cliente.getContacto().size() > 0) {
+			for (ContactoDTO contacto : cliente.getContacto()) {
+				Contacto nuevoCont = new Contacto();
+				nuevoCont.setCargo(contacto.getCargo());
+				nuevoCont.setCelular(contacto.getCelular());
+				nuevoCont.setInternoEmpresa(contacto.getInternoEmpresa());
+				nuevoCont.setMail(contacto.getMail());
+				nuevoCont.setNombre(contacto.getNombre());
+				nuevoCont.setTelefonoEmpresa(contacto.getTelefonoEmpresa());
+				nuevoCont.setTelefonoParticular(contacto.getTelefonoParticular());
+				nuevoCont.setCliente(nuevo);
+				nuevo.getContactos().add(nuevoCont);
+			}
+		}
+		Ventas adminVnetas = new Ventas();
+		return adminVnetas.registrarCambiosCliente(nuevo);
+	}
+	
+	
+	
+	
+	@Override
 	public List<String> getNombresEmpresas() throws IllegalArgumentException {
 		
 		Ventas adminVentas = new Ventas();
@@ -278,9 +330,50 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
+	@Override
+	public Boolean eliminarEmpresa(String nombreEmpresa) throws IllegalArgumentException{
+		
+		Ventas adminVentas = new Ventas();
+		 
+		return adminVentas.eliminarEmpresa(nombreEmpresa);
+		
+		
+		
+	}
+	
+	@Override
+	public Boolean modificarContacto(ContactoDTO contacto, int idContacto) throws IllegalArgumentException{
+		
+		
+		Contacto nuevoCont = new Contacto();
+		Ventas adminVentas = new Ventas();
+		Cliente cliente = adminVentas.getEmpresaCompleta(contacto.getCliente().getNombre());
+		
+		nuevoCont.setIdContacto(idContacto);
+		nuevoCont.setCargo(contacto.getCargo());
+		nuevoCont.setCelular(contacto.getCelular());
+		nuevoCont.setInternoEmpresa(contacto.getInternoEmpresa());
+		nuevoCont.setMail(contacto.getMail());
+		nuevoCont.setNombre(contacto.getNombre());
+		nuevoCont.setTelefonoEmpresa(contacto.getTelefonoEmpresa());
+		nuevoCont.setTelefonoParticular(contacto.getTelefonoParticular());
+		nuevoCont.setProveedor(null);
+		nuevoCont.setCliente(cliente);
+			
+				 
+		return adminVentas.registrarCambiosContacto(nuevoCont);
+		
+		
+	}
 	
 	
-	
+	@Override
+	public int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
+		
+		Ventas adminVentas = new Ventas();
+		return adminVentas.retornaIdContacto(nombreEmpresa, nombreContacto);	
+		
+	}
 	
 	
 	

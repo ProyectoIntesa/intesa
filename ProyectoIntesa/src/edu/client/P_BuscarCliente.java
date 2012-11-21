@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -63,9 +65,10 @@ public class P_BuscarCliente extends PopupPanel {
 
 	private List<ContactoDTO> contactos;
 	private List<ClienteDTO> clientes;
-	
+
 	private ClienteDTO empresaInfo;
 	private ContactoDTO contactoInfo;
+	private boolean modificarCliente;
 
 	public P_BuscarCliente() {
 
@@ -73,6 +76,8 @@ public class P_BuscarCliente extends PopupPanel {
 
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
+
+		this.modificarCliente = false;
 
 		listaEmpresas = new MultiWordSuggestOracle();
 		listaRubros = new MultiWordSuggestOracle();
@@ -125,7 +130,7 @@ public class P_BuscarCliente extends PopupPanel {
 		info.setStyleName("labelInfo");
 		infoC = new Label("");
 		infoC.setSize("16px", "16px");
-		infoC.setStyleName("labelInfo");		
+		infoC.setStyleName("labelInfo");
 		empresa = new RadioButton(constante.empresa());
 		empresa.setText(constante.empresa());
 		empresa.addClickHandler(new ClickHandler() {
@@ -341,54 +346,88 @@ public class P_BuscarCliente extends PopupPanel {
 	}
 
 	protected void cargarClientes() {
-		
-		for (int i = 0; i < clientes.size(); i++) {
-			
-			tablaElemento.setWidget(i+1, COL_RUBRO, new Label(clientes.get(i).getRubro()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
-			tablaElemento.setWidget(i+1, COL_EMPRESA, new Label(clientes.get(i).getNombre()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
-			tablaElemento.setWidget(i+1, COL_TELEFONO, new Label(clientes.get(i).getTelefono()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_TELEFONO, false);
-			tablaElemento.setWidget(i+1, COL_MAIL, new Label(clientes.get(i).getMail()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_MAIL, true);
-			tablaElemento.setWidget(i+1, COL_INFO, info);
-			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_INFO,HasHorizontalAlignment.ALIGN_CENTER);
-			tablaElemento.getRowFormatter().setStyleName(i+1, "tablaRenglon");
-			info.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event){
 
-					Cell celda = tablaElemento.getCellForEvent(event);				
-					String nombreEmp = clientes.get(celda.getRowIndex()-1).getNombre(); 
-										
+		for (int i = 0; i < clientes.size(); i++) {
+
+			tablaElemento.setWidget(i + 1, COL_RUBRO, new Label(clientes.get(i).getRubro()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
+			tablaElemento.setWidget(i + 1, COL_EMPRESA, new Label(clientes.get(i).getNombre()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
+			tablaElemento.setWidget(i + 1, COL_TELEFONO, new Label(clientes.get(i).getTelefono()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_TELEFONO, false);
+			tablaElemento.setWidget(i + 1, COL_MAIL, new Label(clientes.get(i).getMail()));
+			tablaElemento.getCellFormatter().setWordWrap(1, COL_MAIL, true);
+			tablaElemento.setWidget(i + 1, COL_INFO, info);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().setStyleName(i + 1, "tablaRenglon");
+			info.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+
+					Cell celda = tablaElemento.getCellForEvent(event);
+					String nombreEmp = clientes.get(celda.getRowIndex() - 1).getNombre();
+
 					VentasServiceAsync ventasService = GWT.create(VentasService.class);
 					ventasService.getEmpresaCompleta(nombreEmp, new AsyncCallback<ClienteDTO>() {
-						
+
 						@Override
 						public void onFailure(Throwable caught) {
 							Window.alert("ERROR al buscar empresa");
 						}
+
 						@Override
 						public void onSuccess(ClienteDTO result) {
+							// empresaInfo = result;
+							// P_DatoEmpresa datoEmpresa = new
+							// P_DatoEmpresa(empresaInfo);
+							// datoEmpresa.setGlassEnabled(true);
+							// datoEmpresa.center();
+							// datoEmpresa.show();
+							// salir();
+
 							empresaInfo = result;
-							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(empresaInfo);
-							datoEmpresa.setGlassEnabled(true);
-							datoEmpresa.center();
-							datoEmpresa.show();		
-							salir();
+							final P_DatoEmpresa popUp = new P_DatoEmpresa(empresaInfo);
+							popUp.setGlassEnabled(true);
+							popUp.center();
+							popUp.show();
+							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+								boolean modificar = false;
+
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {
+
+									modificar = popUp.getModificarCliente();
+
+									if (modificar == true) {
+										modificarCliente();
+									}
+									if (modificar == false) {
+										salir();
+									}
+								}
+							});
+
 						}
-						
+
 					});
 
-					
-
-					
 				}
 			});
-				
+
 		}
 	}
 
+	public void modificarCliente() {
+		this.modificarCliente = true;
+		this.hide();
+	}
+
+	public ClienteDTO getClienteDTO() {
+		return this.empresaInfo;
+	}
+
+	public boolean getModificarCliente() {
+		return this.modificarCliente;
+	}
 
 	protected void cargarContactos() {
 
@@ -407,31 +446,31 @@ public class P_BuscarCliente extends PopupPanel {
 			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
 			infoC.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					
-					Cell celda = tablaElemento.getCellForEvent(event);				
-					String nombreCont = contactos.get(celda.getRowIndex()-1).getNombre();
-					final String nombreEmp = contactos.get(celda.getRowIndex()-1).getCliente().getNombre();
-					final String rubroEmp = contactos.get(celda.getRowIndex()-1).getCliente().getRubro();
-					
-					
+
+					Cell celda = tablaElemento.getCellForEvent(event);
+					String nombreCont = contactos.get(celda.getRowIndex() - 1).getNombre();
+					final String nombreEmp = contactos.get(celda.getRowIndex() - 1).getCliente().getNombre();
+					final String rubroEmp = contactos.get(celda.getRowIndex() - 1).getCliente().getRubro();
+
 					VentasServiceAsync ventasService = GWT.create(VentasService.class);
 					ventasService.getContactoCompleto(nombreCont, nombreEmp, new AsyncCallback<ContactoDTO>() {
-						
+
 						@Override
 						public void onFailure(Throwable caught) {
 							Window.alert("ERROR al buscar empresa");
 						}
+
 						@Override
 						public void onSuccess(ContactoDTO result) {
 							contactoInfo = result;
 
-							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo,nombreEmp,rubroEmp);
+							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo, nombreEmp, rubroEmp);
 							datoEmpresa.setGlassEnabled(true);
 							datoEmpresa.center();
-							datoEmpresa.show();	
+							datoEmpresa.show();
 							salir();
 						}
-						
+
 					});
 
 				}

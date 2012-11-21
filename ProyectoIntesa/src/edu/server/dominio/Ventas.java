@@ -22,7 +22,6 @@ public class Ventas {
 		
 	}
 	
-	
 	public Boolean registrarCliente(Cliente cliente){
 		
 		AdministradorLocalidades adminLoc = new AdministradorLocalidades();
@@ -31,9 +30,10 @@ public class Ventas {
 		try {
 			sec.beginTransaction();
 			
-			String nombrePais=cliente.getDireccion().getLocalidad().getProvincia().getPais().getNombre();
+			String nombrePais = cliente.getDireccion().getLocalidad().getProvincia().getPais().getNombre();
 			String nombreProvincia = cliente.getDireccion().getLocalidad().getProvincia().getNombre();
 			String nombreLocalidad = cliente.getDireccion().getLocalidad().getNombre();
+			
 			int paisEx =adminLoc.paisConsulta(nombrePais,sec);
 			if (paisEx != -1) {
 				cliente.getDireccion().getLocalidad().getProvincia().getPais().setIdPais(paisEx);
@@ -80,8 +80,93 @@ public class Ventas {
 		
 	}
 	
+	public Boolean registrarCambiosCliente(Cliente clienteNuevo){
+		
+		AdministradorLocalidades adminLoc = new AdministradorLocalidades();
+		Cliente clienteViejo = this.getEmpresaCompleta(clienteNuevo.getNombre());
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		try{
+		
+			for (Contacto contacto : clienteNuevo.getContactos()) {
+				
+				if (!clienteViejo.getContactos().contains(contacto)){
+					contacto.getCliente().setIdCliente(clienteViejo.getIdCliente());
+					sec.save(contacto);
+				}
+			}
+			
+			for (Contacto contacto : clienteViejo.getContactos()) {
+				
+				if (!clienteNuevo.getContactos().contains(contacto)){
+					sec.delete(contacto);
+				}
+			}		
+			
+			
+			
+			String nombrePais = clienteNuevo.getDireccion().getLocalidad().getProvincia().getPais().getNombre();
+			String nombreProvincia = clienteNuevo.getDireccion().getLocalidad().getProvincia().getNombre();
+			String nombreLocalidad = clienteNuevo.getDireccion().getLocalidad().getNombre();
+			
+			int paisEx =adminLoc.paisConsulta(nombrePais,sec);
+			if (paisEx != -1) {
+				clienteNuevo.getDireccion().getLocalidad().getProvincia().getPais().setIdPais(paisEx);
+			}else
+			{
+				sec.save(clienteNuevo.getDireccion().getLocalidad().getProvincia().getPais());
+				paisEx =adminLoc.paisConsulta(nombrePais,sec);
+				clienteNuevo.getDireccion().getLocalidad().getProvincia().getPais().setIdPais(paisEx);
+			}
+			int provEx = adminLoc.provinciaConsulta(nombreProvincia,sec);
+			if (provEx != -1) {
+				clienteNuevo.getDireccion().getLocalidad().getProvincia().setIdProvincia(provEx);
+			}else
+			{
+				sec.save(clienteNuevo.getDireccion().getLocalidad().getProvincia());
+				provEx = adminLoc.provinciaConsulta(nombreProvincia,sec);
+				clienteNuevo.getDireccion().getLocalidad().getProvincia().setIdProvincia(provEx);
+			}
+			int locEx = adminLoc.localidadConsulta(nombreLocalidad,nombreProvincia,sec);
+			if (locEx != -1) {
+				clienteNuevo.getDireccion().getLocalidad().setIdLocalidad(locEx);
+			} else 
+			{
+				sec.save(clienteNuevo.getDireccion().getLocalidad());
+				locEx = adminLoc.localidadConsulta(nombreLocalidad,nombreProvincia,sec);
+				clienteNuevo.getDireccion().getLocalidad().setIdLocalidad(locEx);
+			}
+			
+			
+			clienteNuevo.getDireccion().setIdDireccion(clienteViejo.getDireccion().getIdDireccion());			
+			sec.update(clienteNuevo.getDireccion());
+			clienteNuevo.setIdCliente(clienteViejo.getIdCliente());
+			sec.update(clienteNuevo);
+			
+			sec.getTransaction().commit();
+			
+			return true; 
+						
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+			
+	}
 	
-	
+	public int nombreEmpresaExistente(String nombreEmpresa) {
+		Cliente result;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		result = (Cliente) sec.createQuery("from Cliente where nombre like '" + nombreEmpresa + "'").uniqueResult();
+		sec.close();
+		if (result != null)
+			return result.getIdCliente();
+		else
+			return -1;
+	}
+		
 	public List<String> getNombresEmpresas(){
 		
 		List<String> result = new LinkedList<String>();
@@ -148,8 +233,7 @@ public class Ventas {
 		return result;
 		
 	}
-	
-	
+		
 	public List<Cliente> getEmpresas(String nombre){
 		
 		List<Cliente> result = new LinkedList<Cliente>();
@@ -214,7 +298,6 @@ public class Ventas {
 		return result;
 	}
 	
-	
 	public Cliente getEmpresaCompleta(String nombre){
 		
 		Cliente result;
@@ -261,11 +344,7 @@ public class Ventas {
 		return contacto;		
 		
 	}
-	
-	
-	
-	
-	
+		
 	public Contacto getContactoIdContacto(int idContacto){
 		
 		Contacto result = new Contacto();
@@ -303,7 +382,71 @@ public class Ventas {
 		
 		
 	}
+		
+	public Boolean eliminarEmpresa(String nombreEmpresa){
+		Boolean result = false;
+		Cliente emp = this.getEmpresaCompleta(nombreEmpresa);
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try{
+			
+			sec.beginTransaction();
+			for (Contacto contacto : emp.getContactos()) {
+				contacto.setCliente(emp);
+				sec.delete(contacto);
+			}
+			
+			sec.delete(emp);
+			sec.delete(emp.getDireccion());
+			sec.getTransaction().commit();
+			result = true;
+			
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+		return result;
 	
+	}
+	
+	public Boolean registrarCambiosContacto(Contacto contactoNuevo){
+		
+		Boolean result = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try{
+	
+			sec.beginTransaction();
+			sec.update(contactoNuevo);
+			sec.getTransaction().commit();
+			result = true;			
+			
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return result;
+		
+		
+	}
+	
+	public int retornaIdContacto(String nombreEmpresa, String nombreContacto){
+		
+		Object result;
+		
+		String consulta = "select c.id_Contacto from Contacto as c, Cliente as e where c.nombre like '"+nombreContacto+"' and c.id_Cliente = e.id_Cliente and e.nombre like '"+nombreEmpresa+"'";
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		result =  sec.createSQLQuery(consulta).uniqueResult();
+		sec.close();
+		if (result != null)
+			return (int) result;
+		else
+			return -1;
+	
+		
+	}
 	
 	
 	

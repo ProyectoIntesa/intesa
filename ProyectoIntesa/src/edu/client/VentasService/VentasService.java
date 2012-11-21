@@ -31,6 +31,14 @@ public interface VentasService extends RemoteService {
 
 	Boolean eliminarContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException;
 
+	Boolean registrarCambioCliente(ClienteDTO cliente) throws IllegalArgumentException;
+
+	Boolean eliminarEmpresa(String nombreEmpresa) throws IllegalArgumentException;
+
+	Boolean modificarContacto(ContactoDTO contacto, int idContacto) throws IllegalArgumentException;
+
+	int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException;
+
 
 
 }

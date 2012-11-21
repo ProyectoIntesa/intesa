@@ -58,7 +58,10 @@ public class P_DatoEmpresa extends PopupPanel {
 	
 	private ClienteDTO empSelec;
 	private ContactoDTO contSelec;
-
+	private boolean modificarCliente = false;
+	private String empresaContacto;
+	
+	
 	public P_DatoEmpresa(ClienteDTO empSelec) {
 
 		super(false);
@@ -115,14 +118,14 @@ public class P_DatoEmpresa extends PopupPanel {
 		modificar = new Button(constante.modificar());
 		modificar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//salir();
+				modificarCliente();
 			}
 		});
 
 		eliminar = new Button(constante.eliminarCliente());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//salir();
+				eliminarCliente();
 			}
 		});
 		
@@ -216,14 +219,18 @@ public class P_DatoEmpresa extends PopupPanel {
 
 	}
 
-	
-	
+
+
+
+
 	public P_DatoEmpresa(ContactoDTO cont, String emp, String rubroEmp) {
+
 
 		super(false);
 		
 		this.contSelec = cont;
-
+		this.empresaContacto = emp;
+		
 		final String nombreEmpresa = emp;
 		
 		setStyleName("fondoPopup");
@@ -240,7 +247,7 @@ public class P_DatoEmpresa extends PopupPanel {
 		modificar = new Button(constante.modificar());
 		modificar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//salir();
+				modificarContacto();
 			}
 		});
 
@@ -310,7 +317,50 @@ public class P_DatoEmpresa extends PopupPanel {
 	}
 	
 	
+	protected void modificarContacto() {
+		
+		
+		ClienteDTO cliente = new ClienteDTO();
+		cliente.setNombre(empresaContacto);
+		contSelec.setCliente(cliente);
+		P_AgregarContacto popUp = new P_AgregarContacto(contSelec);
+		popUp.setGlassEnabled(true);
+		popUp.center();
+		popUp.show();
+		salir();
+		
+		
+		
+	}
+
+
+
+
+
+	protected void eliminarCliente() {
+		
+		VentasServiceAsync ventasService = GWT.create(VentasService.class);
+		
+		ventasService.eliminarEmpresa(empSelec.getNombre(), new AsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean result) {
+				Window.alert("El cliente ha sido eliminado de manera exitosa");
+				salir();
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR al eliminar el cliente");
+			}
+		});
+		
+	}
 	
+	
+	protected void modificarCliente() {
+		this.modificarCliente = true;
+		this.hide();		
+	}
+
 	protected void eliminarContacto(String nombreEmpresa, String nombreContacto) {
 		
 		VentasServiceAsync ventasService = GWT.create(VentasService.class);
@@ -331,12 +381,16 @@ public class P_DatoEmpresa extends PopupPanel {
 		
 	}
 
-
-
 	protected void salir() {
 		this.hide();
 
 	}
 	
+	public ClienteDTO getEmpleado(){
+		return empSelec;
+	}
 	
+	public boolean getModificarCliente(){
+		return modificarCliente;
+	}
 }

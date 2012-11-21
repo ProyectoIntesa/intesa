@@ -52,6 +52,8 @@ public class P_PantallaAdministrador extends Composite {
 
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
+	
+	
 	public P_PantallaAdministrador(String usuarioLogueado) {
 
 		try {

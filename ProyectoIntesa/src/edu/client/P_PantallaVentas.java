@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -14,11 +16,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+
+import edu.shared.DTO.ClienteDTO;
 
 public class P_PantallaVentas extends Composite {
 
@@ -41,9 +46,14 @@ public class P_PantallaVentas extends Composite {
 	private TreeItem verOrdenes;
 	private TreeItem planificadaOrden;
 	private TabPanel panelTrabajo;
+	private ClienteDTO clienteSelec;
+	private ScrollPanel formulario;
+
 
 	public P_PantallaVentas(String usuarioLogueado) {
 
+
+		
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;
 		anchoLateral = 180;
@@ -178,7 +188,6 @@ public class P_PantallaVentas extends Composite {
 
 	protected void procesa(SelectionEvent<TreeItem> event) {
 		String titulo;
-		ScrollPanel formulario;
 		int tab;
 
 		if (event.getSelectedItem() == nuevoCliente) {
@@ -190,8 +199,7 @@ public class P_PantallaVentas extends Composite {
 				formulario = new ScrollPanel();
 				formulario.setTitle(titulo);
 				formulario.setStyleName("panelFormulario");
-				formulario.setSize((ancho - anchoLateral - 25) + "px",
-						(alto - 145) + "px");
+				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
 				P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo);
 				formulario.add(cliente);
 				panelTrabajo.add(formulario, titulo, false);
@@ -200,13 +208,40 @@ public class P_PantallaVentas extends Composite {
 				panelTrabajo.selectTab(tab);
 		}
 		if (event.getSelectedItem() == buscarCliente) {
-			titulo = constante.buscarCliente();
-			tab = numeroElemento(titulo);
+//			titulo = constante.buscarCliente();
+//			tab = numeroElemento(titulo);
+//			
+//			P_BuscarCliente popUp = new P_BuscarCliente();
+//			popUp.setGlassEnabled(true);
+//			popUp.center();
+//			popUp.show();	
 			
-			P_BuscarCliente popUp = new P_BuscarCliente();
-			popUp.setGlassEnabled(true);
-			popUp.center();
-			popUp.show();			
+			
+			
+			if(this.numeroElemento(constante.modificarCliente())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR CLIENTE");
+			}
+			else{
+				
+				final P_BuscarCliente popUp = new P_BuscarCliente();
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						clienteSelec= popUp.getClienteDTO();
+						boolean modificar = popUp.getModificarCliente();
+					
+						if (modificar == true)
+						{
+							modificarCliente();
+						}
+					}
+				});
+			}
 				
 		}
 
@@ -256,6 +291,28 @@ public class P_PantallaVentas extends Composite {
 //				panelTrabajo.selectTab(tab);
 		}
 
+	}
+
+	protected void modificarCliente() {
+		String titulo;
+		int tab;
+		titulo = constante.modificarCliente();
+		tab = numeroElemento(titulo);
+
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+			P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo,this.clienteSelec,titulo);
+			formulario.add(cliente);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+		
+		
 	}
 
 	private int numeroElemento(String titulo) {
