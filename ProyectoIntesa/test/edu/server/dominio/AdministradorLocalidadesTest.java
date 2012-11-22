@@ -2,19 +2,14 @@ package edu.server.dominio;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.server.repositorio.Localidad;
-import edu.server.repositorio.Pais;
-
 public class AdministradorLocalidadesTest {
-	
+
 	public AdministradorLocalidades pruebaLocal;
 
 	@BeforeClass
@@ -34,44 +29,40 @@ public class AdministradorLocalidadesTest {
 	public void tearDown() throws Exception {
 	}
 
-	
 	@Test
 	public void testpaisExtistente() {
 		int result = pruebaLocal.paisExtistente("ARGENTINA");
 		assertEquals(1, result);
 	}
-	
+
 	@Test
 	public void testpaisExtistenteFalla() {
 		int result = pruebaLocal.paisExtistente("URUGUAY");
 		assertEquals(-1, result);
 	}
-	
-	
+
 	@Test
 	public void testprovinciaExtistente() {
 		int result = pruebaLocal.provinciaExtistente("SANTA FE");
 		assertEquals(20, result);
 	}
-	
+
 	@Test
 	public void testprovinciaExtistenteFalla() {
 		int result = pruebaLocal.provinciaExtistente("sao pablo");
 		assertEquals(-1, result);
 	}
-	
+
 	@Test
 	public void testlocalidadExtistente() {
-		int result = pruebaLocal.localidadExtistente("RECONQUISTA","SANTA FE");
+		int result = pruebaLocal.localidadExtistente("RECONQUISTA", "SANTA FE");
 		assertEquals(16579, result);
 	}
-	
 
 	@Test
 	public void testlocalidadExtistenteFalla() {
-		int result = pruebaLocal.localidadExtistente("RECONQUISTA","SALTA");
+		int result = pruebaLocal.localidadExtistente("RECONQUISTA", "SALTA");
 		assertEquals(-1, result);
 	}
-
 
 }

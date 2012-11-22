@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -18,15 +19,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
-import edu.client.AdministradorService.AdministradorService;
-import edu.client.AdministradorService.AdministradorServiceAsync;
 import edu.client.VentasService.VentasService;
 import edu.client.VentasService.VentasServiceAsync;
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
-import edu.shared.DTO.EmpleadoDTO;
 
 public class P_BuscarCliente extends PopupPanel {
 
@@ -376,13 +373,6 @@ public class P_BuscarCliente extends PopupPanel {
 
 						@Override
 						public void onSuccess(ClienteDTO result) {
-							// empresaInfo = result;
-							// P_DatoEmpresa datoEmpresa = new
-							// P_DatoEmpresa(empresaInfo);
-							// datoEmpresa.setGlassEnabled(true);
-							// datoEmpresa.center();
-							// datoEmpresa.show();
-							// salir();
 
 							empresaInfo = result;
 							final P_DatoEmpresa popUp = new P_DatoEmpresa(empresaInfo);

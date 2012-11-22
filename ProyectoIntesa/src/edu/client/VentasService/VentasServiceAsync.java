@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
-import edu.shared.DTO.LocalidadDTO;
 
 public interface VentasServiceAsync {
 

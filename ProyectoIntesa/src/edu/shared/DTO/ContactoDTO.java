@@ -9,7 +9,7 @@ public class ContactoDTO implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1917163963435746758L;
-	//private ProveedorDTO proveedor;
+	private ProveedorDTO proveedor;
 	private ClienteDTO cliente;
 	private String nombre;
 	private String cargo;
@@ -29,6 +29,14 @@ public class ContactoDTO implements java.io.Serializable{
 
 	public void setCliente(ClienteDTO cliente) {
 		this.cliente = cliente;
+	}
+	
+	public ProveedorDTO getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(ProveedorDTO proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	public String getNombre() {

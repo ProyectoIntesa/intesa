@@ -208,15 +208,6 @@ public class P_PantallaVentas extends Composite {
 				panelTrabajo.selectTab(tab);
 		}
 		if (event.getSelectedItem() == buscarCliente) {
-//			titulo = constante.buscarCliente();
-//			tab = numeroElemento(titulo);
-//			
-//			P_BuscarCliente popUp = new P_BuscarCliente();
-//			popUp.setGlassEnabled(true);
-//			popUp.center();
-//			popUp.show();	
-			
-			
 			
 			if(this.numeroElemento(constante.modificarCliente())!=-1){
 				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR CLIENTE");

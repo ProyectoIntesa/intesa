@@ -17,8 +17,6 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 
-import edu.client.AdministradorService.AdministradorService;
-import edu.client.AdministradorService.AdministradorServiceAsync;
 import edu.client.VentasService.VentasService;
 import edu.client.VentasService.VentasServiceAsync;
 import edu.shared.DTO.ClienteDTO;

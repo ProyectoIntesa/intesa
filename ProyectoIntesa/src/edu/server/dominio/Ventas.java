@@ -222,7 +222,7 @@ public class Ventas {
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 		
-		busqueda = sec.createQuery("from Contacto where id_cliente is not null").list();
+		busqueda = sec.createQuery("from Contacto where id_Cliente is not null").list();
 		
 		sec.close();
 				
@@ -271,7 +271,7 @@ public class Ventas {
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 		
-		result = sec.createQuery("from Contacto where nombre like '"+nombre+"' and id_cliente is not null").list();
+		result = sec.createQuery("from Contacto where nombre like '"+nombre+"' and id_Cliente is not null").list();
 		
 		sec.close();		
 		

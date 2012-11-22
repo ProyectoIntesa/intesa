@@ -6,7 +6,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.AdministradorService.AdministradorService;
 import edu.server.dominio.Administrador;
-import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Empleado;
 import edu.server.repositorio.Usuario;
 import edu.shared.DTO.EmpleadoDTO;

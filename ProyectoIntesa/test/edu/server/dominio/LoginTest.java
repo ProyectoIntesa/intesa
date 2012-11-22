@@ -1,7 +1,7 @@
 package edu.server.dominio;
 
-import static org.junit.Assert.*;
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.hibernate.Session;
 import org.junit.After;

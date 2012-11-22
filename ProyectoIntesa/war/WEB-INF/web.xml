@@ -49,6 +49,17 @@
   </servlet-mapping>
   
   
+      <servlet>
+    <servlet-name>comprasServlet</servlet-name>
+    <servlet-class>edu.server.servicio.ComprasServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>comprasServlet</servlet-name>
+    <url-pattern>/proyectointesa/compras</url-pattern>
+  </servlet-mapping>
+  
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>ProyectoIntesa.html</welcome-file>

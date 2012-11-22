@@ -3,7 +3,6 @@ package edu.server.servicio;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.VentasService.VentasService;
@@ -18,8 +17,7 @@ import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.DireccionDTO;
 
-public class VentasServiceImpl extends RemoteServiceServlet implements
-		VentasService {
+public class VentasServiceImpl extends RemoteServiceServlet implements VentasService {
 
 	/**
 	 * 
@@ -27,8 +25,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements
 	private static final long serialVersionUID = -6738286800898820770L;
 
 	@Override
-	public Boolean registrarNuevoCliente(ClienteDTO cliente)
-			throws IllegalArgumentException {
+	public Boolean registrarNuevoCliente(ClienteDTO cliente) throws IllegalArgumentException {
 		Pais pais = new Pais();
 		Provincia provincia = new Provincia();
 		Localidad local = new Localidad();
