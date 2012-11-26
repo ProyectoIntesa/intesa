@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import edu.shared.DTO.ContactoDTO;
+import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 @RemoteServiceRelativePath("compras")
@@ -38,5 +39,11 @@ public interface ComprasService extends RemoteService {
 	int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException;
 
 	Boolean modificarContacto(ContactoDTO contacto, int idContacto) throws IllegalArgumentException;
+
+	List<String> getTipos() throws IllegalArgumentException;
+
+	List<ProveedorDTO> getEmpresasPorTipo(String nombre) throws IllegalArgumentException;
+
+	Boolean registrarNuevoInsumo(InsumoDTO insumo) throws IllegalArgumentException;
 
 }

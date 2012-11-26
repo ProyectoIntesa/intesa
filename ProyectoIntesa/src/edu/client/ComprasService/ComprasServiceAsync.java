@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import edu.shared.DTO.ContactoDTO;
+import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 public interface ComprasServiceAsync {
@@ -35,6 +36,12 @@ public interface ComprasServiceAsync {
 
 	void retornaIdContacto(String nombreEmpresa, String nombreContacto, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 
-	void modificarContacto(ContactoDTO contacto, int idContacto, AsyncCallback<Boolean> callback);
+	void modificarContacto(ContactoDTO contacto, int idContacto, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getTipos(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
+
+	void getEmpresasPorTipo(String nombre, AsyncCallback<List<ProveedorDTO>> callback) throws IllegalArgumentException;
+
+	void registrarNuevoInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 }

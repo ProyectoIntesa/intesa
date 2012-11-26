@@ -8,17 +8,24 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.client.ComprasService.ComprasService;
 import edu.server.dominio.Compras;
 import edu.server.dominio.Ventas;
+import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
+import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
+import edu.server.repositorio.Marca;
 import edu.server.repositorio.Pais;
 import edu.server.repositorio.Proveedor;
+import edu.server.repositorio.ProveedorDeInsumo;
+import edu.server.repositorio.ProveedorDeInsumoId;
 import edu.server.repositorio.Provincia;
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.DireccionDTO;
+import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
+import edu.shared.DTO.ProveedorDeInsumosDTO;
 
 public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasService {
 
@@ -214,6 +221,15 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 	
 	@Override
+	public List<String> getTipos() throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getTipos();
+		
+	}
+	
+	@Override
 	public List<String> getContactos() throws IllegalArgumentException {
 		
 		Compras adminCompras = new Compras();
@@ -308,6 +324,30 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 	
 	@Override
+	public List<ProveedorDTO> getEmpresasPorTipo(String nombre) throws IllegalArgumentException{
+		
+		List<ProveedorDTO> result = new LinkedList<ProveedorDTO>();
+		Compras adminCompras = new Compras();
+		List<Proveedor> busqueda = adminCompras.getEmpresasPorTipo(nombre);
+		
+		for (Proveedor proveedor : busqueda) {
+			
+			ProveedorDTO nuevo = new ProveedorDTO();
+			nuevo.setNombre(proveedor.getNombre());
+			nuevo.setRubro(proveedor.getRubro());
+			nuevo.setTelefono(proveedor.getTelefono());
+			nuevo.setMail(proveedor.getMail());
+			
+			result.add(nuevo);		
+			
+		}
+		
+		return result;
+		
+		
+	}
+	
+	@Override
 	public Boolean eliminarEmpresa(String nombreEmpresa) throws IllegalArgumentException{
 		
 		Compras adminCompras = new Compras();
@@ -374,5 +414,47 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.registrarCambiosContacto(nuevoCont);
 		
 		
+	}
+	
+	@Override
+	public Boolean registrarNuevoInsumo(InsumoDTO insumo) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		Marca marca = new Marca();
+		marca.setNombre(insumo.getMarca());
+	
+		Categoria categoria = new Categoria();
+		categoria.setNombre(insumo.getCategoria());
+		
+		Insumo nuevo = new Insumo();
+		nuevo.setCategoria(categoria);
+		nuevo.setMarca(marca);
+		nuevo.setNombre(insumo.getNombre());
+		nuevo.setLoteCompra(insumo.getLoteCompra());
+		nuevo.setStockSeguridad(insumo.getStockSeguridad());
+		nuevo.setObservaciones(insumo.getObservaciones());
+		
+		
+		if (insumo.getProveedor().size() > 0){
+			
+			for(ProveedorDeInsumosDTO proveedor : insumo.getProveedor()){
+				ProveedorDeInsumoId idPI = new ProveedorDeInsumoId();
+				Proveedor buscar = adminCompras.getProveedorPorNombre(proveedor.getNombre());
+				idPI.setIdProveedor(buscar.getCodigoProveedor());
+				ProveedorDeInsumo nuevoProv = new ProveedorDeInsumo();
+				nuevoProv.setProveedor(buscar);
+				nuevoProv.setId(idPI);
+				nuevoProv.setInsumo(nuevo);
+				nuevoProv.setObservaciones(proveedor.getObservaciones()); 
+				nuevoProv.setPrecio((double) proveedor.getPrecio());
+				
+				nuevo.getProveedorDeInsumos().add(nuevoProv);			
+				
+			}
+		}
+		
+		return adminCompras.registrarInsumo(nuevo);
+
 	}
 }

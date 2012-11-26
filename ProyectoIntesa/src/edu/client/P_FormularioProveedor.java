@@ -558,13 +558,13 @@ public class P_FormularioProveedor extends Composite {
 				}
 			});
 			
-			tablaElemento.setText(i+1, COL_NOMBRE, proveedorSeleccionado.getContacto().get(i).getNombre());
-			tablaElemento.setText(i+1, COL_CARGO, proveedorSeleccionado.getContacto().get(i).getCargo());
-			tablaElemento.setText(i+1, COL_TELEMPRESA, proveedorSeleccionado.getContacto().get(i).getTelefonoEmpresa());
-			tablaElemento.setText(i+1, COL_INTERNO, proveedorSeleccionado.getContacto().get(i).getInternoEmpresa());
-			tablaElemento.setText(i+1, COL_TELPARTICULAR, proveedorSeleccionado.getContacto().get(i).getTelefonoParticular());
-			tablaElemento.setText(i+1, COL_CELULAR, proveedorSeleccionado.getContacto().get(i).getCelular());
-			tablaElemento.setText(i+1, COL_CORREO, proveedorSeleccionado.getContacto().get(i).getMail());
+			tablaElemento.setWidget(i+1, COL_NOMBRE, new Label(proveedorSeleccionado.getContacto().get(i).getNombre()));
+			tablaElemento.setWidget(i+1, COL_CARGO, new Label(proveedorSeleccionado.getContacto().get(i).getCargo()));
+			tablaElemento.setWidget(i+1, COL_TELEMPRESA, new Label(proveedorSeleccionado.getContacto().get(i).getTelefonoEmpresa()));
+			tablaElemento.setWidget(i+1, COL_INTERNO, new Label(proveedorSeleccionado.getContacto().get(i).getInternoEmpresa()));
+			tablaElemento.setWidget(i+1, COL_TELPARTICULAR, new Label(proveedorSeleccionado.getContacto().get(i).getTelefonoParticular()));
+			tablaElemento.setWidget(i+1, COL_CELULAR, new Label(proveedorSeleccionado.getContacto().get(i).getCelular()));
+			tablaElemento.setWidget(i+1, COL_CORREO, new Label(proveedorSeleccionado.getContacto().get(i).getMail()));
 			tablaElemento.setWidget(i+1, COL_ELIMINAR, eliminar);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_ELIMINAR, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(i+1, "tablaRenglon");

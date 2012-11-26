@@ -537,14 +537,14 @@ public class P_FormularioCliente extends Composite {
 					eliminarContacto(nombreContacto);
 				}
 			});
-			
-			tablaElemento.setText(i+1, COL_NOMBRE, clienteSeleccionado.getContacto().get(i).getNombre());
-			tablaElemento.setText(i+1, COL_CARGO, clienteSeleccionado.getContacto().get(i).getCargo());
-			tablaElemento.setText(i+1, COL_TELEMPRESA, clienteSeleccionado.getContacto().get(i).getTelefonoEmpresa());
-			tablaElemento.setText(i+1, COL_INTERNO, clienteSeleccionado.getContacto().get(i).getInternoEmpresa());
-			tablaElemento.setText(i+1, COL_TELPARTICULAR, clienteSeleccionado.getContacto().get(i).getTelefonoParticular());
-			tablaElemento.setText(i+1, COL_CELULAR, clienteSeleccionado.getContacto().get(i).getCelular());
-			tablaElemento.setText(i+1, COL_CORREO, clienteSeleccionado.getContacto().get(i).getMail());
+
+			tablaElemento.setWidget(i+1, COL_NOMBRE, new Label(clienteSeleccionado.getContacto().get(i).getNombre()));
+			tablaElemento.setWidget(i+1, COL_CARGO, new Label(clienteSeleccionado.getContacto().get(i).getCargo()));
+			tablaElemento.setWidget(i+1, COL_TELEMPRESA, new Label(clienteSeleccionado.getContacto().get(i).getTelefonoEmpresa()));
+			tablaElemento.setWidget(i+1, COL_INTERNO, new Label(clienteSeleccionado.getContacto().get(i).getInternoEmpresa()));
+			tablaElemento.setWidget(i+1, COL_TELPARTICULAR, new Label(clienteSeleccionado.getContacto().get(i).getTelefonoParticular()));
+			tablaElemento.setWidget(i+1, COL_CELULAR, new Label(clienteSeleccionado.getContacto().get(i).getCelular()));
+			tablaElemento.setWidget(i+1, COL_CORREO, new Label(clienteSeleccionado.getContacto().get(i).getMail()));
 			tablaElemento.setWidget(i+1, COL_ELIMINAR, eliminar);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_ELIMINAR, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(i+1, "tablaRenglon");
@@ -594,7 +594,7 @@ public class P_FormularioCliente extends Composite {
 		if (tablaElemento.getRowCount() > 1) {
 
 			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-
+				
 				ContactoDTO contacto = new ContactoDTO();
 				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
 				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
@@ -630,7 +630,7 @@ public class P_FormularioCliente extends Composite {
 	}
 		
 	public void guardarCambiosCliente(ClickEvent event) {
-
+		
 		DireccionDTO direccion = new DireccionDTO();
 		direccion.setPais(this.paisTb.getText());
 		direccion.setProvincia(this.provinciaTb.getText());
@@ -641,7 +641,7 @@ public class P_FormularioCliente extends Composite {
 		direccion.setPiso(this.pisoTb.getText());
 		direccion.setOficina(this.oficinaTb.getText());
 		direccion.setCpa(this.cpaTb.getText());
-
+		
 		ClienteDTO clienteModificado = new ClienteDTO();
 		clienteModificado.setNombre(this.nombreEmpresaTb.getText());
 		clienteModificado.setCuit(this.nroCuitTb.getText());
@@ -653,11 +653,11 @@ public class P_FormularioCliente extends Composite {
 		clienteModificado.setPaginaWeb(this.webTb.getText());
 		clienteModificado.setDireccion(direccion);
 		clienteModificado.setObservaciones(this.observacionTb.getText());
-
+		
 		if (tablaElemento.getRowCount() > 1) {
 
 			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-
+								
 				ContactoDTO contacto = new ContactoDTO();
 				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
 				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
@@ -672,7 +672,11 @@ public class P_FormularioCliente extends Composite {
 
 		}
 
+		
 		VentasServiceAsync ventasService = GWT.create(VentasService.class);
+		
+		
+		
 		ventasService.registrarCambioCliente(clienteModificado, new AsyncCallback<Boolean>() {
 
 			@Override
@@ -717,7 +721,7 @@ public class P_FormularioCliente extends Composite {
 		tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_ELIMINAR, HasHorizontalAlignment.ALIGN_CENTER);
 
 		tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
-
+	
 		elementos.add(nombreContacto);
 	}
 

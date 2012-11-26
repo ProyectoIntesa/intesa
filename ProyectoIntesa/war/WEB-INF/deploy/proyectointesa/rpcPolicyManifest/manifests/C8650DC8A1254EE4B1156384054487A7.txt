@@ -1,2 +1,0 @@
-serviceClass: edu.client.VentasService.VentasService
-path: EF9F10789E54F1C2B1279396C25FDBCA.gwt.rpc

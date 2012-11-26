@@ -1,2 +1,0 @@
-serviceClass: edu.client.AdministradorService.AdministradorService
-path: A4EFA467BE6A133FAEB7B9A5FC453854.gwt.rpc

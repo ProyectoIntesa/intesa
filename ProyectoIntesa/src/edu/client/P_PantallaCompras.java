@@ -46,6 +46,16 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem guardadas;
 	private TreeItem materialAComprar;
 	private TreeItem insumoAComprar;
+	
+	//-------------------------------------------------------------------------------
+	private TreeItem insumos;
+	private TreeItem insumosCargar;
+	private TreeItem insumosBuscar;
+	private TreeItem productos;
+	private TreeItem productosCargar;
+	private TreeItem productosBuscar;
+	//-------------------------------------------------------------------------------
+	
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private ProveedorDTO proveedorSelec;
@@ -138,6 +148,30 @@ public class P_PantallaCompras extends Composite {
 		insumoAComprar = new TreeItem(constante.insumoAComprar());
 		insumoAComprar.setStyleName("suElementoMenu");
 		ordenCompra.addItem(insumoAComprar);
+		
+		//-------------------------------------------------------------------------------
+		TreeItem insumos = menuLateral.addItem(constante.insumos());
+		insumos.setStyleName("elementoMenu");
+		
+		insumosCargar = new TreeItem(constante.cargar());
+		insumosCargar.setStyleName("suElementoMenu");
+		insumos.addItem(insumosCargar);
+		
+		insumosBuscar = new TreeItem(constante.buscar());
+		insumosBuscar.setStyleName("suElementoMenu");
+		insumos.addItem(insumosBuscar);		
+		
+		TreeItem productos = menuLateral.addItem(constante.productos());
+		productos.setStyleName("elementoMenu");
+		
+		productosCargar = new TreeItem(constante.cargar());
+		productosCargar.setStyleName("suElementoMenu");
+		productos.addItem(productosCargar);
+		
+		productosBuscar = new TreeItem(constante.buscar());
+		productosBuscar.setStyleName("suElementoMenu");
+		productos.addItem(productosBuscar);		
+		//-------------------------------------------------------------------------------		
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -236,9 +270,39 @@ public class P_PantallaCompras extends Composite {
 				});
 			}
 			
-			
 		}
 
+		if (event.getSelectedItem() == insumosCargar) {
+
+			titulo = constante.nuevoInsumo();
+			tab = numeroElemento(titulo);
+			if (tab == -1) {
+
+				formulario = new ScrollPanel();
+				formulario.setTitle(titulo);
+				formulario.setStyleName("panelFormulario");
+				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+				P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo);
+				formulario.add(insumo);
+				panelTrabajo.add(formulario, titulo, false);
+				panelTrabajo.selectTab(numeroElemento(titulo));
+			} else
+				panelTrabajo.selectTab(tab);
+			
+		}
+		
+		if (event.getSelectedItem() == insumosBuscar) {
+
+		}
+		
+		if (event.getSelectedItem() == productosBuscar) {
+
+		}
+		
+		if (event.getSelectedItem() == productosCargar) {
+
+		}
+		
 		if (event.getSelectedItem() == guardadas) {
 
 		}
