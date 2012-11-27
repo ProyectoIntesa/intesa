@@ -289,7 +289,7 @@ public class P_FormularioInsumo  extends Composite {
 	}
 	
 	public void cancelar(ClickEvent event) {
-		padre.remove(numeroElemento(constante.nuevoProveedor()));
+		padre.remove(numeroElemento(constante.nuevoInsumo()));
 
 	}
 	

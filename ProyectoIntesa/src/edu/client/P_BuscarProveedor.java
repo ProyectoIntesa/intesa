@@ -50,8 +50,7 @@ public class P_BuscarProveedor extends PopupPanel {
 	private RadioButton contacto;
 	private RadioButton tipo;
 	private Label pie;
-	private Label info;
-	private Label infoC;
+
 
 	private SuggestBox empresaSb;
 	private SuggestBox rubroSb;
@@ -141,12 +140,7 @@ public class P_BuscarProveedor extends PopupPanel {
 		encabezado.setStyleName("labelTitulo");
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
-		info = new Label("");
-		info.setSize("16px", "16px");
-		info.setStyleName("labelInfo");
-		infoC = new Label("");
-		infoC.setSize("16px", "16px");
-		infoC.setStyleName("labelInfo");
+
 		empresa = new RadioButton(constante.empresa());
 		empresa.setText(constante.empresa());
 		empresa.addClickHandler(new ClickHandler() {
@@ -279,6 +273,8 @@ public class P_BuscarProveedor extends PopupPanel {
 
 	protected void cargarTabla() {
 
+		this.tablaElemento.clear();
+		
 		if (contacto.getValue() == true) {
 
 			String contacto = contactoSb.getText();
@@ -451,14 +447,18 @@ public class P_BuscarProveedor extends PopupPanel {
 
 		for (int i = 0; i < proveedores.size(); i++) {
 
+			Label info = new Label("");
+			info.setSize("16px", "16px");
+			info.setStyleName("labelInfo");
+			
 			tablaElemento.setWidget(i + 1, COL_RUBRO, new Label(proveedores.get(i).getRubro()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_RUBRO, true);
 			tablaElemento.setWidget(i + 1, COL_EMPRESA, new Label(proveedores.get(i).getNombre()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_EMPRESA, true);
 			tablaElemento.setWidget(i + 1, COL_TELEFONO, new Label(proveedores.get(i).getTelefono()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_TELEFONO, false);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_TELEFONO, false);
 			tablaElemento.setWidget(i + 1, COL_MAIL, new Label(proveedores.get(i).getMail()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_MAIL, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_MAIL, true);
 			tablaElemento.setWidget(i + 1, COL_INFO, info);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i + 1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(i + 1, "tablaRenglon");
@@ -529,16 +529,20 @@ public class P_BuscarProveedor extends PopupPanel {
 
 		for (int i = 0; i < contactos.size(); i++) {
 
+			Label infoC = new Label("");
+			infoC.setSize("16px", "16px");
+			infoC.setStyleName("labelInfo");
+			
 			tablaElemento.setWidget(i + 1, COL_RUBRO, new Label(contactos.get(i).getProveedor().getRubro()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_RUBRO, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_RUBRO, true);
 			tablaElemento.setWidget(i + 1, COL_EMPRESA, new Label(contactos.get(i).getProveedor().getNombre()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_EMPRESA, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_EMPRESA, true);
 			tablaElemento.setWidget(i + 1, COL_NOMBRE, new Label(contactos.get(i).getNombre()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_NOMBRE, false);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_NOMBRE, false);
 			tablaElemento.setWidget(i + 1, COL_CARGO, new Label(contactos.get(i).getCargo()));
-			tablaElemento.getCellFormatter().setWordWrap(1, COL_CARGO, true);
+			tablaElemento.getCellFormatter().setWordWrap(i+1, COL_CARGO, true);
 			tablaElemento.setWidget(i + 1, COL_INFO, infoC);
-			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_INFO, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElemento.getRowFormatter().setStyleName(1, "tablaRenglon");
 			infoC.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {

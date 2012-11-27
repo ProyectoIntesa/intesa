@@ -17,11 +17,34 @@ public class InsumoDTO  implements java.io.Serializable{
 	private int cantidad;
 	private int loteCompra;
 	private int stockSeguridad;
+	private int idInsumo;
+	private List<ProveedorDTO> listaProveedores; 	
 	private List<ProveedorDeInsumosDTO> proveedor;
 	
 	
 	public InsumoDTO(){
 		proveedor = new LinkedList<ProveedorDeInsumosDTO>();
+		listaProveedores = new LinkedList<ProveedorDTO>();
+	}
+	
+	
+	public List<ProveedorDTO> getListaProveedores() {
+		return listaProveedores;
+	}
+
+
+	public void setListaProveedores(List<ProveedorDTO> listaProveedores) {
+		this.listaProveedores = listaProveedores;
+	}
+
+
+	public int getIdInsumo() {
+		return idInsumo;
+	}
+
+
+	public void setIdInsumo(int idInsumo) {
+		this.idInsumo = idInsumo;
 	}
 
 

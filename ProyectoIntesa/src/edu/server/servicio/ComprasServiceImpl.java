@@ -457,4 +457,113 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.registrarInsumo(nuevo);
 
 	}
+	
+	
+	
+	@Override
+	public List<String> getNombresInsumos(String letra) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresInsumos(letra);
+		
+	}
+	
+	@Override
+	public List<String> getNombresMarcas() throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresMarcas();
+		
+	}
+	
+	@Override
+	public List<String> getNombresCategorias() throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresCategorias();
+		
+	}
+	
+	@Override
+	public List<String> getNombresProveedores() throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresProveedores();
+		
+	}
+	
+	@Override
+	public List<InsumoDTO> getInsumosSegunParametro(String tipo, String dato) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		List<InsumoDTO> listResult = new LinkedList<InsumoDTO>();
+		List<Insumo> result = new LinkedList<Insumo>();
+		
+		result = adminCompras.getInsumosSegunParametro(tipo, dato); 
+		
+		for (Insumo insumo : result) {
+			
+			InsumoDTO nuevo = new InsumoDTO();
+			nuevo.setNombre(insumo.getNombre());
+			nuevo.setCategoria(insumo.getCategoria().getNombre());
+			nuevo.setMarca(insumo.getMarca().getNombre());
+			nuevo.setIdInsumo(insumo.getIdInsumo());
+			
+			listResult.add(nuevo);				
+		}		
+		return listResult; 
+	
+	}
+	
+	@Override
+	public InsumoDTO getInsumoCompleto(int idInsumo, String nombreInsumo)  throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		InsumoDTO result = new InsumoDTO();
+		Insumo insumo = new Insumo();
+		
+		insumo = adminCompras.getInsumoCompleto(idInsumo, nombreInsumo);
+		
+		result.setIdInsumo(insumo.getIdInsumo());
+		result.setNombre(insumo.getNombre());
+		result.setLoteCompra(insumo.getLoteCompra());
+		result.setStockSeguridad(insumo.getStockSeguridad());
+		result.setObservaciones(insumo.getObservaciones());
+		if(insumo.getCantidad() != -1){
+			result.setCantidad(insumo.getCantidad());
+		}
+		else{
+			result.setCantidad(0);
+		}
+		result.setMarca(insumo.getMarca().getNombre());
+		result.setCategoria(insumo.getCategoria().getNombre());
+		
+
+			for (ProveedorDeInsumo prov : insumo.getProveedorDeInsumos()) {
+				
+				ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
+				
+				Float precio = Float.parseFloat(prov.getPrecio().toString());
+				
+				proveedor.setPrecio(precio);
+				proveedor.setNombre(prov.getProveedor().getNombre());
+				proveedor.setObservaciones(prov.getObservaciones());
+				
+				result.getProveedor().add(proveedor);
+				
+			}
+			
+		
+		return result;
+	}
+	
+	
+	
+	
+	
 }

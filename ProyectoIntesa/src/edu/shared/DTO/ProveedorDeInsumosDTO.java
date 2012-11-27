@@ -9,6 +9,7 @@ public class ProveedorDeInsumosDTO implements java.io.Serializable{
 	private float precio;
 	private String observaciones;
 	private String nombre;
+
 	
 	public ProveedorDeInsumosDTO(){
 		

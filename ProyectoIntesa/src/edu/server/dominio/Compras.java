@@ -1,7 +1,9 @@
 package edu.server.dominio;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -586,6 +588,186 @@ public class Compras {
 		if (result == null)
 			result = 0;
 		return (int) result;
+	}
+
+	public List<String> getNombresInsumos(String letra) {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select nombre from Insumo where nombre like '" + letra + "%'").list();
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public List<String> getNombresMarcas() {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select nombre from Marca").list();
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public List<String> getNombresCategorias() {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select nombre from Categoria").list();
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public List<String> getNombresProveedores() {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select p.nombre from Proveedor_de_Insumo as pdi, Proveedor as p where pdi.id_Proveedor = p.codigo_Proveedor").list();
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public List<Insumo> getInsumosSegunParametro(String tipo, String dato) {
+
+		List<Insumo> result = new LinkedList<Insumo>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		if (tipo.compareTo("insumo") == 0) {
+
+			result = sec.createQuery("from Insumo where nombre like '" + dato + "'").list();
+
+			for (Insumo insumo : result) {
+
+				Marca marca = new Marca();
+				Categoria cat = new Categoria();
+				marca = (Marca) sec.get(marca.getClass(), insumo.getMarca().getIdMarca());
+				cat = (Categoria) sec.get(cat.getClass(), insumo.getCategoria().getIdCategoria());
+
+				insumo.setMarca(marca);
+				insumo.setCategoria(cat);
+
+			}
+
+		} else if (tipo.compareTo("marca") == 0) {
+
+			Marca marca = (Marca) sec.createQuery("from Marca where nombre like '" + dato + "'").uniqueResult();
+
+			result = sec.createQuery("from Insumo where id_Marca = " + marca.getIdMarca()).list();
+
+			for (Insumo insumo : result) {
+
+				Categoria cat = new Categoria();
+				cat = (Categoria) sec.get(cat.getClass(), insumo.getCategoria().getIdCategoria());
+
+				insumo.setMarca(marca);
+				insumo.setCategoria(cat);
+
+			}
+
+		} else if (tipo.compareTo("categoria") == 0) {
+
+			Categoria categoria = (Categoria) sec.createQuery("from Categoria where nombre like '" + dato + "'").uniqueResult();
+
+			result = sec.createQuery("from Insumo where id_Categoria = " + categoria.getIdCategoria()).list();
+
+			for (Insumo insumo : result) {
+
+				Marca marca = new Marca();
+				marca = (Marca) sec.get(marca.getClass(), insumo.getMarca().getIdMarca());
+
+				insumo.setMarca(marca);
+				insumo.setCategoria(categoria);
+
+			}
+
+		} else if (tipo.compareTo("proveedor") == 0) {
+
+			Proveedor prov = (Proveedor) sec.createQuery("from Proveedor where nombre like '" + dato + "'").uniqueResult();
+
+			List<ProveedorDeInsumo> resultado = new LinkedList<ProveedorDeInsumo>();
+			resultado = sec.createQuery("from ProveedorDeInsumo where id_Proveedor = " + prov.getCodigoProveedor()).list();
+
+			for (ProveedorDeInsumo proveedor : resultado) {
+
+				Insumo insu = new Insumo();
+
+				insu = (Insumo) sec.get(insu.getClass(), proveedor.getId().getIdInsumo());
+
+				result.add(insu);
+
+				Marca marca = new Marca();
+				Categoria cat = new Categoria();
+				marca = (Marca) sec.get(marca.getClass(), insu.getMarca().getIdMarca());
+				cat = (Categoria) sec.get(cat.getClass(), insu.getCategoria().getIdCategoria());
+
+				insu.setMarca(marca);
+				insu.setCategoria(cat);
+
+			}
+		}
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public Insumo getInsumoCompleto(int idInsumo, String nombreInsumo) {
+		Insumo result = new Insumo();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		result = (Insumo) sec.get(result.getClass(), idInsumo);
+		Marca marca = new Marca();
+		Categoria cat = new Categoria();
+		marca = (Marca) sec.get(marca.getClass(), result.getMarca().getIdMarca());
+		cat = (Categoria) sec.get(cat.getClass(), result.getCategoria().getIdCategoria());
+
+		result.setMarca(marca);
+		result.setCategoria(cat);
+
+		if (!result.getProveedorDeInsumos().isEmpty()) {
+
+			List<ProveedorDeInsumo> resultado = new LinkedList<ProveedorDeInsumo>();
+			resultado = sec.createQuery("from ProveedorDeInsumo where id_Insumo = " + result.getIdInsumo()).list();
+			for (ProveedorDeInsumo proveedor : resultado) {
+
+				Proveedor prov = (Proveedor) sec.createQuery("from Proveedor where codigo_Proveedor = " + proveedor.getId().getIdProveedor()).uniqueResult();
+
+				proveedor.setProveedor(prov);
+
+				result.getProveedorDeInsumos().add(proveedor);
+
+			}
+		}
+		sec.close();
+
+		return result;
+
 	}
 
 }

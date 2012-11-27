@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
 import edu.shared.DTO.ClienteDTO;
+import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 public class P_PantallaCompras extends Composite {
@@ -59,6 +60,7 @@ public class P_PantallaCompras extends Composite {
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private ProveedorDTO proveedorSelec;
+	private InsumoDTO insumoSelec;
 
 	public P_PantallaCompras(String usuarioLogueado) {
 
@@ -292,7 +294,31 @@ public class P_PantallaCompras extends Composite {
 		}
 		
 		if (event.getSelectedItem() == insumosBuscar) {
+			
+			if(this.numeroElemento(constante.modificarInsumo())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR INSUMO");
+			}
+			else{
+				
+				final P_BuscarInsumo popUp = new P_BuscarInsumo();
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						insumoSelec= popUp.getInsumoDTO();
+						boolean modificar = popUp.getModificarInsumo();
+					
+						if (modificar == true)
+						{
+							modificarProveedor();
+						}
+					}
+				});
+			}
 		}
 		
 		if (event.getSelectedItem() == productosBuscar) {
