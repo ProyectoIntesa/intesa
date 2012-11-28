@@ -45,8 +45,8 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem nuevoProveedor;
 	private TreeItem buscarProveedor;
 	private TreeItem guardadas;
-	private TreeItem materialAComprar;
-	private TreeItem insumoAComprar;
+	private TreeItem deProductos;
+	private TreeItem deInsumos;
 	
 	//-------------------------------------------------------------------------------
 	private TreeItem insumos;
@@ -143,13 +143,13 @@ public class P_PantallaCompras extends Composite {
 		guardadas.setStyleName("suElementoMenu");
 		ordenCompra.addItem(guardadas);
 
-		materialAComprar = new TreeItem(constante.materialAComprar());
-		materialAComprar.setStyleName("suElementoMenu");
-		ordenCompra.addItem(materialAComprar);
+		deProductos = new TreeItem(constante.deProductos());
+		deProductos.setStyleName("suElementoMenu");
+		ordenCompra.addItem(deProductos);
 
-		insumoAComprar = new TreeItem(constante.insumoAComprar());
-		insumoAComprar.setStyleName("suElementoMenu");
-		ordenCompra.addItem(insumoAComprar);
+		deInsumos = new TreeItem(constante.deInsumos());
+		deInsumos.setStyleName("suElementoMenu");
+		ordenCompra.addItem(deInsumos);
 		
 		//-------------------------------------------------------------------------------
 		TreeItem insumos = menuLateral.addItem(constante.insumos());
@@ -333,12 +333,38 @@ public class P_PantallaCompras extends Composite {
 
 		}
 
-		if (event.getSelectedItem() == materialAComprar) {
+		if (event.getSelectedItem() == deProductos) {
 
 		}
 
-		if (event.getSelectedItem() == insumoAComprar) {
+		if (event.getSelectedItem() == deInsumos) {
 
+			if(this.numeroElemento(constante.ordenDeCompraDeInsumos())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña ORDEN DE COMPRA DE INSUMOS");
+			}
+			else{
+				
+				final P_RequerimientoInsumo popUp = new P_RequerimientoInsumo();
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+//				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+//
+//					@Override
+//					public void onClose(CloseEvent<PopupPanel> event) {
+//						
+//						insumoSelec= popUp.getInsumoDTO();
+//						boolean modificar = popUp.getModificarInsumo();
+//					
+//						if (modificar == true)
+//						{
+//							modificarInsumo();
+//						}
+//					}
+//				});
+			}
+			
+			
 		}
 
 	}

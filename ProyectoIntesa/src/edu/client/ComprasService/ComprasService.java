@@ -62,4 +62,8 @@ public interface ComprasService extends RemoteService {
 
 	Boolean registrarCambioInsumo(InsumoDTO insumo) throws IllegalArgumentException;
 
+	List<String> getNombresMarcasSegunInsumo(String nombreInsumo) throws IllegalArgumentException;
+
+	List<String> getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca) throws IllegalArgumentException;
+
 }

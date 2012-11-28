@@ -71,6 +71,7 @@ public class P_BuscarCliente extends PopupPanel {
 		super(false);
 
 		setStyleName("fondoPopup");
+		
 		contenedor = new FlexTable();
 
 		this.modificarCliente = false;

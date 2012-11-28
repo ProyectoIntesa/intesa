@@ -614,6 +614,18 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 	}
 	
+	@Override
+	public List<String> getNombresMarcasSegunInsumo(String nombreInsumo)  throws IllegalArgumentException {
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresMarcasSegunInsumo(nombreInsumo);
+	}
 	
-	
+	@Override
+	public List<String> getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca)  throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		return adminCompras.getNombresProvSegunInsumoYMarca(nombreInsumo, nombreMarca);
+	}
 }

@@ -58,6 +58,10 @@ public interface ComprasServiceAsync {
 
 	void eliminarInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	void registrarCambioInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback);
+	void registrarCambioInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getNombresMarcasSegunInsumo(String nombreInsumo, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
+
+	void getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
 }

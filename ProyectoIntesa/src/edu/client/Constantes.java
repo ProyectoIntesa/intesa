@@ -7,6 +7,30 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
 	  
+	  @DefaultStringValue("ARMAR ORDEN")
+	  String armarOrden();
+	  
+	  @DefaultStringValue("REQUERIMIENTOS DE INSUMO")
+	  String requerimientosDeInsumo();
+	  
+	  @DefaultStringValue("REQUERIMIENTOS NECESARIOS")
+	  String requerimientosNecesarios();
+	  
+	  @DefaultStringValue("REQUERIMIENTOS ADICIONALES")
+	  String requerimientosAdicionales();
+	  
+	  @DefaultStringValue("ORDEN DE COMPRA DE INSUMOS")
+	  String ordenDeCompraDeInsumos();
+	  
+	  @DefaultStringValue("ORDEN DE COMPRA DE PRODUCTOS")
+	  String ordenDeCompraDeProductos();
+	  
+	  @DefaultStringValue("DE PRODUCTOS")
+	  String deProductos();
+	  
+	  @DefaultStringValue("DE INSUMOS")
+	  String deInsumos();
+	  
 	  @DefaultStringValue("ELIMINAR INSUMO")
 	  String eliminarInsumo();
 	  

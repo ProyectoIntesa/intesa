@@ -548,7 +548,7 @@ public class Compras {
 
 		return result;
 	}
-	
+
 	public boolean registrarCambioInsumo(Insumo insumo) {
 
 		boolean result = false;
@@ -556,12 +556,11 @@ public class Compras {
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			sec.beginTransaction();
-			
-			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = "+insumo.getIdInsumo()).executeUpdate();
-			
-			
+
+			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = " + insumo.getIdInsumo()).executeUpdate();
+
 			sec.update(insumo);
-			
+
 			if (insumo.getProveedorDeInsumos().size() > 0) {
 				for (ProveedorDeInsumo proveedor : insumo.getProveedorDeInsumos()) {
 					proveedor.setInsumo(insumo);
@@ -802,15 +801,15 @@ public class Compras {
 
 	}
 
-	public boolean eliminarInsumo(Insumo insumo){
-		
+	public boolean eliminarInsumo(Insumo insumo) {
+
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		boolean result = false;
-		
+
 		try {
 
 			sec.beginTransaction();
-			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = "+insumo.getIdInsumo()).executeUpdate();
+			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = " + insumo.getIdInsumo()).executeUpdate();
 			sec.delete(insumo);
 			sec.getTransaction().commit();
 			result = true;
@@ -819,17 +818,41 @@ public class Compras {
 			sec.getTransaction().rollback();
 			return false;
 		}
-		
+
 		return result;
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public List<String> getNombresMarcasSegunInsumo(String nombreInsumo) {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select m.nombre from marca as m, insumo as i where m.id_marca = i.id_marca and i.nombre like '" + nombreInsumo + "'").list();
+
+		sec.close();
+
+		return result;
+
+	}
+
+	public List<String> getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca){
+		
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		String consulta = "select p.nombre from proveedor as p, insumo as i, marca as m, proveedor_de_insumo as pdi where p.codigo_proveedor = pdi.id_proveedor " +
+				"and i.id_insumo = pdi.id_insumo and i.nombre like '"+nombreInsumo+"' and i.id_marca = m.id_marca and m.nombre like '"+nombreMarca+"'";
+		
+		result = sec.createSQLQuery(consulta).list();
+
+		sec.close();
+
+		return result;
+	}
+
 }
