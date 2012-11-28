@@ -603,7 +603,10 @@ public class P_DatoEmpresa extends PopupPanel {
 		comprasService.eliminarContacto(nombreEmpresa,nombreContacto, new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
-				Window.alert("El contacto ha sido eliminado");
+				if(result)
+					Window.alert("El contacto ha sido eliminado");
+				else
+					Window.alert("El contacto NO ha sido eliminado");
 				salir();
 			}
 			@Override
@@ -621,7 +624,10 @@ public class P_DatoEmpresa extends PopupPanel {
 		ventasService.eliminarEmpresa(empSelec.getNombre(), new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
-				Window.alert("El cliente ha sido eliminado de manera exitosa");
+				if (result)
+					Window.alert("El cliente ha sido eliminado de manera exitosa");
+				else
+					Window.alert("El cliente NO ha sido eliminado");
 				salir();
 			}
 			@Override
@@ -639,7 +645,10 @@ public class P_DatoEmpresa extends PopupPanel {
 		comprasService.eliminarEmpresa(empSelec.getNombre(), new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
-				Window.alert("El proveedor ha sido eliminado de manera exitosa");
+				if(result)
+					Window.alert("El proveedor ha sido eliminado de manera exitosa");
+				else
+					Window.alert("El proveedor NO ha sido eliminado");
 				salir();
 			}
 			@Override
@@ -667,7 +676,10 @@ public class P_DatoEmpresa extends PopupPanel {
 		ventasService.eliminarContacto(nombreEmpresa,nombreContacto, new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
-				Window.alert("El contacto ha sido eliminado");
+				if(result)
+					Window.alert("El contacto ha sido eliminado");
+				else
+					Window.alert("El contacto NO ha sido eliminado");
 				salir();
 			}
 			@Override

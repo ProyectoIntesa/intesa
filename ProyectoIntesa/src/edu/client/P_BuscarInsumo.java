@@ -71,7 +71,7 @@ public class P_BuscarInsumo extends PopupPanel {
 	private Button salir;
 	
 	private InsumoDTO insumoInfo;
-	private boolean modificarInsumo;
+	private boolean modificarInsumo = false; 
 	private List<InsumoDTO> insumos;
 
 	public P_BuscarInsumo() {
@@ -385,23 +385,24 @@ public class P_BuscarInsumo extends PopupPanel {
 							popUp.setGlassEnabled(true);
 							popUp.center();
 							popUp.show();
-//							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-//							boolean modificar = false;
-//
-//								@Override
-//								public void onClose(CloseEvent<PopupPanel> event) {
-//
-//									modificar = popUp.getModificarProveedor();
-//
-//									if (modificar == true) {
-//										modificarProveedor();
-//									}
-//									if (modificar == false) {
-//										salir();
-//									}
-//								}
-//							});
-//
+							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+							boolean modificar = false;
+
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {
+
+									modificar = popUp.getModificarInsumo();
+
+									if (modificar == true) {
+										modificarInsumo();
+										salir();
+									}
+									if (modificar == false) {
+										salir();
+									}
+								}
+							});
+
 						}
 
 					});
@@ -582,18 +583,17 @@ public class P_BuscarInsumo extends PopupPanel {
 		insumoSb.showSuggestionList();
 	}
 
-	public void modificarInsumo() {
-		this.modificarInsumo = true;
-		this.hide();
+	public void modificarInsumo(){
+		this.modificarInsumo = true;		
 	}
 
-	public InsumoDTO getInsumoDTO() {
+	public InsumoDTO getInsumoDTO(){
 		return this.insumoInfo;
 	}
-
-	public boolean getModificarInsumo() {
+	
+	public boolean getModificarInsumo(){
 		return this.modificarInsumo;
 	}
-	
+
 	
 }

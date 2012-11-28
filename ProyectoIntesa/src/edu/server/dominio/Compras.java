@@ -548,6 +548,38 @@ public class Compras {
 
 		return result;
 	}
+	
+	public boolean registrarCambioInsumo(Insumo insumo) {
+
+		boolean result = false;
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			
+			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = "+insumo.getIdInsumo()).executeUpdate();
+			
+			
+			sec.update(insumo);
+			
+			if (insumo.getProveedorDeInsumos().size() > 0) {
+				for (ProveedorDeInsumo proveedor : insumo.getProveedorDeInsumos()) {
+					proveedor.setInsumo(insumo);
+					proveedor.getId().setIdInsumo(insumo.getIdInsumo());
+					sec.save(proveedor);
+				}
+			}
+
+			sec.getTransaction().commit();
+			result = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return result;
+	}
 
 	public Proveedor getProveedorPorNombre(String nombre) {
 
@@ -770,4 +802,34 @@ public class Compras {
 
 	}
 
+	public boolean eliminarInsumo(Insumo insumo){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		boolean result = false;
+		
+		try {
+
+			sec.beginTransaction();
+			sec.createQuery("delete from ProveedorDeInsumo where id_Insumo = "+insumo.getIdInsumo()).executeUpdate();
+			sec.delete(insumo);
+			sec.getTransaction().commit();
+			result = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+		
+		return result;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

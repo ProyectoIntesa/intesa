@@ -6,7 +6,7 @@ public class ProveedorDeInsumosDTO implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 736054868991272637L;
-	private float precio;
+	private double precio;
 	private String observaciones;
 	private String nombre;
 
@@ -15,11 +15,11 @@ public class ProveedorDeInsumosDTO implements java.io.Serializable{
 		
 	}
 
-	public float getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(float precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 

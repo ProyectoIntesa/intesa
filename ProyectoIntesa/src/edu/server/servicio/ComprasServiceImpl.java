@@ -34,9 +34,6 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	 */
 	private static final long serialVersionUID = -5338747283996853109L;
 
-
-
-
 	@Override
 	public Boolean registrarNuevoProveedor(ProveedorDTO proveedor) throws IllegalArgumentException {
 		Pais pais = new Pais();
@@ -138,9 +135,6 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.registrarCambiosProveedor(nuevo);
 	}
 	
-	
-	
-	
 	@Override
 	public ProveedorDTO getEmpresaCompleta(String nombre)  throws IllegalArgumentException{
 			
@@ -209,7 +203,6 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.getNombresEmpresas();
 		
 	}
-
 	
 	@Override
 	public List<String> getRubros() throws IllegalArgumentException {
@@ -381,8 +374,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		
 	}
-	
-	
+		
 	@Override
 	public int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
 		
@@ -447,7 +439,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 				nuevoProv.setId(idPI);
 				nuevoProv.setInsumo(nuevo);
 				nuevoProv.setObservaciones(proveedor.getObservaciones()); 
-				nuevoProv.setPrecio((double) proveedor.getPrecio());
+				nuevoProv.setPrecio(proveedor.getPrecio());
 				
 				nuevo.getProveedorDeInsumos().add(nuevoProv);			
 				
@@ -457,8 +449,56 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.registrarInsumo(nuevo);
 
 	}
-	
-	
+
+	@Override
+	public Boolean registrarCambioInsumo(InsumoDTO insumo) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		Marca marca = new Marca();
+		marca.setNombre(insumo.getMarca());
+		
+		int idMarca = adminCompras.marcaExistente(marca.getNombre());
+		marca.setIdMarca(idMarca);
+			
+		Categoria categoria = new Categoria();
+		categoria.setNombre(insumo.getCategoria());
+		
+		int idCategoria = adminCompras.categoriaExistente(categoria.getNombre());
+		categoria.setIdCategoria(idCategoria);
+		
+		Insumo nuevo = new Insumo();
+		nuevo.setIdInsumo(insumo.getIdInsumo());
+		nuevo.setCategoria(categoria);
+		nuevo.setMarca(marca);
+		nuevo.setNombre(insumo.getNombre());
+		nuevo.setLoteCompra(insumo.getLoteCompra());
+		nuevo.setStockSeguridad(insumo.getStockSeguridad());
+		nuevo.setObservaciones(insumo.getObservaciones());
+		
+		
+		if (insumo.getProveedor().size() > 0){
+			
+			for(ProveedorDeInsumosDTO proveedor : insumo.getProveedor()){
+				ProveedorDeInsumoId idPI = new ProveedorDeInsumoId();
+				Proveedor buscar = adminCompras.getProveedorPorNombre(proveedor.getNombre());
+				idPI.setIdProveedor(buscar.getCodigoProveedor());
+				ProveedorDeInsumo nuevoProv = new ProveedorDeInsumo();
+				nuevoProv.setProveedor(buscar);
+				nuevoProv.setId(idPI);
+				nuevoProv.setInsumo(nuevo);
+				nuevoProv.setObservaciones(proveedor.getObservaciones());
+				nuevoProv.setPrecio(proveedor.getPrecio());
+				
+				
+				nuevo.getProveedorDeInsumos().add(nuevoProv);			
+				
+			}
+		}
+		
+		return adminCompras.registrarCambioInsumo(nuevo);
+		
+	}
 	
 	@Override
 	public List<String> getNombresInsumos(String letra) throws IllegalArgumentException {
@@ -562,7 +602,17 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return result;
 	}
 	
-	
+	@Override
+	public Boolean eliminarInsumo(InsumoDTO insumo)  throws IllegalArgumentException {
+		
+		Insumo nuevo = new Insumo();
+		nuevo.setIdInsumo(insumo.getIdInsumo());
+		Compras adminCompras = new Compras();
+		return adminCompras.eliminarInsumo(nuevo);
+		
+		
+		
+	}
 	
 	
 	

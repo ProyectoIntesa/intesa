@@ -56,4 +56,8 @@ public interface ComprasServiceAsync {
 
 	void getInsumoCompleto(int idInsumo, String nombreInsumo, AsyncCallback<InsumoDTO> callback) throws IllegalArgumentException;
 
+	void eliminarInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void registrarCambioInsumo(InsumoDTO insumo, AsyncCallback<Boolean> callback);
+
 }

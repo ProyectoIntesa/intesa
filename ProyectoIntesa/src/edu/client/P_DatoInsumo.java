@@ -1,8 +1,12 @@
 package edu.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -10,6 +14,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
+import edu.client.ComprasService.ComprasService;
+import edu.client.ComprasService.ComprasServiceAsync;
 import edu.shared.DTO.InsumoDTO;
 
 public class P_DatoInsumo extends PopupPanel {
@@ -37,6 +43,8 @@ public class P_DatoInsumo extends PopupPanel {
 	private Button salir;
 	private Button modificar;
 	private Button eliminar;
+	
+	private boolean modificarInsumo = false;
 	
 	private InsumoDTO insumoSelec;
 	
@@ -84,14 +92,14 @@ public class P_DatoInsumo extends PopupPanel {
 		modificar = new Button(constante.modificar());
 		modificar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//modificarCliente();
+				modificarInsumo();
 			}
 		});
 
-		eliminar = new Button(constante.eliminarCliente());
+		eliminar = new Button(constante.eliminarInsumo());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//eliminarCliente();
+				eliminarInsumo();
 			}
 		});
 		
@@ -153,10 +161,48 @@ public class P_DatoInsumo extends PopupPanel {
 		
 	}
 	
+	public InsumoDTO getInsumoDTO() {
+		return this.insumoSelec;
+	}
+	
+	protected void modificarInsumo(){
+		this.modificarInsumo = true;
+		this.hide();
+	}
+	
+	protected void eliminarInsumo() {
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+		comprasService.eliminarInsumo(insumoSelec, new AsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean result) {
+				if(result){
+					Window.alert("El insumo ha sido eliminado correctamente");
+					salir();
+				}
+				else{
+					Window.alert("El insumo NO ha sido eliminado");
+					salir();
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		
+		
+		
+	}
+
 	protected void salir() {
 		this.hide();
 
 	}
 	
-	
+	public boolean getModificarInsumo(){
+		return this.modificarInsumo;
+	}
 }

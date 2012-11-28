@@ -7,6 +7,9 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
 	  
+	  @DefaultStringValue("ELIMINAR INSUMO")
+	  String eliminarInsumo();
+	  
 	  @DefaultStringValue("MODIFICAR INSUMO")
 	  String modificarInsumo();
 	  

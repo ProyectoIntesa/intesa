@@ -314,7 +314,7 @@ public class P_PantallaCompras extends Composite {
 					
 						if (modificar == true)
 						{
-							modificarProveedor();
+							modificarInsumo();
 						}
 					}
 				});
@@ -363,6 +363,28 @@ public class P_PantallaCompras extends Composite {
 		} else
 			panelTrabajo.selectTab(tab);
 		
+		
+	}
+	
+	protected void modificarInsumo(){
+		
+		String titulo;
+		int tab;
+		titulo = constante.modificarInsumo();
+		tab = numeroElemento(titulo);
+
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+			P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo,this.insumoSelec,titulo);
+			formulario.add(insumo);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
 		
 	}
 	
