@@ -64,4 +64,6 @@ public interface ComprasServiceAsync {
 
 	void getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
+	void getRequerimientosInsumosCompletos(AsyncCallback<List<InsumoDTO>> callback) throws IllegalArgumentException;
+
 }

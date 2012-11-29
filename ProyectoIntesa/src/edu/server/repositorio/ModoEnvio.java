@@ -13,19 +13,19 @@ public class ModoEnvio implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -593943358148123129L;
 	private int idModoEnvio;
-	private long descripcion;
+	private String descripcion;
 	private Set<OrdenCompraCotizacion> ordenCompraCotizacions = new HashSet<OrdenCompraCotizacion>(0);
 	private Set<OrdenCompraInsumo> ordenCompraInsumos = new HashSet<OrdenCompraInsumo>(0);
 
 	public ModoEnvio() {
 	}
 
-	public ModoEnvio(int idModoEnvio, long descripcion) {
+	public ModoEnvio(int idModoEnvio, String descripcion) {
 		this.idModoEnvio = idModoEnvio;
 		this.descripcion = descripcion;
 	}
 
-	public ModoEnvio(int idModoEnvio, long descripcion,
+	public ModoEnvio(int idModoEnvio, String descripcion,
 			Set <OrdenCompraCotizacion>ordenCompraCotizacions, Set <OrdenCompraInsumo>ordenCompraInsumos) {
 		this.idModoEnvio = idModoEnvio;
 		this.descripcion = descripcion;
@@ -41,11 +41,11 @@ public class ModoEnvio implements java.io.Serializable {
 		this.idModoEnvio = idModoEnvio;
 	}
 
-	public long getDescripcion() {
+	public String getDescripcion() {
 		return this.descripcion;
 	}
 
-	public void setDescripcion(long descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

@@ -769,6 +769,7 @@ public class Compras {
 	}
 
 	public Insumo getInsumoCompleto(int idInsumo, String nombreInsumo) {
+		
 		Insumo result = new Insumo();
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
@@ -855,4 +856,33 @@ public class Compras {
 		return result;
 	}
 
+	public List<Object> getRequerimientosNecesario(){
+		
+		List<Object> resultCons = new LinkedList<Object>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		String consulta1 = "create view orcoin as select oci.nro_orden_compra_insumo from orden_compra_insumo as oci, estado_orden as eo " +
+				"where oci.id_estado_orden = eo.id_estado_orden and " +
+				"( eo.nombre like 'GENERADA' or eo.nombre like 'EDICION' or eo.nombre like 'VALIDADA' or eo.nombre like 'ENVIADA' ) " +
+				"create view renglones as select roci.id_insumo from renglon_orden_compra_insumo as roci, orcoin as t " +
+				"where roci.nro_orden_compra_insumo = t.nro_orden_compra_insumo " +
+				"drop view orcoin";
+
+		
+		sec.createSQLQuery(consulta1);
+		
+		String consulta2 = "select id_insumo from insumo where necesidad_compra = 1 and id_insumo not in (select t.id_insumo from renglones as t)";
+		
+		resultCons = sec.createSQLQuery(consulta2).list();
+		
+		sec.createSQLQuery("drop view renglones");
+		
+		sec.close();
+
+		return resultCons;
+		
+		
+	}
+	
 }

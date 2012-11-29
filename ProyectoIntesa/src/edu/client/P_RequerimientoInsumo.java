@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
@@ -18,6 +19,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
+import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.ProveedorDeInsumosDTO;
 
 public class P_RequerimientoInsumo extends PopupPanel {
 
@@ -25,6 +28,11 @@ public class P_RequerimientoInsumo extends PopupPanel {
 	private static final int COL_MARCA = 1;
 	private static final int COL_PROVEEDOR = 2;
 	private static final int COL_BORRAR = 3;
+	
+	private static final int COL_CHECK = 0;
+	private static final int COL_INSUMONEC = 1;
+	private static final int COL_MARCANEC = 2;
+	private static final int COL_PROVEEDORNEC = 3;
 	
 	private Constantes constante = GWT.create(Constantes.class);
 	
@@ -78,21 +86,38 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		contenedorTablaReqNec.setWidget(tablaElementoReqNec);
 		tablaElementoReqNec.setSize("100%", "100%");
 
-		tablaElementoReqNec.setText(0, COL_INSUMO, constante.insumo());
-		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_INSUMO, "33%");
-		tablaElementoReqNec.setText(0, COL_MARCA, constante.marca());
-		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_MARCA, "33%");
-		tablaElementoReqNec.setText(0, COL_PROVEEDOR, constante.proveedor());
-		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_PROVEEDOR, "33%");
+		tablaElementoReqNec.setText(0, COL_CHECK, "");
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_CHECK, "5%");		
+		tablaElementoReqNec.setText(0, COL_INSUMONEC, constante.insumo());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_INSUMONEC, "31%");
+		tablaElementoReqNec.setText(0, COL_MARCANEC, constante.marca());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_MARCANEC, "31%");
+		tablaElementoReqNec.setText(0, COL_PROVEEDORNEC, constante.proveedor());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_PROVEEDORNEC, "31%");
 		tablaElementoReqNec.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+		comprasService.getRequerimientosInsumosCompletos(new AsyncCallback<List<InsumoDTO>>() {
+			@Override
+			public void onSuccess(List<InsumoDTO> result) {
+				cargarListaTablaInsumosNec(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se pudo cargar la lista de marcas");
+			}
+		});
+				
+		
 		
 		tituloReqAdic = new Label(constante.requerimientosAdicionales());
 		tituloReqAdic.setStyleName("labelTitulo");
 		
 		listaInsumos = new LinkedList<String>();
 		
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-
+		
 		comprasService.getNombresInsumos("", new AsyncCallback<List<String>>() {
 			@Override
 			public void onSuccess(List<String> result) {
@@ -242,7 +267,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		
 		
 		contenedor = new FlexTable();
-		contenedor.setSize("600px", "300px");
+		contenedor.setSize("800px", "300px");
 		
 		contenedor.setWidget(0, 0, titulo);
 		contenedor.getFlexCellFormatter().setColSpan(0, 0, 3);
@@ -282,8 +307,34 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 		
 	}
+		
+	protected void cargarListaTablaInsumosNec(List<InsumoDTO> result) {
+		
+		for (InsumoDTO insumoDTO : result) {
+			
+			CheckBox check = new CheckBox();
+			Label nombreInsumo = new Label(insumoDTO.getNombre());
+			Label nombreMarca = new Label(insumoDTO.getMarca());
+			ListBox proveedores = new ListBox();
+			proveedores.setStyleName("gwt-TextArea");
+			for (ProveedorDeInsumosDTO prov : insumoDTO.getProveedor()) {
+				
+				proveedores.addItem(prov.getNombre());		
+				
+			}
+			int fila = tablaElementoReqNec.getRowCount();
+			
+			tablaElementoReqNec.setWidget(fila, COL_CHECK, check);
+			tablaElementoReqNec.getFlexCellFormatter().setHorizontalAlignment(fila, COL_CHECK, HasHorizontalAlignment.ALIGN_CENTER);		
+			tablaElementoReqNec.setWidget(fila, COL_INSUMONEC, nombreInsumo);
+			tablaElementoReqNec.setWidget(fila, COL_MARCANEC, nombreMarca);
+			tablaElementoReqNec.setWidget(fila, COL_PROVEEDORNEC, proveedores);
+			tablaElementoReqNec.getRowFormatter().setStyleName(fila, "tablaRenglon");		
+		}
 	
-	
+		
+	}
+
 	protected void agregarInsumoAdicional() {
 		
 		if(insumo.getSelectedIndex() != 0 && marca.getSelectedIndex() != 0 && proveedor.getSelectedIndex() != 0){
@@ -322,10 +373,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		
 		
 	}
-	
-	
-	
-	
+
 	private void eliminar(String [] insumoMarca) {
 		
 		int fila = -1;

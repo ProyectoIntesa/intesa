@@ -628,4 +628,22 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		return adminCompras.getNombresProvSegunInsumoYMarca(nombreInsumo, nombreMarca);
 	}
+
+	@Override
+	public List<InsumoDTO> getRequerimientosInsumosCompletos()  throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		
+		List<Object> idInsumos = adminCompras.getRequerimientosNecesario();
+		List<InsumoDTO> result = new LinkedList<InsumoDTO>();
+		
+		for (Object id : idInsumos) {
+			InsumoDTO agrega = new InsumoDTO();
+			agrega = this.getInsumoCompleto((int)id, ""); 
+			result.add(agrega);
+		}
+		
+		return result;
+		
+	}
 }

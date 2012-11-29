@@ -8,7 +8,7 @@
             <column name="id_Modo_Envio" />
             <generator class="identity" />
         </id>
-        <property name="descripcion" type="long">
+        <property name="descripcion" type="string">
             <column name="descripcion" not-null="true" />
         </property>
         <set name="ordenCompraCotizacions" table="Orden_CompraCotizacion" inverse="true" lazy="true" fetch="select">
