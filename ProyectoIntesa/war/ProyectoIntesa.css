@@ -369,6 +369,9 @@ body {
 	width: 97%;
 }
 
+
+
+
 /*alineacion derecha para el login*/
 .gwt-LabelFormularioLogin {
 	color: White;
@@ -590,6 +593,20 @@ td.datePickerMonth {
 	margin-bottom: 5px;
 	margin-right: 10px;
 	border-radius: 9px;
+}
+
+.gwt-ListBox2 {
+	padding: 0px;
+	border-top: 1px solid #666;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-size: 12px;
+	font-family: Arial;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	border-radius: 9px;
+	width: 97%;
 }
 
 .textoCorto {

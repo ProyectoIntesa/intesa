@@ -4,12 +4,42 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface Constantes extends Constants {
 
+	  @DefaultStringValue("ITEM")
+	  String item();
+	  
+	  @DefaultStringValue("CANT COMPRAR")
+	  String cantComprar();
+	  
+	  @DefaultStringValue("CANT INVENTARIO")
+	  String cantInventario();
+	  
+	  @DefaultStringValue("SUBTOTAL")
+	  String subtotal();
+	
 	  @DefaultStringValue("EMPRESA")
 	  String empresa();
+	  
+	  @DefaultStringValue("GENERAR")
+	  String generar();
 	  
 	  @DefaultStringValue("ARMAR ORDEN")
 	  String armarOrden();
 	  
+	  @DefaultStringValue("FECHA EDICION")
+	  String fechaEdicion();
+	  
+	  @DefaultStringValue("MODO ENVIO")
+	  String modoEnvio();
+	  
+	  @DefaultStringValue("FORMA DE PAGO")
+	  String formaDePago();
+	  
+	  @DefaultStringValue("IVA")
+	  String iva();
+	  	  
+	  @DefaultStringValue("TOTAL")
+	  String total();
+	  	  
 	  @DefaultStringValue("REQUERIMIENTOS DE INSUMO")
 	  String requerimientosDeInsumo();
 	  

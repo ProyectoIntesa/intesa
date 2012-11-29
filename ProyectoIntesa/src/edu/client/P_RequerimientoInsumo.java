@@ -65,6 +65,9 @@ public class P_RequerimientoInsumo extends PopupPanel {
 	
 	private List<String[]> listaTablaInsumosAdic;
 	
+	private List<InsumoDTO> listaOrdenCompraInsumo;
+	private String proveedorElegido;
+	private boolean agregarOrden = false;
 	
 	public P_RequerimientoInsumo(){
 		
@@ -72,6 +75,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		setStyleName("fondoPopup");
 		
 		listaTablaInsumosAdic = new LinkedList<String[]>();
+		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
 		
 		titulo = new Label(constante.requerimientosDeInsumo());
 		titulo.setStyleName("labelTitulo");
@@ -142,7 +146,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		provInsumoAdic.setStyleName("gwt-LabelFormulario");
 		
 		insumo = new ListBox();
-		insumo.setStyleName("gwt-TextArea");
+		insumo.setStyleName("gwt-ListBox");
 		insumo.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -168,14 +172,16 @@ public class P_RequerimientoInsumo extends PopupPanel {
 					
 					
 				}
-				else
+				else{
 					marca.setEnabled(false);
+					proveedor.setEnabled(false);
+				}
 				
 			}
 		});
 		
 		marca = new ListBox();
-		marca.setStyleName("gwt-TextArea");
+		marca.setStyleName("gwt-ListBox");
 		marca.setEnabled(false);
 		marca.addClickHandler(new ClickHandler() {
 			
@@ -211,7 +217,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		});
 		
 		proveedor = new ListBox();
-		proveedor.setStyleName("gwt-TextArea");	
+		proveedor.setStyleName("gwt-ListBox");	
 		proveedor.setEnabled(false);
 
 		
@@ -255,7 +261,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		armarOrden = new Button(constante.armarOrden());
 		armarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//salir();
+				armarOrden();
 			}
 		});
 		
@@ -283,10 +289,13 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		
 		contenedor.setWidget(4, 0, insumoAdic);
 		contenedor.setWidget(5, 0, insumo);
+		contenedor.getCellFormatter().setWidth(5, 0, "30%");
 		contenedor.setWidget(4, 1, marcaInsumoAdic);
 		contenedor.setWidget(5, 1, marca);
+		contenedor.getCellFormatter().setWidth(5, 1, "30%");
 		contenedor.setWidget(4, 2, provInsumoAdic);
 		contenedor.setWidget(5, 2, proveedor);
+		contenedor.getCellFormatter().setWidth(5, 2, "30%");
 		
 		contenedor.setWidget(6, 0, agregar);
 		contenedor.getFlexCellFormatter().setColSpan(6, 0, 3);
@@ -300,14 +309,83 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 		contenedor.setWidget(9, 0, botones);
 		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
-		
-		
+			
 
 		setWidget(contenedor);
 
 		
 	}
 		
+	protected void armarOrden() {
+		
+		boolean primeraPasada = true;
+		boolean bandera = false;
+		
+		for(int i = 1; i < tablaElementoReqNec.getRowCount(); i++){
+			
+			boolean resultCheck = ((CheckBox)tablaElementoReqNec.getWidget(i, COL_CHECK)).getValue();
+						
+			if(resultCheck){
+			
+				if(primeraPasada){
+					int indiceProv = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
+					proveedorElegido = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceProv);
+					primeraPasada = false;
+				}
+				
+				int indiceAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
+				String provAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceAux);	
+			
+				if(provAux.compareTo(proveedorElegido) == 0){
+										
+					String nombreInsumo = ((Label)tablaElementoReqNec.getWidget(i, COL_INSUMONEC)).getText();
+					String nombreMarca = ((Label)tablaElementoReqNec.getWidget(i, COL_MARCANEC)).getText();
+					InsumoDTO nuevo = new InsumoDTO();
+					nuevo.setNombre(nombreInsumo);
+					nuevo.setMarca(nombreMarca);
+					
+					listaOrdenCompraInsumo.add(nuevo);
+					
+				}
+				else{
+					Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
+					bandera = true;
+					break;
+				}
+			}	
+		}
+		
+		for(int i = 1; i < tablaElementoReqAdic.getRowCount(); i++){
+			 
+			String provAux = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
+			
+			if (provAux.compareTo(proveedorElegido) == 0) {
+
+				String nombreInsumo = ((Label) tablaElementoReqAdic.getWidget(i, COL_INSUMO)).getText();
+				String nombreMarca = ((Label) tablaElementoReqAdic.getWidget(i, COL_MARCA)).getText();
+				InsumoDTO nuevo = new InsumoDTO();
+				nuevo.setNombre(nombreInsumo);
+				nuevo.setMarca(nombreMarca);
+
+				listaOrdenCompraInsumo.add(nuevo);
+
+			} else {
+				Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
+				bandera = true;
+				break;
+			}
+	
+		}	
+		
+		if(!bandera){
+			this.agregarOrden = true;
+			salir();
+		}
+		
+		
+		
+	}
+
 	protected void cargarListaTablaInsumosNec(List<InsumoDTO> result) {
 		
 		for (InsumoDTO insumoDTO : result) {
@@ -316,13 +394,17 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			Label nombreInsumo = new Label(insumoDTO.getNombre());
 			Label nombreMarca = new Label(insumoDTO.getMarca());
 			ListBox proveedores = new ListBox();
-			proveedores.setStyleName("gwt-TextArea");
+			proveedores.setStyleName("gwt-ListBox2");
+			if(insumoDTO.getProveedor().size() == 0){
+				check.setEnabled(false);
+			}
 			for (ProveedorDeInsumosDTO prov : insumoDTO.getProveedor()) {
-				
 				proveedores.addItem(prov.getNombre());		
 				
 			}
 			int fila = tablaElementoReqNec.getRowCount();
+			
+			
 			
 			tablaElementoReqNec.setWidget(fila, COL_CHECK, check);
 			tablaElementoReqNec.getFlexCellFormatter().setHorizontalAlignment(fila, COL_CHECK, HasHorizontalAlignment.ALIGN_CENTER);		
@@ -447,6 +529,15 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		this.hide();
 	}
 	
+	public List<InsumoDTO> getListaOrdenCompraInsumo(){
+		return this.listaOrdenCompraInsumo;
+	}
 	
+	public String getProveedorElegido(){
+		return this.proveedorElegido;
+	}
 	
+	public boolean getAgregarOrden(){
+		return this.agregarOrden;
+	}
 }

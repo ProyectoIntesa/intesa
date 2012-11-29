@@ -1,5 +1,7 @@
 package edu.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -61,6 +63,8 @@ public class P_PantallaCompras extends Composite {
 	private ScrollPanel formulario;
 	private ProveedorDTO proveedorSelec;
 	private InsumoDTO insumoSelec;
+	private List<InsumoDTO> listaOrdenCompraInsumo;
+	private String proveedorElegido;
 
 	public P_PantallaCompras(String usuarioLogueado) {
 
@@ -348,20 +352,21 @@ public class P_PantallaCompras extends Composite {
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
-//				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-//
-//					@Override
-//					public void onClose(CloseEvent<PopupPanel> event) {
-//						
-//						insumoSelec= popUp.getInsumoDTO();
-//						boolean modificar = popUp.getModificarInsumo();
-//					
-//						if (modificar == true)
-//						{
-//							modificarInsumo();
-//						}
-//					}
-//				});
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						listaOrdenCompraInsumo = popUp.getListaOrdenCompraInsumo();
+						proveedorElegido = popUp.getProveedorElegido();
+						boolean agregarOrden = popUp.getAgregarOrden();
+										
+						if (agregarOrden == true)
+						{						
+							agregarOrden();							
+						}
+					}
+				});
 			}
 			
 			
@@ -370,6 +375,29 @@ public class P_PantallaCompras extends Composite {
 	}
 	
 	
+	protected void agregarOrden() {
+		
+		String titulo;
+		int tab;
+		titulo = constante.ordenDeCompraDeInsumos();
+		tab = numeroElemento(titulo);
+
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,listaOrdenCompraInsumo,proveedorElegido,titulo);
+			formulario.add(ordenCompra);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+		
+		
+	}
+
 	protected void modificarProveedor() {
 		String titulo;
 		int tab;

@@ -479,7 +479,6 @@ public class P_FormularioInsumo  extends Composite {
 		
 	}
 
-
 	protected void agregarProveedor(ClickEvent event) {
 		P_AgregarProveedor nuevo = new P_AgregarProveedor(this);
 		nuevo.setGlassEnabled(true);
