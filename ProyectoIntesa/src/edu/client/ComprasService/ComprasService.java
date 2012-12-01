@@ -68,4 +68,6 @@ public interface ComprasService extends RemoteService {
 
 	List<InsumoDTO> getRequerimientosInsumosCompletos() throws IllegalArgumentException;
 
+	List<InsumoDTO> completarValoresInsumos(List<InsumoDTO> insumos, String proveedor) throws IllegalArgumentException;
+
 }

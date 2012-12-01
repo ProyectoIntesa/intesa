@@ -1,5 +1,6 @@
 package edu.client;
 
+import java.awt.font.TextLayout.CaretPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,9 +13,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 
+import edu.client.ComprasService.ComprasService;
+import edu.client.ComprasService.ComprasServiceAsync;
 import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.ProveedorDeInsumosDTO;
 
 public class P_FormularioOrdenCompraInsumo extends Composite {
 
@@ -59,15 +64,30 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private List<InsumoDTO> insumos;
 	private String prov;
 	
-	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumos, String prov, String titulo) {
+	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo) {
 		
 		this.padre = padre;
-		this.insumos = insumos;
+		this.insumos = insumose;
 		this.prov = prov;
 		this.titulo = prov;
 		
 		DateTimeFormat fmtDate=DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha=fmtDate.format(new Date());
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.completarValoresInsumos(this.insumos, this.prov, new AsyncCallback<List<InsumoDTO>>() {
+			
+			@Override
+			public void onSuccess(List<InsumoDTO> result) {
+				insumos= result;	
+				cargarRenglones();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+			}
+		});
 		
 		tituloFormulario = new Label("ORDEN DE COMPRA DE INSUMOS");
 		tituloFormulario.setStyleName("labelTitulo");
@@ -187,10 +207,29 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		
 		
 		
-		
 		initWidget(formulario);
 		
 		
+	}
+	
+	public void cargarRenglones(){
+		int item = 1;
+		
+		for (InsumoDTO insumo : insumos) {
+		    TextBox precioTb= new TextBox();
+		    double precio = insumo.getProveedor().get(0).getPrecio();
+		    precioTb.setText(""+precio);
+			tablaElemento.setWidget(item, COL_ITEM, new Label(""+item));
+			tablaElemento.setWidget(item, COL_INSUMO, new Label(insumo.getNombre()));
+			tablaElemento.setWidget(item, COL_MARCA, new Label(insumo.getMarca()));
+			tablaElemento.setWidget(item, COL_CANTCOMPRAR, new TextBox());
+			tablaElemento.setWidget(item, COL_SUBTOTAL, new Label("0"));
+			tablaElemento.setWidget(item, COL_CANTINVENTARIO, new Label(insumo.getCantidad()+""));
+			tablaElemento.setWidget(item, COL_LOTE, new Label(insumo.getLoteCompra()+""));
+			tablaElemento.setWidget(item, COL_PRECIOUNITARIO, precioTb);
+			tablaElemento.getRowFormatter().setStyleName(item, "tablaRenglon");
+			item++;
+		}
 	}
 	
 	public void cancelar(ClickEvent event) {

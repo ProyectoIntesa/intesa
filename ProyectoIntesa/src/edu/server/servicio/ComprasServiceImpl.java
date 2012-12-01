@@ -646,4 +646,31 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return result;
 		
 	}
+
+	@Override
+	public List<InsumoDTO> completarValoresInsumos(List<InsumoDTO> insumos, String proveedor) throws IllegalArgumentException{
+		Compras adminCompras = new Compras();
+		for (InsumoDTO insumo : insumos) {
+			Insumo insuAux = new Insumo();
+			int idInsumo =adminCompras.getIdInsumo(insumo.getNombre(), insumo.getMarca());
+			int idProv = adminCompras.getProveedorPorNombre(proveedor).getCodigoProveedor();
+			insumo.setIdInsumo(idInsumo);
+			
+			insuAux = adminCompras.getInsumoCompleto(insumo.getIdInsumo(), "");
+			insumo.setCantidad(insuAux.getCantidad());
+			insumo.setLoteCompra(insuAux.getLoteCompra());
+			
+			for (ProveedorDeInsumo prov : insuAux.getProveedorDeInsumos()) {
+				if(prov.getId().getIdProveedor()== idProv)
+				{
+					ProveedorDeInsumosDTO proveedorInsu = new ProveedorDeInsumosDTO();
+					proveedorInsu.setPrecio(prov.getPrecio());
+					insumo.getProveedor().add(proveedorInsu);
+				}
+			}
+		}
+
+		return insumos;
+	}
+	
 }

@@ -66,4 +66,6 @@ public interface ComprasServiceAsync {
 
 	void getRequerimientosInsumosCompletos(AsyncCallback<List<InsumoDTO>> callback) throws IllegalArgumentException;
 
+	void completarValoresInsumos(List<InsumoDTO> insumos, String proveedor, AsyncCallback<List<InsumoDTO>> callback)throws IllegalArgumentException;
+
 }

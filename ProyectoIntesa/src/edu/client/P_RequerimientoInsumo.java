@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.sun.java.swing.plaf.windows.resources.windows;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
@@ -75,7 +76,6 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		setStyleName("fondoPopup");
 		
 		listaTablaInsumosAdic = new LinkedList<String[]>();
-		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
 		
 		titulo = new Label(constante.requerimientosDeInsumo());
 		titulo.setStyleName("labelTitulo");
@@ -105,12 +105,15 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		comprasService.getRequerimientosInsumosCompletos(new AsyncCallback<List<InsumoDTO>>() {
 			@Override
 			public void onSuccess(List<InsumoDTO> result) {
+			if(!result.isEmpty())
 				cargarListaTablaInsumosNec(result);
+			else
+				Window.alert("No hay requerimientos de insumos");
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de marcas");
+				Window.alert("ERROR DEL SERVICIO");
 			}
 		});
 				
@@ -317,10 +320,10 @@ public class P_RequerimientoInsumo extends PopupPanel {
 	}
 		
 	protected void armarOrden() {
-		
+		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
 		boolean primeraPasada = true;
 		boolean bandera = false;
-		
+
 		for(int i = 1; i < tablaElementoReqNec.getRowCount(); i++){
 			
 			boolean resultCheck = ((CheckBox)tablaElementoReqNec.getWidget(i, COL_CHECK)).getValue();
@@ -356,6 +359,11 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		}
 		
 		for(int i = 1; i < tablaElementoReqAdic.getRowCount(); i++){
+			
+			if(primeraPasada){
+				proveedorElegido = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
+				primeraPasada = false;
+			}
 			 
 			String provAux = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
 			
@@ -376,7 +384,6 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			}
 	
 		}	
-		
 		if(!bandera){
 			this.agregarOrden = true;
 			salir();

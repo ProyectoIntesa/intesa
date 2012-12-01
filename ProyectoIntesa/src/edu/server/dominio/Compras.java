@@ -864,25 +864,35 @@ public class Compras {
 		
 		String consulta1 = "create view orcoin as select oci.nro_orden_compra_insumo from orden_compra_insumo as oci, estado_orden as eo " +
 				"where oci.id_estado_orden = eo.id_estado_orden and " +
-				"( eo.nombre like 'GENERADA' or eo.nombre like 'EDICION' or eo.nombre like 'VALIDADA' or eo.nombre like 'ENVIADA' ) " +
-				"create view renglones as select roci.id_insumo from renglon_orden_compra_insumo as roci, orcoin as t " +
-				"where roci.nro_orden_compra_insumo = t.nro_orden_compra_insumo " +
-				"drop view orcoin";
-
+				"( eo.nombre like 'GENERADA' or eo.nombre like 'EDICION' or eo.nombre like 'VALIDADA' or eo.nombre like 'ENVIADA' ) ";
+		sec.createSQLQuery(consulta1).executeUpdate();
 		
-		sec.createSQLQuery(consulta1);
+		String consulta2 ="create view renglones as select roci.id_insumo from renglon_orden_compra_insumo as roci, orcoin as t " +
+		"where roci.nro_orden_compra_insumo = t.nro_orden_compra_insumo";
 		
-		String consulta2 = "select id_insumo from insumo where necesidad_compra = 1 and id_insumo not in (select t.id_insumo from renglones as t)";
+		sec.createSQLQuery(consulta2).executeUpdate();
+		String consulta3 = "select id_insumo from insumo where necesidad_compra = 1 and id_insumo not in (select t.id_insumo from renglones as t)";
 		
-		resultCons = sec.createSQLQuery(consulta2).list();
-		
-		sec.createSQLQuery("drop view renglones");
+		resultCons = sec.createSQLQuery(consulta3).list();
+		sec.createSQLQuery("drop view orcoin").executeUpdate();
+		sec.createSQLQuery("drop view renglones").executeUpdate();
 		
 		sec.close();
 
 		return resultCons;
 		
 		
+	}
+
+	public int getIdInsumo(String nombre, String marca){
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String consultaMarca = "select id_Marca from Marca where nombre like '"+marca+"'";
+		Object idmarca = sec.createSQLQuery(consultaMarca).uniqueResult();
+		String consultaInsumo = "select id_Insumo from Insumo where nombre like '"+nombre+"' and id_Marca = "+idmarca;
+		Object idInsumo = sec.createSQLQuery(consultaInsumo).uniqueResult();
+		sec.close();
+		return (int)idInsumo;
 	}
 	
 }
