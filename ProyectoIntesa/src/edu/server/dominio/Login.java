@@ -41,7 +41,7 @@ public UsuarioDTO getUsuario(String nombreUsuario, String pass){
 				usr = usuarios.get(0);
 				Empleado emp = new Empleado();
 				emp = (Empleado) session.get(Empleado.class, usr.getEmpleado().getIdEmpleado());
-				respuesta.setNombre(emp.getNombre() + " " + emp.getApellido());
+				respuesta.setNombre(emp.getApellido() + ", " + emp.getNombre());
 				respuesta.setRol(usr.getRol());
 
 				session.close();

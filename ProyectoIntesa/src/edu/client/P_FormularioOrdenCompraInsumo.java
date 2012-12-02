@@ -1,25 +1,29 @@
 package edu.client;
 
-import java.awt.font.TextLayout.CaretPolicy;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
-
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
 import edu.shared.DTO.InsumoDTO;
-import edu.shared.DTO.ProveedorDeInsumosDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
+import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
 
 public class P_FormularioOrdenCompraInsumo extends Composite {
 
@@ -63,13 +67,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private String titulo;
 	private List<InsumoDTO> insumos;
 	private String prov;
+	private List<String> envio;
+	private String usuario;
 	
-	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo) {
+	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo, String responsable) {
 		
+		this.usuario= responsable;
 		this.padre = padre;
 		this.insumos = insumose;
 		this.prov = prov;
-		this.titulo = prov;
+		this.titulo = titulo;
 		
 		DateTimeFormat fmtDate=DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha=fmtDate.format(new Date());
@@ -88,6 +95,22 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 				Window.alert("ERROR DE SERVICIO");
 			}
 		});
+		comprasService.getModoDeEnvio(new AsyncCallback<List<String>>() {
+
+
+			@Override
+			public void onSuccess(List<String> result) {
+				envio=result;
+				cargarListaenvios();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+				
+			}
+		});
+		
 		
 		tituloFormulario = new Label("ORDEN DE COMPRA DE INSUMOS");
 		tituloFormulario.setStyleName("labelTitulo");
@@ -121,21 +144,21 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		generar = new Button(constante.generar());
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//armarOrden();
+				registrarOrden("GENERADA");
 			}
 		});
 		
 		guardar = new Button(constante.guardar());
 		guardar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//armarOrden();
+				registrarOrden("EDICION");
 			}
 		});
 		
 		cancelar = new Button(constante.cancelar());
 		cancelar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//armarOrden();
+				cancelar(event);
 			}
 		});
 		
@@ -212,6 +235,65 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		
 	}
 	
+	protected void registrarOrden(final String estado) {
+		OrdenCompraInsumoDTO nuevaOrden = new OrdenCompraInsumoDTO();
+		nuevaOrden.setEstadoOrden(estado);
+		nuevaOrden.setEmpleado(usuario);
+		nuevaOrden.setFechaEdicion(new Date());
+		if (estado.compareTo("GENERADA")==0) {nuevaOrden.setFechaGeneracion(new Date());}
+		nuevaOrden.setProveedor(prov);
+		nuevaOrden.setFormaPago(this.formaDePagoTb.getText());
+		nuevaOrden.setObservaciones(this.observacionesTa.getText());
+		nuevaOrden.setTotal(new Double(totalTb.getText()));
+		String modo = modoEnvioLb.getItemText(modoEnvioLb.getSelectedIndex());
+		nuevaOrden.setModoEnvio(modo);
+		
+		for ( int i = 1 ; i < tablaElemento.getRowCount(); i++) {
+			RenglonOrdenCompraInsumoDTO renglon = new RenglonOrdenCompraInsumoDTO();
+			InsumoDTO insu = new InsumoDTO();
+			insu.setMarca(((Label)tablaElemento.getWidget(i, COL_MARCA)).getText());
+			insu.setNombre(((Label)tablaElemento.getWidget(i, COL_INSUMO)).getText());
+			renglon.setCantidad(new Double(((TextBox)tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText()));
+			renglon.setItem(i);
+			renglon.setPrecio(new Double(((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText()));
+			renglon.setSubtotal(new Double(((Label)tablaElemento.getWidget(i, COL_SUBTOTAL)).getText()));
+			renglon.setInsumo(insu);
+			nuevaOrden.getRenglonOrdenCompraInsumos().add(renglon);
+		}
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.registrarOrdenCompraInsumos(nuevaOrden, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if(result){
+					String accion = "";
+					if(estado.compareTo("GENERADA")== 0)
+						accion = "generado";
+					else
+						accion = "guardado";
+					Window.alert("se ha "+accion+" corectamente la orden");
+					padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
+				}
+				else{
+					Window.alert("no se pudo efectuar la acción");
+				}	
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+				
+			}
+		});
+		
+	}
+
+	protected void cargarListaenvios() {
+		for (String modo : envio) {
+			modoEnvioLb.addItem(modo);
+		}
+		
+	}
+
 	public void cargarRenglones(){
 		int item = 1;
 		
@@ -238,7 +320,6 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	}
 	
 	private int numeroElemento(String titulo) {
-
 		int elemento = -1;
 		int contador = 0;
 

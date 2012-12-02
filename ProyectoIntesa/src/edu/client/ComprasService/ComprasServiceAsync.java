@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 public interface ComprasServiceAsync {
@@ -67,5 +68,9 @@ public interface ComprasServiceAsync {
 	void getRequerimientosInsumosCompletos(AsyncCallback<List<InsumoDTO>> callback) throws IllegalArgumentException;
 
 	void completarValoresInsumos(List<InsumoDTO> insumos, String proveedor, AsyncCallback<List<InsumoDTO>> callback)throws IllegalArgumentException;
+
+	void getModoDeEnvio(AsyncCallback<List<String>> callback)throws IllegalArgumentException;
+
+	void registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 }

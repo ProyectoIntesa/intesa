@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 @RemoteServiceRelativePath("compras")
@@ -69,5 +70,9 @@ public interface ComprasService extends RemoteService {
 	List<InsumoDTO> getRequerimientosInsumosCompletos() throws IllegalArgumentException;
 
 	List<InsumoDTO> completarValoresInsumos(List<InsumoDTO> insumos, String proveedor) throws IllegalArgumentException;
+
+	List<String> getModoDeEnvio() throws IllegalArgumentException;
+
+	boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
 
 }

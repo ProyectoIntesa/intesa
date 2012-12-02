@@ -1,26 +1,24 @@
 package edu.server.dominio;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
+import edu.server.repositorio.OrdenCompraInsumo;
 import edu.server.repositorio.Pais;
 import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.Provincia;
+import edu.server.repositorio.RenglonOrdenCompraInsumo;
 import edu.server.util.HibernateUtil;
-import edu.shared.DTO.ProveedorDeInsumosDTO;
 
 public class Compras {
 
@@ -895,4 +893,24 @@ public class Compras {
 		return (int)idInsumo;
 	}
 	
+	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumo orden){
+		boolean result = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			Object aux = new Object();
+			sec.beginTransaction();
+			 aux= sec.save(orden);
+			for (RenglonOrdenCompraInsumo renglon : orden.getRenglonOrdenCompraInsumos()) {
+				renglon.getId().setNroOrdenCompraInsumo((long) aux);
+				sec.save(renglon);
+			}
+			sec.getTransaction().commit();
+			result = true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+		return result;
+	}
+
 }

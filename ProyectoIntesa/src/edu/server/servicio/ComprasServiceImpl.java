@@ -7,25 +7,36 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.ComprasService.ComprasService;
 import edu.server.dominio.Compras;
+import edu.server.dominio.Empleado;
+import edu.server.dominio.Estado;
+import edu.server.dominio.ModoDeEnvio;
 import edu.server.dominio.Ventas;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
+import edu.server.repositorio.EstadoOrden;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
+import edu.server.repositorio.ModoEnvio;
+import edu.server.repositorio.OrdenCompraInsumo;
 import edu.server.repositorio.Pais;
 import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.ProveedorDeInsumoId;
 import edu.server.repositorio.Provincia;
+import edu.server.repositorio.RenglonIngresoInsumosId;
+import edu.server.repositorio.RenglonOrdenCompraInsumo;
+import edu.server.repositorio.RenglonOrdenCompraInsumoId;
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.DireccionDTO;
 import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
+import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
 
 public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasService {
 
@@ -672,5 +683,61 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 		return insumos;
 	}
-	
+
+	@Override
+	public List<String> getModoDeEnvio()throws IllegalArgumentException{
+		ModoDeEnvio adminME = new ModoDeEnvio();
+		return adminME.getModoDeEnvio();
+	}
+
+	@Override
+	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden)throws IllegalArgumentException{
+		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		Empleado adEmpleado = new Empleado();
+		ModoDeEnvio adminModo = new ModoDeEnvio();
+		String nombre = orden.getEmpleado().split(", ")[1];
+		String apellido = orden.getEmpleado().split(", ")[0];
+		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
+		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
+		Proveedor prov = adminCompras.getProveedorPorNombre(orden.getProveedor());
+		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio()) ;
+		edu.server.repositorio.Empleado responsable = new edu.server.repositorio.Empleado();
+		responsable.setIdEmpleado(idEmpleado);
+		responsable.setApellido(apellido);
+		responsable.setNombre(nombre);
+		nueva.setEmpleado(responsable);
+		nueva.setProveedor(prov);
+		EstadoOrden eo = new EstadoOrden();
+		eo.setIdEstadoOrden(idEstado);
+		eo.setNombre(orden.getEstadoOrden());
+		nueva.setEstadoOrden(eo);
+		ModoEnvio me = new ModoEnvio();
+		me.setIdModoEnvio(idModoEnvio);
+		me.setDescripcion(orden.getModoEnvio());
+		nueva.setModoEnvio(me);
+		nueva.setIva(orden.getIva());
+		nueva.setFechaEdicion(orden.getFechaEdicion());
+		if(orden.getFechaGeneracion() != null){nueva.setFechaGeneracion(orden.getFechaGeneracion()); }
+		nueva.setFormaPago(orden.getFormaPago());
+		nueva.setTotal(orden.getTotal());
+		nueva.setObservaciones(orden.getObservaciones());
+		
+		for (RenglonOrdenCompraInsumoDTO ren : orden.getRenglonOrdenCompraInsumos()) {
+			RenglonOrdenCompraInsumo renglon = new RenglonOrdenCompraInsumo();
+			RenglonOrdenCompraInsumoId id = new RenglonOrdenCompraInsumoId();
+			id.setIdRenglonOrdenCompraInsumo(ren.getItem());
+			renglon.setCantidad(ren.getCantidad());
+			renglon.setSubtotal(ren.getSubtotal());
+			renglon.setId(id);
+			int idInsumo = adminCompras.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
+			Insumo insu = new Insumo();
+			insu.setIdInsumo(idInsumo);
+			renglon.setInsumo(insu);
+			nueva.getRenglonOrdenCompraInsumos().add(renglon);
+		}
+		
+		return adminCompras.registrarOrdenCompraInsumos(nueva);
+	}
 }

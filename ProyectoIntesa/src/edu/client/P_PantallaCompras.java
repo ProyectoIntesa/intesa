@@ -65,9 +65,10 @@ public class P_PantallaCompras extends Composite {
 	private InsumoDTO insumoSelec;
 	private List<InsumoDTO> listaOrdenCompraInsumo;
 	private String proveedorElegido;
+	private String usuario;
 
 	public P_PantallaCompras(String usuarioLogueado) {
-
+		usuario= usuarioLogueado;
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;
 		anchoLateral = 180;
@@ -209,6 +210,14 @@ public class P_PantallaCompras extends Composite {
 			}
 		});
 
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	protected void cerrar() {
@@ -388,7 +397,7 @@ public class P_PantallaCompras extends Composite {
 			formulario.setTitle(titulo);
 			formulario.setStyleName("panelFormulario");
 			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,listaOrdenCompraInsumo,proveedorElegido,titulo);
+			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,listaOrdenCompraInsumo,proveedorElegido,titulo,usuario);
 			formulario.add(ordenCompra);
 			panelTrabajo.add(formulario, titulo, false);
 			panelTrabajo.selectTab(numeroElemento(titulo));
