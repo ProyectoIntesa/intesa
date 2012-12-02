@@ -1,6 +1,7 @@
 package edu.client;
 
 import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface Constantes extends Constants {
 
@@ -438,6 +439,9 @@ public interface Constantes extends Constants {
 	  String puesto();
 	  
 	  @DefaultStringValue("ROL")
-	  String rol();	  
+	  String rol();
+
+	 @DefaultStringValue("ACTUALIZAR TOTAL")
+	  String actualizarTotal();
 }
 
