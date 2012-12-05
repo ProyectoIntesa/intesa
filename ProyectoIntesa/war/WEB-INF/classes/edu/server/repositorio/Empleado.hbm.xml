@@ -23,7 +23,7 @@
         <property name="codigoBarras" type="string">
             <column name="codigo_Barras" length="30" />
         </property>
-        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Generado_Por" not-null="true" />
             </key>

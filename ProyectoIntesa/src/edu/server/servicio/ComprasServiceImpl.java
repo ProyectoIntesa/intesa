@@ -1,11 +1,15 @@
 package edu.server.servicio;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.ComprasService.ComprasService;
+import edu.server.dominio.Administrador;
 import edu.server.dominio.Compras;
 import edu.server.dominio.Empleado;
 import edu.server.dominio.Estado;
@@ -733,6 +737,11 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			renglon.setId(id);
 			int idInsumo = adminCompras.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
 			Insumo insu = new Insumo();
+			ProveedorDeInsumo provInsumo = new ProveedorDeInsumo();
+			ProveedorDeInsumoId provInsumoId = new ProveedorDeInsumoId(prov.getCodigoProveedor(), idInsumo);
+			provInsumo.setId(provInsumoId);
+			provInsumo.setPrecio(ren.getPrecio());
+			insu.getProveedorDeInsumos().add(provInsumo);
 			insu.setIdInsumo(idInsumo);
 			renglon.setInsumo(insu);
 			nueva.getRenglonOrdenCompraInsumos().add(renglon);
@@ -740,4 +749,136 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		return adminCompras.registrarOrdenCompraInsumos(nueva);
 	}
+
+	@Override
+	public List<String> getNombreEstados()throws IllegalArgumentException{
+		
+		Estado adminE = new Estado();
+		return adminE.getNombreEstados();
+		
+	}
+
+	@Override
+	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumo(String estado, String prov, String fecDesde, String fecHasta) throws IllegalArgumentException{	
+		
+		Administrador adminAdmin = new Administrador();
+		Compras adminCompras = new Compras();
+		Estado adminEstados = new Estado();
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
+		
+		int idEstado = adminEstados.getIdEstado(estado);
+		int idProv = adminCompras.getIdProveedor(prov);
+		
+		result = adminCompras.getOrdenCompraInsumo(idEstado, idProv, fecDesde, fecHasta);
+		
+		for (OrdenCompraInsumo orden : result) {
+			OrdenCompraInsumoDTO ordendto = new OrdenCompraInsumoDTO();
+			ordendto.setIdOrden(orden.getNroOrdenCompraInsumo());
+			if(orden.getNroOrdenCompraInsumoGenerada() == 0)
+			{
+				ordendto.setNroOrden("S/N");
+			}
+			else
+			{
+				DecimalFormat formato = new DecimalFormat("0000000000");
+				String numero = ""+formato.format(orden.getNroOrdenCompraInsumoGenerada());
+				ordendto.setNroOrden(numero);
+			}
+			
+			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
+			ordendto.setEstadoOrden(adminEstados.getNombreEstado(orden.getEstadoOrden().getIdEstadoOrden()));
+			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			
+			listaResult.add(ordendto);
+			
+		}
+		return listaResult;
+				 
+		
+	}
+
+	@Override
+	public OrdenCompraInsumoDTO getOrdenCompraInsumoSegunId(long idOrden) throws IllegalArgumentException{
+		
+		OrdenCompraInsumoDTO orden = new OrdenCompraInsumoDTO();
+		OrdenCompraInsumo ordenComun = new OrdenCompraInsumo();
+		Estado adminEstados = new Estado();
+		Compras adminCompras = new Compras();
+		Administrador adminAdmin = new Administrador();
+		ModoDeEnvio adminModoDeEnvio = new ModoDeEnvio();
+		
+		orden.setIdOrden(idOrden);
+		ordenComun = adminCompras.getOrdenCompraInsumoSegunId(idOrden);
+			
+		DecimalFormat formato = new DecimalFormat("0000000000");
+		String numero = ""+formato.format(ordenComun.getNroOrdenCompraInsumoGenerada());
+		orden.setNroOrden(numero);
+		
+		orden.setEmpleado(adminAdmin.getNombreEmpleado(ordenComun.getEmpleado().getIdEmpleado()));
+		orden.setEstadoOrden(adminEstados.getNombreEstado(ordenComun.getEstadoOrden().getIdEstadoOrden()));
+
+		orden.setProveedor(adminCompras.getNombreProveedor(ordenComun.getProveedor().getCodigoProveedor()));
+
+		orden.setModoEnvio(adminModoDeEnvio.getNombreModoEnvio(ordenComun.getModoEnvio().getIdModoEnvio()));
+			
+		orden.setFormaPago(ordenComun.getFormaPago());
+		orden.setIva(ordenComun.getIva());
+		orden.setTotal(ordenComun.getTotal());
+		orden.setObservaciones(ordenComun.getObservaciones());
+		
+		orden.setFechaGeneracion(ordenComun.getFechaGeneracion());
+		
+		Iterator renglones = ordenComun.getRenglonOrdenCompraInsumos().iterator();
+		
+		while (renglones.hasNext()){
+					
+			RenglonOrdenCompraInsumoDTO renglonNuevo = new RenglonOrdenCompraInsumoDTO();
+			RenglonOrdenCompraInsumo renglon = (RenglonOrdenCompraInsumo) renglones.next();
+			
+			int idRenglon = ((RenglonOrdenCompraInsumoId)renglon.getId()).getIdRenglonOrdenCompraInsumo();
+			
+			renglonNuevo.setItem(idRenglon);
+			renglonNuevo.setCantidad(renglon.getCantidad());
+			renglonNuevo.setSubtotal(renglon.getSubtotal());
+					
+			InsumoDTO insumo = new InsumoDTO();
+			insumo = this.getInsumoCompleto(renglon.getInsumo().getIdInsumo(), "");
+					
+			renglonNuevo.setInsumo(insumo);
+			
+			int size = insumo.getProveedor().size();
+			
+			ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
+			
+			for(int j = 0; j < size; j++){
+							
+				if(insumo.getProveedor().get(j).getNombre().compareTo(orden.getProveedor()) == 0)
+					prov = (ProveedorDeInsumosDTO) insumo.getProveedor().get(j);
+				
+			}
+			
+			insumo.getProveedor().clear();
+			
+			insumo.getProveedor().add(prov);
+			
+			renglonNuevo.setPrecio(insumo.getProveedor().get(0).getPrecio());
+			
+			orden.getRenglonOrdenCompraInsumos().add(renglonNuevo);
+
+		}
+					
+		
+		return orden;
+	}
+	
+	@Override
+	public boolean cancelarOrdencompraInsumo(long idOrden, String estado) throws IllegalArgumentException{
+		Estado adminEstado = new Estado();
+		Compras adminCompras = new Compras();
+		int idEstado = adminEstado.getIdEstado(estado);
+		return adminCompras.cancelarOrdenCompraInsumo(idOrden, idEstado);
+		
+	}
+
 }

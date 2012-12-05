@@ -6,23 +6,18 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
@@ -280,10 +275,10 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 						accion = "generado";
 					else
 						accion = "guardado";
-					Window.alert("se ha " + accion + " corectamente la orden");
+					Window.alert("Se ha " + accion + " corectamente la orden");
 					padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
 				} else {
-					Window.alert("no se pudo efectuar la acción");
+					Window.alert("No se pudo efectuar la acción");
 				}
 			}
 

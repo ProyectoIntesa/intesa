@@ -328,7 +328,6 @@ public class Administrador {
 
 		return result;
 	}
-
 	
 	public Boolean modificarEmpleado(Empleado emp){
 		
@@ -351,6 +350,14 @@ public class Administrador {
 		return result;
 	}
 	
-	
+	public String getNombreEmpleado(int idEmpleado){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String nombre = (String) sec.createSQLQuery("select nombre from empleado where id_empleado = "+idEmpleado).uniqueResult();
+		String apellido = (String) sec.createSQLQuery("select apellido from empleado where id_empleado = "+idEmpleado).uniqueResult();
+		sec.close();
+		return nombre+" "+apellido;
+	}
 	
 }

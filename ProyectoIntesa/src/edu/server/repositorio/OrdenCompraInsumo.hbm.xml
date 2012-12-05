@@ -20,6 +20,9 @@
         <many-to-one name="estadoOrden" class="edu.server.repositorio.EstadoOrden" fetch="select">
             <column name="id_Estado_Orden" not-null="true" />
         </many-to-one>
+        <property name="nroOrdenCompraInsumoGenerada" type="long">
+            <column name="nro_Orden_Compra_Insumo_Generada" />
+        </property>
         <property name="fechaEdicion" type="timestamp">
             <column name="fecha_Edicion" length="23" not-null="true" />
         </property>
@@ -41,7 +44,7 @@
         <property name="observaciones" type="string">
             <column name="observaciones" />
         </property>
-        <set name="renglonOrdenCompraInsumos" table="Renglon_Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="renglonOrdenCompraInsumos" table="Renglon_Orden_Compra_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="nro_Orden_Compra_Insumo" not-null="true" />
             </key>

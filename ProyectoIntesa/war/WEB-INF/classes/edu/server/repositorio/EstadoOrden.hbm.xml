@@ -53,7 +53,7 @@
             </key>
             <one-to-many class="edu.server.repositorio.IngresoProductos" />
         </set>
-        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="ordenCompraInsumos" table="Orden_Compra_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Estado_Orden" not-null="true" />
             </key>

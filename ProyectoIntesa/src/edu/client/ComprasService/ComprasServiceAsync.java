@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import edu.server.repositorio.OrdenCompraInsumo;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
@@ -72,5 +73,13 @@ public interface ComprasServiceAsync {
 	void getModoDeEnvio(AsyncCallback<List<String>> callback)throws IllegalArgumentException;
 
 	void registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getNombreEstados(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
+
+	void getOrdenCompraInsumo(String estado, String prov, String fecDesde, String fecHasta, AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void getOrdenCompraInsumoSegunId(long idOrden, AsyncCallback<OrdenCompraInsumoDTO> callback) throws IllegalArgumentException;
+
+	void cancelarOrdencompraInsumo(long idOrden, String estado, AsyncCallback<Boolean> callback);
 
 }

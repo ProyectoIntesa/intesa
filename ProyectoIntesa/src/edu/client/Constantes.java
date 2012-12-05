@@ -5,8 +5,59 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface Constantes extends Constants {
 
+	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
+	  String ordenCompraDeInsumo();
+	  
+	  @DefaultStringValue("CANCELAR ORDEN")
+	  String cancelarOrden();
+	  
+	  @DefaultStringValue("CERRAR ORDEN")
+	  String cerrarOrden();
+	  
+	  @DefaultStringValue("ENVIAR ORDEN")
+	  String enviarOrden();
+	  
+	  @DefaultStringValue("GENERADA POR")
+	  String generadaPor();
+	  
+	  @DefaultStringValue("ORDEN COMPRA DE PRODUCTO")
+	  String ordenCompraDeProducto();
+	  
+	  @DefaultStringValue("ORDEN COTIZACION DE PRODUCTO")
+	  String ordenCotizacionDeProducto();
+	
 	  @DefaultStringValue("ITEM")
 	  String item();
+	  
+	  @DefaultStringValue("TODOS")
+	  String todos();
+	  
+	  @DefaultStringValue("FECHA DESDE")
+	  String fechaDesde();
+	  
+	  @DefaultStringValue("FECHA HASTA")
+	  String fechaHasta();
+	  
+	  @DefaultStringValue("HASTA")
+	  String hasta();
+	  
+	  @DefaultStringValue("DESDE")
+	  String desde();
+	  
+	  @DefaultStringValue("MODIFICAR ORDEN DE COMPRA DE INSUMO")
+	  String modificarOrdenDeCompraDeInsumo();
+	  
+	  @DefaultStringValue("MODIFICAR ORDEN DE COMPRA DE PRODUCTOS")
+	  String modificarOrdenDeCompraDeProductos();
+	  
+	  @DefaultStringValue("TIPO ORDEN")
+	  String tipoOrden();
+	  
+	  @DefaultStringValue("SEGÚN FECHA DE EDICIÓN")
+	  String segunFechaDeEdicion();
+	  
+	  @DefaultStringValue("NRO ORDEN")
+	  String nroOrden();
 	  
 	  @DefaultStringValue("CANT COMPRAR")
 	  String cantComprar();

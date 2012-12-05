@@ -1,5 +1,6 @@
 package edu.server.dominio;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -618,6 +619,22 @@ public class Compras {
 			result = 0;
 		return (int) result;
 	}
+	
+	public long getMaxIdOrdenCompraInsumo(Session sec) {
+		Object result;
+		result = (Object) sec.createSQLQuery("select Max(nro_Orden_Compra_Insumo_Generada) from Orden_Compra_Insumo").uniqueResult();
+		if (result == null){
+			long primero = 0;
+			result = primero;
+		}		
+		else{
+			long nro = Long.parseLong(result.toString());
+			result = nro;
+		}
+		
+		
+		return (long) result;
+	}
 
 	public List<String> getNombresInsumos(String letra) {
 
@@ -895,14 +912,25 @@ public class Compras {
 	
 	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumo orden){
 		boolean result = false;
-		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();		
 		try {
 			Object aux = new Object();
 			sec.beginTransaction();
-			 aux= sec.save(orden);
+			if(orden.getEstadoOrden().getNombre().compareTo("GENERADA") == 0){
+			
+				Long nroOrden = this.getMaxIdOrdenCompraInsumo(sec)+1;
+				orden.setNroOrdenCompraInsumoGenerada(nroOrden);
+				
+			}
+			
+			aux= sec.save(orden);
+			
 			for (RenglonOrdenCompraInsumo renglon : orden.getRenglonOrdenCompraInsumos()) {
 				renglon.getId().setNroOrdenCompraInsumo((long) aux);
 				sec.save(renglon);
+				ProveedorDeInsumo prov = new ProveedorDeInsumo();
+				prov = (ProveedorDeInsumo) renglon.getInsumo().getProveedorDeInsumos().toArray()[0];				
+				sec.update(prov);
 			}
 			sec.getTransaction().commit();
 			result = true;
@@ -913,4 +941,80 @@ public class Compras {
 		return result;
 	}
 
+	public List<OrdenCompraInsumo> getOrdenCompraInsumo(int idEstado, int idProv, String fecDesde, String fecHasta){
+		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		Estado adminEstado = new Estado();
+			
+		String criterios = " where id_Estado_Orden != "+ adminEstado.getIdEstado("EDICION");
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+		sec.beginTransaction();
+		
+		if(idEstado != 0){
+			criterios = criterios+" and id_Estado_Orden = "+idEstado;
+		}
+		
+		if(idProv != 0){
+			criterios = criterios+" and id_Proveedor = "+idProv;
+		}
+		if(fecDesde.compareTo("") != 0){
+				criterios = criterios+" and fecha_Edicion between '"+fecDesde+"' and '"+fecHasta+"'";
+		}
+		
+		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
+		
+		sec.close();
+		
+		return result;
+	}
+	
+	public int getIdProveedor(String nombre){
+		Object idProv = new Object();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		idProv = sec.createSQLQuery("select codigo_Proveedor from Proveedor where nombre like '"+nombre+"'").uniqueResult();
+		if (idProv == null)
+			idProv = 0;
+		sec.close();
+		return (int)idProv;
+	}
+
+	public String getNombreProveedor(int idProv){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String prov = (String) sec.createSQLQuery("select nombre from proveedor where codigo_proveedor = "+idProv).uniqueResult();
+		sec.close();
+		return prov;
+	}
+	
+	public OrdenCompraInsumo getOrdenCompraInsumoSegunId(long idOrden){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();		
+		
+		OrdenCompraInsumo orden = new OrdenCompraInsumo();
+		
+		orden = (OrdenCompraInsumo) sec.get(orden.getClass(), idOrden);
+		
+		
+		sec.close();
+		return orden;
+		
+		
+	}
+
+	public boolean cancelarOrdenCompraInsumo(long  idOrden, int estado){
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		try {
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = "+estado+" where nro_Orden_Compra_Insumo = "+idOrden).executeUpdate();
+			sec.getTransaction().commit();
+			return true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+	}
 }

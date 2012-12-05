@@ -11,7 +11,9 @@ public class OrdenCompraInsumoDTO implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 3023213797220305379L;
 
+	private long idOrden;
 	private String empleado;
+	private String nroOrden;
 	private String proveedor;
 	private String modoEnvio;
 	private String estadoOrden;
@@ -28,6 +30,27 @@ public class OrdenCompraInsumoDTO implements java.io.Serializable{
 		
 	}
 	
+	
+	public long getIdOrden() {
+		return idOrden;
+	}
+
+
+	public void setIdOrden(long idOrden) {
+		this.idOrden = idOrden;
+	}
+
+
+	public String getNroOrden() {
+		return nroOrden;
+	}
+
+
+	public void setNroOrden(String nroOrden) {
+		this.nroOrden = nroOrden;
+	}
+
+
 	public String getEmpleado() {
 		return empleado;
 	}

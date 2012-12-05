@@ -14,6 +14,7 @@ public class OrdenCompraInsumo implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -3890504187676064146L;
 	private long nroOrdenCompraInsumo;
+	private long nroOrdenCompraInsumoGenerada;
 	private Empleado empleado;
 	private Proveedor proveedor;
 	private ModoEnvio modoEnvio;
@@ -59,6 +60,14 @@ public class OrdenCompraInsumo implements java.io.Serializable {
 		this.observaciones = observaciones;
 		this.renglonOrdenCompraInsumos = renglonOrdenCompraInsumos;
 		this.ingresoInsumoses = ingresoInsumoses;
+	}
+
+	public long getNroOrdenCompraInsumoGenerada() {
+		return nroOrdenCompraInsumoGenerada;
+	}
+
+	public void setNroOrdenCompraInsumoGenerada(long nroOrdenCompraInsumoGenerada) {
+		this.nroOrdenCompraInsumoGenerada = nroOrdenCompraInsumoGenerada;
 	}
 
 	public long getNroOrdenCompraInsumo() {

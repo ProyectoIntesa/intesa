@@ -46,4 +46,14 @@ public class ModoDeEnvio {
 		return (int)result;
 	}
 
+	
+	public String getNombreModoEnvio(int idModo){
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		ModoEnvio modo = new ModoEnvio();
+		modo = (ModoEnvio) sec.get(modo.getClass(), idModo);
+		sec.close();
+		return modo.getDescripcion();
+	}
+	
 }

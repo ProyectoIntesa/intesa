@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import edu.server.repositorio.OrdenCompraInsumo;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
@@ -74,5 +75,13 @@ public interface ComprasService extends RemoteService {
 	List<String> getModoDeEnvio() throws IllegalArgumentException;
 
 	boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
+
+	List<String> getNombreEstados() throws IllegalArgumentException;
+
+	List<OrdenCompraInsumoDTO> getOrdenCompraInsumo(String estado, String prov, String fecDesde, String fecHasta) throws IllegalArgumentException;
+
+	OrdenCompraInsumoDTO getOrdenCompraInsumoSegunId(long idOrden) throws IllegalArgumentException;
+
+	boolean cancelarOrdencompraInsumo(long idOrden, String estado) throws IllegalArgumentException;
 
 }

@@ -610,7 +610,7 @@ public class P_FormularioProveedor extends Composite {
 		proveedor.setPaginaWeb(this.webTb.getText());
 		proveedor.setDireccion(direccion);
 		proveedor.setObservaciones(this.observacionTb.getText());
-		proveedor.setTipoProveedor(this.provinciaTb.getText());
+		proveedor.setTipoProveedor(this.tipoProveedorTb.getText());
 
 		if (tablaElemento.getRowCount() > 1) {
 
