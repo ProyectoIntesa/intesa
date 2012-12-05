@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -318,19 +320,28 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 					Cell celda = tablaElementos.getCellForEvent(event);
 					long idOrden= ordenes.get(celda.getRowIndex() - 1).getIdOrden();
-
+					
 					ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
 					comprasService.getOrdenCompraInsumoSegunId(idOrden,new AsyncCallback<OrdenCompraInsumoDTO>() {
 						@Override
 						public void onSuccess(OrdenCompraInsumoDTO result) {
 							
-							P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result);		
+							final P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result);		
 							detalle.setGlassEnabled(true);
 							detalle.center();
-							detalle.show();
-							
-							
+							detalle.show();							
+							detalle.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {
+																						
+									if (detalle.getAccionSalir() == false)
+									{						
+										buscar();							
+									}
+								}
+							});
 							
 						}
 

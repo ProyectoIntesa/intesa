@@ -826,7 +826,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		orden.setIva(ordenComun.getIva());
 		orden.setTotal(ordenComun.getTotal());
 		orden.setObservaciones(ordenComun.getObservaciones());
-		
+		orden.setFechaEdicion(ordenComun.getFechaEdicion());
 		orden.setFechaGeneracion(ordenComun.getFechaGeneracion());
 		
 		Iterator renglones = ordenComun.getRenglonOrdenCompraInsumos().iterator();
@@ -880,5 +880,38 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.cancelarOrdenCompraInsumo(idOrden, idEstado);
 		
 	}
+
+	@Override
+	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException{	
+		
+		Administrador adminAdmin = new Administrador();
+		Compras adminCompras = new Compras();
+		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
+				
+		result = adminCompras.getOrdenCompraInsumoGuardada();
+		
+		for (OrdenCompraInsumo orden : result) {
+			
+			OrdenCompraInsumoDTO ordendto = new OrdenCompraInsumoDTO();
+			
+			ordendto.setIdOrden(orden.getNroOrdenCompraInsumo());
+			
+			ordendto.setNroOrden("S/N");
+			
+			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
+		
+			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			
+			listaResult.add(ordendto);
+			
+		}
+		return listaResult;
+				 
+		
+	}
+
+	
 
 }

@@ -8,6 +8,15 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
 	  String ordenCompraDeInsumo();
 	  
+	  @DefaultStringValue("MODIFICAR ORDEN COMPRA DE INSUMO")
+	  String modificarOrdenCompraDeInsumo();
+	  
+	  @DefaultStringValue("AGREGAR INSUMO")
+	  String agregarInsumo();
+	  
+	  @DefaultStringValue("ELIMINAR ORDEN")
+	  String eliminarOrden();
+	  
 	  @DefaultStringValue("CANCELAR ORDEN")
 	  String cancelarOrden();
 	  

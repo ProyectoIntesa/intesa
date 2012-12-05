@@ -63,7 +63,7 @@ public class P_DetalleOrdenCompraInsumo  extends PopupPanel {
 	private FlexTable tablaElementos;
 	
 	private OrdenCompraInsumoDTO orden;
-	
+	private boolean accionSalir;
 	
 	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden){
 		
@@ -71,6 +71,7 @@ public class P_DetalleOrdenCompraInsumo  extends PopupPanel {
 		this.orden = orden;
 		setStyleName("fondoPopup");
 		final long idOrden = orden.getIdOrden();
+		accionSalir = false;
 		
 		tituloFormulario = new Label(constante.ordenCompraDeInsumo());
 		tituloFormulario.setStyleName("labelTitulo");
@@ -114,6 +115,7 @@ public class P_DetalleOrdenCompraInsumo  extends PopupPanel {
 					public void onSuccess(Boolean result) {
 						if (result) {
 							Window.alert("La orden ha sido CANCELADA");
+							salir();
 						} 
 						else {
 							Window.alert("No se ha podido cambiar el estado de la orden");
@@ -146,6 +148,7 @@ public class P_DetalleOrdenCompraInsumo  extends PopupPanel {
 		salir = new Button(constante.salir());
 		salir.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				accionSalir = true;
 				salir();
 			}
 		});
@@ -254,4 +257,8 @@ public class P_DetalleOrdenCompraInsumo  extends PopupPanel {
 
 	}
 
+	public boolean getAccionSalir(){
+		return this.accionSalir;
+	}
+	
 }

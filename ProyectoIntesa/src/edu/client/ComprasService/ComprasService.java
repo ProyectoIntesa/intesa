@@ -84,4 +84,6 @@ public interface ComprasService extends RemoteService {
 
 	boolean cancelarOrdencompraInsumo(long idOrden, String estado) throws IllegalArgumentException;
 
+	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException;
+
 }

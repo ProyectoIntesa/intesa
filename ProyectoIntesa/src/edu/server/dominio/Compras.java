@@ -1017,4 +1017,22 @@ public class Compras {
 			return false;
 		}
 	}
+
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoGuardada(){
+		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		Estado adminEstado = new Estado();
+			
+		String criterios = " where id_Estado_Orden = "+ adminEstado.getIdEstado("EDICION");
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+		sec.beginTransaction();
+
+		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
+		
+		sec.close();
+		
+		return result;
+	}
+
 }

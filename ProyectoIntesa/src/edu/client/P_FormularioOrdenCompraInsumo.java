@@ -1,6 +1,7 @@
 package edu.client;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -60,6 +61,8 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private Button guardar;
 	private Button cancelar;
 	private Button actualizarValores;
+	private Button agregarInsumo;
+	private Button eliminarOrden;
 
 	private FlexTable formulario;
 	private ScrollPanel contenedorTabla;
@@ -67,9 +70,11 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 	private String titulo;
 	private List<InsumoDTO> insumos;
+	private List<double[]> cantidadYsubTotal;
 	private String prov;
 	private List<String> envio;
 	private String usuario;
+	private OrdenCompraInsumoDTO ordenInsumo;
 
 	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo, String responsable) {
 
@@ -236,6 +241,199 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		initWidget(formulario);
 
 	}
+	
+	
+	public P_FormularioOrdenCompraInsumo(TabPanel padre, String titulo, OrdenCompraInsumoDTO ordenInsumo) {
+
+		this.padre = padre;
+		this.titulo = titulo;
+		this.ordenInsumo = ordenInsumo;
+		this.prov = this.ordenInsumo.getProveedor();
+		this.usuario = this.ordenInsumo.getEmpleado();
+		insumos = new LinkedList<InsumoDTO>();
+		cantidadYsubTotal =  new LinkedList<double []>();
+		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+		String fecha = fmtDate.format(this.ordenInsumo.getFechaEdicion());
+		for (RenglonOrdenCompraInsumoDTO renglon : ordenInsumo.getRenglonOrdenCompraInsumos()) {
+			insumos.add(renglon.getInsumo());
+			double []contenido = {renglon.getCantidad(),renglon.getSubtotal()};
+			cantidadYsubTotal.add(contenido);
+		}
+
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.completarValoresInsumos(this.insumos, this.prov, new AsyncCallback<List<InsumoDTO>>() {
+
+			@Override
+			public void onSuccess(List<InsumoDTO> result) {
+				insumos = result;
+				cargarRenglonesModificada();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+			}
+		});
+		
+		comprasService.getModoDeEnvio(new AsyncCallback<List<String>>() {
+
+			@Override
+			public void onSuccess(List<String> result) {
+				envio = result;
+				cargarListaEnviosModificar();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+
+			}
+		});
+
+		tituloFormulario = new Label("ORDEN DE COMPRA DE INSUMOS");
+		tituloFormulario.setStyleName("labelTitulo");
+		proveedor = new Label(constante.proveedor() + ": " + prov);
+		proveedor.setStyleName("gwt-LabelFormulario");
+		fechaEdicion = new Label(constante.fechaEdicion() + ": " + fecha);
+		fechaEdicion.setStyleName("gwt-LabelFormulario");
+		modoEnvio = new Label(constante.modoEnvio() + ": ");
+		modoEnvio.setStyleName("gwt-LabelFormulario");
+		formaDePago = new Label(constante.formaDePago() + ": ");
+		formaDePago.setStyleName("gwt-LabelFormulario");
+		iva = new Label(constante.iva() + ": ");
+		iva.setStyleName("gwt-LabelFormulario");
+		observaciones = new Label(constante.observaciones());
+		observaciones.setStyleName("labelTitulo");
+		total = new Label(constante.total());
+		total.setStyleName("gwt-LabelFormulario");
+		pie = new Label("");
+		pie.setStyleName("labelTitulo");
+
+		modoEnvioLb = new ListBox();
+		modoEnvioLb.setStyleName("gwt-ListBox");
+		formaDePagoTb = new TextBox();
+		formaDePagoTb.setText(this.ordenInsumo.getFormaPago());
+		ivaTb = new TextBox();
+		ivaTb.setText(this.ordenInsumo.getIva()+"");
+		observacionesTa = new TextArea();
+		observacionesTa.setText(this.ordenInsumo.getObservaciones());
+		observacionesTa.setDirectionEstimator(false);
+		observacionesTa.setWidth("100%");
+		totalTb = new TextBox();
+		totalTb.setText(ordenInsumo.getTotal()+"");
+		totalTb.setEnabled(false);
+
+		generar = new Button(constante.generar());
+		generar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				registrarOrden("GENERADA");
+			}
+		});
+
+		guardar = new Button(constante.guardar());
+		guardar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				registrarOrden("EDICION");
+			}
+		});
+
+		cancelar = new Button(constante.cancelar());
+		cancelar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				cancelarModificada(event);
+			}
+		});
+
+		actualizarValores = new Button(constante.actualizarTotal());
+		actualizarValores.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				actualizaValores();
+			}
+		});
+		
+		agregarInsumo = new Button(constante.agregarInsumo());
+		agregarInsumo.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//actualizaValores();
+			}
+		});
+		
+		eliminarOrden = new Button(constante.eliminarOrden());
+		eliminarOrden.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//actualizaValores();
+			}
+		});
+
+		contenedorTabla = new ScrollPanel();
+		contenedorTabla.setStyleName("tabla");
+		contenedorTabla.setHeight("400px");
+
+		tablaElemento = new FlexTable();
+		contenedorTabla.setWidget(tablaElemento);
+		tablaElemento.setSize("100%", "100%");
+
+		tablaElemento.setText(0, COL_ITEM, constante.item());
+		tablaElemento.getCellFormatter().setWidth(0, COL_ITEM, "10%");
+		tablaElemento.setText(0, COL_INSUMO, constante.insumo());
+		tablaElemento.getCellFormatter().setWidth(0, COL_INSUMO, "10%");
+		tablaElemento.setText(0, COL_MARCA, constante.marca());
+		tablaElemento.getCellFormatter().setWidth(0, COL_MARCA, "10%");
+		tablaElemento.setText(0, COL_LOTE, constante.loteCompra());
+		tablaElemento.getCellFormatter().setWidth(0, COL_LOTE, "10%");
+		tablaElemento.setText(0, COL_CANTINVENTARIO, constante.cantInventario());
+		tablaElemento.getCellFormatter().setWidth(0, COL_CANTINVENTARIO, "10%");
+		tablaElemento.setText(0, COL_CANTCOMPRAR, constante.cantComprar());
+		tablaElemento.getCellFormatter().setWidth(0, COL_CANTCOMPRAR, "10%");
+		tablaElemento.setText(0, COL_PRECIOUNITARIO, constante.precio());
+		tablaElemento.getCellFormatter().setWidth(0, COL_PRECIOUNITARIO, "10%");
+		tablaElemento.setText(0, COL_SUBTOTAL, constante.subtotal());
+		tablaElemento.getCellFormatter().setWidth(0, COL_SUBTOTAL, "10%");
+		tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+
+		formulario = new FlexTable();
+		formulario.setStyleName("formatoFormulario");
+		formulario.setHeight("637px");
+		formulario.setWidth("920px");
+
+		formulario.setWidget(0, 0, tituloFormulario);
+		formulario.getFlexCellFormatter().setColSpan(0, 0, 6);
+
+		formulario.setWidget(1, 0, proveedor);
+		formulario.setWidget(1, 5, fechaEdicion);
+
+		formulario.setWidget(2, 0, modoEnvio);
+		formulario.setWidget(2, 1, modoEnvioLb);
+		formulario.getCellFormatter().setWidth(2, 1, "20%");
+		formulario.setWidget(2, 2, formaDePago);
+		formulario.setWidget(2, 3, formaDePagoTb);
+		formulario.setWidget(2, 4, iva);
+		formulario.setWidget(2, 5, ivaTb);
+
+		formulario.setWidget(3, 0, contenedorTabla);
+		formulario.getFlexCellFormatter().setColSpan(3, 0, 6);
+
+		formulario.setWidget(4, 4, total);
+		formulario.setWidget(4, 5, totalTb);
+		formulario.setWidget(4, 3, actualizarValores);
+
+		formulario.setWidget(5, 0, observaciones);
+		formulario.getFlexCellFormatter().setColSpan(5, 0, 6);
+		formulario.setWidget(6, 0, observacionesTa);
+		formulario.getFlexCellFormatter().setColSpan(6, 0, 6);
+
+		formulario.setWidget(7, 0, pie);
+		formulario.getFlexCellFormatter().setColSpan(7, 0, 6);
+
+		formulario.setWidget(8, 0, guardar);
+		formulario.setWidget(8, 2, generar);
+		formulario.setWidget(8, 4, cancelar);
+
+		initWidget(formulario);
+
+	}
+	
+	
 
 	protected void registrarOrden(final String estado) {
 		OrdenCompraInsumoDTO nuevaOrden = new OrdenCompraInsumoDTO();
@@ -295,7 +493,14 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		for (String modo : envio) {
 			modoEnvioLb.addItem(modo);
 		}
-
+			
+	}
+	
+	protected void cargarListaEnviosModificar(){
+		for(String modo : envio){
+			modoEnvioLb.addItem(modo);
+		}
+		modoEnvioLb.setSelectedIndex(envio.indexOf(ordenInsumo.getModoEnvio()));
 	}
 
 	public void cargarRenglones() {
@@ -318,9 +523,36 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			item++;
 		}
 	}
+	
+	
+	public void cargarRenglonesModificada() {
+		int item = 1;
+		for (InsumoDTO insumo : insumos) {
+			TextBox precioTb = new TextBox();
+			TextBox cantidadRequeridaTb = new TextBox();
+			double cantRec = cantidadYsubTotal.get(item-1)[0];
+			cantidadRequeridaTb.setText(cantRec+"");
+			double precio = insumo.getProveedor().get(0).getPrecio();
+			precioTb.setText("" + precio);
+			tablaElemento.setWidget(item, COL_ITEM, new Label("" + item));
+			tablaElemento.setWidget(item, COL_INSUMO, new Label(insumo.getNombre()));
+			tablaElemento.setWidget(item, COL_MARCA, new Label(insumo.getMarca()));
+			tablaElemento.setWidget(item, COL_CANTCOMPRAR, cantidadRequeridaTb);
+			tablaElemento.setWidget(item, COL_SUBTOTAL, new Label(cantidadYsubTotal.get(item-1)[1]+""));
+			tablaElemento.setWidget(item, COL_CANTINVENTARIO, new Label(insumo.getCantidad() + ""));
+			tablaElemento.setWidget(item, COL_LOTE, new Label(insumo.getLoteCompra() + ""));
+			tablaElemento.setWidget(item, COL_PRECIOUNITARIO, precioTb);
+			tablaElemento.getRowFormatter().setStyleName(item, "tablaRenglon");
+			item++;
+		}
+	}
 
 	public void cancelar(ClickEvent event) {
 		padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
+
+	}
+	public void cancelarModificada(ClickEvent event) {
+		padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
 
 	}
 

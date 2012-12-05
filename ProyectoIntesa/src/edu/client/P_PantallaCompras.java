@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 
 import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 
 public class P_PantallaCompras extends Composite {
@@ -47,6 +48,7 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem nuevoProveedor;
 	private TreeItem buscarProveedor;
 	private TreeItem buscar;
+	private TreeItem guardadas;
 	private TreeItem deProductos;
 	private TreeItem deInsumos;
 	
@@ -66,6 +68,7 @@ public class P_PantallaCompras extends Composite {
 	private List<InsumoDTO> listaOrdenCompraInsumo;
 	private String proveedorElegido;
 	private String usuario;
+	private OrdenCompraInsumoDTO ordenInsumo;
 
 	public P_PantallaCompras(String usuarioLogueado) {
 		usuario= usuarioLogueado;
@@ -144,6 +147,10 @@ public class P_PantallaCompras extends Composite {
 		TreeItem ordenCompra = menuLateral.addItem(constante.ordenDeCompra());
 		ordenCompra.setStyleName("elementoMenu");
 
+		guardadas = new TreeItem(constante.guardadas());
+		guardadas.setStyleName("suElementoMenu");
+		ordenCompra.addItem(guardadas);
+		
 		buscar = new TreeItem(constante.buscar());
 		buscar.setStyleName("suElementoMenu");
 		ordenCompra.addItem(buscar);
@@ -342,32 +349,41 @@ public class P_PantallaCompras extends Composite {
 
 		}
 		
-		if (event.getSelectedItem() == buscar) {
+		if (event.getSelectedItem() == guardadas) {
 
 			if(this.numeroElemento(constante.modificarOrdenDeCompraDeInsumo())!=-1 || this.numeroElemento(constante.modificarOrdenDeCompraDeProductos())!=-1){
 				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR ORDEN DE COMPRA");
 			}
 			else{
 				
-				final P_BuscarOrdenesCompra popUp = new P_BuscarOrdenesCompra();
+				final P_VerOrdenesGuardadas popUp = new P_VerOrdenesGuardadas();
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
-//				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-//
-//					@Override
-//					public void onClose(CloseEvent<PopupPanel> event) {
-//						
-//						insumoSelec= popUp.getInsumoDTO();
-//						boolean modificar = popUp.getModificarInsumo();
-//					
-//						if (modificar == true)
-//						{
-//							modificarInsumo();
-//						}
-//					}
-//				});
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						boolean modificar = popUp.getModificarOrden();
+						if (modificar == true)
+						{		
+							ordenInsumo = popUp.getOrdenElegida();
+							modificarOrden();							
+						}
+					}
+				});
+				
 			}
+				
+		}
+		
+		if (event.getSelectedItem() == buscar) {
+
+			final P_BuscarOrdenesCompra popUp = new P_BuscarOrdenesCompra();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
 			
 		}
 
@@ -432,6 +448,29 @@ public class P_PantallaCompras extends Composite {
 		
 	}
 
+protected void modificarOrden() {
+		
+		String titulo;
+		int tab;
+		titulo = constante.modificarOrdenCompraDeInsumo();
+		tab = numeroElemento(titulo);
+
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,titulo,ordenInsumo);
+			formulario.add(ordenCompra);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+		
+		
+	}
+	
 	protected void modificarProveedor() {
 		String titulo;
 		int tab;

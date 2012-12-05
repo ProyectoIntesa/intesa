@@ -80,6 +80,8 @@ public interface ComprasServiceAsync {
 
 	void getOrdenCompraInsumoSegunId(long idOrden, AsyncCallback<OrdenCompraInsumoDTO> callback) throws IllegalArgumentException;
 
-	void cancelarOrdencompraInsumo(long idOrden, String estado, AsyncCallback<Boolean> callback);
+	void cancelarOrdencompraInsumo(long idOrden, String estado, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getOrdenCompraInsumoGuardada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
 
 }
