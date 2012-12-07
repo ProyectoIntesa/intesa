@@ -24,7 +24,7 @@
         <property name="observaciones" type="string">
             <column name="observaciones" />
         </property>
-        <set name="renglonIngresoInsumoses" table="Renglon_Ingreso_Insumos" inverse="true" lazy="true" fetch="select">
+        <set name="renglonIngresoInsumoses" table="Renglon_Ingreso_Insumos" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Orden_Compra_Insumos" not-null="true" />
                 <column name="nro_Remito_Externo" not-null="true" />

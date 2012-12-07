@@ -1,7 +1,6 @@
 package edu.server.servicio;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,15 +10,15 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.client.ComprasService.ComprasService;
 import edu.server.dominio.Administrador;
 import edu.server.dominio.Compras;
-import edu.server.dominio.Empleado;
 import edu.server.dominio.Estado;
+import edu.server.dominio.Empleado;
 import edu.server.dominio.ModoDeEnvio;
-import edu.server.dominio.Ventas;
 import edu.server.repositorio.Categoria;
-import edu.server.repositorio.Cliente;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
 import edu.server.repositorio.EstadoOrden;
+import edu.server.repositorio.IngresoInsumos;
+import edu.server.repositorio.IngresoInsumosId;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
@@ -30,17 +29,19 @@ import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.ProveedorDeInsumoId;
 import edu.server.repositorio.Provincia;
+import edu.server.repositorio.RenglonIngresoInsumos;
 import edu.server.repositorio.RenglonIngresoInsumosId;
 import edu.server.repositorio.RenglonOrdenCompraInsumo;
 import edu.server.repositorio.RenglonOrdenCompraInsumoId;
-import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.DireccionDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
+import edu.shared.DTO.RemitoExternoDTO;
 import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
+import edu.shared.DTO.RenglonRemitoExternoDTO;
 
 public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasService {
 
@@ -589,7 +590,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		result.setLoteCompra(insumo.getLoteCompra());
 		result.setStockSeguridad(insumo.getStockSeguridad());
 		result.setObservaciones(insumo.getObservaciones());
-		if(insumo.getCantidad() != -1){
+		if(insumo.getCantidad() != -1 && insumo.getCantidad() != 0){
 			result.setCantidad(insumo.getCantidad());
 		}
 		else{
@@ -865,6 +866,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			renglonNuevo.setPrecio(insumo.getProveedor().get(0).getPrecio());
 			
 			orden.getRenglonOrdenCompraInsumos().add(renglonNuevo);
+			
 
 		}
 					
@@ -912,6 +914,163 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 	}
 
+	@Override
+	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviada() throws IllegalArgumentException{	
+		
+		Administrador adminAdmin = new Administrador();
+		Compras adminCompras = new Compras();
+		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
+				
+		result = adminCompras.getOrdenCompraInsumoEnviada();
+		
+		for (OrdenCompraInsumo orden : result) {
+			
+			OrdenCompraInsumoDTO ordendto = new OrdenCompraInsumoDTO();
+			
+			ordendto.setIdOrden(orden.getNroOrdenCompraInsumo());
+			
+			DecimalFormat formato = new DecimalFormat("0000000000");
+			String numero = ""+formato.format(orden.getNroOrdenCompraInsumoGenerada());
+			ordendto.setNroOrden(numero);
+							
+			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
+		
+			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			
+			listaResult.add(ordendto);
+			
+		}
+		return listaResult;
+				 
+		
+	}
 	
+	@Override
+	public double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenCompraInsumo) throws IllegalArgumentException{
+		
+		double cantidadFaltante = 0;
+		double cantidadIngresada = 0;
+		Compras adminCompras = new Compras();
+		List<IngresoInsumos> listaRemitos = adminCompras.getRemitosExternos(idOrdenCompraInsumo);
+		OrdenCompraInsumoDTO orden = this.getOrdenCompraInsumoSegunId(idOrdenCompraInsumo);	
+		
+		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {		
+			if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo()){
+				cantidadFaltante = renglon.getCantidad();
+			}
+		}
+				
+		if(!listaRemitos.isEmpty()){	
+			for (IngresoInsumos remito : listaRemitos) {
+				for (RenglonIngresoInsumos renglon : remito.getRenglonIngresoInsumoses()) {
+					if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo())
+						cantidadIngresada+= renglon.getCantidadIngresada(); 	
+				}	
+			}			
+		}
+				
+		cantidadFaltante = cantidadFaltante - cantidadIngresada;
+		
+		return cantidadFaltante;
+		
+		
+	}
+
+	@Override
+	public Boolean registrarRemitoExterno(RemitoExternoDTO remito) throws IllegalArgumentException{
+		
+		Compras adminCompras = new Compras();
+		Empleado adminEmpleado = new Empleado();
+		Administrador admin = new Administrador();
+		
+		int idEmpleado = adminEmpleado.getIdEmpleado(remito.getEmpleado());
+		
+		edu.server.repositorio.Empleado emp = admin.getEmpleado(idEmpleado);
+				
+		IngresoInsumosId remitoId = new IngresoInsumosId(remito.getIdOrdenCompra(), remito.getIdRemitoEx());
+		
+		OrdenCompraInsumo orden = new OrdenCompraInsumo();
+		orden = adminCompras.getOrdenCompraInsumoSegunId(remito.getIdOrdenCompra());
+					
+		IngresoInsumos remitoGuardar = new IngresoInsumos();
+		remitoGuardar.setFechaIngreso(remito.getFechaIngreso());
+		remitoGuardar.setObservaciones(remito.getObservaciones());
+		remitoGuardar.setId(remitoId);
+		remitoGuardar.setEmpleado(emp);
+		remitoGuardar.setOrdenCompraInsumo(orden);
+			
+		Iterator renglones = remito.getRenglonRemitoExterno().iterator();
+			
+		while (renglones.hasNext()){
+								
+			RenglonRemitoExternoDTO renglon = (RenglonRemitoExternoDTO) renglones.next();
+			
+			int idInsumo = adminCompras.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+			
+			Insumo insumo = adminCompras.getInsumoCompleto(idInsumo, "");
+			
+			RenglonIngresoInsumosId renglonId = new RenglonIngresoInsumosId(renglon.getItem(), remito.getIdOrdenCompra(), remito.getIdRemitoEx());
+			
+			RenglonIngresoInsumos renglonGuardar = new RenglonIngresoInsumos();
+			
+			renglonGuardar.setId(renglonId);
+			renglonGuardar.setCantidadIngresada(renglon.getCantIngresada());
+			renglonGuardar.setInsumo(insumo);
+			
+			remitoGuardar.getRenglonIngresoInsumoses().add(renglonGuardar);
+			
+		}
+		
+		return adminCompras.registrarRemitoExterno(remitoGuardar);
+		
+	}
+
+	@Override
+	public List<Long> getRemitosExternos(long idOrdenCompraInsumos) throws IllegalArgumentException{
+		
+		Compras adminCompras = new Compras();
+		List<IngresoInsumos> remitosCompletos = new LinkedList<IngresoInsumos>();
+		
+		int idorden = adminCompras.getIdOrdenCompraInsumo(idOrdenCompraInsumos);
+		
+		remitosCompletos = adminCompras.getRemitosExternos(idorden);
+		
+		List<Long> remitos = new LinkedList<Long>();
+		
+		for (IngresoInsumos remi : remitosCompletos) {
+			
+			Long id = ((IngresoInsumosId)remi.getId()).getNroRemitoExterno();
+			remitos.add(id);
+			
+		}
+		
+	
+		return remitos;
+		
+	}
+
+	@Override
+	public RemitoExternoDTO getRemitoExternoCompleto(OrdenCompraInsumoDTO orden, long nroRemito) throws IllegalArgumentException{
+		
+		Compras adminCompras = new Compras();
+		
+		
+		RemitoExternoDTO result = new RemitoExternoDTO();
+		
+		
+		System.out.println("---------------------------------------------------------------before the call");
+			
+		
+		adminCompras.getRemitoExternoCompleto(orden.getIdOrden(), nroRemito);
+		
+		System.out.println("----------------------------------------------------------------------------after the call");
+		
+		return result;
+		
+	}
+	
+
 
 }

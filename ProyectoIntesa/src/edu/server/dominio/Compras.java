@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
+import edu.server.repositorio.IngresoInsumos;
+import edu.server.repositorio.IngresoInsumosId;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
@@ -18,8 +20,10 @@ import edu.server.repositorio.Pais;
 import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.Provincia;
+import edu.server.repositorio.RenglonIngresoInsumos;
 import edu.server.repositorio.RenglonOrdenCompraInsumo;
 import edu.server.util.HibernateUtil;
+import edu.shared.DTO.RemitoExternoDTO;
 
 public class Compras {
 
@@ -1034,5 +1038,105 @@ public class Compras {
 		
 		return result;
 	}
+	
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoEnviada(){
+		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		Estado adminEstado = new Estado();
+			
+		String criterios = " where id_Estado_Orden = "+ adminEstado.getIdEstado("ENVIADA");
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+		sec.beginTransaction();
 
+		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
+		
+		sec.close();
+			
+		return result;
+	}
+
+	public List<IngresoInsumos> getRemitosExternos(long idOrdenCompraInsumo){
+				
+		long idoci = idOrdenCompraInsumo;
+		List<IngresoInsumos> result = new LinkedList<IngresoInsumos>();
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+		sec.beginTransaction();
+
+		result = sec.createQuery("from IngresoInsumos where id_Orden_Compra_Insumos = "+idOrdenCompraInsumo).list();
+
+		sec.close();
+				
+		return result;
+
+	}
+
+	public Boolean registrarRemitoExterno(IngresoInsumos remito){
+		
+		Boolean result = false;
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try {
+			
+			sec.beginTransaction();
+			sec.save(remito);
+			
+			for (RenglonIngresoInsumos renglon : remito.getRenglonIngresoInsumoses()) {
+				sec.save(renglon);	
+			}
+			
+			sec.getTransaction().commit();
+			result = true;
+			
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+		
+		
+		return result;
+	}
+	
+	public int getIdOrdenCompraInsumo(long nroOrden){
+		
+		Object objeto = new Object();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+				
+		objeto = sec.createQuery("from OrdenCompraInsumo where nroOrdenCompraInsumoGenerada = "+nroOrden).uniqueResult();
+		
+		int result = (int) ((OrdenCompraInsumo) objeto).getNroOrdenCompraInsumo();
+				
+		sec.close();
+				
+		return result;
+		
+		
+	}
+
+	public IngresoInsumos getRemitoExternoCompleto(long idOrden, long nroRemito){
+		
+//		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+//		sec.beginTransaction();
+//		
+//		IngresoInsumosId id = new IngresoInsumosId();
+//		id.setIdOrdenCompraInsumos(idOrden);
+//		id.setNroRemitoExterno(nroRemito);
+//		
+		IngresoInsumos result = new IngresoInsumos();
+//		
+//		System.out.println("-------------------------------------------------ANTES DE LA CONSULTA SQL NRO 1");
+//					
+//		result = (IngresoInsumos) sec.createQuery("from IngresoInsumos where id.idOrdenCompraInsumo = "+idOrden+" and id.nroRemitoExterno = "+nroRemito);
+//		
+//		System.out.println("-------------------------------------------------despues DE LA CONSULTA SQL NRO 1");
+//		
+//		
+//		sec.close();
+//				
+		return result;
+	}
+	
 }

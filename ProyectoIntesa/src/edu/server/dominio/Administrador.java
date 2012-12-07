@@ -274,7 +274,7 @@ public class Administrador {
 		return listaResultado;
 	}
 
-	private Empleado getEmpleado(int idEmpleado) {
+	public Empleado getEmpleado(int idEmpleado) {
 
 		Empleado result = new Empleado();
 

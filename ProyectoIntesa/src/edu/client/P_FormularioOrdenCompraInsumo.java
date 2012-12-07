@@ -241,8 +241,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		initWidget(formulario);
 
 	}
-	
-	
+		
 	public P_FormularioOrdenCompraInsumo(TabPanel padre, String titulo, OrdenCompraInsumoDTO ordenInsumo) {
 
 		this.padre = padre;
@@ -433,8 +432,6 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 	}
 	
-	
-
 	protected void registrarOrden(final String estado) {
 		OrdenCompraInsumoDTO nuevaOrden = new OrdenCompraInsumoDTO();
 		nuevaOrden.setEstadoOrden(estado);
@@ -523,8 +520,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			item++;
 		}
 	}
-	
-	
+		
 	public void cargarRenglonesModificada() {
 		int item = 1;
 		for (InsumoDTO insumo : insumos) {
@@ -551,6 +547,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
 
 	}
+	
 	public void cancelarModificada(ClickEvent event) {
 		padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
 

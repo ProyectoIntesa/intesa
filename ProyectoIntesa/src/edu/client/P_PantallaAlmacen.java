@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -40,16 +43,17 @@ public class P_PantallaAlmacen extends Composite {
 	private Button btnCerrarSesin;
 	private LayoutPanel menu;
 	private Tree menuLateral;
-	private TreeItem buscarEmpleado;
-	private TreeItem nuevoEmpleado;
-	private TreeItem buscarUsuario;
-	private TreeItem nuevoUsuario;
+	private TreeItem ingresarRemitoEx;
+	private TreeItem buscarRemitoEx;
+	private TreeItem ingresarRemitoIn;
+	private String usuario;
 
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	public P_PantallaAlmacen(String usuarioLogueado) {
 
 		try {
+			this.usuario = usuarioLogueado;
 			ancho = Window.getClientWidth() - 15;
 			alto = Window.getClientHeight() - 13;
 			anchoLateral = 180;
@@ -112,27 +116,25 @@ public class P_PantallaAlmacen extends Composite {
 			menu.add(menuLateral);
 			menuLateral.setSize("100%", "100%");
 
-//			TreeItem empleado = menuLateral.addItem(constante.empleado());
-//			empleado.setStyleName("elementoMenu");
-//
-//			buscarEmpleado = new TreeItem(constante.buscar());
-//			buscarEmpleado.setStyleName("suElementoMenu");
-//			empleado.addItem(buscarEmpleado);
-//
-//			nuevoEmpleado = new TreeItem(constante.nuevo());
-//			nuevoEmpleado.setStyleName("suElementoMenu");
-//			empleado.addItem(nuevoEmpleado);
-//
-//			TreeItem usuario = menuLateral.addItem(constante.usuario());
-//			usuario.setStyleName("elementoMenu");
-//
-//			buscarUsuario = new TreeItem(constante.buscar());
-//			buscarUsuario.setStyleName("suElementoMenu");
-//			usuario.addItem(buscarUsuario);
-//
-//			nuevoUsuario = new TreeItem(constante.nuevo());
-//			nuevoUsuario.setStyleName("suElementoMenu");
-//			usuario.addItem(nuevoUsuario);
+			TreeItem remitoEx = menuLateral.addItem(constante.remitoExterno());
+			remitoEx.setStyleName("elementoMenu");
+
+			ingresarRemitoEx = new TreeItem(constante.ingresar());
+			ingresarRemitoEx.setStyleName("suElementoMenu");
+			remitoEx.addItem(ingresarRemitoEx);
+			
+			buscarRemitoEx = new TreeItem(constante.buscar());
+			buscarRemitoEx.setStyleName("suElementoMenu");
+			remitoEx.addItem(buscarRemitoEx);
+
+
+			TreeItem remitoIn = menuLateral.addItem(constante.remitoInterno());
+			remitoIn.setStyleName("elementoMenu");
+
+			ingresarRemitoIn = new TreeItem(constante.ingresar());
+			ingresarRemitoIn.setStyleName("suElementoMenu");
+			remitoIn.addItem(ingresarRemitoIn);
+
 
 			menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 				public void onSelection(SelectionEvent<TreeItem> event) {
@@ -184,25 +186,47 @@ public class P_PantallaAlmacen extends Composite {
 
 	protected void procesa(SelectionEvent<TreeItem> event) {
 
-//		if (event.getSelectedItem() == nuevoProveedor) {
+		if (event.getSelectedItem() == ingresarRemitoEx) {
+
+			if(this.numeroElemento(constante.remitoExterno())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO EXTERNO");
+			}
+			else{
+				
+				P_PreguntaPorNroOrdenCompra popUp = new P_PreguntaPorNroOrdenCompra(this.usuario);
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+//				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 //
-//		}
-//
-//		if (event.getSelectedItem() == buscarProveedor) {
-//
-//		}
-//
-//		if (event.getSelectedItem() == guardadas) {
-//
-//		}
-//
-//		if (event.getSelectedItem() == materialAComprar) {
-//
-//		}
-//
-//		if (event.getSelectedItem() == insumoAComprar) {
-//
-//		}
+//					@Override
+//					public void onClose(CloseEvent<PopupPanel> event) {
+//						
+//						proveedorSelec= popUp.getProveedorDTO();
+//						boolean modificar = popUp.getModificarProveedor();
+//					
+//						if (modificar == true)
+//						{
+//							modificarProveedor();
+//						}
+//					}
+//				});
+			}
+			
+		}
+		
+		if (event.getSelectedItem() == buscarRemitoEx) {
+
+			P_PreguntaPorNroOrdenCompraYRemito popUp = new P_PreguntaPorNroOrdenCompraYRemito();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();			
+			
+		}
+
+		if (event.getSelectedItem() == ingresarRemitoIn) {
+
+		}
 
 	}
 

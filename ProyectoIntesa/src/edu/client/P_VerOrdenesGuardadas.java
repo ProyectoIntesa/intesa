@@ -243,8 +243,6 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 		
 	}
 
-
-	
 	protected void salir() {
 		this.hide();
 

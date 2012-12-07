@@ -19,6 +19,7 @@ import com.google.gwt.dev.util.collect.HashSet;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Direccion;
 import edu.server.repositorio.EstadoOrden;
+import edu.server.repositorio.IngresoInsumos;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
@@ -34,6 +35,7 @@ import edu.server.repositorio.RenglonOrdenCompraInsumo;
 import edu.server.repositorio.RenglonOrdenCompraInsumoId;
 import edu.server.util.HibernateUtil;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
+import edu.shared.DTO.RemitoExternoDTO;
 import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
 
 public class ComprasTest {
@@ -210,14 +212,27 @@ public class ComprasTest {
 	@Test
 	public void getOrdenCompraInsumoTest(){
 		
-		Compras adminCompras = new Compras();
-//		List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(2, 38, null, null);
-		//List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(2, 38, "30/11/2012", "04/12/2012");
-		//assertEquals(5,result.size());
-		List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(0, 0, "30/11/2012", "04/12/2012");
-		assertEquals(10,result.size());
+//		Compras adminCompras = new Compras();
+////		List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(2, 38, null, null);
+//		//List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(2, 38, "30/11/2012", "04/12/2012");
+//		//assertEquals(5,result.size());
+//		List<OrdenCompraInsumo> result = adminCompras.getOrdenCompraInsumo(0, 0, "30/11/2012", "04/12/2012");
+//		assertEquals(10,result.size());
 		
 		
 	}
+	
+	
+	@Test
+	public void getRemitosExternosTest(){
+//		
+//		Compras adminCompras = new Compras();
+//		List<IngresoInsumos> result = adminCompras.getRemitosExternos(18);
+//		assertEquals(2,result.get(0).getRenglonIngresoInsumoses().size());
+//		
+		
+	}
+	
+	
 	
 }

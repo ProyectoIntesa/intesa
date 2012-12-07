@@ -94,7 +94,7 @@ public class P_Login extends Composite {
 							} else if (result.getRol().compareTo("INGENIERIA") == 0){
 								inicioPantallaIngenieria(result.getNombre());
 							} else if (result.getRol().compareTo("ALMACEN") == 0){
-								//inicioPantallaAlmacen(result.getNombre());
+								inicioPantallaAlmacen(result.getNombre());
 							} else if (result.getRol().compareTo("SUPER USUARIO") == 0){
 								
 								final P_SeleccionarUsuario popUp = new P_SeleccionarUsuario();
@@ -190,15 +190,15 @@ public class P_Login extends Composite {
 	}
 
 	protected void inicioPantallaVentas(String usuario) {
-		 
-		P_PantallaVentas ventas = new P_PantallaVentas(usuario);
-		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		 RootPanel.get().add(ventas);
-		 try {
-		 this.finalize();
-		 } catch (Throwable e) {
-		 e.printStackTrace();
-		 }
+	
+		 P_PantallaVentas ventas = new P_PantallaVentas(usuario);
+			RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+			RootPanel.get().add(ventas);
+			try {
+				this.finalize();
+			} catch (Throwable e) {
+				Window.alert("excepcion: "+e.getMessage());
+			}
 	}
 
 	protected void inicioPantallaIngenieria(String usuario) {
@@ -211,6 +211,7 @@ public class P_Login extends Composite {
 		 } catch (Throwable e) {
 		 e.printStackTrace();
 		 }
+
 
 	}
 
@@ -241,10 +242,13 @@ public class P_Login extends Composite {
 
 	protected void inicioPantallaAlmacen(String usuario) {
 		
-		 P_PantallaAlmacen almacen = new P_PantallaAlmacen(usuario);
-		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-		 RootPanel.get().add(almacen); try { this.finalize(); } catch
-		 (Throwable e) { e.printStackTrace(); }
+		P_PantallaAlmacen almacen = new P_PantallaAlmacen(usuario);
+		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		RootPanel.get().add(almacen); 
+		try { 
+			 this.finalize(); 
+		} catch(Throwable e) 
+		{ e.printStackTrace(); }
 		 
 	}
 

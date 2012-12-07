@@ -9,6 +9,7 @@ import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
+import edu.shared.DTO.RemitoExternoDTO;
 
 public interface ComprasServiceAsync {
 
@@ -83,5 +84,19 @@ public interface ComprasServiceAsync {
 	void cancelarOrdencompraInsumo(long idOrden, String estado, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void getOrdenCompraInsumoGuardada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void getOrdenCompraInsumoEnviada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenCompraInsumo, AsyncCallback<Double> callback) throws IllegalArgumentException;
+
+	void registrarRemitoExterno(RemitoExternoDTO remito, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getRemitosExternos(long idOrdenCompraInsumos, AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
+
+	void getRemitoExternoCompleto(OrdenCompraInsumoDTO orden, long nroRemito, AsyncCallback<RemitoExternoDTO> callback) throws IllegalArgumentException;
+
+
+
+
 
 }
