@@ -69,6 +69,16 @@
     <url-pattern>/proyectointesa/almacen</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  <servlet-name>produccionServlet</servlet-name>
+  <servlet-class>edu.server.servicio.ProduccionServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>produccionServlet</servlet-name>
+    <url-pattern>/proyectointesa/produccion</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

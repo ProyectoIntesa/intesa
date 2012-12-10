@@ -43,10 +43,12 @@ public class P_PantallaAlmacen extends Composite {
 	private TreeItem ingresarRemitoEx;
 	private TreeItem buscarRemitoEx;
 	private TreeItem ingresarRemitoIn;
+	private TreeItem buscarRemitoIn;
 	private String usuario;
 
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
+	
 	public P_PantallaAlmacen(String usuarioLogueado) {
 
 		try {
@@ -125,12 +127,16 @@ public class P_PantallaAlmacen extends Composite {
 			remitoEx.addItem(buscarRemitoEx);
 
 
-			TreeItem remitoIn = menuLateral.addItem(constante.remitoInterno());
+			TreeItem remitoIn = menuLateral.addItem(constante.egresoDeMateriales());
 			remitoIn.setStyleName("elementoMenu");
 
-			ingresarRemitoIn = new TreeItem(constante.ingresar());
+			ingresarRemitoIn = new TreeItem(constante.generarRemito());
 			ingresarRemitoIn.setStyleName("suElementoMenu");
 			remitoIn.addItem(ingresarRemitoIn);
+			
+			buscarRemitoIn = new TreeItem(constante.buscarRemito());
+			buscarRemitoIn.setStyleName("suElementoMenu");
+			remitoIn.addItem(buscarRemitoIn);
 
 
 			menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -223,6 +229,11 @@ public class P_PantallaAlmacen extends Composite {
 
 		if (event.getSelectedItem() == ingresarRemitoIn) {
 
+		}
+		
+		if (event.getSelectedItem() == buscarRemitoIn) {
+			
+			
 		}
 
 	}

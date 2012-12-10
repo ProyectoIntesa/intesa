@@ -48,5 +48,18 @@ public class Empleado {
 		return result;
 	}
 	
+	public edu.server.repositorio.Empleado getEmpleado(int idEmpleado) {
+
+		edu.server.repositorio.Empleado result = new edu.server.repositorio.Empleado();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = (edu.server.repositorio.Empleado) sec.get(result.getClass(), idEmpleado);
+
+		sec.close();
+
+		return result;
+	}
 	
 }

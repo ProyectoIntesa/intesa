@@ -10,6 +10,7 @@ public class EmpleadoDTO implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 8213969407831803944L;
 	private int nroLegajo;
+	private int idEmpleado;
 	private String nombre;
 	private String apellido;
 	private String puesto;
@@ -20,6 +21,15 @@ public class EmpleadoDTO implements java.io.Serializable{
 		listaEmpACargo = new LinkedList<EmpleadoDTO>();
 		
 	}
+	
+	public int getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
+	}
+
 	public int getNroLegajo() {
 		return nroLegajo;
 	}

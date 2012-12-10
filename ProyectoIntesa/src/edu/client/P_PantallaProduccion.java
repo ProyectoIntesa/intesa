@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -34,12 +35,13 @@ public class P_PantallaProduccion extends Composite {
 	private Button btnCerrarSesin;
 	private LayoutPanel menu;
 	private Tree menuLateral;
-	private TreeItem verOrdenesFabricacion;
-	private TreeItem nuevaOrdenSuministro;
+	private TreeItem nuevaOrdenSuministroInsumos;
 	private TabPanel panelTrabajo;
+	private ScrollPanel formulario;
+	private String usuario;
 
 	public P_PantallaProduccion(String usuarioLogueado) {
-
+		this.usuario = usuarioLogueado;
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;
 		anchoLateral = 180;
@@ -98,19 +100,12 @@ public class P_PantallaProduccion extends Composite {
 		menu.add(menuLateral);
 		menuLateral.setSize("100%", "100%");
 
-		TreeItem ordenDeFabricacion = menuLateral.addItem(constante.ordenDeFabricacion());
-		ordenDeFabricacion.setStyleName("elementoMenu");
-
-		verOrdenesFabricacion = new TreeItem(constante.verOrdenes());
-		verOrdenesFabricacion.setStyleName("suElementoMenu");
-		ordenDeFabricacion.addItem(verOrdenesFabricacion);
-
-		TreeItem ordenSuministro = menuLateral.addItem(constante.ordenDeSuministro());
+		TreeItem ordenSuministro = menuLateral.addItem(constante.ordenDeProvision());
 		ordenSuministro.setStyleName("elementoMenu");
 
-		nuevaOrdenSuministro = new TreeItem(constante.nueva());
-		nuevaOrdenSuministro.setStyleName("suElementoMenu");
-		ordenSuministro.addItem(nuevaOrdenSuministro);
+		nuevaOrdenSuministroInsumos = new TreeItem(constante.deInsumos());
+		nuevaOrdenSuministroInsumos.setStyleName("suElementoMenu");
+		ordenSuministro.addItem(nuevaOrdenSuministroInsumos);
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -159,12 +154,27 @@ public class P_PantallaProduccion extends Composite {
 
 	protected void procesa(SelectionEvent<TreeItem> event) {
 
-		if (event.getSelectedItem() == verOrdenesFabricacion) {
+		String titulo;
+		int tab;
+		
+		if (event.getSelectedItem() == nuevaOrdenSuministroInsumos) {
 
-		}
+			titulo = constante.ordenDeProvisionDeInsumos();
+			tab = numeroElemento(titulo);
+			if (tab == -1) {
 
-		if (event.getSelectedItem() == nuevaOrdenSuministro) {
-
+				formulario = new ScrollPanel();
+				formulario.setTitle(titulo);
+				formulario.setStyleName("panelFormulario");
+				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+				P_FormularioOrdenProvisionInsumo provisionInsumo = new P_FormularioOrdenProvisionInsumo(panelTrabajo,this.usuario);
+				formulario.add(provisionInsumo);
+				panelTrabajo.add(formulario, titulo, false);
+				panelTrabajo.selectTab(numeroElemento(titulo));
+			} else
+				panelTrabajo.selectTab(tab);
+			
+			
 		}
 
 	}

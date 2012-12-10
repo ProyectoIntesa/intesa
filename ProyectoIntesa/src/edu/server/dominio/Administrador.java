@@ -206,6 +206,7 @@ public class Administrador {
 		return listaResultado;
 	}
 
+	
 	public List<EmpleadoDTO> getEmpleadosSinUsuario() {
 		boolean bandera = false;
 		List<Usuario> listaUsuarios;

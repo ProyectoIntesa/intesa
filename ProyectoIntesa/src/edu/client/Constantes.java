@@ -8,6 +8,23 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
 	  String ordenCompraDeInsumo();
 	  
+	  @DefaultStringValue("ORDEN DE PROVISION")
+	  String ordenDeProvision();
+	  
+	  @DefaultStringValue("ORDEN DE PROVISION DE INSUMOS")
+	  String ordenDeProvisionDeInsumos();
+	  
+	  @DefaultStringValue("PARA")
+	  String para();
+	  
+	  
+	  
+	  @DefaultStringValue("EGRESO DE MATERIALES")
+	  String egresoDeMateriales();
+	  
+	  @DefaultStringValue("GENERAR REMITO")
+	  String generarRemito();
+	  	  
 	  @DefaultStringValue("BUSCAR REMITO")
 	  String buscarRemito();  
 	  

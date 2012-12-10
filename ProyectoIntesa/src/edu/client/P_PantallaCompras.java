@@ -454,7 +454,7 @@ public class P_PantallaCompras extends Composite {
 		
 	}
 
-protected void modificarOrden() {
+	protected void modificarOrden() {
 		
 		String titulo;
 		int tab;
