@@ -89,15 +89,5 @@ public interface ComprasService extends RemoteService {
 
 	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviada() throws IllegalArgumentException;
 
-	double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenCompraInsumo) throws IllegalArgumentException;
 
-	Boolean registrarRemitoExterno(RemitoExternoDTO remito) throws IllegalArgumentException;
-
-	List<Long> getRemitosExternos(long idOrdenCompraInsumos) throws IllegalArgumentException;
-
-	RemitoExternoDTO getRemitoExternoCompleto(OrdenCompraInsumoDTO orden, long nroRemito) throws IllegalArgumentException;
-
-
-
-	
 }

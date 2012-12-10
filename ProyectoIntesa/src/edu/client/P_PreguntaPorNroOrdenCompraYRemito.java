@@ -11,6 +11,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 
+import edu.client.AlmacenService.AlmacenService;
+import edu.client.AlmacenService.AlmacenServiceAsync;
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
@@ -62,10 +64,9 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		
 		tipoOrdenCompraLb = new ListBox();
 		tipoOrdenCompraLb.setStyleName("gwt-TextArea");
-		tipoOrdenCompraLb.addItem("");
+		tipoOrdenCompraLb.addItem("Seleccionar Tipo de Orden de Compra a Ingresar");
 		tipoOrdenCompraLb.addItem(constante.ordenCompraDeInsumo());
 		tipoOrdenCompraLb.addItem(constante.ordenCompraDeProducto());
-		tipoOrdenCompraLb.addItem(constante.ordenCotizacionDeProducto());
 		tipoOrdenCompraLb.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -137,8 +138,8 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 			String nroOrdenCompraInsumo = this.nroOrdenCompraLb.getItemText(nroOrdenCompraLb.getSelectedIndex());
 			Long id = Long.parseLong(nroOrdenCompraInsumo);
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.getRemitosExternos(id, new AsyncCallback<List<Long>>() {
+			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+			almacenService.getRemitosExternos(id, new AsyncCallback<List<Long>>() {
 
 				@Override
 				public void onSuccess(List<Long> result) {
@@ -154,9 +155,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			nroRemitoLb.clear();
 		}		
-		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCotizacionDeProducto()) == 0){
-			nroRemitoLb.clear();
-		}
+
 	}
 
 	protected void cargarListaConRemitosExternosDeInsumos(List<Long> result) {
@@ -177,12 +176,32 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 			for (OrdenCompraInsumoDTO orden : ordenesInsumos) {
 				if(orden.getNroOrden().compareTo(nroOrden) == 0){
 					
-					P_RemitoExterno popUp = new P_RemitoExterno(orden,new Long(this.nroRemitoLb.getItemText(nroRemitoLb.getSelectedIndex())));
-					popUp.setGlassEnabled(true);
-					popUp.center();
-					popUp.show();
-					salir();
-					break;
+					final OrdenCompraInsumoDTO ordenEnviar = orden;
+					
+					AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+					Long nroRemito = Long.parseLong(this.nroRemitoLb.getItemText(nroRemitoLb.getSelectedIndex()));
+					
+					almacenService.getRemitoExternoCompleto(orden, nroRemito, new AsyncCallback<RemitoExternoDTO>() {
+	
+						@Override
+						public void onSuccess(RemitoExternoDTO result) {
+								
+							P_RemitoExterno popUp = new P_RemitoExterno(ordenEnviar,result);
+							popUp.setGlassEnabled(true);
+							popUp.center();
+							popUp.show();
+							salir();
+							
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR DE SERVICIO");
+
+						}
+					});
+					
+					
 				}
 			}
 			
@@ -190,9 +209,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			
 		}		
-		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCotizacionDeProducto()) == 0){
-			
-		}
+
 		
 	}
 
@@ -219,9 +236,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			nroOrdenCompraLb.clear();
 		}		
-		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCotizacionDeProducto()) == 0){
-			nroOrdenCompraLb.clear();
-		}
+
 		
 
 		

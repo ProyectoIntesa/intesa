@@ -57,10 +57,9 @@ public class P_PreguntaPorNroOrdenCompra extends PopupPanel {
 		
 		tipoOrdenCompraLb = new ListBox();
 		tipoOrdenCompraLb.setStyleName("gwt-TextArea");
-		tipoOrdenCompraLb.addItem("");
+		tipoOrdenCompraLb.addItem("Seleccionar Tipo de Orden de Compra a Ingresar");
 		tipoOrdenCompraLb.addItem(constante.ordenCompraDeInsumo());
 		tipoOrdenCompraLb.addItem(constante.ordenCompraDeProducto());
-		tipoOrdenCompraLb.addItem(constante.ordenCotizacionDeProducto());
 		tipoOrdenCompraLb.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -133,9 +132,7 @@ public class P_PreguntaPorNroOrdenCompra extends PopupPanel {
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			
 		}		
-		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCotizacionDeProducto()) == 0){
-			
-		}
+
 		
 	}
 
@@ -162,9 +159,7 @@ public class P_PreguntaPorNroOrdenCompra extends PopupPanel {
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			nroOrdenCompraLb.clear();
 		}		
-		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCotizacionDeProducto()) == 0){
-			nroOrdenCompraLb.clear();
-		}
+
 		
 
 		

@@ -10,6 +10,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 
+import edu.client.AlmacenService.AlmacenService;
+import edu.client.AlmacenService.AlmacenServiceAsync;
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
 import edu.shared.DTO.InsumoDTO;
@@ -27,8 +29,10 @@ public class P_RemitoExterno extends PopupPanel {
 	private static final int COL_CANT_PEDIDA = 2;
 	private static final int COL_CANT_FALTANTE = 3;
 	private static final int COL_CANT_RECIBIDA = 4;
-	private static final int COL_CANT_RECIBIDA2 = 2;
 	private static final int COL_CHECK = 5;
+	private static final int COL_INSUMO_RESULT = 0;
+	private static final int COL_MARCA_RESULT = 1;
+	private static final int COL_CANT_RECIBIDA_RESULT = 2;
 	
 	private Label titulo;
 	private Label pie;
@@ -38,6 +42,7 @@ public class P_RemitoExterno extends PopupPanel {
 	private Label fechaIngreso;
 	private Label proveedor;
 	private Label observaciones;
+	private Label empleado;
 	
 	private TextArea observacionesTa;
 	
@@ -45,16 +50,23 @@ public class P_RemitoExterno extends PopupPanel {
 	
 	private Button cancelar;
 	private Button aceptar;
+	private Button salir;
 	
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
 	
+	
 	private String usuario;	
 	
 	private OrdenCompraInsumoDTO ordenCompraInsumo;
+	private RemitoExternoDTO remitoExterno;
 		
 	private int cantFaltante;
+	
+	
+	
+	
 	
 	public P_RemitoExterno(OrdenCompraInsumoDTO ordenInsumo, String usuarioLogueado) {
 	
@@ -186,51 +198,21 @@ public class P_RemitoExterno extends PopupPanel {
 			
 		setWidget(panel);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
 	
-	public P_RemitoExterno(OrdenCompraInsumoDTO ordenInsumo, long nroRemito) {
+	public P_RemitoExterno(OrdenCompraInsumoDTO ordenInsumo, RemitoExternoDTO remito) {
 		
 	
 		super(false);
 		setStyleName("fondoPopup");
-		
-		System.out.println("------------------------------EMPEZAMOS!!!");
-		
+				
 		this.ordenCompraInsumo = ordenInsumo;
+		this.remitoExterno = remito;
 		this.cantFaltante = 0;
-		
-		
-		
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.getRemitoExternoCompleto(ordenInsumo, nroRemito, new AsyncCallback<RemitoExternoDTO>() {
-
-			@Override
-			public void onSuccess(RemitoExternoDTO result) {
-				System.out.println("------------------------------pantalla donde se muestra todo!!!");
-				//cargarTabla(result);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-
-			}
-		});
-		
-		
-		
-		
-		
+				
+		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+		String fecha = fmtDate.format(remito.getFechaIngreso());		
 		
 		titulo = new Label("REMITO DE INSUMOS EXTERNO");
 		titulo.setStyleName("labelTitulo");
@@ -238,10 +220,12 @@ public class P_RemitoExterno extends PopupPanel {
 		nroOrdenCompra.setStyleName("gwt-LabelFormulario");
 		proveedor = new Label(constante.proveedor() + ": " + ordenInsumo.getProveedor());
 		proveedor.setStyleName("gwt-LabelFormulario");
-		fechaIngreso = new Label(constante.fechaIngreso() + ": ");
+		fechaIngreso = new Label(constante.fechaIngreso() + ": " + fecha);
 		fechaIngreso.setStyleName("gwt-LabelFormulario");
-		nroRemitoEx = new Label(constante.nroRemitoExterno() + ": ");
+		nroRemitoEx = new Label(constante.nroRemitoExterno() + ": " + remito.getIdRemitoEx());
 		nroRemitoEx.setStyleName("gwt-LabelFormulario");
+		empleado = new Label (constante.empleado() + ": " + remito.getEmpleado());
+		empleado.setStyleName("gwt-LabelFormulario");
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
 		pie = new Label();
@@ -250,10 +234,8 @@ public class P_RemitoExterno extends PopupPanel {
 		observacionesTa = new TextArea();
 		observacionesTa.setDirectionEstimator(false);
 		observacionesTa.setWidth("99%");
-		
-		nroRemitoExTb = new TextBox();
-		nroRemitoExTb.setStyleName("gwt-TextArea");
-		
+		observacionesTa.setText(remito.getObservaciones());
+			
 		
 		panel = new FlexTable();
 		panel.setSize("550px", "300px");
@@ -263,30 +245,22 @@ public class P_RemitoExterno extends PopupPanel {
 		tablaElementos = new FlexTable();
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
-		tablaElementos.setText(0, COL_INSUMO, constante.insumo());
-		tablaElementos.getCellFormatter().setWidth(0, COL_INSUMO, "33%");
-		tablaElementos.setText(0, COL_MARCA, constante.marca());
-		tablaElementos.getCellFormatter().setWidth(0, COL_MARCA, "33%");
-		tablaElementos.setText(0, COL_CANT_RECIBIDA, constante.cantRecibida());
-		tablaElementos.getCellFormatter().setWidth(0, COL_CANT_RECIBIDA2, "33%");
+		tablaElementos.setText(0, COL_INSUMO_RESULT, constante.insumo());
+		tablaElementos.getCellFormatter().setWidth(0, COL_INSUMO_RESULT, "33%");
+		tablaElementos.setText(0, COL_MARCA_RESULT, constante.marca());
+		tablaElementos.getCellFormatter().setWidth(0, COL_MARCA_RESULT, "33%");
+		tablaElementos.setText(0, COL_CANT_RECIBIDA_RESULT, constante.cantRecibida());
+		tablaElementos.getCellFormatter().setWidth(0, COL_CANT_RECIBIDA_RESULT, "33%");
 		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
 
 			
-		cancelar = new Button(constante.cancelar());
-		cancelar.addClickHandler(new ClickHandler() {
+		salir = new Button(constante.salir());
+		salir.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cancelar();
+				salir();
 			}
 		});
-		
-		
-		aceptar = new Button(constante.aceptar());
-		aceptar.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				//guardarRemitoExterno();
-			}
-		});
-		
+				
 		
 		panel.setWidget(0, 0, titulo);
 		panel.getFlexCellFormatter().setColSpan(0, 0, 2);
@@ -297,37 +271,33 @@ public class P_RemitoExterno extends PopupPanel {
 		panel.setWidget(2, 0, nroOrdenCompra);
 		panel.getFlexCellFormatter().setColSpan(2, 0, 2);
 		
-		panel.setWidget(3, 0, proveedor);
-		panel.getFlexCellFormatter().setColSpan(3, 0, 2);		
+		panel.setWidget(3, 0, nroRemitoEx);
+		panel.getFlexCellFormatter().setColSpan(3, 0, 2);
 		
-		panel.setWidget(4, 0, nroRemitoEx);
-							
-		panel.setWidget(5, 0, contenedorTabla);
-		panel.getFlexCellFormatter().setColSpan(5, 0, 2);
+		panel.setWidget(4, 0, proveedor);
+		panel.getFlexCellFormatter().setColSpan(4, 0, 2);	
 		
-		panel.setWidget(6, 0, observaciones);
+		panel.setWidget(5, 0, empleado);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 2);		
+					
+		panel.setWidget(6, 0, contenedorTabla);
 		panel.getFlexCellFormatter().setColSpan(6, 0, 2);
 		
-		panel.setWidget(7, 0, observacionesTa);
+		panel.setWidget(7, 0, observaciones);
 		panel.getFlexCellFormatter().setColSpan(7, 0, 2);
 		
-		panel.setWidget(8, 0, pie);
+		panel.setWidget(8, 0, observacionesTa);
 		panel.getFlexCellFormatter().setColSpan(8, 0, 2);
+		
+		panel.setWidget(9, 0, pie);
+		panel.getFlexCellFormatter().setColSpan(9, 0, 2);
 
-		panel.setWidget(9, 0, aceptar);
-		panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(9, 1, cancelar);
-		panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(10, 1, salir);
+		panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
 			
+		cargarTabla(remito);
+		
 		setWidget(panel);
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -368,8 +338,8 @@ public class P_RemitoExterno extends PopupPanel {
 		}
 		
 				
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
+		AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+		almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
 	
 			@Override
 			public void onSuccess(Boolean result) {
@@ -404,8 +374,8 @@ public class P_RemitoExterno extends PopupPanel {
 			final RenglonOrdenCompraInsumoDTO ren = renglon;
 			final int itemInterno = item;
 			
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.getCantFaltanteInsumo(renglon.getInsumo(), ordenInsumo.getIdOrden(), new AsyncCallback<Double>() {
+			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+			almacenService.getCantFaltanteInsumo(renglon.getInsumo(), ordenInsumo.getIdOrden(), new AsyncCallback<Double>() {
 		
 				@Override
 				public void onSuccess(Double result) {
@@ -436,6 +406,24 @@ public class P_RemitoExterno extends PopupPanel {
 		
 	}
 	
+	private void cargarTabla(RemitoExternoDTO remito){
+		
+		int item = 1;
+		
+		for (RenglonRemitoExternoDTO renglon : remito.getRenglonRemitoExterno()) {
+			
+			
+			tablaElementos.setWidget(item, COL_INSUMO_RESULT, new Label(renglon.getInsumo().getNombre()));
+			tablaElementos.setWidget(item, COL_MARCA_RESULT, new Label(renglon.getInsumo().getMarca()));
+			tablaElementos.setWidget(item, COL_CANT_RECIBIDA_RESULT, new Label(renglon.getCantIngresada()+""));	
+			tablaElementos.getRowFormatter().setStyleName(item, "tablaRenglon");
+			
+			item++;
+			
+		}
+		
+	}
+	
 	private void setCantFaltante(int cant){
 		this.cantFaltante = cant;
 	}
@@ -447,5 +435,8 @@ public class P_RemitoExterno extends PopupPanel {
 	protected void cancelar() {
 		this.hide();
 	}
-	
+
+	protected void salir() {
+		this.hide();
+	}
 }

@@ -4,8 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -16,7 +14,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -116,14 +113,14 @@ public class P_PantallaAlmacen extends Composite {
 			menu.add(menuLateral);
 			menuLateral.setSize("100%", "100%");
 
-			TreeItem remitoEx = menuLateral.addItem(constante.remitoExterno());
+			TreeItem remitoEx = menuLateral.addItem(constante.IngresoDeMateriales());
 			remitoEx.setStyleName("elementoMenu");
 
-			ingresarRemitoEx = new TreeItem(constante.ingresar());
+			ingresarRemitoEx = new TreeItem(constante.ingresarRemito());
 			ingresarRemitoEx.setStyleName("suElementoMenu");
 			remitoEx.addItem(ingresarRemitoEx);
 			
-			buscarRemitoEx = new TreeItem(constante.buscar());
+			buscarRemitoEx = new TreeItem(constante.buscarRemito());
 			buscarRemitoEx.setStyleName("suElementoMenu");
 			remitoEx.addItem(buscarRemitoEx);
 

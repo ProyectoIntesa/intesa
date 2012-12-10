@@ -59,6 +59,16 @@
     <url-pattern>/proyectointesa/compras</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  <servlet-name>almacenServlet</servlet-name>
+  <servlet-class>edu.server.servicio.AlmacenServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>almacenServlet</servlet-name>
+    <url-pattern>/proyectointesa/almacen</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -6,7 +6,16 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 public interface Constantes extends Constants {
 
 	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
-	  String ordenCompraDeInsumo();  
+	  String ordenCompraDeInsumo();
+	  
+	  @DefaultStringValue("BUSCAR REMITO")
+	  String buscarRemito();  
+	  
+	  @DefaultStringValue("INGRESO DE MATERIALES")
+	  String IngresoDeMateriales();
+	  
+	  @DefaultStringValue("INGRESAR REMITO")
+	  String ingresarRemito();
 	  
 	  @DefaultStringValue("REMITO EXTERNO")
 	  String remitoExterno();

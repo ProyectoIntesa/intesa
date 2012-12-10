@@ -2,6 +2,7 @@ package edu.server.dominio;
 
 import org.hibernate.Session;
 
+import edu.server.repositorio.IngresoInsumos;
 import edu.server.util.HibernateUtil;
 
 public class Empleado {
@@ -32,6 +33,19 @@ public class Empleado {
 		result = sec.createSQLQuery("select e.id_Empleado from Empleado as e, usuario as u where nombre like '"+nombre+"' and apellido like '"+apellido+"'").uniqueResult();
 		sec.close();
 		return (int)result;
+	}
+	
+	
+	public String getNobreYApellidoEmpleado(int idEmpleado){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String result;
+		edu.server.repositorio.Empleado emp = new edu.server.repositorio.Empleado();
+		emp = (edu.server.repositorio.Empleado) sec.get(emp.getClass(), idEmpleado);
+		result = emp.getApellido()+" "+emp.getNombre();
+		sec.close();
+		return result;
 	}
 	
 	

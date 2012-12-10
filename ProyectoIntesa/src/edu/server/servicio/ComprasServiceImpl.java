@@ -10,9 +10,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.client.ComprasService.ComprasService;
 import edu.server.dominio.Administrador;
 import edu.server.dominio.Compras;
-import edu.server.dominio.Estado;
 import edu.server.dominio.Empleado;
+import edu.server.dominio.Estado;
+import edu.server.dominio.Insumos;
 import edu.server.dominio.ModoDeEnvio;
+import edu.server.dominio.Proveedores;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
@@ -153,14 +155,12 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	
 	@Override
 	public ProveedorDTO getEmpresaCompleta(String nombre)  throws IllegalArgumentException{
-			
-	
-		Compras adminCompras = new Compras();
-		
+					
 		Proveedor busqueda = new Proveedor();
 		
+		Proveedores adminProv = new Proveedores();
 		
-		busqueda = adminCompras.getEmpresaCompleta(nombre);
+		busqueda = adminProv.getEmpresaCompleta(nombre);
 								
 		ProveedorDTO result = new ProveedorDTO();
 		
@@ -214,36 +214,36 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	@Override
 	public List<String> getNombresEmpresas() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
-		return adminCompras.getNombresEmpresas();
+		return adminProv.getNombresEmpresas();
 		
 	}
 	
 	@Override
 	public List<String> getRubros() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
-		return adminCompras.getRubros();
+		return adminProv.getRubros();
 		
 	}
 	
 	@Override
 	public List<String> getTipos() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
-		return adminCompras.getTipos();
+		return adminProv.getTipos();
 		
 	}
 	
 	@Override
 	public List<String> getContactos() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
-		return adminCompras.getContactos();
+		return adminProv.getContactos();
 		
 	}
 	
@@ -251,13 +251,13 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public List<ContactoDTO> getEmpresasPorContacto(String nombre) throws IllegalArgumentException{
 		
 		List<ContactoDTO> result = new LinkedList<ContactoDTO>();
-		Compras adminCompras = new Compras();
-		List<Contacto> busqueda = adminCompras.getEmpresasPorContacto(nombre);
+		Proveedores adminProv = new Proveedores();
+		List<Contacto> busqueda = adminProv.getEmpresasPorContacto(nombre);
 	
 			
 			for (Contacto contacto : busqueda) {
 
-				String[] rubroYempresa = adminCompras.getEmpresaRubroPorIdProveedor(contacto.getProveedor().getCodigoProveedor());
+				String[] rubroYempresa = adminProv.getEmpresaRubroPorIdProveedor(contacto.getProveedor().getCodigoProveedor());
 
 				ContactoDTO nuevo = new ContactoDTO();
 				ProveedorDTO nuevoProveedor = new ProveedorDTO();
@@ -282,8 +282,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		Contacto contacto;
 		
-		Compras adminCompras = new Compras();
-		contacto = adminCompras.getContactoCompleto(nombreContacto, nombreEmpresa);
+		Proveedores adminProv = new Proveedores();
+		contacto = adminProv.getContactoCompleto(nombreContacto, nombreEmpresa);
 		
 		
 		ContactoDTO nuevo = new ContactoDTO();
@@ -312,8 +312,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public List<ProveedorDTO> getEmpresasPorRubro(String nombre) throws IllegalArgumentException{
 		
 		List<ProveedorDTO> result = new LinkedList<ProveedorDTO>();
-		Compras adminCompras = new Compras();
-		List<Proveedor> busqueda = adminCompras.getEmpresasPorRubro(nombre);
+		Proveedores adminProv = new Proveedores();
+		List<Proveedor> busqueda = adminProv.getEmpresasPorRubro(nombre);
 		
 		for (Proveedor proveedor : busqueda) {
 			
@@ -336,8 +336,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public List<ProveedorDTO> getEmpresasPorTipo(String nombre) throws IllegalArgumentException{
 		
 		List<ProveedorDTO> result = new LinkedList<ProveedorDTO>();
-		Compras adminCompras = new Compras();
-		List<Proveedor> busqueda = adminCompras.getEmpresasPorTipo(nombre);
+		Proveedores adminProv = new Proveedores();
+		List<Proveedor> busqueda = adminProv.getEmpresasPorTipo(nombre);
 		
 		for (Proveedor proveedor : busqueda) {
 			
@@ -371,8 +371,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public List<ProveedorDTO> getEmpresas(String nombre) throws IllegalArgumentException{
 		
 		List<ProveedorDTO> result = new LinkedList<ProveedorDTO>();
-		Compras adminCompras = new Compras();
-		List<Proveedor> busqueda = adminCompras.getEmpresas(nombre);
+		Proveedores adminProv = new Proveedores();
+		List<Proveedor> busqueda = adminProv.getEmpresas(nombre);
 		
 		for (Proveedor proveedor : busqueda) {
 			
@@ -394,8 +394,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	@Override
 	public int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
 		
-		Compras adminCompras = new Compras();
-		return adminCompras.retornaIdContacto(nombreEmpresa, nombreContacto);	
+		Proveedores adminProv = new Proveedores();
+		return adminProv.retornaIdContacto(nombreEmpresa, nombreContacto);	
 		
 	}
 	
@@ -405,7 +405,8 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		Contacto nuevoCont = new Contacto();
 		Compras adminCompras = new Compras();
-		Proveedor proveedor = adminCompras.getEmpresaCompleta(contacto.getProveedor().getNombre());
+		Proveedores adminProv = new Proveedores();
+		Proveedor proveedor = adminProv.getEmpresaCompleta(contacto.getProveedor().getNombre());
 		
 		nuevoCont.setIdContacto(idContacto);
 		nuevoCont.setCargo(contacto.getCargo());
@@ -428,6 +429,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public Boolean registrarNuevoInsumo(InsumoDTO insumo) throws IllegalArgumentException {
 		
 		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
 		Marca marca = new Marca();
 		marca.setNombre(insumo.getMarca());
@@ -448,7 +450,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			
 			for(ProveedorDeInsumosDTO proveedor : insumo.getProveedor()){
 				ProveedorDeInsumoId idPI = new ProveedorDeInsumoId();
-				Proveedor buscar = adminCompras.getProveedorPorNombre(proveedor.getNombre());
+				Proveedor buscar = adminProv.getProveedorPorNombre(proveedor.getNombre());
 				idPI.setIdProveedor(buscar.getCodigoProveedor());
 				ProveedorDeInsumo nuevoProv = new ProveedorDeInsumo();
 				nuevoProv.setProveedor(buscar);
@@ -470,17 +472,19 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	public Boolean registrarCambioInsumo(InsumoDTO insumo) throws IllegalArgumentException {
 		
 		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
+		Insumos adminInsumo = new Insumos();
 		
 		Marca marca = new Marca();
 		marca.setNombre(insumo.getMarca());
 		
-		int idMarca = adminCompras.marcaExistente(marca.getNombre());
+		int idMarca = adminInsumo.marcaExistente(marca.getNombre());
 		marca.setIdMarca(idMarca);
 			
 		Categoria categoria = new Categoria();
 		categoria.setNombre(insumo.getCategoria());
 		
-		int idCategoria = adminCompras.categoriaExistente(categoria.getNombre());
+		int idCategoria = adminInsumo.categoriaExistente(categoria.getNombre());
 		categoria.setIdCategoria(idCategoria);
 		
 		Insumo nuevo = new Insumo();
@@ -497,7 +501,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			
 			for(ProveedorDeInsumosDTO proveedor : insumo.getProveedor()){
 				ProveedorDeInsumoId idPI = new ProveedorDeInsumoId();
-				Proveedor buscar = adminCompras.getProveedorPorNombre(proveedor.getNombre());
+				Proveedor buscar = adminProv.getProveedorPorNombre(proveedor.getNombre());
 				idPI.setIdProveedor(buscar.getCodigoProveedor());
 				ProveedorDeInsumo nuevoProv = new ProveedorDeInsumo();
 				nuevoProv.setProveedor(buscar);
@@ -519,48 +523,48 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	@Override
 	public List<String> getNombresInsumos(String letra) throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos adminInsumo = new Insumos();
 		
-		return adminCompras.getNombresInsumos(letra);
+		return adminInsumo.getNombresInsumos(letra);
 		
 	}
 	
 	@Override
 	public List<String> getNombresMarcas() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos adminInsumo = new Insumos();
 		
-		return adminCompras.getNombresMarcas();
+		return adminInsumo.getNombresMarcas();
 		
 	}
 	
 	@Override
 	public List<String> getNombresCategorias() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos adminInsumo = new Insumos();
 		
-		return adminCompras.getNombresCategorias();
+		return adminInsumo.getNombresCategorias();
 		
 	}
 	
 	@Override
 	public List<String> getNombresProveedores() throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
-		return adminCompras.getNombresProveedores();
+		return adminProv.getNombresProveedores();
 		
 	}
 	
 	@Override
 	public List<InsumoDTO> getInsumosSegunParametro(String tipo, String dato) throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos adminInsumo = new Insumos();
 		
 		List<InsumoDTO> listResult = new LinkedList<InsumoDTO>();
 		List<Insumo> result = new LinkedList<Insumo>();
 		
-		result = adminCompras.getInsumosSegunParametro(tipo, dato); 
+		result = adminInsumo.getInsumosSegunParametro(tipo, dato); 
 		
 		for (Insumo insumo : result) {
 			
@@ -582,8 +586,9 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		Compras adminCompras = new Compras();
 		InsumoDTO result = new InsumoDTO();
 		Insumo insumo = new Insumo();
+		Insumos adminInsumos = new Insumos();
 		
-		insumo = adminCompras.getInsumoCompleto(idInsumo, nombreInsumo);
+		insumo = adminInsumos.getInsumoCompleto(idInsumo, nombreInsumo);
 		
 		result.setIdInsumo(insumo.getIdInsumo());
 		result.setNombre(insumo.getNombre());
@@ -632,25 +637,27 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	
 	@Override
 	public List<String> getNombresMarcasSegunInsumo(String nombreInsumo)  throws IllegalArgumentException {
-		Compras adminCompras = new Compras();
 		
-		return adminCompras.getNombresMarcasSegunInsumo(nombreInsumo);
+		Insumos adminInsumos = new Insumos();
+		
+		return adminInsumos.getNombresMarcasSegunInsumo(nombreInsumo);
 	}
 	
 	@Override
 	public List<String> getNombresProvSegunInsumoYMarca(String nombreInsumo, String nombreMarca)  throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos adminInsumo = new Insumos();
 		
-		return adminCompras.getNombresProvSegunInsumoYMarca(nombreInsumo, nombreMarca);
+		return adminInsumo.getNombresProvSegunInsumoYMarca(nombreInsumo, nombreMarca);
 	}
 
 	@Override
 	public List<InsumoDTO> getRequerimientosInsumosCompletos()  throws IllegalArgumentException {
 		
-		Compras adminCompras = new Compras();
+		Insumos admniInsumos = new Insumos();
 		
-		List<Object> idInsumos = adminCompras.getRequerimientosNecesario();
+		
+		List<Object> idInsumos = admniInsumos.getRequerimientosNecesario();
 		List<InsumoDTO> result = new LinkedList<InsumoDTO>();
 		
 		for (Object id : idInsumos) {
@@ -666,13 +673,15 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	@Override
 	public List<InsumoDTO> completarValoresInsumos(List<InsumoDTO> insumos, String proveedor) throws IllegalArgumentException{
 		Compras adminCompras = new Compras();
+		Insumos adminInsumos = new Insumos();
+		Proveedores adminProv  = new Proveedores();
 		for (InsumoDTO insumo : insumos) {
 			Insumo insuAux = new Insumo();
-			int idInsumo =adminCompras.getIdInsumo(insumo.getNombre(), insumo.getMarca());
-			int idProv = adminCompras.getProveedorPorNombre(proveedor).getCodigoProveedor();
+			int idInsumo =adminInsumos.getIdInsumo(insumo.getNombre(), insumo.getMarca());
+			int idProv = adminProv.getProveedorPorNombre(proveedor).getCodigoProveedor();
 			insumo.setIdInsumo(idInsumo);
 			
-			insuAux = adminCompras.getInsumoCompleto(insumo.getIdInsumo(), "");
+			insuAux = adminInsumos.getInsumoCompleto(insumo.getIdInsumo(), "");
 			insumo.setCantidad(insuAux.getCantidad());
 			insumo.setLoteCompra(insuAux.getLoteCompra());
 			
@@ -702,11 +711,13 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		Estado adminEstado = new Estado();
 		Empleado adEmpleado = new Empleado();
 		ModoDeEnvio adminModo = new ModoDeEnvio();
+		Proveedores adminProv = new Proveedores();
+		Insumos adminInsumo = new Insumos();
 		String nombre = orden.getEmpleado().split(", ")[1];
 		String apellido = orden.getEmpleado().split(", ")[0];
 		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
 		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
-		Proveedor prov = adminCompras.getProveedorPorNombre(orden.getProveedor());
+		Proveedor prov = adminProv.getProveedorPorNombre(orden.getProveedor());
 		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio()) ;
 		edu.server.repositorio.Empleado responsable = new edu.server.repositorio.Empleado();
 		responsable.setIdEmpleado(idEmpleado);
@@ -736,7 +747,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			renglon.setCantidad(ren.getCantidad());
 			renglon.setSubtotal(ren.getSubtotal());
 			renglon.setId(id);
-			int idInsumo = adminCompras.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
+			int idInsumo = adminInsumo.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
 			Insumo insu = new Insumo();
 			ProveedorDeInsumo provInsumo = new ProveedorDeInsumo();
 			ProveedorDeInsumoId provInsumoId = new ProveedorDeInsumoId(prov.getCodigoProveedor(), idInsumo);
@@ -765,11 +776,12 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		Administrador adminAdmin = new Administrador();
 		Compras adminCompras = new Compras();
 		Estado adminEstados = new Estado();
+		Proveedores adminProv = new Proveedores();
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
 		
 		int idEstado = adminEstados.getIdEstado(estado);
-		int idProv = adminCompras.getIdProveedor(prov);
+		int idProv = adminProv.getIdProveedor(prov);
 		
 		result = adminCompras.getOrdenCompraInsumo(idEstado, idProv, fecDesde, fecHasta);
 		
@@ -789,7 +801,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			
 			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
 			ordendto.setEstadoOrden(adminEstados.getNombreEstado(orden.getEstadoOrden().getIdEstadoOrden()));
-			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			ordendto.setProveedor(adminProv.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
 			
 			listaResult.add(ordendto);
 			
@@ -804,6 +816,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		OrdenCompraInsumoDTO orden = new OrdenCompraInsumoDTO();
 		OrdenCompraInsumo ordenComun = new OrdenCompraInsumo();
+		Proveedores adminProv = new Proveedores();
 		Estado adminEstados = new Estado();
 		Compras adminCompras = new Compras();
 		Administrador adminAdmin = new Administrador();
@@ -819,7 +832,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		orden.setEmpleado(adminAdmin.getNombreEmpleado(ordenComun.getEmpleado().getIdEmpleado()));
 		orden.setEstadoOrden(adminEstados.getNombreEstado(ordenComun.getEstadoOrden().getIdEstadoOrden()));
 
-		orden.setProveedor(adminCompras.getNombreProveedor(ordenComun.getProveedor().getCodigoProveedor()));
+		orden.setProveedor(adminProv.getNombreProveedor(ordenComun.getProveedor().getCodigoProveedor()));
 
 		orden.setModoEnvio(adminModoDeEnvio.getNombreModoEnvio(ordenComun.getModoEnvio().getIdModoEnvio()));
 			
@@ -888,6 +901,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		Administrador adminAdmin = new Administrador();
 		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
@@ -904,7 +918,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			
 			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
 		
-			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			ordendto.setProveedor(adminProv.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
 			
 			listaResult.add(ordendto);
 			
@@ -919,6 +933,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		Administrador adminAdmin = new Administrador();
 		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
 		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
@@ -937,7 +952,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 							
 			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
 		
-			ordendto.setProveedor(adminCompras.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+			ordendto.setProveedor(adminProv.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
 			
 			listaResult.add(ordendto);
 			
@@ -947,129 +962,6 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 	}
 	
-	@Override
-	public double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenCompraInsumo) throws IllegalArgumentException{
-		
-		double cantidadFaltante = 0;
-		double cantidadIngresada = 0;
-		Compras adminCompras = new Compras();
-		List<IngresoInsumos> listaRemitos = adminCompras.getRemitosExternos(idOrdenCompraInsumo);
-		OrdenCompraInsumoDTO orden = this.getOrdenCompraInsumoSegunId(idOrdenCompraInsumo);	
-		
-		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {		
-			if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo()){
-				cantidadFaltante = renglon.getCantidad();
-			}
-		}
-				
-		if(!listaRemitos.isEmpty()){	
-			for (IngresoInsumos remito : listaRemitos) {
-				for (RenglonIngresoInsumos renglon : remito.getRenglonIngresoInsumoses()) {
-					if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo())
-						cantidadIngresada+= renglon.getCantidadIngresada(); 	
-				}	
-			}			
-		}
-				
-		cantidadFaltante = cantidadFaltante - cantidadIngresada;
-		
-		return cantidadFaltante;
-		
-		
-	}
-
-	@Override
-	public Boolean registrarRemitoExterno(RemitoExternoDTO remito) throws IllegalArgumentException{
-		
-		Compras adminCompras = new Compras();
-		Empleado adminEmpleado = new Empleado();
-		Administrador admin = new Administrador();
-		
-		int idEmpleado = adminEmpleado.getIdEmpleado(remito.getEmpleado());
-		
-		edu.server.repositorio.Empleado emp = admin.getEmpleado(idEmpleado);
-				
-		IngresoInsumosId remitoId = new IngresoInsumosId(remito.getIdOrdenCompra(), remito.getIdRemitoEx());
-		
-		OrdenCompraInsumo orden = new OrdenCompraInsumo();
-		orden = adminCompras.getOrdenCompraInsumoSegunId(remito.getIdOrdenCompra());
-					
-		IngresoInsumos remitoGuardar = new IngresoInsumos();
-		remitoGuardar.setFechaIngreso(remito.getFechaIngreso());
-		remitoGuardar.setObservaciones(remito.getObservaciones());
-		remitoGuardar.setId(remitoId);
-		remitoGuardar.setEmpleado(emp);
-		remitoGuardar.setOrdenCompraInsumo(orden);
-			
-		Iterator renglones = remito.getRenglonRemitoExterno().iterator();
-			
-		while (renglones.hasNext()){
-								
-			RenglonRemitoExternoDTO renglon = (RenglonRemitoExternoDTO) renglones.next();
-			
-			int idInsumo = adminCompras.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
-			
-			Insumo insumo = adminCompras.getInsumoCompleto(idInsumo, "");
-			
-			RenglonIngresoInsumosId renglonId = new RenglonIngresoInsumosId(renglon.getItem(), remito.getIdOrdenCompra(), remito.getIdRemitoEx());
-			
-			RenglonIngresoInsumos renglonGuardar = new RenglonIngresoInsumos();
-			
-			renglonGuardar.setId(renglonId);
-			renglonGuardar.setCantidadIngresada(renglon.getCantIngresada());
-			renglonGuardar.setInsumo(insumo);
-			
-			remitoGuardar.getRenglonIngresoInsumoses().add(renglonGuardar);
-			
-		}
-		
-		return adminCompras.registrarRemitoExterno(remitoGuardar);
-		
-	}
-
-	@Override
-	public List<Long> getRemitosExternos(long idOrdenCompraInsumos) throws IllegalArgumentException{
-		
-		Compras adminCompras = new Compras();
-		List<IngresoInsumos> remitosCompletos = new LinkedList<IngresoInsumos>();
-		
-		int idorden = adminCompras.getIdOrdenCompraInsumo(idOrdenCompraInsumos);
-		
-		remitosCompletos = adminCompras.getRemitosExternos(idorden);
-		
-		List<Long> remitos = new LinkedList<Long>();
-		
-		for (IngresoInsumos remi : remitosCompletos) {
-			
-			Long id = ((IngresoInsumosId)remi.getId()).getNroRemitoExterno();
-			remitos.add(id);
-			
-		}
-		
-	
-		return remitos;
-		
-	}
-
-	@Override
-	public RemitoExternoDTO getRemitoExternoCompleto(OrdenCompraInsumoDTO orden, long nroRemito) throws IllegalArgumentException{
-		
-		Compras adminCompras = new Compras();
-		
-		
-		RemitoExternoDTO result = new RemitoExternoDTO();
-		
-		
-		System.out.println("---------------------------------------------------------------before the call");
-			
-		
-		adminCompras.getRemitoExternoCompleto(orden.getIdOrden(), nroRemito);
-		
-		System.out.println("----------------------------------------------------------------------------after the call");
-		
-		return result;
-		
-	}
 	
 
 

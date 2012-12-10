@@ -52,6 +52,8 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem deProductos;
 	private TreeItem deInsumos;
 	
+
+	
 	//-------------------------------------------------------------------------------
 	private TreeItem insumos;
 	private TreeItem insumosCargar;
@@ -185,6 +187,9 @@ public class P_PantallaCompras extends Composite {
 		productosBuscar = new TreeItem(constante.buscar());
 		productosBuscar.setStyleName("suElementoMenu");
 		productos.addItem(productosBuscar);		
+
+		
+		
 		//-------------------------------------------------------------------------------		
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -244,6 +249,7 @@ public class P_PantallaCompras extends Composite {
 
 		String titulo;
 		int tab;
+
 		
 		if (event.getSelectedItem() == nuevoProveedor) {
 
