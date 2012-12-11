@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -36,6 +39,7 @@ public class P_PantallaProduccion extends Composite {
 	private LayoutPanel menu;
 	private Tree menuLateral;
 	private TreeItem nuevaOrdenSuministroInsumos;
+	private TreeItem buscarOrdenSuministroInsumos;
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
@@ -106,6 +110,10 @@ public class P_PantallaProduccion extends Composite {
 		nuevaOrdenSuministroInsumos = new TreeItem(constante.deInsumos());
 		nuevaOrdenSuministroInsumos.setStyleName("suElementoMenu");
 		ordenSuministro.addItem(nuevaOrdenSuministroInsumos);
+		
+		buscarOrdenSuministroInsumos = new TreeItem(constante.buscar());
+		buscarOrdenSuministroInsumos.setStyleName("suElementoMenu");
+		ordenSuministro.addItem(buscarOrdenSuministroInsumos);
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -173,6 +181,18 @@ public class P_PantallaProduccion extends Composite {
 				panelTrabajo.selectTab(numeroElemento(titulo));
 			} else
 				panelTrabajo.selectTab(tab);
+			
+			
+		}
+		
+		if (event.getSelectedItem() == buscarOrdenSuministroInsumos) {
+			
+			
+			P_BuscarOrdenProvisionInsumo popUp = new P_BuscarOrdenProvisionInsumo(this.usuario);
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+
 			
 			
 		}

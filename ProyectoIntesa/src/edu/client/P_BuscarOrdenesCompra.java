@@ -14,20 +14,18 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
-import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 
 public class P_BuscarOrdenesCompra extends PopupPanel {
@@ -210,19 +208,19 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 		panel.setWidget(3, 4, fechaHasta);
 		panel.setWidget(3, 5, fechaHastaDb);
 		
-		panel.setWidget(6, 0, buscar);
-		panel.getFlexCellFormatter().setColSpan(6, 0, 6);
-		panel.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(4, 0, buscar);
+		panel.getFlexCellFormatter().setColSpan(4, 0, 6);
+		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 				
-		panel.setWidget(7, 0, contenedorTabla);
-		panel.getFlexCellFormatter().setColSpan(7, 0, 6);
+		panel.setWidget(5, 0, contenedorTabla);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 6);
 		
-		panel.setWidget(8, 0, pie);
-		panel.getFlexCellFormatter().setColSpan(8, 0, 6);
+		panel.setWidget(6, 0, pie);
+		panel.getFlexCellFormatter().setColSpan(6, 0, 6);
 
-		panel.setWidget(9, 0, salir);
-		panel.getFlexCellFormatter().setColSpan(9, 0, 6);
-		panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(7, 0, salir);
+		panel.getFlexCellFormatter().setColSpan(7, 0, 6);
+		panel.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
 	
 		
 		setWidget(panel);

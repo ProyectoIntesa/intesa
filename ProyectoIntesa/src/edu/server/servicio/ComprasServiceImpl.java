@@ -19,8 +19,6 @@ import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Contacto;
 import edu.server.repositorio.Direccion;
 import edu.server.repositorio.EstadoOrden;
-import edu.server.repositorio.IngresoInsumos;
-import edu.server.repositorio.IngresoInsumosId;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
@@ -31,8 +29,6 @@ import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.ProveedorDeInsumoId;
 import edu.server.repositorio.Provincia;
-import edu.server.repositorio.RenglonIngresoInsumos;
-import edu.server.repositorio.RenglonIngresoInsumosId;
 import edu.server.repositorio.RenglonOrdenCompraInsumo;
 import edu.server.repositorio.RenglonOrdenCompraInsumoId;
 import edu.shared.DTO.ContactoDTO;
@@ -41,9 +37,7 @@ import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
-import edu.shared.DTO.RemitoExternoDTO;
 import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
-import edu.shared.DTO.RenglonRemitoExternoDTO;
 
 public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasService {
 

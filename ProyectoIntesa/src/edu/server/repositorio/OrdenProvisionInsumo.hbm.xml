@@ -29,13 +29,13 @@
         <property name="observaciones" type="string">
             <column name="observaciones" />
         </property>
-        <set name="remitoInternoInsumos" table="Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="remitoInternoInsumos" table="Remito_Interno_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Orden_Provision_Insumo" not-null="true" />
             </key>
             <one-to-many class="edu.server.repositorio.RemitoInternoInsumo" />
         </set>
-        <set name="renglonOrdenProvisionInsumos" table="Renglon_Orden_Provision_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="renglonOrdenProvisionInsumos" table="Renglon_Orden_Provision_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Orden_Provision_Insumo" not-null="true" />
             </key>

@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.Session;
 
 import edu.server.repositorio.Categoria;
-import edu.server.repositorio.IngresoInsumos;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Marca;
 import edu.server.repositorio.Proveedor;

@@ -10,19 +10,30 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.InsumoDTO;
+import edu.shared.DTO.OrdenProvisionInsumoDTO;
+import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
 
 public class P_FormularioOrdenProvisionInsumo extends Composite {
 	
-	private static final int COL_ITEM = 0;
-	private static final int COL_INSUMO = 1;
-	private static final int COL_MARCA = 2;
-	private static final int COL_CANTREQUERIDA = 3;
-	private static final int COL_BORRAR = 4;
+	private static final int COL_INSUMO = 0;
+	private static final int COL_MARCA = 1;
+	private static final int COL_CANTREQUERIDA = 2;
+	private static final int COL_BORRAR = 3;
 	
 	private Constantes constante = GWT.create(Constantes.class);
 	
@@ -54,6 +65,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 	private List<String> listaInsumos;
 	private List<String> listaMarcas;
 	private EmpleadoDTO empleado;
+	private List<String[]> listaInsumosYMarcas;
 	
 	public P_FormularioOrdenProvisionInsumo(TabPanel padre, String responsable){
 		
@@ -63,7 +75,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		String apellido = responsable.split(", ")[0];
 		String rol = "PRODUCCION";
 		
-		
+		listaInsumosYMarcas = new LinkedList<String[]>();
 		listaInsumos = new LinkedList<String>();
 		listaMarcas = new LinkedList<String>();
 		
@@ -107,7 +119,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		agregar = new Button(constante.agregar());
 		agregar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//registrarOrden("GENERADA");
+				agregarInsumo();
 			}
 		});
 		
@@ -121,7 +133,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		generar = new Button(constante.generar());
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//registrarOrden("GENERADA");
+				registrarOrden();
 			}
 		});
 		
@@ -164,7 +176,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de marcas");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					
@@ -197,14 +209,12 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		contenedorTabla.setWidget(tablaElemento);
 		tablaElemento.setSize("100%", "100%");
 
-		tablaElemento.setText(0, COL_ITEM, constante.item());
-		tablaElemento.getCellFormatter().setWidth(0, COL_ITEM, "5%");
 		tablaElemento.setText(0, COL_INSUMO, constante.insumo());
 		tablaElemento.getCellFormatter().setWidth(0, COL_INSUMO, "35%");
 		tablaElemento.setText(0, COL_MARCA, constante.marca());
 		tablaElemento.getCellFormatter().setWidth(0, COL_MARCA, "35%");
 		tablaElemento.setText(0, COL_CANTREQUERIDA, constante.cantidad());
-		tablaElemento.getCellFormatter().setWidth(0, COL_CANTREQUERIDA, "20%");
+		tablaElemento.getCellFormatter().setWidth(0, COL_CANTREQUERIDA, "25%");
 		tablaElemento.setText(0, COL_BORRAR, "");
 		tablaElemento.getCellFormatter().setWidth(0, COL_BORRAR, "5%");
 		tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
@@ -251,21 +261,122 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 		
 		initWidget(formulario);
+
 		
 		
+	}
+	
+	protected void registrarOrden() {
+		OrdenProvisionInsumoDTO nueva = new OrdenProvisionInsumoDTO();
+		int pos = this.empPideLb.getSelectedIndex();
+		nueva.setFechaEdicion(new Date());
+		nueva.setFechaGeneracion(new Date());
+		nueva.setEmpleadoByIdPedidoPara(this.empleado.getListaEmpACargo().get(pos));
+		nueva.setEmpleadoByIdPedidoPor(this.empleado);
+		nueva.setObservaciones(this.observacionesTa.getText());
 		
 		
+		for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+			RenglonOrdenProvisionInsumoDTO renglon = new RenglonOrdenProvisionInsumoDTO();
+			InsumoDTO insu = new InsumoDTO();
+			insu.setMarca(((Label) tablaElemento.getWidget(i, COL_MARCA)).getText());
+			insu.setNombre(((Label) tablaElemento.getWidget(i, COL_INSUMO)).getText());
+			renglon.setIdRenglon(i);
+			renglon.setCantidadRequerida(new Double(((Label) tablaElemento.getWidget(i, COL_CANTREQUERIDA)).getText()));
+			renglon.setInsumo(insu);
+			nueva.getRenglonOrdenProvisionInsumos().add(renglon);
+		}
 		
-		
-		
-		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("Se ha generado corectamente la orden");
+					padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
+				} else {
+					Window.alert("No se pudo efectuar la acción");
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+
+			}
+		});
+
 		
 		
 		
 		
 		
 	}
+
+	protected void agregarInsumo() {
+		
+		if(insumoLb.getSelectedIndex() != 0 && marcaLb.getSelectedIndex() != 0 && cantTb.getText().compareTo("") != 0){
+			
+			final String nombreInsumo = insumoLb.getItemText(insumoLb.getSelectedIndex());
+			final String nombreMarca = marcaLb.getItemText(marcaLb.getSelectedIndex());
+			Integer cantidad = Integer.parseInt(cantTb.getText());
+						
+			int fila = tablaElemento.getRowCount();
+
+			Label eliminar = new Label("");
+			eliminar.setSize("16px", "16px");
+			eliminar.setStyleName("labelBorrar");
+			eliminar.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					String[] nombreYMarca={nombreInsumo,nombreMarca};
+					eliminar(nombreYMarca);
+				}
+			});
+
+			tablaElemento.setWidget(fila, COL_INSUMO, new Label(nombreInsumo));
+			tablaElemento.setWidget(fila, COL_MARCA, new Label(nombreMarca));
+			tablaElemento.setWidget(fila, COL_CANTREQUERIDA, new Label(cantidad+""));
+			tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
+
+			String[] nombreYMarca={nombreInsumo,nombreMarca};
+			this.listaInsumosYMarcas.add(nombreYMarca);
+			
+		}
+		else{
+			Window.alert("Se deben seleccionar todos los campos");
+		}
+		
+		
+		
+	}
 	
+	private void eliminar(String [] insumoMarca) {
+		
+		int fila = -1;
+		
+		for (int i = 0; i < this.listaInsumosYMarcas.size(); i++) {
+			
+			String insumoAux = this.listaInsumosYMarcas.get(i)[0];
+			String marcaAux = this.listaInsumosYMarcas.get(i)[1];
+			
+			if(insumoMarca[0].compareTo(insumoAux) == 0 && insumoMarca[1].compareTo(marcaAux) == 0){
+				
+				fila = i;
+				break;
+			}
+		}
+		
+		if(fila != -1){
+			
+			this.listaInsumosYMarcas.remove(fila);
+			tablaElemento.removeRow(fila + 1);
+		}
+		
+		
+	}
 	
 	protected void cargarListaEmpleadosACargo(EmpleadoDTO result) {
 		

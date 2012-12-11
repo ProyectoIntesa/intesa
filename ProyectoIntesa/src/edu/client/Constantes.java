@@ -8,16 +8,30 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
 	  String ordenCompraDeInsumo();
 	  
+	  @DefaultStringValue("FECHA CIERRE")
+	  String fechaCierre();
+	  
+	  @DefaultStringValue("SEGUN FECHA DE GENERACION")
+	  String segunFechaDeGeneracion();
+	  
 	  @DefaultStringValue("ORDEN DE PROVISION")
 	  String ordenDeProvision();
+	  
+	  @DefaultStringValue("GENERADO POR")
+	  String generadoPor();
 	  
 	  @DefaultStringValue("ORDEN DE PROVISION DE INSUMOS")
 	  String ordenDeProvisionDeInsumos();
 	  
+	  @DefaultStringValue("ORDEN DE PROVISION DE PRODUCTOS")
+	  String ordenDeProvisionDeProductos();
+	  
+	  
 	  @DefaultStringValue("PARA")
 	  String para();
 	  
-	  
+	  @DefaultStringValue("GENERADO PARA")
+	  String generadoPara();
 	  
 	  @DefaultStringValue("EGRESO DE MATERIALES")
 	  String egresoDeMateriales();
@@ -54,6 +68,10 @@ public interface Constantes extends Constants {
 	  
 	  @DefaultStringValue("NRO ORDEN DE COMPRA")
 	  String nroOrdenDeCompra();
+	  
+	  @DefaultStringValue("NRO ORDEN DE PROVISION")
+	  String nroOrdenProvision();
+	  
 	  
 	  @DefaultStringValue("ACEPTAR")
 	  String aceptar();
@@ -126,6 +144,9 @@ public interface Constantes extends Constants {
 	  
 	  @DefaultStringValue("CANT COMPRAR")
 	  String cantComprar();
+	  
+	  @DefaultStringValue("CANT ENTREGADA")
+	  String cantEntregada();
 	  
 	  @DefaultStringValue("CANT INVENTARIO")
 	  String cantInventario();

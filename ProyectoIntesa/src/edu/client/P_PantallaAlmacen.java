@@ -228,7 +228,15 @@ public class P_PantallaAlmacen extends Composite {
 		}
 
 		if (event.getSelectedItem() == ingresarRemitoIn) {
-
+			if(this.numeroElemento(constante.remitoExterno())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO INTERNO");
+			}
+			else{
+				P_PreguntarPorOrdenProvision popUp = new P_PreguntarPorOrdenProvision(this.usuario);
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+			}
 		}
 		
 		if (event.getSelectedItem() == buscarRemitoIn) {

@@ -11,20 +11,28 @@ import edu.server.dominio.Administrador;
 import edu.server.dominio.Almacen;
 import edu.server.dominio.Compras;
 import edu.server.dominio.Empleado;
+import edu.server.dominio.Estado;
 import edu.server.dominio.Insumos;
+import edu.server.dominio.Produccion;
 import edu.server.repositorio.IngresoInsumos;
 import edu.server.repositorio.IngresoInsumosId;
 import edu.server.repositorio.Insumo;
 import edu.server.repositorio.Marca;
 import edu.server.repositorio.OrdenCompraInsumo;
+import edu.server.repositorio.OrdenProvisionInsumo;
+import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.RenglonIngresoInsumos;
 import edu.server.repositorio.RenglonIngresoInsumosId;
-import edu.server.repositorio.RenglonOrdenCompraInsumo;
-import edu.server.repositorio.RenglonOrdenCompraInsumoId;
+import edu.server.repositorio.RenglonOrdenProvisionInsumo;
+import edu.server.repositorio.RenglonOrdenProvisionInsumoId;
+import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
+import edu.shared.DTO.OrdenProvisionInsumoDTO;
+import edu.shared.DTO.ProveedorDeInsumosDTO;
 import edu.shared.DTO.RemitoExternoDTO;
 import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
+import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
 import edu.shared.DTO.RenglonRemitoExternoDTO;
 
 public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenService{
@@ -183,12 +191,147 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 			
 			result.getRenglonRemitoExterno().add(renglonNuevo);
 		}
-		
-	
-		
-		
+
 		return result;
 		
+	}
+	
+	
+	@Override
+	public List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumo(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException{
+		
+		Administrador adminAdmin = new Administrador();
+		Estado adminEstados = new Estado();
+		int idEstado = adminEstados.getIdEstado(estado);
+		Produccion adminProd = new Produccion();
+		
+		List<OrdenProvisionInsumoDTO> listaResult = new LinkedList<OrdenProvisionInsumoDTO>();
+		List<OrdenProvisionInsumo> result = new LinkedList<OrdenProvisionInsumo>();
+		
+		result = adminProd.getOrdenProvisionInsumo(idEstado, empleadoPor, empleadoPara, fecDesde, fecHasta);
+		
+		for (OrdenProvisionInsumo orden : result) {
+			
+			OrdenProvisionInsumoDTO ordendto = new OrdenProvisionInsumoDTO();
+			ordendto.setIdOrdenProvisionInsumo(orden.getIdOrdenProvisionInsumo());
+			ordendto.setEstadoOrden(adminEstados.getNombreEstado(orden.getEstadoOrden().getIdEstadoOrden()));
+			ordendto.setFechaGeneracion(orden.getFechaGeneracion());
+			EmpleadoDTO empPor = new EmpleadoDTO();
+			empPor.setNombre(adminAdmin.getNombreEmpleado(orden.getEmpleadoByIdPedidoPor().getIdEmpleado()));
+			EmpleadoDTO empPara = new EmpleadoDTO();
+			empPara.setNombre(adminAdmin.getNombreEmpleado(orden.getEmpleadoByIdPedidoPara().getIdEmpleado()));		
+			
+			ordendto.setEmpleadoByIdPedidoPor(empPor);
+			ordendto.setEmpleadoByIdPedidoPara(empPara);
+			
+			listaResult.add(ordendto);
+			
+		}
+		
+		return listaResult;
+		
+	}
+	
+	@Override
+	public OrdenProvisionInsumoDTO getOrdenProvisionInsumoSegunId(long idOrden) throws IllegalArgumentException{
+		
+		OrdenProvisionInsumoDTO orden = new OrdenProvisionInsumoDTO();
+		OrdenProvisionInsumo ordenComun = new OrdenProvisionInsumo();
+		Estado adminEstados = new Estado();
+		Administrador adminAdmin = new Administrador();
+		Produccion adminProd = new Produccion();
+		
+		ordenComun = adminProd.getOrdenProvisionInsumoSegunId(idOrden);
+		orden.setIdOrdenProvisionInsumo(idOrden);
+		String estado = adminEstados.getNombreEstado(ordenComun.getEstadoOrden().getIdEstadoOrden());
+		orden.setEstadoOrden(estado);
+		orden.setFechaGeneracion(ordenComun.getFechaGeneracion());
+		
+		if(ordenComun.getFechaCierre()!=null)
+			orden.setFechaCierre(ordenComun.getFechaCierre());
+		
+		orden.setObservaciones(ordenComun.getObservaciones());
+		
+		EmpleadoDTO empPor = new EmpleadoDTO();
+		EmpleadoDTO empPara = new EmpleadoDTO();
+		edu.server.repositorio.Empleado empPorComun = adminAdmin.getEmpleado(ordenComun.getEmpleadoByIdPedidoPor().getIdEmpleado());
+		edu.server.repositorio.Empleado empParaComun = adminAdmin.getEmpleado(ordenComun.getEmpleadoByIdPedidoPara().getIdEmpleado());
+		empPor.setNombre(empPorComun.getNombre());
+		empPor.setApellido(empPorComun.getApellido());
+		empPara.setNombre(empParaComun.getNombre());
+		empPara.setApellido(empParaComun.getApellido());
+		
+		orden.setEmpleadoByIdPedidoPor(empPor);
+		orden.setEmpleadoByIdPedidoPara(empPara);
+		
+				
+		Iterator renglones = ordenComun.getRenglonOrdenProvisionInsumos().iterator();
+		
+		while (renglones.hasNext()){
+					
+			RenglonOrdenProvisionInsumoDTO renglonNuevo = new RenglonOrdenProvisionInsumoDTO();
+			RenglonOrdenProvisionInsumo renglon = (RenglonOrdenProvisionInsumo) renglones.next();
+			
+			int idRenglon = ((RenglonOrdenProvisionInsumoId)renglon.getId()).getIdRenglon();
+			
+			renglonNuevo.setIdRenglon(idRenglon);
+			
+			InsumoDTO insumoNuevo = new InsumoDTO();
+			insumoNuevo = this.getInsumoCompleto(renglon.getInsumo().getIdInsumo(), "");
+			
+			renglonNuevo.setInsumo(insumoNuevo);
+			
+			renglonNuevo.setCantidadRequerida(renglon.getCantidadRequerida());
+			
+			orden.getRenglonOrdenProvisionInsumos().add(renglonNuevo);
+						
+
+		}
+					
+		
+		return orden;
+	}
+	
+	
+	public InsumoDTO getInsumoCompleto(int idInsumo, String nombreInsumo)  throws IllegalArgumentException {
+		
+		InsumoDTO result = new InsumoDTO();
+		Insumo insumo = new Insumo();
+		Insumos adminInsumos = new Insumos();
+		
+		insumo = adminInsumos.getInsumoCompleto(idInsumo, nombreInsumo);
+		
+		result.setIdInsumo(insumo.getIdInsumo());
+		result.setNombre(insumo.getNombre());
+		result.setLoteCompra(insumo.getLoteCompra());
+		result.setStockSeguridad(insumo.getStockSeguridad());
+		result.setObservaciones(insumo.getObservaciones());
+		if(insumo.getCantidad() != -1 && insumo.getCantidad() != 0){
+			result.setCantidad(insumo.getCantidad());
+		}
+		else{
+			result.setCantidad(0);
+		}
+		result.setMarca(insumo.getMarca().getNombre());
+		result.setCategoria(insumo.getCategoria().getNombre());
+		
+
+			for (ProveedorDeInsumo prov : insumo.getProveedorDeInsumos()) {
+				
+				ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
+				
+				Float precio = Float.parseFloat(prov.getPrecio().toString());
+				
+				proveedor.setPrecio(precio);
+				proveedor.setNombre(prov.getProveedor().getNombre());
+				proveedor.setObservaciones(prov.getObservaciones());
+				
+				result.getProveedor().add(proveedor);
+				
+			}
+			
+		
+		return result;
 	}
 	
 	

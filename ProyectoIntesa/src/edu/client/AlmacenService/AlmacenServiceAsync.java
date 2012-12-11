@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
+import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.RemitoExternoDTO;
 
 public interface AlmacenServiceAsync {
@@ -17,5 +18,9 @@ public interface AlmacenServiceAsync {
 	void getRemitosExternos(long idOrdenCompraInsumos, AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
 
 	void getRemitoExternoCompleto(OrdenCompraInsumoDTO orden, long nroRemito, AsyncCallback<RemitoExternoDTO> callback) throws IllegalArgumentException;
+
+	void getOrdenProvisionInsumo(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta, AsyncCallback<List<OrdenProvisionInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void getOrdenProvisionInsumoSegunId(long idOrden, AsyncCallback<OrdenProvisionInsumoDTO> callback) throws IllegalArgumentException;
 
 }
