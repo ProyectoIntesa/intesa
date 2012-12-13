@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import edu.server.repositorio.OrdenCompraInsumo;
 import edu.server.repositorio.OrdenProvisionInsumo;
+import edu.server.repositorio.RemitoInternoInsumo;
 import edu.server.repositorio.RenglonOrdenProvisionInsumo;
 import edu.server.util.HibernateUtil;
 
@@ -100,6 +101,33 @@ public class Produccion {
 		
 	}
 	
+	public List<RemitoInternoInsumo> getRemitosInternosInsumos(){
+		
+		List<RemitoInternoInsumo> result = new LinkedList<RemitoInternoInsumo>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		result = sec.createQuery("from RemitoInternoInsumo").list();
+		
+		sec.close();
+		return result;	
+	}
+	
+	public RemitoInternoInsumo getRemitoInternoInsumoSegunId(Long id){
+		
+		System.out.println("---------------------------------------1.1");
+		
+		RemitoInternoInsumo result = new RemitoInternoInsumo();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		result = (RemitoInternoInsumo) sec.get(result.getClass(), id);
+		
+		System.out.println("---------------------------------------1.2");
+		
+		sec.close();
+		return result;
+	
+	}
 	
 	
 }

@@ -1,0 +1,2 @@
+serviceClass: edu.client.ProduccionService.ProduccionService
+path: 34594BC10779AE439272C99C3A9D27F1.gwt.rpc

@@ -106,7 +106,8 @@ public class P_NuevoUsuario extends Composite {
 		rolTb = new ListBox();
 		rolTb.addItem("VENTAS");
 		rolTb.addItem("INGENIERIA");
-		rolTb.addItem("PRODUCCION");
+		rolTb.addItem("GERENTE PRODUCCION");
+		rolTb.addItem("SUPERVISOR PRODUCCION");
 		rolTb.addItem("COMPRAS");
 		rolTb.addItem("ALMACEN");
 		rolTb.addItem("SUPER USUARIO");

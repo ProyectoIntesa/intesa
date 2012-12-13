@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
-import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
@@ -49,7 +48,6 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem buscarProveedor;
 	private TreeItem buscar;
 	private TreeItem guardadas;
-	private TreeItem deProductos;
 	private TreeItem deInsumos;
 	
 
@@ -58,9 +56,7 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem insumos;
 	private TreeItem insumosCargar;
 	private TreeItem insumosBuscar;
-	private TreeItem productos;
-	private TreeItem productosCargar;
-	private TreeItem productosBuscar;
+
 	//-------------------------------------------------------------------------------
 	
 	private TabPanel panelTrabajo;
@@ -157,10 +153,6 @@ public class P_PantallaCompras extends Composite {
 		buscar.setStyleName("suElementoMenu");
 		ordenCompra.addItem(buscar);
 
-		deProductos = new TreeItem(constante.deProductos());
-		deProductos.setStyleName("suElementoMenu");
-		ordenCompra.addItem(deProductos);
-
 		deInsumos = new TreeItem(constante.deInsumos());
 		deInsumos.setStyleName("suElementoMenu");
 		ordenCompra.addItem(deInsumos);
@@ -177,18 +169,7 @@ public class P_PantallaCompras extends Composite {
 		insumosBuscar.setStyleName("suElementoMenu");
 		insumos.addItem(insumosBuscar);		
 		
-		TreeItem productos = menuLateral.addItem(constante.productos());
-		productos.setStyleName("elementoMenu");
-		
-		productosCargar = new TreeItem(constante.cargar());
-		productosCargar.setStyleName("suElementoMenu");
-		productos.addItem(productosCargar);
-		
-		productosBuscar = new TreeItem(constante.buscar());
-		productosBuscar.setStyleName("suElementoMenu");
-		productos.addItem(productosBuscar);		
-
-		
+	
 		
 		//-------------------------------------------------------------------------------		
 
@@ -346,14 +327,7 @@ public class P_PantallaCompras extends Composite {
 				});
 			}
 		}
-		
-		if (event.getSelectedItem() == productosBuscar) {
 
-		}
-		
-		if (event.getSelectedItem() == productosCargar) {
-
-		}
 		
 		if (event.getSelectedItem() == guardadas) {
 
@@ -393,9 +367,6 @@ public class P_PantallaCompras extends Composite {
 			
 		}
 
-		if (event.getSelectedItem() == deProductos) {
-
-		}
 
 		if (event.getSelectedItem() == deInsumos) {
 

@@ -8,7 +8,9 @@ import org.hibernate.Session;
 
 import edu.server.repositorio.IngresoInsumos;
 import edu.server.repositorio.IngresoInsumosId;
+import edu.server.repositorio.RemitoInternoInsumo;
 import edu.server.repositorio.RenglonIngresoInsumos;
+import edu.server.repositorio.RenglonRemitoInternoInsumo;
 import edu.server.util.HibernateUtil;
 
 public class Almacen {
@@ -76,5 +78,63 @@ public class Almacen {
 				
 		return result;
 	}
+	
+	public List<RemitoInternoInsumo> getRemitosInternos(long idOrdenProvisionInsumo){
+		
+		List<RemitoInternoInsumo> result = new LinkedList<RemitoInternoInsumo>();
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+		sec.beginTransaction();
+
+		result = sec.createQuery("from RemitoInternoInsumo where id_Orden_Provision_Insumo = "+idOrdenProvisionInsumo).list();
+
+		sec.close();
+				
+		return result;
+
+	}
+	
+
+	
+	public long registrarRemitoProvisionInsumo(RemitoInternoInsumo remito){
+		
+		long result = -1;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try{
+			Object aux = new Object();
+			sec.beginTransaction();
+			aux = sec.save(remito);		
+			sec.getTransaction().commit();
+			result = (long) aux;
+		} catch (HibernateException he){
+			sec.getTransaction().rollback();
+		}
+		
+		return result;
+		
+	}
+	
+	public Boolean registrarRenglonesDelRemitoProvisionInsumo(RemitoInternoInsumo remito){
+		Boolean result = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try{
+			sec.beginTransaction();
+			for (RenglonRemitoInternoInsumo renglon : remito.getRenglonRemitoInternoInsumos()) {
+			sec.save(renglon);	
+			}
+			sec.getTransaction().commit();
+			result = true;
+		} catch (HibernateException he){
+			sec.getTransaction().rollback();
+			return false;
+		}
+		
+		return result;		
+		
+		
+	}
+	
+	
+	
 	
 }

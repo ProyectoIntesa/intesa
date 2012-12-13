@@ -89,8 +89,10 @@ public class P_Login extends Composite {
 								inicioPantallaAdministrador(result.getNombre());
 							} else if (result.getRol().compareTo("VENTAS") == 0){
 								inicioPantallaVentas(result.getNombre());
-							} else if (result.getRol().compareTo("PRODUCCION") == 0){
-								inicioPantallaProduccion(result.getNombre());
+							} else if (result.getRol().compareTo("GERENTE PRODUCCION") == 0){
+								inicioPantallaGerenteProduccion(result.getNombre());
+							} else if (result.getRol().compareTo("SUPERVISOR PRODUCCION") == 0){
+								inicioPantallaSupervisorProduccion(result.getNombre());
 							} else if (result.getRol().compareTo("INGENIERIA") == 0){
 								inicioPantallaIngenieria(result.getNombre());
 							} else if (result.getRol().compareTo("ALMACEN") == 0){
@@ -112,8 +114,10 @@ public class P_Login extends Composite {
 									
 										if (rolSeleccionado.compareTo("ventas") == 0){
 											inicioPantallaVentas(nombre);
-										} else if (rolSeleccionado.compareTo("produccion") == 0){
-											inicioPantallaProduccion(nombre);
+										} else if (rolSeleccionado.compareTo("gerente produccion") == 0){
+											inicioPantallaGerenteProduccion(nombre);
+										} else if (rolSeleccionado.compareTo("supervisor produccion") == 0){
+											inicioPantallaSupervisorProduccion(nombre);
 										} else if (rolSeleccionado.compareTo("ingenieria") == 0){
 											inicioPantallaIngenieria(nombre);
 										} else if (rolSeleccionado.compareTo("compras") == 0){
@@ -215,9 +219,22 @@ public class P_Login extends Composite {
 
 	}
 
-	protected void inicioPantallaProduccion(String usuario) {
+	protected void inicioPantallaGerenteProduccion(String usuario) {
 
-		 P_PantallaProduccion produccion = new P_PantallaProduccion(usuario);
+		 P_PantallaGerenteProduccion produccion = new P_PantallaGerenteProduccion(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(produccion);
+		 try {
+		 this.finalize();
+		 } catch (Throwable e) {
+		 e.printStackTrace();
+		 }
+
+	}
+	
+	protected void inicioPantallaSupervisorProduccion(String usuario) {
+
+		 P_PantallaSupervisorProduccion produccion = new P_PantallaSupervisorProduccion(usuario);
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(produccion);
 		 try {

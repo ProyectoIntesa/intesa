@@ -313,15 +313,13 @@ public class P_RemitoExterno extends PopupPanel {
 		remito.setObservaciones(this.observacionesTa.getText());
 		remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
 		
-		
 		for (int i = 1; i < tablaElementos.getRowCount(); i++) {
 			
 			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
 
 				Integer cant_recibida = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
 				
-				if(cant_recibida != 0){
-									
+				if(cant_recibida != 0){					
 					InsumoDTO insu = new InsumoDTO();
 					insu.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
 					insu.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
@@ -335,9 +333,7 @@ public class P_RemitoExterno extends PopupPanel {
 					remito.getRenglonRemitoExterno().add(renglon);				
 				}
 			}
-		}
-		
-				
+		}		
 		AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
 		almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
 	
@@ -352,17 +348,12 @@ public class P_RemitoExterno extends PopupPanel {
 					cancelar();
 				}
 			}
-
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("ERROR DE SERVICIO");
-
 			}
 		});
-		
-		
-		
-		
+	
 	}
 
 	private void cargarTabla(OrdenCompraInsumoDTO ordenInsumo){

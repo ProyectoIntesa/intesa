@@ -42,9 +42,6 @@ public class P_PantallaVentas extends Composite {
 	private Tree menuLateral;
 	private TreeItem nuevoCliente;
 	private TreeItem buscarCliente;
-	private TreeItem nuevaOrden;
-	private TreeItem verOrdenes;
-	private TreeItem planificadaOrden;
 	private TabPanel panelTrabajo;
 	private ClienteDTO clienteSelec;
 	private ScrollPanel formulario;
@@ -125,22 +122,6 @@ public class P_PantallaVentas extends Composite {
 		buscarCliente = new TreeItem(constante.buscar());
 		buscarCliente.setStyleName("suElementoMenu");
 		cliente.addItem(buscarCliente);
-
-		TreeItem ordenPedido = menuLateral.addItem(constante.ordenDePedido());
-		ordenPedido.setStyleName("elementoMenu");
-
-		nuevaOrden = new TreeItem(constante.nueva());
-		nuevaOrden.setStyleName("suElementoMenu");
-		ordenPedido.addItem(nuevaOrden);
-
-
-		verOrdenes = new TreeItem(constante.guardadas());
-		verOrdenes.setStyleName("suElementoMenu");
-		ordenPedido.addItem(verOrdenes);
-
-		planificadaOrden = new TreeItem(constante.planificadas());
-		planificadaOrden.setStyleName("suElementoMenu");
-		ordenPedido.addItem(planificadaOrden);
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -236,51 +217,6 @@ public class P_PantallaVentas extends Composite {
 				
 		}
 
-		if (event.getSelectedItem() == nuevaOrden) {
-//			titulo = constante.nuevaOrdenDePedido();
-//			tab = numeroElemento(titulo);
-//			if (tab == -1) {
-//
-//				formulario = new ScrollPanel();
-//				formulario.setTitle(titulo);
-//				formulario.setStyleName("panelFormulario");
-//				formulario.setSize((ancho - anchoLateral - 25) + "px",
-//						(alto - 145) + "px");
-//				P_FormularioNuevaOrdenPedido orden = new P_FormularioNuevaOrdenPedido(
-//						panelTrabajo);
-//				formulario.add(orden);
-//				panelTrabajo.add(formulario, titulo, false);
-//				panelTrabajo.selectTab(numeroElemento(titulo));
-//			} else
-//				panelTrabajo.selectTab(tab);
-		}
-
-		if (event.getSelectedItem() == verOrdenes) {
-			
-//			P_VerOrdenPedido popUp = new P_VerOrdenPedido();
-//			popUp.setGlassEnabled(true);
-//			popUp.center();
-//			popUp.show();
-			
-		}
-
-		if (event.getSelectedItem() == planificadaOrden) {
-//			titulo = constante.planificadas();
-//			tab = numeroElemento(titulo);
-//			if (tab == -1) {
-//
-//				formulario = new ScrollPanel();
-//				formulario.setTitle(titulo);
-//				formulario.setStyleName("panelFormulario");
-//				formulario.setSize((ancho - anchoLateral - 25) + "px",
-//						(alto - 145) + "px");
-//				// FormularioCliente cliente = new FormularioCliente();
-//				// formulario.add(cliente);
-//				panelTrabajo.add(formulario, titulo, false);
-//				panelTrabajo.selectTab(numeroElemento(titulo));
-//			} else
-//				panelTrabajo.selectTab(tab);
-		}
 
 	}
 

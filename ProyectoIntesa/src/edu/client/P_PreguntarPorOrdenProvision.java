@@ -126,7 +126,7 @@ public class P_PreguntarPorOrdenProvision extends PopupPanel {
 				@Override
 				public void onSuccess(OrdenProvisionInsumoDTO result) {
 
-					RemitoProvisionInsumo detalle = new RemitoProvisionInsumo(result);		
+					P_RemitoProvisionInsumo detalle = new P_RemitoProvisionInsumo(result,usuario);		
 					detalle.setGlassEnabled(true);
 					detalle.center();
 					detalle.show();							

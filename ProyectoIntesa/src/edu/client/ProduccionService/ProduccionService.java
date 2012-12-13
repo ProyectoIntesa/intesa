@@ -6,7 +6,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
+import edu.shared.DTO.RemitoProvisionInsumoDTO;
 
 @RemoteServiceRelativePath("produccion")
 public interface ProduccionService extends RemoteService {
@@ -26,5 +28,13 @@ public interface ProduccionService extends RemoteService {
 	List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumo(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException;
 
 	OrdenProvisionInsumoDTO getOrdenProvisionInsumoSegunId(long idOrden) throws IllegalArgumentException;
+
+	double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenProvisionInsumo) throws IllegalArgumentException;
+
+	Boolean registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException;
+
+	List<Long> idsRemitosInternosInsumos() throws IllegalArgumentException;
+
+	RemitoProvisionInsumoDTO getOrdenRemitoInternoInsumoSegunId(Long id) throws IllegalArgumentException;
 
 }

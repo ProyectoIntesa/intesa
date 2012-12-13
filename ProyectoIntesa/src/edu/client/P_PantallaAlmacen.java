@@ -200,20 +200,6 @@ public class P_PantallaAlmacen extends Composite {
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
-//				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-//
-//					@Override
-//					public void onClose(CloseEvent<PopupPanel> event) {
-//						
-//						proveedorSelec= popUp.getProveedorDTO();
-//						boolean modificar = popUp.getModificarProveedor();
-//					
-//						if (modificar == true)
-//						{
-//							modificarProveedor();
-//						}
-//					}
-//				});
 			}
 			
 		}
@@ -228,6 +214,7 @@ public class P_PantallaAlmacen extends Composite {
 		}
 
 		if (event.getSelectedItem() == ingresarRemitoIn) {
+			
 			if(this.numeroElemento(constante.remitoExterno())!=-1){
 				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO INTERNO");
 			}
@@ -241,7 +228,11 @@ public class P_PantallaAlmacen extends Composite {
 		
 		if (event.getSelectedItem() == buscarRemitoIn) {
 			
-			
+			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+				
 		}
 
 	}

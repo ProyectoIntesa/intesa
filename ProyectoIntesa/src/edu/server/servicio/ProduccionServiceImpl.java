@@ -8,21 +8,28 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.ProduccionService.ProduccionService;
 import edu.server.dominio.Administrador;
+import edu.server.dominio.Almacen;
 import edu.server.dominio.Estado;
 import edu.server.dominio.Insumos;
 import edu.server.dominio.Produccion;
 import edu.server.repositorio.Empleado;
 import edu.server.repositorio.EstadoOrden;
 import edu.server.repositorio.Insumo;
+import edu.server.repositorio.Marca;
 import edu.server.repositorio.OrdenProvisionInsumo;
 import edu.server.repositorio.ProveedorDeInsumo;
+import edu.server.repositorio.RemitoInternoInsumo;
 import edu.server.repositorio.RenglonOrdenProvisionInsumo;
 import edu.server.repositorio.RenglonOrdenProvisionInsumoId;
+import edu.server.repositorio.RenglonRemitoInternoInsumo;
+import edu.server.repositorio.RenglonRemitoInternoInsumoId;
 import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
+import edu.shared.DTO.RemitoProvisionInsumoDTO;
 import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
+import edu.shared.DTO.RenglonRemitoProvisionInsumoDTO;
 
 public class ProduccionServiceImpl extends RemoteServiceServlet implements ProduccionService{
 
@@ -272,5 +279,155 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return result;
 	}
 
+	@Override
+	public double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenProvisionInsumo) throws IllegalArgumentException{
+		
+		Almacen adminAlmacen = new Almacen();
+		double cantidadFaltante = 0;
+		double cantidadIngresada = 0;
+		
+		List<RemitoInternoInsumo> listaRemitos = adminAlmacen.getRemitosInternos(idOrdenProvisionInsumo);				
+		OrdenProvisionInsumoDTO orden = this.getOrdenProvisionInsumoSegunId(idOrdenProvisionInsumo);
+				
+		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+			if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo()){
+				cantidadFaltante = renglon.getCantidadRequerida();
+			}
+		}	
+		
+		if(!listaRemitos.isEmpty()){
+			for(RemitoInternoInsumo remito : listaRemitos){
+				for(RenglonRemitoInternoInsumo renglon : remito.getRenglonRemitoInternoInsumos()){
+					if(renglon.getInsumo().getIdInsumo() == insumo.getIdInsumo())
+						cantidadIngresada+= renglon.getCantidadEntregada();
+				}
+			}
+		}
+		
+		cantidadFaltante = cantidadFaltante - cantidadIngresada;
+		return cantidadFaltante;
+	}
+	
+	@Override
+	public Boolean registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException{
+		
+		Almacen adminAlmacen = new Almacen();
+		edu.server.dominio.Empleado adminEmpleado = new edu.server.dominio.Empleado();
+		Estado adminEstado = new Estado();
+		Produccion adminProd = new Produccion();
+		Insumos adminInsumo = new Insumos();
+		Insumo insumo = new Insumo();
+		
+		int idEstado = adminEstado.getIdEstado(remito.getEstadoOrden());
+		EstadoOrden est = adminEstado.getEstadoCompleto(idEstado);
+		
+		int idEmpleado = adminEmpleado.getIdEmpleado(remito.getEmpleado());
+		Empleado emp = adminEmpleado.getEmpleado(idEmpleado);
+		
+		OrdenProvisionInsumo opi = new OrdenProvisionInsumo();
+		opi = adminProd.getOrdenProvisionInsumoSegunId(remito.getIdOrdenProvisionInsumo());
+		
+		RemitoInternoInsumo remitoGuardar = new RemitoInternoInsumo();
+		remitoGuardar.setEmpleado(emp);
+		remitoGuardar.setEstadoOrden(est);
+		remitoGuardar.setFechaCierre(remito.getFechaCierre());
+		remitoGuardar.setFechaEdicion(remito.getFechaEdicion());
+		remitoGuardar.setFechaGenaracion(remito.getFechaGenaracion());
+		remitoGuardar.setObservaciones(remito.getObservaciones());
+		remitoGuardar.setOrdenProvisionInsumo(opi);
+		
+		long idRemito = adminAlmacen.registrarRemitoProvisionInsumo(remitoGuardar); 
+				
+		if(idRemito != -1){
+			
+			Iterator renglones = remito.getRenglonRemitoProvisionInsumos().iterator();
+			
+			while(renglones.hasNext()){
+				
+				RenglonRemitoProvisionInsumoDTO renglon = (RenglonRemitoProvisionInsumoDTO) renglones.next();
+				
+				int idInsumo = adminInsumo.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+				insumo = adminInsumo.getInsumoCompleto(idInsumo, "");
+		
+				RenglonRemitoInternoInsumoId renglonId = new RenglonRemitoInternoInsumoId(renglon.getItem(),idRemito);
+
+				RenglonRemitoInternoInsumo renglonGuardar = new RenglonRemitoInternoInsumo();
+				
+				renglonGuardar.setId(renglonId);
+				renglonGuardar.setInsumo(insumo);
+				renglonGuardar.setCantidadEntregada(renglon.getCantidadEntregada());
+				
+				remitoGuardar.getRenglonRemitoInternoInsumos().add(renglonGuardar);
+			}
+			
+			return adminAlmacen.registrarRenglonesDelRemitoProvisionInsumo(remitoGuardar);	
+		}
+		else{
+			return false;
+		}
+	}
+
+	
+	@Override
+	public List<Long> idsRemitosInternosInsumos() throws IllegalArgumentException{
+		Produccion adminProd = new Produccion();
+		List<Long> result = new LinkedList<Long>();
+		for (RemitoInternoInsumo remito : adminProd.getRemitosInternosInsumos()) {
+			result.add(remito.getIdRemitoInsumo());	
+		}
+		return result;	
+	}
+	
+	
+	@Override
+	public RemitoProvisionInsumoDTO getOrdenRemitoInternoInsumoSegunId(Long id) throws IllegalArgumentException{
+
+		Produccion adminProduccion = new Produccion();
+		Estado adminEstado = new Estado();
+		edu.server.dominio.Empleado adminEmpleado = new edu.server.dominio.Empleado();
+		Insumos adminInsumo = new Insumos();
+		
+		RemitoProvisionInsumoDTO remitoResult = new RemitoProvisionInsumoDTO();
+		RemitoInternoInsumo remitoBuscado = new RemitoInternoInsumo();
+		remitoBuscado = adminProduccion.getRemitoInternoInsumoSegunId(id);
+		
+		String est = adminEstado.getNombreEstado(remitoBuscado.getEstadoOrden().getIdEstadoOrden());
+		String emp = adminEmpleado.getNobreYApellidoEmpleado(remitoBuscado.getEmpleado().getIdEmpleado());
+		
+		remitoResult.setFechaCierre(remitoBuscado.getFechaCierre());
+		remitoResult.setFechaEdicion(remitoBuscado.getFechaEdicion());
+		remitoResult.setFechaGenaracion(remitoBuscado.getFechaGenaracion());
+		remitoResult.setEstadoOrden(est);
+		remitoResult.setEmpleado(emp);
+		remitoResult.setObservaciones(remitoBuscado.getObservaciones());
+		remitoResult.setIdRemitoInsumo(id);
+		remitoResult.setIdOrdenProvisionInsumo(remitoBuscado.getOrdenProvisionInsumo().getIdOrdenProvisionInsumo());
+		
+		Iterator renglones = remitoBuscado.getRenglonRemitoInternoInsumos().iterator();
+		
+		while(renglones.hasNext()){
+			
+			RenglonRemitoInternoInsumo renglonBuscado = (RenglonRemitoInternoInsumo) renglones.next();
+			RenglonRemitoProvisionInsumoDTO renglonResult = new RenglonRemitoProvisionInsumoDTO();
+			int idRenglon = ((RenglonRemitoInternoInsumoId)renglonBuscado.getId()).getIdRenglonRemitoInsumo();
+		
+			InsumoDTO insumoResult = new InsumoDTO();
+			Insumo insumoBuscado = new Insumo();
+
+			insumoBuscado = adminInsumo.getInsumoCompleto(renglonBuscado.getInsumo().getIdInsumo(), "");
+			insumoResult.setNombre(insumoBuscado.getNombre());
+			insumoResult.setMarca(insumoBuscado.getMarca().getNombre());
+			
+			renglonResult.setCantidadEntregada(renglonBuscado.getCantidadEntregada());
+			renglonResult.setInsumo(insumoResult);
+			renglonResult.setItem(idRenglon);
+						
+			remitoResult.getRenglonRemitoProvisionInsumos().add(renglonResult);		
+		}
+		
+		return remitoResult;
+		
+		
+	}
 	
 }

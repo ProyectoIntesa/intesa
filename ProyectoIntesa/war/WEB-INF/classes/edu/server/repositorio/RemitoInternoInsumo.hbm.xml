@@ -32,7 +32,7 @@
         <property name="recibido" type="boolean">
             <column name="recibido" not-null="true" />
         </property>
-        <set name="renglonRemitoInternoInsumos" table="Renglon_Remito_Interno_Insumo" inverse="true" lazy="true" fetch="select">
+        <set name="renglonRemitoInternoInsumos" table="Renglon_Remito_Interno_Insumo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_Remito_Insumo" not-null="true" />
             </key>

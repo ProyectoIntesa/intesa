@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import edu.server.repositorio.EstadoOrden;
 import edu.server.util.HibernateUtil;
 
 public class Estado {
@@ -44,7 +45,17 @@ public class Estado {
 		return estado;
 	}
 	
-	
+	public EstadoOrden getEstadoCompleto(int idEstado){
+
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		EstadoOrden result = new EstadoOrden();
+		result = (EstadoOrden)sec.get(result.getClass(), idEstado);
+		sec.close();
+		return result;
+		
+	}
 	
 	
 }
