@@ -37,4 +37,6 @@ public interface ProduccionService extends RemoteService {
 
 	RemitoProvisionInsumoDTO getOrdenRemitoInternoInsumoSegunId(Long id) throws IllegalArgumentException;
 
+	List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumoCompletos(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException;
+
 }

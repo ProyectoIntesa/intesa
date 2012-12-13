@@ -68,14 +68,14 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	
 	
 	
-	public P_BuscarOrdenProvisionInsumo(String responsable){
+	public P_BuscarOrdenProvisionInsumo(String responsable, String rolUsuario){
 		
 		super(false);
 		setStyleName("fondoPopup");
 						
 		String nombre = responsable.split(", ")[1];
 		String apellido = responsable.split(", ")[0];
-		String rol = "PRODUCCION";
+		String rol = rolUsuario;
 		
 		fechaCb = new CheckBox(constante.fechaGeneracion());
 		fechaCb.setStyleName("check");
@@ -121,7 +121,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		

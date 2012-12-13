@@ -143,7 +143,12 @@ body {
 	background-image: url(img/ventas48x48.png);
 }
 
-.labelProduccion{
+.labelGerenteProduccion{
+	background-repeat: no-repeat;
+	background-image: url(img/gerenteProduccion48x48.png);
+}
+
+.labelSupervisorProduccion{
 	background-repeat: no-repeat;
 	background-image: url(img/produccion48x48.png);
 }

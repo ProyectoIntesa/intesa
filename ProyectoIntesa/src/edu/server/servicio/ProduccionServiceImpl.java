@@ -15,7 +15,6 @@ import edu.server.dominio.Produccion;
 import edu.server.repositorio.Empleado;
 import edu.server.repositorio.EstadoOrden;
 import edu.server.repositorio.Insumo;
-import edu.server.repositorio.Marca;
 import edu.server.repositorio.OrdenProvisionInsumo;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.RemitoInternoInsumo;
@@ -168,6 +167,31 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			
 			ordendto.setEmpleadoByIdPedidoPor(empPor);
 			ordendto.setEmpleadoByIdPedidoPara(empPara);
+			
+			listaResult.add(ordendto);
+			
+		}
+		
+		return listaResult;
+		
+	}
+	
+	@Override
+	public List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumoCompletos(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException{
+		
+		Estado adminEstados = new Estado();
+		int idEstado = adminEstados.getIdEstado(estado);
+		Produccion adminProd = new Produccion();
+		
+		List<OrdenProvisionInsumoDTO> listaResult = new LinkedList<OrdenProvisionInsumoDTO>();
+		List<OrdenProvisionInsumo> result = new LinkedList<OrdenProvisionInsumo>();
+		
+		result = adminProd.getOrdenProvisionInsumo(idEstado, empleadoPor, empleadoPara, fecDesde, fecHasta);
+		
+		for (OrdenProvisionInsumo orden : result) {
+			
+			OrdenProvisionInsumoDTO ordendto = new OrdenProvisionInsumoDTO();
+			ordendto = this.getOrdenProvisionInsumoSegunId(orden.getIdOrdenProvisionInsumo());
 			
 			listaResult.add(ordendto);
 			

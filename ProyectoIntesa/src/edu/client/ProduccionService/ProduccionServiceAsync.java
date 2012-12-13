@@ -35,4 +35,6 @@ public interface ProduccionServiceAsync {
 
 	void getOrdenRemitoInternoInsumoSegunId(Long id, AsyncCallback<RemitoProvisionInsumoDTO> callback) throws IllegalArgumentException;
 
+	void getOrdenProvisionInsumoCompletos(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta, AsyncCallback<List<OrdenProvisionInsumoDTO>> callback) throws IllegalArgumentException;
+
 }

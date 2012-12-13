@@ -1,32 +1,23 @@
 package edu.client;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
-import edu.client.AdministradorService.AdministradorService;
-import edu.client.AdministradorService.AdministradorServiceAsync;
-import edu.shared.DTO.UsuarioCompDTO;
-
 public class P_SeleccionarUsuario extends PopupPanel {
 
 	private static final int COL_ROL_VENTAS = 1;
-	private static final int COL_ROL_PRODUCCION = 2;
-	private static final int COL_ROL_INGENIERIA = 3;
-	private static final int COL_ROL_COMPRAS = 4;
-	private static final int COL_ROL_ALMACEN = 5;
+	private static final int COL_ROL_GERENTE_PRODUCCION = 2;
+	private static final int COL_ROL_SUPERVISOR_PRODUCCION = 3;
+	private static final int COL_ROL_INGENIERIA = 4;
+	private static final int COL_ROL_COMPRAS = 5;
+	private static final int COL_ROL_ALMACEN = 6;
 
 	private FlexTable panel;
 	private FlexTable tablaElementos;
@@ -39,7 +30,8 @@ public class P_SeleccionarUsuario extends PopupPanel {
 	private Label pie;
 	
 	private Label ventas;
-	private Label produccion;
+	private Label gerenteProduccion;
+	private Label supervisorProduccion;
 	private Label ingenieria;
 	private Label compras;
 	private Label almacen;
@@ -54,23 +46,27 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		super(false);
 
 
-		Label ventas = new Label("");
+		ventas = new Label("");
 		ventas.setSize("48px", "48px");
 		ventas.addStyleName("labelVentas");
 
-		Label produccion = new Label("");
-		produccion.setSize("48px", "48px");
-		produccion.addStyleName("labelProduccion");
+		gerenteProduccion = new Label("");
+		gerenteProduccion.setSize("48px", "48px");
+		gerenteProduccion.addStyleName("labelGerenteProduccion");
 		
-		Label ingenieria = new Label("");
+		supervisorProduccion = new Label("");
+		supervisorProduccion.setSize("48px", "48px");
+		supervisorProduccion.addStyleName("labelSupervisorProduccion");
+		
+		ingenieria = new Label("");
 		ingenieria.setSize("48px", "48px");
 		ingenieria.addStyleName("labelIngenieria1");
 		
-		Label compras = new Label("");
+		compras = new Label("");
 		compras.setSize("48px", "48px");
 		compras.addStyleName("labelCompras");
 		
-		Label almacen = new Label("");
+		almacen = new Label("");
 		almacen.setSize("48px", "48px");
 		almacen.addStyleName("labelAlmacen");
 		
@@ -78,23 +74,25 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		
 		setStyleName("fondoPopup");
 		panel = new FlexTable();
-
+		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tablaSeleccionarUsuario");
-		contenedorTabla.setHeight("80px");
+		contenedorTabla.setHeight("90px");
 		tablaElementos = new FlexTable();
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
 		tablaElementos.setText(0, COL_ROL_VENTAS, constante.ventas());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_VENTAS, "20%");
-		tablaElementos.setText(0, COL_ROL_PRODUCCION, constante.produccion());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_PRODUCCION, "20%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_VENTAS, "16%");
+		tablaElementos.setText(0, COL_ROL_GERENTE_PRODUCCION, constante.gerenteProduccion());
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_GERENTE_PRODUCCION, "16%");
+		tablaElementos.setText(0, COL_ROL_SUPERVISOR_PRODUCCION, constante.supervisorProduccion());
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_SUPERVISOR_PRODUCCION, "16%");
 		tablaElementos.setText(0, COL_ROL_INGENIERIA, constante.ingenieria());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_INGENIERIA, "20%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_INGENIERIA, "16%");
 		tablaElementos.setText(0, COL_ROL_COMPRAS, constante.compras());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_COMPRAS, "20%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_COMPRAS, "16%");
 		tablaElementos.setText(0, COL_ROL_ALMACEN, constante.almacen());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_ALMACEN, "20%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_ALMACEN, "16%");
 		
 		
 		tablaElementos.setWidget(1, COL_ROL_VENTAS, ventas);
@@ -106,12 +104,21 @@ public class P_SeleccionarUsuario extends PopupPanel {
 			}
 		});		
 		
-		tablaElementos.setWidget(1, COL_ROL_PRODUCCION, produccion);
-		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
+		tablaElementos.setWidget(1, COL_ROL_GERENTE_PRODUCCION, gerenteProduccion);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_GERENTE_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		produccion.addClickHandler(new ClickHandler() {
+		gerenteProduccion.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				rolSeleccionado("produccion");
+				rolSeleccionado("gerente produccion");
+			}
+		});
+		
+		tablaElementos.setWidget(1, COL_ROL_SUPERVISOR_PRODUCCION, supervisorProduccion);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_SUPERVISOR_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		supervisorProduccion.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("supervisor produccion");
 			}
 		});
 		

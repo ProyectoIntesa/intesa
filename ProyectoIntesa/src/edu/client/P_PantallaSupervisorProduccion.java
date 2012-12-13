@@ -40,9 +40,11 @@ public class P_PantallaSupervisorProduccion extends Composite {
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
+	private String rolUsuario;
 
-	public P_PantallaSupervisorProduccion(String usuarioLogueado) {
+	public P_PantallaSupervisorProduccion(String usuarioLogueado,String rolUsuarioLogueado) {
 		this.usuario = usuarioLogueado;
+		this.rolUsuario = rolUsuarioLogueado;
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;
 		anchoLateral = 180;
@@ -101,14 +103,14 @@ public class P_PantallaSupervisorProduccion extends Composite {
 		menu.add(menuLateral);
 		menuLateral.setSize("100%", "100%");
 
-		TreeItem ordenSuministro = menuLateral.addItem(constante.ordenDeProvision());
+		TreeItem ordenSuministro = menuLateral.addItem(constante.provisionDeInsumos());
 		ordenSuministro.setStyleName("elementoMenu");
 
-		nuevaOrdenSuministroInsumos = new TreeItem(constante.deInsumos());
+		nuevaOrdenSuministroInsumos = new TreeItem(constante.crearOrden());
 		nuevaOrdenSuministroInsumos.setStyleName("suElementoMenu");
 		ordenSuministro.addItem(nuevaOrdenSuministroInsumos);
 		
-		buscarOrdenSuministroInsumos = new TreeItem(constante.buscar());
+		buscarOrdenSuministroInsumos = new TreeItem(constante.buscarOrden());
 		buscarOrdenSuministroInsumos.setStyleName("suElementoMenu");
 		ordenSuministro.addItem(buscarOrdenSuministroInsumos);
 
@@ -172,7 +174,7 @@ public class P_PantallaSupervisorProduccion extends Composite {
 				formulario.setTitle(titulo);
 				formulario.setStyleName("panelFormulario");
 				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-				P_FormularioOrdenProvisionInsumo provisionInsumo = new P_FormularioOrdenProvisionInsumo(panelTrabajo,this.usuario);
+				P_FormularioOrdenProvisionInsumo provisionInsumo = new P_FormularioOrdenProvisionInsumo(panelTrabajo,this.usuario,this.rolUsuario);
 				formulario.add(provisionInsumo);
 				panelTrabajo.add(formulario, titulo, false);
 				panelTrabajo.selectTab(numeroElemento(titulo));
@@ -185,7 +187,7 @@ public class P_PantallaSupervisorProduccion extends Composite {
 		if (event.getSelectedItem() == buscarOrdenSuministroInsumos) {
 			
 			
-			P_BuscarOrdenProvisionInsumo popUp = new P_BuscarOrdenProvisionInsumo(this.usuario);
+			P_BuscarOrdenProvisionInsumo popUp = new P_BuscarOrdenProvisionInsumo(this.usuario,this.rolUsuario);
 			popUp.setGlassEnabled(true);
 			popUp.center();
 			popUp.show();

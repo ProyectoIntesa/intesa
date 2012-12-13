@@ -123,7 +123,7 @@ public class P_Login extends Composite {
 										} else if (rolSeleccionado.compareTo("compras") == 0){
 											inicioPantallaCompras(nombre);
 										} else if (rolSeleccionado.compareTo("almacen") == 0){
-											//inicioPantallaAlmacen(nombre);
+											inicioPantallaAlmacen(nombre);
 										}
 										
 									}
@@ -221,7 +221,7 @@ public class P_Login extends Composite {
 
 	protected void inicioPantallaGerenteProduccion(String usuario) {
 
-		 P_PantallaGerenteProduccion produccion = new P_PantallaGerenteProduccion(usuario);
+		 P_PantallaGerenteProduccion produccion = new P_PantallaGerenteProduccion(usuario,"GERENTE PRODUCCION");
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(produccion);
 		 try {
@@ -234,7 +234,7 @@ public class P_Login extends Composite {
 	
 	protected void inicioPantallaSupervisorProduccion(String usuario) {
 
-		 P_PantallaSupervisorProduccion produccion = new P_PantallaSupervisorProduccion(usuario);
+		 P_PantallaSupervisorProduccion produccion = new P_PantallaSupervisorProduccion(usuario,"SUPERVISOR PRODUCCION");
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(produccion);
 		 try {

@@ -67,13 +67,14 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 	private EmpleadoDTO empleado;
 	private List<String[]> listaInsumosYMarcas;
 	
-	public P_FormularioOrdenProvisionInsumo(TabPanel padre, String responsable){
+	
+	public P_FormularioOrdenProvisionInsumo(TabPanel padre, String responsable, String rolUsuario){
 		
 		this.padre = padre;
 		
 		String nombre = responsable.split(", ")[1];
 		String apellido = responsable.split(", ")[0];
-		String rol = "PRODUCCION";
+		String rol = rolUsuario;
 		
 		listaInsumosYMarcas = new LinkedList<String[]>();
 		listaInsumos = new LinkedList<String>();
