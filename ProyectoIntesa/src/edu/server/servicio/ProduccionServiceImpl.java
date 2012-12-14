@@ -29,6 +29,8 @@ import edu.shared.DTO.ProveedorDeInsumosDTO;
 import edu.shared.DTO.RemitoProvisionInsumoDTO;
 import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
 import edu.shared.DTO.RenglonRemitoProvisionInsumoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
+import edu.shared.DTO.UsuarioDTO;
 
 public class ProduccionServiceImpl extends RemoteServiceServlet implements ProduccionService{
 
@@ -373,6 +375,9 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 				int idInsumo = adminInsumo.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
 				insumo = adminInsumo.getInsumoCompleto(idInsumo, "");
 		
+				double cantDisponible = ((insumo.getCantidad())-(renglon.getCantidadEntregada()));
+				adminInsumo.setCantInsumo(idInsumo, cantDisponible);
+				
 				RenglonRemitoInternoInsumoId renglonId = new RenglonRemitoInternoInsumoId(renglon.getItem(),idRemito);
 
 				RenglonRemitoInternoInsumo renglonGuardar = new RenglonRemitoInternoInsumo();
@@ -402,6 +407,18 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return result;	
 	}
 	
+	
+	@Override
+	public List<Long> getRemitosInternosInsumosGenerados() throws IllegalArgumentException{
+		Produccion adminProd = new Produccion();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("GENERADA");
+		List<Long> result = new LinkedList<Long>();
+		for (RemitoInternoInsumo remito : adminProd.getRemitosInternosInsumosGenerados(est)) {
+			result.add(remito.getIdRemitoInsumo());	
+		}
+		return result;	
+	}	
 	
 	@Override
 	public RemitoProvisionInsumoDTO getOrdenRemitoInternoInsumoSegunId(Long id) throws IllegalArgumentException{
@@ -450,6 +467,90 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		}
 		
 		return remitoResult;
+		
+		
+	}
+	
+	
+	@Override
+	public Boolean validarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Produccion adminProduccion = new Produccion();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("VALIDADA");
+		
+		for (Long nroOrden : listaOrdenes) {
+			
+			result = adminProduccion.validarOrdenProvisionInsumos(nroOrden,est);
+			if(result == false)
+				break;
+	
+		}
+		return result;
+	}
+
+	
+	@Override
+	public Boolean cancelarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Produccion adminProduccion = new Produccion();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("CANCELADA");
+		
+		for (Long nroOrden : listaOrdenes) {
+			
+			result = adminProduccion.cancelarOrdenesProvisionInsumos(nroOrden,est);
+			if(result == false)
+				break;
+	
+		}
+		return result;
+	}
+	
+	@Override
+	public Boolean cerrarRemitoProvisionInsumos(RemitoProvisionInsumoDTO remito, String fecha) throws IllegalArgumentException{
+				
+		Produccion adminProduccion = new Produccion();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("CERRADA");
+		
+		return adminProduccion.cerrarRemitoProvisionInsumos(remito.getIdRemitoInsumo(),est,fecha);
+
+	}
+	
+	@Override
+	public double getCantInsumo(InsumoDTO insumo) throws IllegalArgumentException{
+		
+		double cantidadDisponible = 0;
+		Insumos adminInsumos = new Insumos();
+		Insumo insumoResult = new Insumo();
+		int idInsumo = adminInsumos.getIdInsumo(insumo.getNombre(), insumo.getMarca());
+		insumoResult = adminInsumos.getInsumoCompleto(idInsumo, "");
+		int cantDisponible = insumoResult.getCantidad();
+		return cantDisponible;
+		
+	}
+	
+	@Override
+	public List<UsuarioCompDTO> getUsuariosSupervisoresYGerenteProduccion() throws IllegalArgumentException{
+		
+		Administrador admin = new Administrador();
+		List<UsuarioCompDTO> usuarioSupervisores = new LinkedList<UsuarioCompDTO>();
+		usuarioSupervisores = admin.getUsuariosSegunRol("supervisor produccion");
+		List<UsuarioCompDTO> usuarioGerente = new LinkedList<UsuarioCompDTO>();
+		usuarioGerente = admin.getUsuariosSegunRol("gerente produccion");
+		List<UsuarioCompDTO> result = new LinkedList<UsuarioCompDTO>();
+		for (UsuarioCompDTO usuario : usuarioSupervisores) {
+			result.add(usuario);
+		}
+		for (UsuarioCompDTO usuario : usuarioGerente) {
+			result.add(usuario);
+		}
+		
+		return result;
+		
 		
 		
 	}

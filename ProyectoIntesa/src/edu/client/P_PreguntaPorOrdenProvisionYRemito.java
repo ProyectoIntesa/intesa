@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -42,16 +44,16 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 	private List<OrdenProvisionInsumoDTO> ordenesInsumos;
 
 	
-	public P_PreguntaPorOrdenProvisionYRemito() {
+	public P_PreguntaPorOrdenProvisionYRemito(String accionRealizar) {
 
 		super(false);
 		setStyleName("fondoPopup");
-		
+		final String accion = accionRealizar;
 
 		
 		ordenesInsumos  = new LinkedList<OrdenProvisionInsumoDTO>();
 		
-		titulo = new Label("SELECCIONAR ORDEN DE PROVISION");
+		titulo = new Label("SELECCIONAR TIPO DE ORDEN DE PROVISION Y NRO DEL REMITO");
 		titulo.setStyleName("labelTitulo");
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
@@ -69,7 +71,7 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		tipoOrdenProvisionLb.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
-				cargarSugerenciaRemitos();
+				cargarSugerenciaRemitos(accion);
 			}
 		});
 		
@@ -86,7 +88,7 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		aceptar = new Button(constante.aceptar());
 		aceptar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				buscar();
+				buscar(accion);
 			}
 		});
 		
@@ -118,7 +120,9 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		
 	}
 	
-	protected void buscar() {
+	protected void buscar(String accion) {
+		
+		final String accionRealizar = accion;
 		
 		if(tipoOrdenProvisionLb.getItemText(tipoOrdenProvisionLb.getSelectedIndex()).compareTo(constante.ordenDeProvisionDeInsumos()) == 0){
 			
@@ -128,11 +132,10 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 			produccionService.getOrdenRemitoInternoInsumoSegunId(idRemito,new AsyncCallback<RemitoProvisionInsumoDTO>() {
 				@Override
 				public void onSuccess(RemitoProvisionInsumoDTO result) {
-									
-					P_RemitoProvisionInsumo detalle = new P_RemitoProvisionInsumo(result);		
-					detalle.setGlassEnabled(true);
-					detalle.center();
-					detalle.show();							
+					
+					armarPantalla(result,accionRealizar);
+					
+
 					
 				}
 				@Override
@@ -148,23 +151,67 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		
 	}
 
-	protected void cargarSugerenciaRemitos() {
+	public void armarPantalla(RemitoProvisionInsumoDTO orden, String accionRealizar){
+		
+		final String accion = accionRealizar;
+				
+		P_RemitoProvisionInsumo remito = new P_RemitoProvisionInsumo(orden, accion);
+		remito.setGlassEnabled(true);
+		remito.center();
+		remito.show();
+		remito.addCloseHandler(new CloseHandler<PopupPanel>() {
+			
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+			
+				cargarSugerenciaRemitos(accion);
+				
+			}
+		});
+		
+		
+		
+		
+	}
+	
+	
+	
+	protected void cargarSugerenciaRemitos(String accionRealizar) {
 				
 		if(tipoOrdenProvisionLb.getItemText(tipoOrdenProvisionLb.getSelectedIndex()).compareTo(constante.ordenDeProvisionDeInsumos()) == 0){
 			nroOrdenRemitoLb.clear();
-			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.idsRemitosInternosInsumos(new AsyncCallback<List<Long>>() {
+			
+			if(accionRealizar.compareTo("cerrar")==0){
+				ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+				produccionService.getRemitosInternosInsumosGenerados(new AsyncCallback<List<Long>>() {
 
-				@Override
-				public void onSuccess(List<Long> result) {
-					cargarListaConIdsRemitos(result);
-				}
+					@Override
+					public void onSuccess(List<Long> result) {
+						cargarListaConIdsRemitos(result);
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-				}
-			});
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+			if(accionRealizar.compareTo("buscar")==0){
+				ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+				produccionService.idsRemitosInternosInsumos(new AsyncCallback<List<Long>>() {
+
+					@Override
+					public void onSuccess(List<Long> result) {
+						cargarListaConIdsRemitos(result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+
 		}
 		else if(tipoOrdenProvisionLb.getItemText(tipoOrdenProvisionLb.getSelectedIndex()).compareTo(constante.ordenDeProvisionDeProductos()) == 0){
 			nroOrdenRemitoLb.clear();

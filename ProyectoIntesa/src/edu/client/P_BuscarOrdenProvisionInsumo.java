@@ -25,6 +25,7 @@ import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 
@@ -64,6 +65,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	
 	private EmpleadoDTO empleado;
 	private List<OrdenProvisionInsumoDTO> ordenesProvision;
+	private List<UsuarioCompDTO> listaGeneradosPor;
 	
 	
 	
@@ -103,31 +105,93 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
 		
-		generadaPorLb = new ListBox();
-		generadaPorLb.setStyleName("gwt-TextArea");
-		generadaPorLb.addItem(responsable);
-		generadaPorLb.setEnabled(false);
 		
-		generadaParaLb = new ListBox();
-		generadaParaLb.setStyleName("gwt-TextArea");	
+		if(rol.compareTo("SUPERVISOR PRODUCCION")==0){
 		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.getEmpleado(nombre, apellido, rol, new AsyncCallback<EmpleadoDTO>() {
-			@Override
-			public void onSuccess(EmpleadoDTO result) {
-				empleado = result;
-				cargarListaEmpleadosACargo(result);			
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR EN EL SERVICIO");
-			}
-		});
+			generadaPorLb = new ListBox();
+			generadaPorLb.setStyleName("gwt-TextArea");
+			generadaPorLb.addItem(responsable);
+			generadaPorLb.setEnabled(false);
+			
+			generadaParaLb = new ListBox();
+			generadaParaLb.setStyleName("gwt-TextArea");	
+			
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.getEmpleado(nombre, apellido, rol, new AsyncCallback<EmpleadoDTO>() {
+				@Override
+				public void onSuccess(EmpleadoDTO result) {
+					empleado = result;
+					cargarListaEmpleadosACargo(result);			
+				}
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");
+				}
+			});
+		}
+		if(rol.compareTo("GERENTE PRODUCCION")==0){
+			
+			generadaPorLb = new ListBox();
+			generadaPorLb.setStyleName("gwt-TextArea");
+			
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.getUsuariosSupervisoresYGerenteProduccion(new AsyncCallback<List<UsuarioCompDTO>>() {
+				@Override
+				public void onSuccess(List<UsuarioCompDTO> result) {
+					cargarGeneradaPor(result);
+				}
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");
+				}
+			});
+			
+			generadaParaLb = new ListBox();
+			generadaParaLb.setStyleName("gwt-TextArea");	
+			generadaParaLb.setEnabled(false);
+			
+//			generadaPorLb.addClickHandler(new ClickHandler() {
+//				
+//				@Override
+//				public void onClick(ClickEvent event) {
+//					
+//					String seleccionado = generadaPorLb.getItemText(generadaPorLb.getSelectedIndex());
+//					String nombre = seleccionado.split(", ")[1];
+//					String apellido = seleccionado.split(", ")[0];
+//					String rol = seleccionado.split(" (")[1];
+//					rol.substring(0, rol.length());
+//					
+//					Window.alert("el seleccionado fue "+nombre+" "+apellido+" ");
+//					
+//					ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+//					produccionService.getEmpleado(nombre, apellido, rol, new AsyncCallback<EmpleadoDTO>() {
+//						@Override
+//						public void onSuccess(EmpleadoDTO result) {
+//							cargarListaEmpleadosACargo(result);			
+//						}
+//			
+//						@Override
+//						public void onFailure(Throwable caught) {
+//							Window.alert("ERROR EN EL SERVICIO");
+//						}
+//					});
+//					
+//					
+//					
+//				}
+//			});
+			
+			
+		}
+		
+		
 		
 		estadoLb = new ListBox();
 		estadoLb.setStyleName("gwt-TextArea");
 		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
 		produccionService.getNombreEstados(new AsyncCallback<List<String>>() {
 			@Override
 			public void onSuccess(List<String> result) {
@@ -225,6 +289,18 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		
 		
 	}
+	
+	protected void cargarGeneradaPor(List<UsuarioCompDTO> usuarios){
+		
+		this.listaGeneradosPor = usuarios;
+		this.generadaPorLb.addItem("TODOS");
+		
+		for (UsuarioCompDTO usuario : usuarios) {
+			this.generadaPorLb.addItem(usuario.getApellidoEmp()+", "+usuario.getNombreEmp()+" ("+usuario.getRolUsu()+")");
+		}	
+	}
+	
+	
 	
 	protected void buscar() {
 		

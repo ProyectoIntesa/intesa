@@ -44,6 +44,7 @@ public class P_PantallaAlmacen extends Composite {
 	private TreeItem buscarRemitoEx;
 	private TreeItem ingresarRemitoIn;
 	private TreeItem buscarRemitoIn;
+	private TreeItem cerrarRemitoIn;
 	private String usuario;
 
 	private TabPanel panelTrabajo;
@@ -137,6 +138,10 @@ public class P_PantallaAlmacen extends Composite {
 			buscarRemitoIn = new TreeItem(constante.buscarRemito());
 			buscarRemitoIn.setStyleName("suElementoMenu");
 			remitoIn.addItem(buscarRemitoIn);
+			
+			cerrarRemitoIn = new TreeItem(constante.cerrarRemito());
+			cerrarRemitoIn.setStyleName("suElementoMenu");
+			remitoIn.addItem(cerrarRemitoIn);
 
 
 			menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -228,13 +233,22 @@ public class P_PantallaAlmacen extends Composite {
 		
 		if (event.getSelectedItem() == buscarRemitoIn) {
 			
-			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito();
+			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito("buscar");
 			popUp.setGlassEnabled(true);
 			popUp.center();
 			popUp.show();
 				
 		}
 
+		if (event.getSelectedItem() == cerrarRemitoIn) {
+			
+			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito("cerrar");
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+				
+		}
+		
 	}
 
 	

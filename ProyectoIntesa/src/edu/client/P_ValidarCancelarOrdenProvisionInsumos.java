@@ -1,6 +1,7 @@
 package edu.client;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -8,11 +9,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
-import edu.shared.DTO.*;
+import edu.shared.DTO.OrdenProvisionInsumoDTO;
 
 
 public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
@@ -34,7 +42,8 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 	private Label pie;
 	
 	private Button salir;
-	private Button validarOrden;
+	private Button validarOrdenes;
+	private Button cancelarOrdenes;
 	
 	private List<OrdenProvisionInsumoDTO> listaOrdenProvisionInsumo;
 	
@@ -57,10 +66,27 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 			}
 		});
 		
-		validarOrden = new Button(constante.validarOrden());
-		validarOrden.addClickHandler(new ClickHandler() {
+		cancelarOrdenes = new Button(constante.cancelarOrdenes());
+		cancelarOrdenes.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//buscar();
+				cancelarOrdenes();
+				for(int i = 1; i < tablaElementos.getRowCount(); i++){
+					tablaElementos.removeRow(i);
+				}
+				listaOrdenProvisionInsumo.clear();
+				cargarTabla();
+			}
+		});
+		
+		validarOrdenes = new Button(constante.validarOrdenes());
+		validarOrdenes.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				validar();
+				for(int i = 1; i < tablaElementos.getRowCount(); i++){
+					tablaElementos.removeRow(i);
+				}
+				listaOrdenProvisionInsumo.clear();
+				cargarTabla();
 			}
 		});
 		
@@ -98,7 +124,10 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 		panel.setWidget(3, 1, salir);
 		panel.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		panel.setWidget(3, 3, validarOrden);
+		panel.setWidget(3, 2, cancelarOrdenes);
+		panel.getCellFormatter().setHorizontalAlignment(3, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		panel.setWidget(3, 3, validarOrdenes);
 		panel.getCellFormatter().setHorizontalAlignment(3, 3, HasHorizontalAlignment.ALIGN_CENTER);
 	
 		cargarTabla();
@@ -107,9 +136,75 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 		
 	}
 	
+	protected void cancelarOrdenes() {
+		List<Long> ordenesACancelar = new LinkedList<Long>();
+		
+		for(int i = 1; i < tablaElementos.getRowCount(); i++){
+			
+			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+				
+				Long nroOrden = Long.parseLong(((Label)tablaElementos.getWidget(i, COL_NROORDEN)).getText());
+				ordenesACancelar.add(nroOrden);
+			}
+		}
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.cancelarOrdenesProvisionInsumos(ordenesACancelar, new AsyncCallback<Boolean>() {
+		
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result)
+						Window.alert("Las Ordenes seleccionadas fueron canceladas");
+					else
+						Window.alert("Las Ordenes NO han sido canceladas");
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");				
+				}
+		
+		});
+		
+	}
+
 	protected void salir() {
 		this.hide();
 
+	}
+	
+	public void validar(){
+		
+		List<Long> ordenesAValidar = new LinkedList<Long>();
+				
+		for(int i = 1; i < tablaElementos.getRowCount(); i++){
+			
+			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+				
+				Long nroOrden = Long.parseLong(((Label)tablaElementos.getWidget(i, COL_NROORDEN)).getText());
+				ordenesAValidar.add(nroOrden);
+			}
+		}
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.validarOrdenesProvisionInsumos(ordenesAValidar, new AsyncCallback<Boolean>() {
+		
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result)
+						Window.alert("Las Ordenes seleccionadas fueron validadas");
+					else
+						Window.alert("Las Ordenes NO han sido validadas");
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");				
+				}
+		
+		});
+		
+		
 	}
 	
 	public void cargarTabla(){
@@ -159,13 +254,28 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 			tablaElementos.setWidget(item, COL_CHECK, check);
 			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(item, COL_CHECK, HasHorizontalAlignment.ALIGN_CENTER);
 			tablaElementos.getRowFormatter().setStyleName(item, "tablaRenglon");
-						
+							
+			info.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					
+					Cell celda = tablaElementos.getCellForEvent(event);
+					OrdenProvisionInsumoDTO or = obtenerElementoListaOrdenes(celda.getRowIndex()-1);
+					P_DetalleOrdenProvisionInsumo detalleOrden = new P_DetalleOrdenProvisionInsumo(or);
+					detalleOrden.setGlassEnabled(true);
+					detalleOrden.center();
+					detalleOrden.show();
+
+				}
+			});
+			
 			item++;
 		}
 		
 		
 	}
 	
-	
+	public OrdenProvisionInsumoDTO obtenerElementoListaOrdenes(int indice){
+		return this.listaOrdenProvisionInsumo.get(indice);
+	}
 	
 }

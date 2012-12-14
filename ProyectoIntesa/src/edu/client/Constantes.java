@@ -8,6 +8,12 @@ public interface Constantes extends Constants {
 	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
 	  String ordenCompraDeInsumo();
 	  
+	  @DefaultStringValue("CANCELAR ORDENES")
+	  String cancelarOrdenes();
+	  
+	  @DefaultStringValue("CANT DISPONIBLE")
+	  String cantDisponible();
+	  
 	  @DefaultStringValue("GERENTE PRODUCCION")
 	  String gerenteProduccion();
 	  
@@ -22,6 +28,9 @@ public interface Constantes extends Constants {
 	  
 	  @DefaultStringValue("BUSCAR ORDEN")
 	  String buscarOrden();
+	  
+	  @DefaultStringValue("VALIDAR ORDENES")
+	  String validarOrdenes();
 	  
 	  @DefaultStringValue("VALIDAR ORDEN")
 	  String validarOrden();

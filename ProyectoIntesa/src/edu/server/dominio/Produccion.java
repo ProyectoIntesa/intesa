@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import edu.server.repositorio.OrdenCompraInsumo;
 import edu.server.repositorio.OrdenProvisionInsumo;
 import edu.server.repositorio.RemitoInternoInsumo;
 import edu.server.repositorio.RenglonOrdenProvisionInsumo;
@@ -113,20 +112,92 @@ public class Produccion {
 		return result;	
 	}
 	
-	public RemitoInternoInsumo getRemitoInternoInsumoSegunId(Long id){
+	public List<RemitoInternoInsumo> getRemitosInternosInsumosGenerados(int idEstado){
 		
-		System.out.println("---------------------------------------1.1");
+		List<RemitoInternoInsumo> result = new LinkedList<RemitoInternoInsumo>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		result = sec.createQuery("from RemitoInternoInsumo where id_Estado_Remito = "+idEstado).list();
+		
+		sec.close();
+		return result;	
+	}
+	
+	public RemitoInternoInsumo getRemitoInternoInsumoSegunId(Long id){
 		
 		RemitoInternoInsumo result = new RemitoInternoInsumo();
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 		result = (RemitoInternoInsumo) sec.get(result.getClass(), id);
 		
-		System.out.println("---------------------------------------1.2");
-		
 		sec.close();
 		return result;
 	
+	}
+	
+	
+	public boolean validarOrdenProvisionInsumos(Long nroOrden, int estado){
+
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Orden_Provision_Insumo set id_Estado_Orden = "+estado+" where id_Orden_Provision_Insumo = "+nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
+	}
+	
+	public boolean cerrarRemitoProvisionInsumos(Long idRemito, int estado, String fecha){
+
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Remito_Interno_Insumo set id_Estado_Remito = "+estado+", fecha_Cierre = '"+fecha+"' where id_Remito_Insumo = "+idRemito).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
+	}
+	
+	public boolean cancelarOrdenesProvisionInsumos(Long nroOrden, int estado){
+
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Orden_Provision_Insumo set id_Estado_Orden = "+estado+" where id_Orden_Provision_Insumo = "+nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
 	}
 	
 	

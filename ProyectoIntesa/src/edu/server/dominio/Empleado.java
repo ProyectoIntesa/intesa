@@ -1,5 +1,8 @@
 package edu.server.dominio;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.hibernate.Session;
 
 import edu.server.repositorio.IngresoInsumos;
@@ -10,6 +13,7 @@ public class Empleado {
 	public Empleado(){
 		
 	}
+		
 	
 	public int getIdEmpleado(String nombre , String apellido , String rol) {
 		Object result = new Object();

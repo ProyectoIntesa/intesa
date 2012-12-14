@@ -8,6 +8,7 @@ import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.RemitoProvisionInsumoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 public interface ProduccionServiceAsync {
 
@@ -36,5 +37,17 @@ public interface ProduccionServiceAsync {
 	void getOrdenRemitoInternoInsumoSegunId(Long id, AsyncCallback<RemitoProvisionInsumoDTO> callback) throws IllegalArgumentException;
 
 	void getOrdenProvisionInsumoCompletos(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta, AsyncCallback<List<OrdenProvisionInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void validarOrdenesProvisionInsumos(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getRemitosInternosInsumosGenerados(AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
+
+	void cerrarRemitoProvisionInsumos(RemitoProvisionInsumoDTO remito, String fecha, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getCantInsumo(InsumoDTO insumo, AsyncCallback<Double> callback) throws IllegalArgumentException;
+
+	void cancelarOrdenesProvisionInsumos(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getUsuariosSupervisoresYGerenteProduccion(AsyncCallback<List<UsuarioCompDTO>> callback) throws IllegalArgumentException;
 
 }

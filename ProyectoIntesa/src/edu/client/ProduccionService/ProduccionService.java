@@ -9,6 +9,7 @@ import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.RemitoProvisionInsumoDTO;
+import edu.shared.DTO.UsuarioCompDTO;
 
 @RemoteServiceRelativePath("produccion")
 public interface ProduccionService extends RemoteService {
@@ -38,5 +39,17 @@ public interface ProduccionService extends RemoteService {
 	RemitoProvisionInsumoDTO getOrdenRemitoInternoInsumoSegunId(Long id) throws IllegalArgumentException;
 
 	List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumoCompletos(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException;
+
+	Boolean validarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException;
+
+	List<Long> getRemitosInternosInsumosGenerados() throws IllegalArgumentException;
+
+	Boolean cerrarRemitoProvisionInsumos(RemitoProvisionInsumoDTO remito, String fecha) throws IllegalArgumentException;
+
+	double getCantInsumo(InsumoDTO insumo) throws IllegalArgumentException;
+
+	Boolean cancelarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException;
+
+	List<UsuarioCompDTO> getUsuariosSupervisoresYGerenteProduccion() throws IllegalArgumentException;
 
 }

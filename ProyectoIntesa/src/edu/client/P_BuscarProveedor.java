@@ -22,9 +22,6 @@ import com.google.gwt.user.client.ui.SuggestBox;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
-import edu.client.VentasService.VentasService;
-import edu.client.VentasService.VentasServiceAsync;
-import edu.shared.DTO.ClienteDTO;
 import edu.shared.DTO.ContactoDTO;
 import edu.shared.DTO.ProveedorDTO;
 

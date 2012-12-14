@@ -3,6 +3,7 @@ package edu.server.dominio;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import edu.server.repositorio.Categoria;
@@ -334,6 +335,27 @@ public class Insumos {
 		sec.close();
 		return nombre;		
 		
+		
+	}
+	
+	public boolean setCantInsumo(int idInsumo, double cant){
+		
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Insumo set Cantidad = "+cant+" where id_Insumo = "+idInsumo).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
 		
 	}
 

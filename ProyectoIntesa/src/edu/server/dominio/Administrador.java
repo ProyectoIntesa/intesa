@@ -274,6 +274,36 @@ public class Administrador {
 
 		return listaResultado;
 	}
+	
+	public List<UsuarioCompDTO> getUsuariosSegunRol(String rol) {
+		List<Usuario> listaUsuarios;
+		List<UsuarioCompDTO> listaResultado = new LinkedList<UsuarioCompDTO>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		listaUsuarios = sec.createQuery("from Usuario where rol like '"+rol+"'").list();
+		sec.close();
+
+		if (!listaUsuarios.isEmpty()) {
+			for (int i = 0; i < listaUsuarios.size(); i++) {
+				UsuarioCompDTO nuevo = new UsuarioCompDTO();
+				nuevo.setNombreUsu(listaUsuarios.get(i).getUsuario());
+				nuevo.setPassUsu(listaUsuarios.get(i).getContrasenia());
+				nuevo.setRolUsu(listaUsuarios.get(i).getRol());
+
+				int idEmp = listaUsuarios.get(i).getEmpleado().getIdEmpleado();
+
+				listaUsuarios.get(i).setEmpleado(this.getEmpleado(idEmp));
+
+				nuevo.setApellidoEmp(listaUsuarios.get(i).getEmpleado().getApellido());
+				nuevo.setNombreEmp(listaUsuarios.get(i).getEmpleado().getNombre());
+				nuevo.setNroLegajoEmp(listaUsuarios.get(i).getEmpleado().getNroLegajo());
+
+				listaResultado.add(nuevo);
+			}
+		}
+
+		return listaResultado;
+	}
 
 	public Empleado getEmpleado(int idEmpleado) {
 

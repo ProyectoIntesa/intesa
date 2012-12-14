@@ -34,8 +34,9 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private static final int COL_MARCA = 2;
 	private static final int COL_CANT = 3;
 	private static final int COL_CANTFAL = 4;
-	private static final int COL_CANTENT = 5;
-	private static final int COL_CHECK = 6;
+	private static final int COL_CANTDIS = 5;
+	private static final int COL_CANTENT = 6;
+	private static final int COL_CHECK = 7;
 	
 	private static final int COL_INSUMO2 = 0;
 	private static final int COL_MARCA2 = 1;
@@ -77,12 +78,13 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private String usuario;
 	private RemitoProvisionInsumoDTO remitoLocal;
 	
-	public P_RemitoProvisionInsumo(RemitoProvisionInsumoDTO remito){
+	public P_RemitoProvisionInsumo(RemitoProvisionInsumoDTO remito, String accion){
 		
 		super(false);
 		this.remitoLocal = remito;
 		setStyleName("fondoPopup");
 		accionSalir = false;
+		String accionRealizar = accion;
 		
 		tituloFormulario = new Label("REMITO DE PROVISION DE INSUMOS BUSCADO");
 		tituloFormulario.setStyleName("labelTitulo");
@@ -136,7 +138,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		cerrarRemito = new Button(constante.cerrarRemito());
 		cerrarRemito.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//guardarRemitoProvisionInterno();
+				cerrarRemitoProvisionInterno();
 			}
 		});
 		
@@ -166,7 +168,10 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 		panel.setWidget(2, 0, empleadoPor);
 		panel.setWidget(2, 1, fechaGeneracion);
-		panel.setWidget(2, 2, fechaCierre);
+		if(accionRealizar.compareTo("buscar")==0){
+			panel.setWidget(2, 2, fechaCierre);
+		}
+		
 		
 		panel.setWidget(3, 0, lineaTabla);
 		panel.getFlexCellFormatter().setColSpan(3, 0, 3);
@@ -183,10 +188,18 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		panel.setWidget(9, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(9, 0, 3);
 			
-		panel.setWidget(10, 1, this.cerrarRemito);
-		panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(10, 2, this.salir);
-		panel.getCellFormatter().setHorizontalAlignment(10, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		if(accionRealizar.compareTo("buscar")==0){
+			panel.setWidget(10, 1, this.salir);
+			panel.getCellFormatter().setHorizontalAlignment(10, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		}
+		if(accionRealizar.compareTo("cerrar")==0){
+			panel.setWidget(10, 1, this.cerrarRemito);
+			panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
+			panel.setWidget(10, 2, this.salir);
+			panel.getCellFormatter().setHorizontalAlignment(10, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		}
+		
+
 
 		cargarTablaRemito(remito);
 		
@@ -270,19 +283,21 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
 		tablaElementos.setText(0, COL_ITEM, constante.item());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ITEM, "5%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_ITEM, "3%");
 		tablaElementos.setText(0, COL_INSUMO, constante.insumo());
-		tablaElementos.getCellFormatter().setWidth(0, COL_INSUMO, "13%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_INSUMO, "12%");
 		tablaElementos.setText(0, COL_MARCA, constante.marca());
-		tablaElementos.getCellFormatter().setWidth(0, COL_MARCA, "13%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_MARCA, "12%");
 		tablaElementos.setText(0, COL_CANT, constante.cantPedida());
 		tablaElementos.getCellFormatter().setWidth(0, COL_CANT, "10%");
 		tablaElementos.setText(0, COL_CANTFAL, constante.cantFaltanteAEntregar());
-		tablaElementos.getCellFormatter().setWidth(0, COL_CANTFAL, "16%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_CANTFAL, "13%");
+		tablaElementos.setText(0, COL_CANTDIS, constante.cantDisponible());
+		tablaElementos.getCellFormatter().setWidth(0, COL_CANTDIS, "10%");
 		tablaElementos.setText(0, COL_CANTENT, constante.cantASerEnviada());
-		tablaElementos.getCellFormatter().setWidth(0, COL_CANTENT, "13%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_CANTENT, "12%");
 		tablaElementos.setText(0, COL_CHECK, "");
-		tablaElementos.getCellFormatter().setWidth(0, COL_CHECK, "5%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_CHECK, "3%");
 		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
 		
 		
@@ -339,15 +354,37 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 
 			}
 		});
-		
-		
-
 
 		setWidget(panel);	
 		
-		
 	}
+	
+	protected void cerrarRemitoProvisionInterno() {
+			
+		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+		String fecha = fmtDate.format(new Date());
 		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.cerrarRemitoProvisionInsumos(remitoLocal,fecha, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if(result)
+					Window.alert("El remito ha sido cerrado");
+				else
+					Window.alert("El remito NO ha sido cerrado");
+				cancelar();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+
+			}
+		});
+		
+	}	
+	
 	protected void guardarRemitoProvisionInterno() {
 		
 		RemitoProvisionInsumoDTO remito = new RemitoProvisionInsumoDTO();
@@ -402,15 +439,34 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	protected void cargarTabla(OrdenProvisionInsumoDTO result) {
 		
 		int item = 1;
-		
-		System.out.println("comenzo el metodo de cargar la tabla");
-		
+			
 		for (RenglonOrdenProvisionInsumoDTO renglon : result.getRenglonOrdenProvisionInsumos()) {
 		
 			final RenglonOrdenProvisionInsumoDTO ren = renglon;
 			final int itemInterno = item;
-			
+		
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			
+			produccionService.getCantInsumo(renglon.getInsumo(), new AsyncCallback<Double>(){
+				
+				@Override
+				public void onSuccess(Double result) {
+					
+					tablaElementos.setWidget(itemInterno,COL_CANTDIS,new Label(""+result));
+					
+					
+				}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");
+					
+				}
+				
+			});
+			
+			
+			
+			
 			produccionService.getCantFaltanteInsumo(renglon.getInsumo(), result.getIdOrdenProvisionInsumo(), new AsyncCallback<Double>() {
 		
 				@Override
