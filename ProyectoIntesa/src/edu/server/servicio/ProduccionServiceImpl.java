@@ -30,7 +30,6 @@ import edu.shared.DTO.RemitoProvisionInsumoDTO;
 import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
 import edu.shared.DTO.RenglonRemitoProvisionInsumoDTO;
 import edu.shared.DTO.UsuarioCompDTO;
-import edu.shared.DTO.UsuarioDTO;
 
 public class ProduccionServiceImpl extends RemoteServiceServlet implements ProduccionService{
 
@@ -72,6 +71,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		edu.server.dominio.Empleado adminEmpleado = new edu.server.dominio.Empleado(); 
 		Empleado emp;
 		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+		
 		int idEmpleado = adminEmpleado.getIdEmpleado(nombre, apellido, rol);
 		
 		emp = adminEmpleado.getEmpleado(idEmpleado);

@@ -18,8 +18,8 @@ public class Empleado {
 	public int getIdEmpleado(String nombre , String apellido , String rol) {
 		Object result = new Object();
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
-		sec.beginTransaction();
-		result = sec.createSQLQuery("select e.id_Empleado from Empleado as e, usuario as u where nombre like '"+nombre+"' and apellido like '"+apellido+"' and u.rol like '"+rol+"'").uniqueResult();
+		sec.beginTransaction();		
+		result = sec.createSQLQuery("select e.id_Empleado from Empleado as e, usuario as u where nombre like '"+nombre+"' and apellido like '"+apellido+"' and u.rol like '"+rol+"' and e.id_Empleado = u.id_Empleado").uniqueResult();
 		sec.close();
 		return (int)result;
 	}

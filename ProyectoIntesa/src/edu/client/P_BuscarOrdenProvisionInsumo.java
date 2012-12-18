@@ -2,33 +2,26 @@ package edu.client;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-
+import com.google.gwt.user.client.ui.*;
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.UsuarioCompDTO;
 
-public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
+
+public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
+	
 	private static final int COL_NRO_ORDEN = 0;
 	private static final int COL_GENERADO_POR = 1;
 	private static final int COL_GENERADO_PARA = 2;
@@ -63,21 +56,39 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
 	
-	private EmpleadoDTO empleado;
+	//elementos que no aperecen en el popup, para supervisor y para gerente
+	private String nombreUsuario;
+	private String apellidoUsuario;
+	private String rolUsuario;
+	
+	//elementos que no aparecen en el popup, para supervisor unicamente
+	private EmpleadoDTO emp;	
 	private List<OrdenProvisionInsumoDTO> ordenesProvision;
-	private List<UsuarioCompDTO> listaGeneradosPor;
+	
+	//elementos que no aparecen en el popup, para gerente unicamente
+	private List<EmpleadoDTO> listaGeneradosPor;
+	private List<EmpleadoDTO> listaGeneradosPara;
+	private List<Integer> listaIdGeneradosPara;
 	
 	
 	
 	
-	public P_BuscarOrdenProvisionInsumo(String responsable, String rolUsuario){
+	public P_BuscarOrdenProvisionInsumo(String usuario, String rolUsuario){
 		
 		super(false);
 		setStyleName("fondoPopup");
-						
-		String nombre = responsable.split(", ")[1];
-		String apellido = responsable.split(", ")[0];
-		String rol = rolUsuario;
+		this.nombreUsuario = usuario.split(", ")[1];
+		this.apellidoUsuario = usuario.split(", ")[0]; 
+		this.rolUsuario = rolUsuario;
+		
+		if(rolUsuario.compareTo("SUPERVISOR PRODUCCION") == 0)
+			this.ingresoUnSupervisor();
+		else
+			this.ingresoUnGerente();
+	
+	}
+	
+	protected void ingresoUnSupervisor(){
 		
 		fechaCb = new CheckBox(constante.fechaGeneracion());
 		fechaCb.setStyleName("check");
@@ -105,93 +116,31 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
 		
+		generadaPorLb = new ListBox();
+		generadaPorLb.setStyleName("gwt-TextArea");
+		generadaPorLb.addItem(this.nombreUsuario+", "+this.apellidoUsuario);
+		generadaPorLb.setEnabled(false);
 		
-		if(rol.compareTo("SUPERVISOR PRODUCCION")==0){
+		generadaParaLb = new ListBox();
+		generadaParaLb.setStyleName("gwt-TextArea");	
 		
-			generadaPorLb = new ListBox();
-			generadaPorLb.setStyleName("gwt-TextArea");
-			generadaPorLb.addItem(responsable);
-			generadaPorLb.setEnabled(false);
-			
-			generadaParaLb = new ListBox();
-			generadaParaLb.setStyleName("gwt-TextArea");	
-			
-			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.getEmpleado(nombre, apellido, rol, new AsyncCallback<EmpleadoDTO>() {
-				@Override
-				public void onSuccess(EmpleadoDTO result) {
-					empleado = result;
-					cargarListaEmpleadosACargo(result);			
-				}
-	
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-				}
-			});
-		}
-		if(rol.compareTo("GERENTE PRODUCCION")==0){
-			
-			generadaPorLb = new ListBox();
-			generadaPorLb.setStyleName("gwt-TextArea");
-			
-			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.getUsuariosSupervisoresYGerenteProduccion(new AsyncCallback<List<UsuarioCompDTO>>() {
-				@Override
-				public void onSuccess(List<UsuarioCompDTO> result) {
-					cargarGeneradaPor(result);
-				}
-	
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-				}
-			});
-			
-			generadaParaLb = new ListBox();
-			generadaParaLb.setStyleName("gwt-TextArea");	
-			generadaParaLb.setEnabled(false);
-			
-//			generadaPorLb.addClickHandler(new ClickHandler() {
-//				
-//				@Override
-//				public void onClick(ClickEvent event) {
-//					
-//					String seleccionado = generadaPorLb.getItemText(generadaPorLb.getSelectedIndex());
-//					String nombre = seleccionado.split(", ")[1];
-//					String apellido = seleccionado.split(", ")[0];
-//					String rol = seleccionado.split(" (")[1];
-//					rol.substring(0, rol.length());
-//					
-//					Window.alert("el seleccionado fue "+nombre+" "+apellido+" ");
-//					
-//					ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-//					produccionService.getEmpleado(nombre, apellido, rol, new AsyncCallback<EmpleadoDTO>() {
-//						@Override
-//						public void onSuccess(EmpleadoDTO result) {
-//							cargarListaEmpleadosACargo(result);			
-//						}
-//			
-//						@Override
-//						public void onFailure(Throwable caught) {
-//							Window.alert("ERROR EN EL SERVICIO");
-//						}
-//					});
-//					
-//					
-//					
-//				}
-//			});
-			
-			
-		}
-		
-		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.getEmpleado(this.nombreUsuario, this.apellidoUsuario, this.rolUsuario, new AsyncCallback<EmpleadoDTO>() {
+			@Override
+			public void onSuccess(EmpleadoDTO result) {
+				emp = result;
+				cargarListaEmpleadosACargo(result);			
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
 		
 		estadoLb = new ListBox();
 		estadoLb.setStyleName("gwt-TextArea");
 		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
 		produccionService.getNombreEstados(new AsyncCallback<List<String>>() {
 			@Override
 			public void onSuccess(List<String> result) {
@@ -221,7 +170,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		buscar = new Button(constante.buscar());
 		buscar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				buscar();
+				buscarComoSupervisor();
 			}
 		});
 		
@@ -253,10 +202,13 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 
 		panel.setWidget(1, 0, generadaPor);
 		panel.setWidget(1, 1, generadaPorLb);
+		panel.getCellFormatter().setWidth(1, 1, "20%");
 		panel.setWidget(1, 2, generadaPara);
 		panel.setWidget(1, 3, generadaParaLb);
+		panel.getCellFormatter().setWidth(1, 3, "20%");
 		panel.setWidget(1, 4, estado);
 		panel.setWidget(1, 5, estadoLb);
+		panel.getCellFormatter().setWidth(1, 5, "20%");
 		
 		panel.setWidget(2, 0, segunFechaGeneracion);
 		panel.getFlexCellFormatter().setColSpan(2, 0, 6);
@@ -284,36 +236,172 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	
 		
 		setWidget(panel);
+		
+		
+	}
 
+	protected void ingresoUnGerente(){
+
+		listaGeneradosPor = new LinkedList<EmpleadoDTO>();
+		listaGeneradosPara = new LinkedList<EmpleadoDTO>();
+		
+		fechaCb = new CheckBox(constante.fechaGeneracion());
+		fechaCb.setStyleName("check");
+		fechaCb.setWordWrap(false);
+		fechaCb.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				seleccionCheck();
+			}
+		});
+		
+		titulo = new Label(constante.buscarPor());
+		titulo.setStyleName("labelTitulo");
+		generadaPor = new Label(constante.generadaPor());
+		generadaPor.setStyleName("gwt-LabelFormulario");
+		generadaPara = new Label(constante.generadoPara());
+		generadaPara.setStyleName("gwt-LabelFormulario");
+		fechaDesde = new Label(constante.desde());
+		fechaDesde.setStyleName("gwt-LabelFormulario");
+		fechaHasta = new Label(constante.hasta());
+		fechaHasta.setStyleName("gwt-LabelFormulario");
+		estado = new Label(constante.estado());
+		estado.setStyleName("gwt-LabelFormulario");
+		segunFechaGeneracion = new Label(constante.segunFechaDeGeneracion());
+		segunFechaGeneracion.setStyleName("labelTitulo");
+		pie = new Label();
+		pie.setStyleName("labelTitulo");
+		
+		generadaPorLb = new ListBox();
+		generadaPorLb.setStyleName("gwt-TextArea");
+		generadaPorLb.addItem("TODOS");
+		cargarListaGeneradaPorLb();	
+		
+		generadaPorLb.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				if(generadaPorLb.getSelectedIndex() == 0){
+					cargarGeneradaParaLbConTODOS();
+				}
+				if(generadaPorLb.getSelectedIndex() > 0){
+					EmpleadoDTO empGeneradaPor = listaGeneradosPor.get(generadaPorLb.getSelectedIndex()-1);
+					cargarGeneradaParaLbConParaUnGeneradaPor(empGeneradaPor);
+				}
+			}
+		});
 		
 		
+		generadaParaLb = new ListBox();
+		generadaParaLb.setStyleName("gwt-TextArea");
+		generadaParaLb.setEnabled(false);
+		
+		estadoLb = new ListBox();
+		estadoLb.setStyleName("gwt-TextArea");
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);		
+		produccionService.getNombreEstados(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaEstados(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se ha podido cargar la lista de sugerencias de estados");
+			}
+		});
+						
+		
+		fechaDesdeDb = new DateBox();
+		fechaDesdeDb.setEnabled(false);
+		fechaDesdeDb.setFormat(new DefaultFormat(DateTimeFormat.getMediumDateFormat()));
+		fechaHastaDb = new DateBox();
+		fechaHastaDb.setEnabled(false);
+		fechaHastaDb.setFormat(new DefaultFormat(DateTimeFormat.getMediumDateFormat()));
+		
+		salir = new Button(constante.salir());
+		salir.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				salir();
+			}
+		});
+		
+		buscar = new Button(constante.buscar());
+		buscar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				buscarComoGerente();
+			}
+		});
+		
+		panel = new FlexTable();
+		panel.setSize("1000px", "300px");
+		contenedorTabla = new ScrollPanel();
+		contenedorTabla.setStyleName("tabla");
+		contenedorTabla.setHeight("300px");
+		tablaElementos = new FlexTable();
+		contenedorTabla.setWidget(tablaElementos);
+		tablaElementos.setSize("100%", "100%");
+		tablaElementos.setText(0, COL_NRO_ORDEN, constante.nroOrden());
+		tablaElementos.getCellFormatter().setWidth(0, COL_NRO_ORDEN, "18%");
+		tablaElementos.setText(0, COL_GENERADO_POR, constante.generadaPor());
+		tablaElementos.getCellFormatter().setWidth(0, COL_GENERADO_POR, "18%");
+		tablaElementos.setText(0, COL_GENERADO_PARA, constante.generadoPara());
+		tablaElementos.getCellFormatter().setWidth(0, COL_GENERADO_PARA, "18%");
+		tablaElementos.setText(0, COL_ESTADO, constante.estado());
+		tablaElementos.getCellFormatter().setWidth(0, COL_ESTADO, "18%");
+		tablaElementos.setText(0, COL_FECHAGENERACION, constante.fechaGeneracion());
+		tablaElementos.getCellFormatter().setWidth(0, COL_FECHAGENERACION, "18%");
+		tablaElementos.setText(0, COL_MAS_INFO, constante.masInformacion());
+		tablaElementos.getCellFormatter().setWidth(0, COL_MAS_INFO, "10%");
+		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		
+		
+		panel.setWidget(0, 0, titulo);
+		panel.getFlexCellFormatter().setColSpan(0, 0, 6);
+
+		panel.setWidget(1, 0, generadaPor);
+		panel.setWidget(1, 1, generadaPorLb);
+		panel.getCellFormatter().setWidth(1, 1, "20%");
+		panel.setWidget(1, 2, generadaPara);
+		panel.setWidget(1, 3, generadaParaLb);
+		panel.getCellFormatter().setWidth(1, 3, "20%");
+		panel.setWidget(1, 4, estado);
+		panel.setWidget(1, 5, estadoLb);
+		panel.getCellFormatter().setWidth(1, 5, "20%");
+		
+		panel.setWidget(2, 0, segunFechaGeneracion);
+		panel.getFlexCellFormatter().setColSpan(2, 0, 6);
+		
+		panel.setWidget(3, 0, fechaCb);
+		panel.getFlexCellFormatter().setColSpan(3, 0, 1);
+		panel.setWidget(3, 2, fechaDesde);
+		panel.setWidget(3, 3, fechaDesdeDb);
+		panel.setWidget(3, 4, fechaHasta);
+		panel.setWidget(3, 5, fechaHastaDb);
+		
+		panel.setWidget(4, 0, buscar);
+		panel.getFlexCellFormatter().setColSpan(4, 0, 6);
+		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
+				
+		panel.setWidget(5, 0, contenedorTabla);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 6);
+		
+		panel.setWidget(6, 0, pie);
+		panel.getFlexCellFormatter().setColSpan(6, 0, 6);
+
+		panel.setWidget(7, 0, salir);
+		panel.getFlexCellFormatter().setColSpan(7, 0, 6);
+		panel.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
+	
+		
+		setWidget(panel);
 		
 	}
 	
-	protected void cargarGeneradaPor(List<UsuarioCompDTO> usuarios){
-		
-		this.listaGeneradosPor = usuarios;
-		this.generadaPorLb.addItem("TODOS");
-		
-		for (UsuarioCompDTO usuario : usuarios) {
-			this.generadaPorLb.addItem(usuario.getApellidoEmp()+", "+usuario.getNombreEmp()+" ("+usuario.getRolUsu()+")");
-		}	
-	}
-	
-	
-	
-	protected void buscar() {
+	protected void buscarComoGerente() {
 		
 		String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
-		int pos = generadaParaLb.getSelectedIndex();
-		int idEmpleadoPara;
-		
-		if(pos == 0)
-			idEmpleadoPara = 0;
-		else 
-			idEmpleadoPara = this.empleado.getListaEmpACargo().get(pos-1).getIdEmpleado();
-		
-		
 		
 		String fecDesde = "";
 		String fecHasta = "";
@@ -322,11 +410,46 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 			fecDesde = fechaDesdeDb.getTextBox().getText();
 			fecHasta = fechaHastaDb.getTextBox().getText();					
 		}
+
+		int posPor = generadaPorLb.getSelectedIndex();
+		int idEmpleadoPor;
 		
+		
+		if(posPor <= 0) {
+			idEmpleadoPor = 0;
+		}
+		else {		
+			idEmpleadoPor = this.listaGeneradosPor.get(posPor-1).getIdEmpleado();
+		}
+		
+			
+		
+		int posPara;
+		int idEmpleadoPara;
+		
+		if(this.generadaParaLb.getItemCount() <= 0){
+			posPara = 0;
+			idEmpleadoPara = 0;
+			
+		} 
+		else {
+			
+			posPara = generadaParaLb.getSelectedIndex();
+			
+			if(posPara == 0)
+				idEmpleadoPara = 0;
+			else {
+				idEmpleadoPara = this.listaGeneradosPara.get(posPara-1).getIdEmpleado();
+			}
+
+		}
+			
+		
+
 		
 		
 		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.getOrdenProvisionInsumo(unEstado, this.empleado.getIdEmpleado(), idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+		produccionService.getOrdenProvisionInsumo(unEstado, idEmpleadoPor, idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
 			@Override
 			public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
 				cargarTabla(result);			
@@ -343,6 +466,148 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		
 	}
 
+	protected void buscarComoSupervisor() {
+		
+		String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
+		int pos = generadaParaLb.getSelectedIndex();
+		int idEmpleadoPara;
+		
+		if(pos == 0)
+			idEmpleadoPara = 0;
+		else 
+			idEmpleadoPara = this.emp.getListaEmpACargo().get(pos-1).getIdEmpleado();
+		
+		
+		
+		String fecDesde = "";
+		String fecHasta = "";
+		
+		if(fechaCb.getValue() == true){
+			fecDesde = fechaDesdeDb.getTextBox().getText();
+			fecHasta = fechaHastaDb.getTextBox().getText();					
+		}
+		
+		
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.getOrdenProvisionInsumo(unEstado, this.emp.getIdEmpleado(), idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+			@Override
+			public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
+				cargarTabla(result);			
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+			}
+		});
+		
+	}
+	
+	protected void cargarGeneradaParaLbConTODOS(){
+			
+		this.generadaParaLb.clear();
+		this.generadaParaLb.setEnabled(true);
+		this.generadaParaLb.addItem("TODOS");
+		this.listaGeneradosPara = new LinkedList<EmpleadoDTO>();
+		this.listaIdGeneradosPara = new LinkedList<Integer>();
+		boolean bandera = true;
+				
+		for (EmpleadoDTO emp : this.listaGeneradosPor) {
+						
+			for(EmpleadoDTO empInterno : emp.getListaEmpACargo()) {
+				
+				bandera = true;
+				
+				for(int i = 0; i < this.listaIdGeneradosPara.size(); i++) {
+					
+					if(this.listaIdGeneradosPara.get(i) == empInterno.getIdEmpleado()) {
+						bandera = false;
+					}
+				}
+				if(bandera == true) {
+					this.listaIdGeneradosPara.add(empInterno.getIdEmpleado());
+					this.listaGeneradosPara.add(empInterno);
+					this.generadaParaLb.addItem(empInterno.getNombre()+", "+empInterno.getApellido());
+				}
+			}
+		
+		}		
+	}
+	
+	protected void cargarGeneradaParaLbConParaUnGeneradaPor(EmpleadoDTO emp){
+
+		this.generadaParaLb.clear();
+		this.generadaParaLb.setEnabled(true);
+		this.generadaParaLb.addItem("TODOS");
+		this.listaGeneradosPara = new LinkedList<EmpleadoDTO>();
+		this.listaIdGeneradosPara = new LinkedList<Integer>();
+		
+		for(EmpleadoDTO empInterno : emp.getListaEmpACargo()) {
+			
+			this.listaIdGeneradosPara.add(empInterno.getIdEmpleado());
+			this.listaGeneradosPara.add(empInterno);
+			this.generadaParaLb.addItem(empInterno.getNombre()+", "+empInterno.getApellido());
+			
+		}
+			
+	}
+	
+	protected void cargarListaGeneradaPorLb(){
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);		
+		produccionService.getUsuariosSupervisoresYGerenteProduccion(new AsyncCallback<List<UsuarioCompDTO>>() {
+			
+			@Override
+			public void onSuccess(List<UsuarioCompDTO> result) {
+				
+				for (UsuarioCompDTO usuario : result) {
+					
+					generadaPorLb.addItem(usuario.getNombreEmp()+", "+usuario.getApellidoEmp()+" ("+usuario.getRolUsu()+")");
+					
+					ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+					produccionService.getEmpleado(usuario.getNombreEmp(),usuario.getApellidoEmp(),usuario.getRolUsu(), new AsyncCallback<EmpleadoDTO>() {
+						@Override
+						public void onSuccess(EmpleadoDTO result) {
+							
+							agregarAListaGeneradosPor(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR EN EL SERVICIO");
+						}
+					});			
+				}
+				
+				
+				
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		
+	}
+	
+	protected void agregarAListaGeneradosPor(EmpleadoDTO result){
+		listaGeneradosPor.add(result);		
+	}
+	
+	protected void cargarListaEmpleadosACargo(EmpleadoDTO result) {
+		
+		generadaParaLb.addItem("TODOS");
+		
+		for (EmpleadoDTO empleado : result.getListaEmpACargo()) {
+			String emp = empleado.getApellido()+", "+empleado.getNombre();
+			this.generadaParaLb.addItem(emp);
+		}
+		
+		
+	}
+	
 	protected void cargarTabla(List<OrdenProvisionInsumoDTO> result) {
 		
 		this.tablaElementos.clear();
@@ -394,46 +659,17 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 						}
 					});
 				}
-			});
-			
-			
-
-			
-		}
-		
+			});	
+		}	
 	}
 
-
-	
-	protected void salir() {
+	protected void salir(){
 		this.hide();
-
-	}
-
-	protected void cargarListaEmpleadosACargo(EmpleadoDTO result) {
-		
-		generadaParaLb.addItem("TODOS");
-		
-		for (EmpleadoDTO empleado : result.getListaEmpACargo()) {
-			String emp = empleado.getApellido()+", "+empleado.getNombre();
-			this.generadaParaLb.addItem(emp);
-		}
-		
-		
-	}
-
-	protected void cargarSugerenciaEstados(List<String> result) {
-
-		estadoLb.addItem("TODOS");
-		
-		for (String sugerencia : result) {
-			estadoLb.addItem(sugerencia);
-		}
-
 	}
 	
 	protected void seleccionCheck() {
-		if(fechaCb.getValue()==true){
+		
+		if(fechaCb.getValue() == true){
 			fechaDesdeDb.setEnabled(true);
 			fechaHastaDb.setEnabled(true);
 		}
@@ -445,5 +681,14 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 			fechaHastaDb.getTextBox().setText("");
 		}
 	}
-	
+
+	protected void cargarSugerenciaEstados(List<String> result) {
+
+		estadoLb.addItem("TODOS");
+		
+		for (String sugerencia : result) {
+			estadoLb.addItem(sugerencia);
+		}
+
+	}
 }

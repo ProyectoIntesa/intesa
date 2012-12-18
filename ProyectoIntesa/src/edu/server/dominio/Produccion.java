@@ -77,7 +77,7 @@ public class Produccion {
 			else{
 				criterios = criterios+" where fecha_Edicion between '"+fecDesde+"' and '"+fecHasta+"'";
 			}		
-		}
+		}		
 		
 		result = sec.createQuery("from OrdenProvisionInsumo"+criterios).list();
 		sec.close();
