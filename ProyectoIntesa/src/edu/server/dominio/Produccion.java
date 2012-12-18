@@ -136,7 +136,19 @@ public class Produccion {
 	
 	}
 	
+	public List<RemitoInternoInsumo> getRemitosInternosInsumosCerradosDeUnaCiertaOrdenProvisionInsumo(int idEstado, long idOrden){
+		
+		List<RemitoInternoInsumo> result = new LinkedList<RemitoInternoInsumo>();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		result = sec.createQuery("from RemitoInternoInsumo where id_Estado_Remito = "+idEstado+" and id_Orden_Provision_Insumo = "+idOrden).list();
+		
+		sec.close();
+		return result;
 	
+	}
+		
 	public boolean validarOrdenProvisionInsumos(Long nroOrden, int estado){
 
 		Boolean respuesta = false;
@@ -199,6 +211,26 @@ public class Produccion {
 		return respuesta;
 		
 	}
-	
+
+	public boolean cerrarOrdenesProvisionInsumos(Long nroOrden, int estado){
+
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Orden_Provision_Insumo set id_Estado_Orden = "+estado+" where id_Orden_Provision_Insumo = "+nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
+	}
 	
 }

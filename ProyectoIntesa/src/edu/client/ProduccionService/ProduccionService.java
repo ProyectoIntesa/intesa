@@ -52,4 +52,8 @@ public interface ProduccionService extends RemoteService {
 
 	List<UsuarioCompDTO> getUsuariosSupervisoresYGerenteProduccion() throws IllegalArgumentException;
 
+	List<Long> getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden) throws IllegalArgumentException;
+
+	Boolean cerrarOrdenesProvision() throws IllegalArgumentException;
+
 }

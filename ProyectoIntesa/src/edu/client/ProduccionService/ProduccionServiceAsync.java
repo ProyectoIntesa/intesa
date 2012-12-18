@@ -50,4 +50,8 @@ public interface ProduccionServiceAsync {
 
 	void getUsuariosSupervisoresYGerenteProduccion(AsyncCallback<List<UsuarioCompDTO>> callback) throws IllegalArgumentException;
 
+	void getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden, AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
+
+	void cerrarOrdenesProvision(AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
 }

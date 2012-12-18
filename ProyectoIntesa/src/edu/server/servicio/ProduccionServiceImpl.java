@@ -64,7 +64,6 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return adminInsumos.getNombresMarcasSegunInsumo(nombreInsumo);
 	}
 	
-	
 	@Override
 	public EmpleadoDTO getEmpleado(String nombre, String apellido, String rol) throws IllegalArgumentException {
 		
@@ -93,7 +92,6 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 
 		return empleadoDTO;
 	}
-	
 	
 	@Override
 	public boolean registrarOrdenProvisionInsumo(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
@@ -262,8 +260,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		
 		return orden;
 	}
-	
-	
+		
 	public InsumoDTO getInsumoCompleto(int idInsumo, String nombreInsumo)  throws IllegalArgumentException {
 		
 		InsumoDTO result = new InsumoDTO();
@@ -396,7 +393,6 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		}
 	}
 
-	
 	@Override
 	public List<Long> idsRemitosInternosInsumos() throws IllegalArgumentException{
 		Produccion adminProd = new Produccion();
@@ -406,7 +402,6 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		}
 		return result;	
 	}
-	
 	
 	@Override
 	public List<Long> getRemitosInternosInsumosGenerados() throws IllegalArgumentException{
@@ -470,8 +465,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		
 		
 	}
-	
-	
+		
 	@Override
 	public Boolean validarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException{
 		
@@ -490,7 +484,6 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return result;
 	}
 
-	
 	@Override
 	public Boolean cancelarOrdenesProvisionInsumos(List<Long> listaOrdenes) throws IllegalArgumentException{
 		
@@ -554,5 +547,173 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		
 		
 	}
+	
+	@Override
+	public Boolean cerrarOrdenesProvision() throws IllegalArgumentException{
+				
+		Estado adminEstados = new Estado();
+		int idEstado = adminEstados.getIdEstado("VALIDADA");
+		Produccion adminProd = new Produccion();
+		
+		List<OrdenProvisionInsumoDTO> listaResult = new LinkedList<OrdenProvisionInsumoDTO>();
+		List<OrdenProvisionInsumo> result = new LinkedList<OrdenProvisionInsumo>();
+		List<Long> listaIdOrdenesProvisionInsumosACerrar = new LinkedList<Long>();
+		
+		result = adminProd.getOrdenProvisionInsumo(idEstado,0,0,"","");
+		
+		for (OrdenProvisionInsumo orden : result) {
+			
+			OrdenProvisionInsumoDTO ordendto = new OrdenProvisionInsumoDTO();
+			ordendto = this.getOrdenProvisionInsumoSegunId(orden.getIdOrdenProvisionInsumo());
+			
+			listaResult.add(ordendto);
+			
+		}
+		
+		
+		for (OrdenProvisionInsumoDTO orden : listaResult) {
+			
+			long idOrden = orden.getIdOrdenProvisionInsumo();
+			
+			List<Long> listaIdRemitos = new LinkedList<Long>();
+			
+			listaIdRemitos = this.getRemitosInternosInsumosSegunIdOrdenProvision(idOrden);
+			
+			List<RemitoProvisionInsumoDTO> listaRemitos = new LinkedList<RemitoProvisionInsumoDTO>();
+			
+			for (int i = 0; i < listaIdRemitos.size(); i++){
+				
+				long idRemito = listaIdRemitos.get(i);
+				RemitoProvisionInsumoDTO remito = new RemitoProvisionInsumoDTO();
+				remito = this.getOrdenRemitoInternoInsumoSegunId(idRemito);
+				listaRemitos.add(remito);
+				
+			}
+			
+			List<InsumoDTO> insumosRemitos = new LinkedList<InsumoDTO>();
+			List<InsumoDTO> insumosRemitosFinal = new LinkedList<InsumoDTO>();
+			
+			for (RemitoProvisionInsumoDTO remito : listaRemitos) {
+				
+				for (RenglonRemitoProvisionInsumoDTO renglon : remito.getRenglonRemitoProvisionInsumos()) {
+				
+					String nombreInsumo = ((InsumoDTO)renglon.getInsumo()).getNombre();
+					String marcaInsumo = ((InsumoDTO)renglon.getInsumo()).getMarca();
+					
+					InsumoDTO nuevoInsumo = new InsumoDTO();
+					nuevoInsumo.setNombre(nombreInsumo);
+					nuevoInsumo.setMarca(marcaInsumo);
+					nuevoInsumo.setCantidad((int)renglon.getCantidadEntregada());
+					
+					insumosRemitos.add(nuevoInsumo);
+					
+				}
+			}
+			
+			for (int k = 0; k < insumosRemitos.size(); k++){
+				
+				boolean bandera = true;
+				
+				for (int h = 0; h < insumosRemitosFinal.size(); h++){
+					
+					String nombreDuplicado = insumosRemitos.get(k).getNombre();
+					String marcaDuplicado = insumosRemitos.get(k).getMarca();
+					String nombreFinal = insumosRemitosFinal.get(h).getNombre();
+					String marcaFinal = insumosRemitosFinal.get(h).getMarca();
+					
+					if(nombreDuplicado.compareTo(nombreFinal) == 0 && marcaDuplicado.compareTo(marcaFinal) == 0){
+						bandera = false;
+						break;
+					}
+				}
+				
+				if(bandera == true){
+					
+					InsumoDTO nuevoInsumo = new InsumoDTO();
+					nuevoInsumo.setNombre(insumosRemitos.get(k).getNombre());
+					nuevoInsumo.setMarca(insumosRemitos.get(k).getMarca());
+					nuevoInsumo.setCantidad(0);
+					insumosRemitosFinal.add(nuevoInsumo);
+				}
+			}
+			
+			for (int p = 0; p < insumosRemitos.size(); p++){
+				
+				for(int n = 0; n < insumosRemitosFinal.size(); n++){
+					
+					String nombreDuplicado = insumosRemitos.get(p).getNombre();
+					String marcaDuplicado = insumosRemitos.get(p).getMarca();
+					String nombreFinal = insumosRemitosFinal.get(n).getNombre();
+					String marcaFinal = insumosRemitosFinal.get(n).getMarca();
+					
+					if(nombreDuplicado.compareTo(nombreFinal) == 0 && marcaDuplicado.compareTo(marcaFinal) == 0){
+						
+						int cant = insumosRemitos.get(p).getCantidad();
+						insumosRemitosFinal.get(n).setCantidad(insumosRemitosFinal.get(n).getCantidad()+cant);
+						break;
+					}
+				}
+			}
+			
+			
+			for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+				
+				for (InsumoDTO insumo : insumosRemitosFinal) {
+					
+					String nombreInsumoRenglon = ((InsumoDTO)renglon.getInsumo()).getNombre();
+					String marcaInsumoRenglon = ((InsumoDTO)renglon.getInsumo()).getMarca();
+					String nombreInsumo = insumo.getNombre();
+					String marcaInsumo = insumo.getMarca();
+					
+					if(nombreInsumoRenglon.compareTo(nombreInsumo) == 0 && marcaInsumoRenglon.compareTo(marcaInsumo) == 0){
+						renglon.setCantidadRequerida(renglon.getCantidadRequerida()-insumo.getCantidad());
+					}
+				}
+			}
+			
+			boolean banderita = false;
+			
+			for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+				
+				if(renglon.getCantidadRequerida() != 0){
+					banderita = true;
+					break;
+				}
+			}
+			
+			if(banderita == false){
+				
+				listaIdOrdenesProvisionInsumosACerrar.add(orden.getIdOrdenProvisionInsumo());
+			}
+			
+		}
+		
+		
+		for (Long id : listaIdOrdenesProvisionInsumosACerrar) {
+			
+			int est = adminEstados.getIdEstado("CERRADA");
+			
+			adminProd.cerrarOrdenesProvisionInsumos(id, est);
+			
+			
+		}
+		
+		
+		return true;
+	}
+	
+	@Override
+	public List<Long> getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden) throws IllegalArgumentException{
+		Produccion adminProd = new Produccion();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("CERRADA");
+		List<Long> result = new LinkedList<Long>();
+		
+		
+		for (RemitoInternoInsumo remito : adminProd.getRemitosInternosInsumosCerradosDeUnaCiertaOrdenProvisionInsumo(est, idOrden)) {
+			result.add(remito.getIdRemitoInsumo());	
+		}
+		return result;	
+	}	
 	
 }

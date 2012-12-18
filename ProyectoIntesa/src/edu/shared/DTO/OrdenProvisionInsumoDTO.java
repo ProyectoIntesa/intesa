@@ -18,7 +18,7 @@ public class OrdenProvisionInsumoDTO implements java.io.Serializable{
 	private Date fechaGeneracion;
 	private Date fechaCierre;
 	private String observaciones;
-	//private Set <RemitoInternoInsumoDTO>remitoInternoInsumos = new HashSet<RemitoInternoInsumoDTO>(0);
+	private Set <RemitoProvisionInsumoDTO>remitoProvisionInsumos = new HashSet<RemitoProvisionInsumoDTO>(0);
 	private Set <RenglonOrdenProvisionInsumoDTO>renglonOrdenProvisionInsumos = new HashSet<RenglonOrdenProvisionInsumoDTO>(0);
 
 	public OrdenProvisionInsumoDTO(){

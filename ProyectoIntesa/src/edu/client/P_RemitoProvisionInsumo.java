@@ -1,6 +1,8 @@
 package edu.client;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -369,8 +371,10 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 
 			@Override
 			public void onSuccess(Boolean result) {
-				if(result)
+				if(result){
 					Window.alert("El remito ha sido cerrado");
+					cerrarAutomaticamenteOrdenProvisionInsumo();
+				}
 				else
 					Window.alert("El remito NO ha sido cerrado");
 				cancelar();
@@ -521,6 +525,46 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	public boolean getAccionSalir(){
 		return this.accionSalir;
 	}
+		
+	protected void cerrarAutomaticamenteOrdenProvisionInsumo(){
+		
+		
+		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+		produccionService.cerrarOrdenesProvision(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+				
+			}
+		
+		});
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
