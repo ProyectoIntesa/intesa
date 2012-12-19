@@ -5,7 +5,10 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface Constantes extends Constants {
 
-	  @DefaultStringValue("ORDEN COMPRA DE INSUMO")
+	 @DefaultStringValue("IMPRIMIR")
+	  String imprimir(); 
+	
+	@DefaultStringValue("ORDEN COMPRA DE INSUMO")
 	  String ordenCompraDeInsumo();
 	  
 	  @DefaultStringValue("CANCELAR ORDENES")

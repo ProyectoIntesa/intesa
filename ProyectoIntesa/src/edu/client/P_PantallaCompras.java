@@ -16,6 +16,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -364,6 +365,17 @@ public class P_PantallaCompras extends Composite {
 			popUp.setGlassEnabled(true);
 			popUp.center();
 			popUp.show();
+			popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+				@Override
+				public void onClose(CloseEvent<PopupPanel> event) {				
+				
+					if (popUp.imprimir())
+					{						
+						abrirPantallaImpresion(popUp.formulario());							
+					}
+				}
+			});
 			
 		}
 
@@ -402,6 +414,17 @@ public class P_PantallaCompras extends Composite {
 	}
 	
 	
+	protected void abrirPantallaImpresion(FlexTable formu) {
+		P_ImpresionCompras imprime = new P_ImpresionCompras(formu, usuario);
+		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		RootPanel.get().add(imprime); 
+		try { 
+			 this.finalize(); 
+		} catch(Throwable e) 
+		{ e.printStackTrace(); }
+		 
+	}
+
 	protected void agregarOrden() {
 		
 		String titulo;

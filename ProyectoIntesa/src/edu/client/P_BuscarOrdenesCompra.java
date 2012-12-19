@@ -66,7 +66,8 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 	
 	private DateBox fechaDesdeDb;
 	private DateBox fechaHastaDb;
-	
+	private boolean imprimir;
+	private FlexTable impresion;
 	List<OrdenCompraInsumoDTO> ordenes;
 
 	
@@ -76,7 +77,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 		setStyleName("fondoPopup");
 		
-			
+		imprimir = false;	
 		fechaCb = new CheckBox(constante.fechaEdicion());
 		fechaCb.setStyleName("check");
 		fechaCb.setWordWrap(false);
@@ -338,6 +339,11 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 									{						
 										buscar();							
 									}
+									else if(detalle.imprimir()== true){
+										impresion = detalle.armarImpresion();
+										imprimir = true;
+										salir();
+									}
 								}
 							});
 							
@@ -402,5 +408,13 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 	protected void salir() {
 		this.hide();
 
+	}
+	
+	public boolean imprimir(){
+	 return this.imprimir;
+	}
+	
+	public FlexTable formulario(){
+		return this.impresion;
 	}
 }
