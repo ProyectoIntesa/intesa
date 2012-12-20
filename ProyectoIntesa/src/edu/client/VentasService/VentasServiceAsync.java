@@ -37,6 +37,8 @@ public interface VentasServiceAsync {
 
 	void retornaIdContacto(String nombreEmpresa, String nombreContacto, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 
+	void getEmpresas(AsyncCallback<List<ClienteDTO>> callback) throws IllegalArgumentException;
+
 
 
 	

@@ -45,7 +45,7 @@ public class Proveedores {
 		return result;
 
 	}
-	
+		
 	public List<String> getNombresEmpresas() {
 
 		List<String> result = new LinkedList<String>();
@@ -230,6 +230,21 @@ public class Proveedores {
 		sec.beginTransaction();
 
 		result = sec.createQuery("from Proveedor where nombre like '" + nombre + "'").list();
+
+		sec.close();
+
+		return result;
+
+	}
+	
+	public List<Proveedor> getEmpresas() {
+
+		List<Proveedor> result = new LinkedList<Proveedor>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createQuery("from Proveedor").list();
 
 		sec.close();
 

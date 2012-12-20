@@ -211,7 +211,23 @@ public class Insumos {
 				insu.setCategoria(cat);
 
 			}
+		} else if (tipo.compareTo("") == 0) {
+						
+			result = sec.createQuery("from Insumo").list();
+			
+			for (Insumo insumo : result) {
+
+				Marca marca = new Marca();
+				Categoria cat = new Categoria();
+				marca = (Marca) sec.get(marca.getClass(), insumo.getMarca().getIdMarca());
+				cat = (Categoria) sec.get(cat.getClass(), insumo.getCategoria().getIdCategoria());
+
+				insumo.setMarca(marca);
+				insumo.setCategoria(cat);
+
+			}
 		}
+		
 
 		sec.close();
 
@@ -323,7 +339,6 @@ public class Insumos {
 		sec.close();
 		return (int)idInsumo;
 	}
-
 
 	public String getNombreMarca(int idMarca){
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();

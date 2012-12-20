@@ -87,7 +87,7 @@ public interface ComprasServiceAsync {
 
 	void getOrdenCompraInsumoEnviada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
 
-
+	void getEmpresas(AsyncCallback<List<ProveedorDTO>> callback) throws IllegalArgumentException;
 
 
 

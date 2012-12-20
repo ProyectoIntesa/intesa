@@ -568,132 +568,198 @@ public class P_FormularioCliente extends Composite {
 
 	public void agregarCliente(ClickEvent event) {
 
-		DireccionDTO direccion = new DireccionDTO();
-		direccion.setPais(this.paisTb.getText());
-		direccion.setProvincia(this.provinciaTb.getText());
-		direccion.setLocalidad(this.localidadTb.getText());
-		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-		direccion.setCalle(this.calleTb.getText());
-		direccion.setAltura(this.alturaTb.getText());
-		direccion.setPiso(this.pisoTb.getText());
-		direccion.setOficina(this.oficinaTb.getText());
-		direccion.setCpa(this.cpaTb.getText());
+		Validaciones validar = new Validaciones();
+		
+		boolean vNombreEmpresa = validar.textBoxVacio(this.nombreEmpresaTb.getText());
+		boolean vCuit = validar.textBoxVacio(this.nroCuitTb.getText());
+		boolean vResponsable = validar.textBoxVacio(this.responsableTb.getText());
+		boolean vPais = validar.textBoxVacio(this.paisTb.getText());
+		boolean vProv = validar.textBoxVacio(this.provinciaTb.getText());
+		boolean vLocalidad = validar.textBoxVacio(this.localidadTb.getText());
+		boolean vCalle = validar.textBoxVacio(this.calleTb.getText());
+		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
+		
+		if(!vNombreEmpresa && !vCuit && !vResponsable && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
+			DireccionDTO direccion = new DireccionDTO();
+			direccion.setPais(this.paisTb.getText());
+			direccion.setProvincia(this.provinciaTb.getText());
+			direccion.setLocalidad(this.localidadTb.getText());
+			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+			direccion.setCalle(this.calleTb.getText());
+			direccion.setAltura(this.alturaTb.getText());
+			direccion.setPiso(this.pisoTb.getText());
+			direccion.setOficina(this.oficinaTb.getText());
+			direccion.setCpa(this.cpaTb.getText());
 
-		ClienteDTO cliente = new ClienteDTO();
-		cliente.setNombre(this.nombreEmpresaTb.getText());
-		cliente.setCuit(this.nroCuitTb.getText());
-		cliente.setResponsable(this.responsableTb.getText());
-		cliente.setRubro(this.rubroTb.getText());
-		cliente.setTelefono(this.telefonoTb.getText());
-		cliente.setFax(this.faxTb.getText());
-		cliente.setMail(this.emailTb.getText());
-		cliente.setPaginaWeb(this.webTb.getText());
-		cliente.setDireccion(direccion);
-		cliente.setObservaciones(this.observacionTb.getText());
+			ClienteDTO cliente = new ClienteDTO();
+			cliente.setNombre(this.nombreEmpresaTb.getText());
+			cliente.setCuit(this.nroCuitTb.getText());
+			cliente.setResponsable(this.responsableTb.getText());
+			cliente.setRubro(this.rubroTb.getText());
+			cliente.setTelefono(this.telefonoTb.getText());
+			cliente.setFax(this.faxTb.getText());
+			cliente.setMail(this.emailTb.getText());
+			cliente.setPaginaWeb(this.webTb.getText());
+			cliente.setDireccion(direccion);
+			cliente.setObservaciones(this.observacionTb.getText());
 
-		if (tablaElemento.getRowCount() > 1) {
+			if (tablaElemento.getRowCount() > 1) {
 
-			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-				
-				ContactoDTO contacto = new ContactoDTO();
-				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+					
+					ContactoDTO contacto = new ContactoDTO();
+					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
 
-				cliente.getContacto().add(contacto);
+					cliente.getContacto().add(contacto);
+				}
+
 			}
 
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+			ventasService.registrarNuevoCliente(cliente, new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("NUEVO CLIENTE REGISTRADO!!!");
+						padre.remove(numeroElemento(constante.nuevoCliente()));
+					} else
+						Window.alert("NO SE PUDO REGISTRAR EL CLIENTE");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+			});
 		}
-
-		VentasServiceAsync ventasService = GWT.create(VentasService.class);
-		ventasService.registrarNuevoCliente(cliente, new AsyncCallback<Boolean>() {
-
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					Window.alert("NUEVO CLIENTE REGISTRADO!!!");
-					padre.remove(numeroElemento(constante.nuevoCliente()));
-				} else
-					Window.alert("NO SE PUDO REGISTRAR EL CLIENTE");
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-
-			}
-		});
+		else{
+			if(vNombreEmpresa)
+				Window.alert("El nombre de la empresa no puede ser nulo");
+			else if (vCuit)
+				Window.alert("El número de cuit no puede ser nulo");
+			else if (vResponsable)
+				Window.alert("El campo responsable no puede ser nulo");
+			else if (vPais)
+				Window.alert("El país no puede ser nulo");
+			else if (vProv)
+				Window.alert("La provincia no puede ser nula");
+			else if (vLocalidad)
+				Window.alert("La localidad no puede ser nula");
+			else if (vCalle)
+				Window.alert("La calle no puede ser nula");
+			else if (vAltura)
+				Window.alert("La altura no puede ser nula");
+		}
+		
+		
+		
+		
 	}
 		
 	public void guardarCambiosCliente(ClickEvent event) {
 		
-		DireccionDTO direccion = new DireccionDTO();
-		direccion.setPais(this.paisTb.getText());
-		direccion.setProvincia(this.provinciaTb.getText());
-		direccion.setLocalidad(this.localidadTb.getText());
-		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-		direccion.setCalle(this.calleTb.getText());
-		direccion.setAltura(this.alturaTb.getText());
-		direccion.setPiso(this.pisoTb.getText());
-		direccion.setOficina(this.oficinaTb.getText());
-		direccion.setCpa(this.cpaTb.getText());
 		
-		ClienteDTO clienteModificado = new ClienteDTO();
-		clienteModificado.setNombre(this.nombreEmpresaTb.getText());
-		clienteModificado.setCuit(this.nroCuitTb.getText());
-		clienteModificado.setResponsable(this.responsableTb.getText());
-		clienteModificado.setRubro(this.rubroTb.getText());
-		clienteModificado.setTelefono(this.telefonoTb.getText());
-		clienteModificado.setFax(this.faxTb.getText());
-		clienteModificado.setMail(this.emailTb.getText());
-		clienteModificado.setPaginaWeb(this.webTb.getText());
-		clienteModificado.setDireccion(direccion);
-		clienteModificado.setObservaciones(this.observacionTb.getText());
+		Validaciones validar = new Validaciones();
 		
-		if (tablaElemento.getRowCount() > 1) {
+		boolean vCuit = validar.textBoxVacio(this.nroCuitTb.getText());
+		boolean vResponsable = validar.textBoxVacio(this.responsableTb.getText());
+		boolean vPais = validar.textBoxVacio(this.paisTb.getText());
+		boolean vProv = validar.textBoxVacio(this.provinciaTb.getText());
+		boolean vLocalidad = validar.textBoxVacio(this.localidadTb.getText());
+		boolean vCalle = validar.textBoxVacio(this.calleTb.getText());
+		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
+		
+		if(!vCuit && !vResponsable && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
+			DireccionDTO direccion = new DireccionDTO();
+			direccion.setPais(this.paisTb.getText());
+			direccion.setProvincia(this.provinciaTb.getText());
+			direccion.setLocalidad(this.localidadTb.getText());
+			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+			direccion.setCalle(this.calleTb.getText());
+			direccion.setAltura(this.alturaTb.getText());
+			direccion.setPiso(this.pisoTb.getText());
+			direccion.setOficina(this.oficinaTb.getText());
+			direccion.setCpa(this.cpaTb.getText());
+			
+			ClienteDTO clienteModificado = new ClienteDTO();
+			clienteModificado.setNombre(this.nombreEmpresaTb.getText());
+			clienteModificado.setCuit(this.nroCuitTb.getText());
+			clienteModificado.setResponsable(this.responsableTb.getText());
+			clienteModificado.setRubro(this.rubroTb.getText());
+			clienteModificado.setTelefono(this.telefonoTb.getText());
+			clienteModificado.setFax(this.faxTb.getText());
+			clienteModificado.setMail(this.emailTb.getText());
+			clienteModificado.setPaginaWeb(this.webTb.getText());
+			clienteModificado.setDireccion(direccion);
+			clienteModificado.setObservaciones(this.observacionTb.getText());
+			
+			if (tablaElemento.getRowCount() > 1) {
 
-			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-								
-				ContactoDTO contacto = new ContactoDTO();
-				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+									
+					ContactoDTO contacto = new ContactoDTO();
+					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
 
-				clienteModificado.getContacto().add(contacto);
+					clienteModificado.getContacto().add(contacto);
+				}
+
 			}
 
+			
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+			
+			
+			
+			ventasService.registrarCambioCliente(clienteModificado, new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("CAMBIOS DE CLIENTE REGISTRADO!!!");
+						padre.remove(numeroElemento(constante.modificarCliente()));
+					} else
+						Window.alert("No se han podido registrar los cambios en el cliente");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+			});
 		}
-
+		else{
+			if (vCuit)
+				Window.alert("El número de cuit no puede ser nulo");
+			else if (vResponsable)
+				Window.alert("El campo responsable no puede ser nulo");
+			else if (vPais)
+				Window.alert("El país no puede ser nulo");
+			else if (vProv)
+				Window.alert("La provincia no puede ser nula");
+			else if (vLocalidad)
+				Window.alert("La localidad no puede ser nula");
+			else if (vCalle)
+				Window.alert("La calle no puede ser nula");
+			else if (vAltura)
+				Window.alert("La altura no puede ser nula");
+		}
 		
-		VentasServiceAsync ventasService = GWT.create(VentasService.class);
 		
-		
-		
-		ventasService.registrarCambioCliente(clienteModificado, new AsyncCallback<Boolean>() {
-
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					Window.alert("CAMBIOS DE CLIENTE REGISTRADO!!!");
-					padre.remove(numeroElemento(constante.modificarCliente()));
-				} else
-					Window.alert("No se han podido registrar los cambios en el cliente");
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-
-			}
-		});
 	}
 	
 	public void capturarDatos(String nombre, String cargo, String telempresa, String interno, String telParticular, String celular, String correo) {

@@ -276,135 +276,262 @@ public class P_BuscarProveedor extends PopupPanel {
 
 			String contacto = contactoSb.getText();
 
-			// ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.getCellFormatter().setWidth(0, COL_RUBRO, "145px");
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.getCellFormatter().setWidth(0, COL_EMPRESA, "145px");
-			tablaElemento.setText(0, COL_NOMBRE, constante.nombreContacto());
-			tablaElemento.getCellFormatter().setWidth(0, COL_NOMBRE, "145px");
-			tablaElemento.setText(0, COL_CARGO, constante.cargo());
-			tablaElemento.getCellFormatter().setWidth(0, COL_CARGO, "145px");
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getCellFormatter().setWidth(0, COL_INFO, "20px");
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+			if(contacto.compareTo("")==0){
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getEmpresas(new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
 
-			comprasService.getEmpresasPorContacto(contacto, new AsyncCallback<List<ContactoDTO>>() {
-				@Override
-				public void onSuccess(List<ContactoDTO> result) {
-					if (result.size() > 0) {
-						contactos = result;
-						cargarContactos();
-					} else
-						Window.alert("No se han encontrado resultados");
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
 
-				}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			else{
+				
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.getCellFormatter().setWidth(0, COL_RUBRO, "145px");
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.getCellFormatter().setWidth(0, COL_EMPRESA, "145px");
+				tablaElemento.setText(0, COL_NOMBRE, constante.nombreContacto());
+				tablaElemento.getCellFormatter().setWidth(0, COL_NOMBRE, "145px");
+				tablaElemento.setText(0, COL_CARGO, constante.cargo());
+				tablaElemento.getCellFormatter().setWidth(0, COL_CARGO, "145px");
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getCellFormatter().setWidth(0, COL_INFO, "20px");
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar contacto");
-				}
-			});
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getEmpresasPorContacto(contacto, new AsyncCallback<List<ContactoDTO>>() {
+					@Override
+					public void onSuccess(List<ContactoDTO> result) {
+						if (result.size() > 0) {
+							contactos = result;
+							cargarContactos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar contacto");
+					}
+				});
+			}
+
 
 		} else if (rubro.getValue() == true) {
 
 			String rubro = rubroSb.getText();
 
-			// ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
-			tablaElemento.setText(0, COL_MAIL, constante.eMail());
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+			if(rubro.compareTo("")==0){
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getEmpresas(new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
 
-			comprasService.getEmpresasPorRubro(rubro, new AsyncCallback<List<ProveedorDTO>>() {
-				@Override
-				public void onSuccess(List<ProveedorDTO> result) {
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
 
-					if (result.size() > 0) {
-						proveedores = result;
-						cargarProveedores();
-					} else
-						Window.alert("No se han encontrado resultados");
-				}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			else{
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar empresa");
-				}
-			});
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getEmpresasPorRubro(rubro, new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
+
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+
 
 		} else if (empresa.getValue() == true) {
 
 			String empresa = empresaSb.getText();
 
-			// ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
-			tablaElemento.setText(0, COL_MAIL, constante.eMail());
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+			if(empresa.compareTo("")==0){
+				
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getEmpresas(new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
 
-			comprasService.getEmpresas(empresa, new AsyncCallback<List<ProveedorDTO>>() {
-				@Override
-				public void onSuccess(List<ProveedorDTO> result) {
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
 
-					if (result.size() > 0) {
-						proveedores = result;
-						cargarProveedores();
-					} else
-						Window.alert("No se han encontrado resultados");
-				}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			else{
+				
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar empresa");
-				}
-			});
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-		} else if (empresa.getValue() == true) {
+				comprasService.getEmpresas(empresa, new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
 
-			String empresa = empresaSb.getText();
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
 
-			// ARMA EL ENCABEZADO DE LA LISTA
-			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
-			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
-			tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
-			tablaElemento.setText(0, COL_MAIL, constante.eMail());
-			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
-			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-
-			comprasService.getEmpresas(empresa, new AsyncCallback<List<ProveedorDTO>>() {
-				@Override
-				public void onSuccess(List<ProveedorDTO> result) {
-
-					if (result.size() > 0) {
-						proveedores = result;
-						cargarProveedores();
-					} else
-						Window.alert("No se han encontrado resultados");
-				}
-
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar empresa");
-				}
-			});
 
 		} else if (tipo.getValue() == true) {
 
 			String tipo = tipoSb.getText();
 
+			if(tipo.compareTo("")==0){
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getEmpresas(new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
+
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			else{
+				// ARMA EL ENCABEZADO DE LA LISTA
+				tablaElemento.setText(0, COL_RUBRO, constante.rubro());
+				tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
+				tablaElemento.setText(0, COL_TELEFONO, constante.telefono());
+				tablaElemento.setText(0, COL_MAIL, constante.eMail());
+				tablaElemento.setText(0, COL_INFO, constante.masInformacion());
+				tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
+
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getEmpresasPorTipo(tipo, new AsyncCallback<List<ProveedorDTO>>() {
+					@Override
+					public void onSuccess(List<ProveedorDTO> result) {
+
+						if (result.size() > 0) {
+							proveedores = result;
+							cargarProveedores();
+						} else
+							Window.alert("No se han encontrado resultados");
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar empresa");
+					}
+				});
+			}
+			
+
+
+		} else if (contacto.getValue() == false && rubro.getValue() == false && empresa.getValue() == false && tipo.getValue() == false){
+			
 			// ARMA EL ENCABEZADO DE LA LISTA
 			tablaElemento.setText(0, COL_RUBRO, constante.rubro());
 			tablaElemento.setText(0, COL_EMPRESA, constante.empresa());
@@ -412,10 +539,10 @@ public class P_BuscarProveedor extends PopupPanel {
 			tablaElemento.setText(0, COL_MAIL, constante.eMail());
 			tablaElemento.setText(0, COL_INFO, constante.masInformacion());
 			tablaElemento.getRowFormatter().addStyleName(0, "tablaEncabezado");
-
+			
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			comprasService.getEmpresasPorTipo(tipo, new AsyncCallback<List<ProveedorDTO>>() {
+			comprasService.getEmpresas(new AsyncCallback<List<ProveedorDTO>>() {
 				@Override
 				public void onSuccess(List<ProveedorDTO> result) {
 
@@ -431,9 +558,9 @@ public class P_BuscarProveedor extends PopupPanel {
 					Window.alert("ERROR al buscar empresa");
 				}
 			});
-
-		}else
-			Window.alert("DEBE SELECCIONAR UN TIPO DE BUSQUEDA");
+			
+		}
+			
 		
 		
 		
@@ -471,7 +598,7 @@ public class P_BuscarProveedor extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("ERROR al buscar empresa");
+							Window.alert("ERROR en el servicio");
 						}
 
 						@Override

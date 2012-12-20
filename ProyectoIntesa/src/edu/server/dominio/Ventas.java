@@ -249,6 +249,21 @@ public class Ventas {
 		
 	}
 	
+	public List<Cliente> getEmpresas(){
+		
+		List<Cliente> result = new LinkedList<Cliente>();
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		result = sec.createQuery("from Cliente").list();
+		
+		sec.close();		
+		
+		return result;
+		
+	}
+	
 	public List<Cliente> getEmpresasPorRubro(String nombre){
 		
 		List<Cliente> result = new LinkedList<Cliente>();

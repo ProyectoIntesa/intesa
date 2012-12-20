@@ -380,9 +380,16 @@ public class P_NuevoEmpleado extends Composite {
 		
 		if(!resultV3 && !resultV4 && resultV1 && resultV2)
 			modificarEmpleado();
-		else
-			Window.alert("ERROR EN EL INGRESO DE LOS DATOS!!!");
-		
+		else{
+			if(!resultV1)
+				Window.alert("El apellido del empleado debe estar compuesto solo por letras");
+			else if(!resultV2)
+				Window.alert("El nombre del empleado debe estar compuesto solo por letras");
+			else if(resultV3)
+				Window.alert("El apellido del empleado no puede ser nulo");
+			else if(resultV4)
+				Window.alert("El nombre del empleado no puede ser nulo");			
+		}
 	}
 
 	protected void modificarEmpleado() {
@@ -635,8 +642,18 @@ public class P_NuevoEmpleado extends Composite {
 			
 			
 		}
-		else
-			Window.alert("ERROR EN EL INGRESO DE LOS DATOS!!!");
+		else{
+			if(!resultV1)
+				Window.alert("El apellido del empleado debe estar compuesto solo por letras");
+			else if(!resultV2)
+				Window.alert("El nombre del empleado debe estar compuesto solo por letras");
+			else if(resultV3)
+				Window.alert("El apellido del empleado no puede ser nulo");
+			else if(resultV4)
+				Window.alert("El nombre del empleado no puede ser nulo");
+			else if(!resultV5)
+				Window.alert("El número de legajo debe estar compuesto solo de números");	
+		}
 		
 	}
 

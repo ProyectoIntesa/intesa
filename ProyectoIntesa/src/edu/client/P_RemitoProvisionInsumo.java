@@ -387,56 +387,107 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			}
 		});
 		
-	}	
+	}		
 	
-	protected void guardarRemitoProvisionInterno() {
+protected void guardarRemitoProvisionInterno() {
 		
-		RemitoProvisionInsumoDTO remito = new RemitoProvisionInsumoDTO();
-		remito.setEmpleado(usuario);
-		remito.setEstadoOrden("GENERADA");
-		remito.setFechaEdicion(new Date());
-		remito.setFechaGenaracion(new Date());
-		remito.setObservaciones(this.observacionesDelRemitoTa.getText());
-		remito.setIdOrdenProvisionInsumo(orden.getIdOrdenProvisionInsumo());
+		Validaciones validar = new Validaciones();
+		boolean vCantPedida1 = false;
+		boolean vCantPedida2 = false;
+		boolean vCantPedida3 = false;
+		boolean vCantPedida4 = false;
+		boolean entro = false;
+		
 		
 		for(int i = 1; i < tablaElementos.getRowCount(); i++){
 			
 			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+			
+				entro = true;
+				String cantPedida = ((TextBox)tablaElementos.getWidget(i, COL_CANTENT)).getText();
+				vCantPedida1 = validar.textBoxVacio(cantPedida);
+				vCantPedida2 = validar.textBoxSoloNumeros(cantPedida);
 				
-				Integer cantAEnviar = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANTENT)).getText());
+				if(!vCantPedida1 && vCantPedida2){
+					
+					Float cantPe = Float.parseFloat(((TextBox)tablaElementos.getWidget(i, COL_CANTENT)).getText());
+					Float cantFa = Float.parseFloat(((Label)tablaElementos.getWidget(i, COL_CANTFAL)).getText());
+					Float cantDi = Float.parseFloat(((Label)tablaElementos.getWidget(i, COL_CANTDIS)).getText());
+					
+					if(cantPe > cantFa)
+						vCantPedida3 = true;
+					if(cantPe > cantDi)
+						vCantPedida4 = true;
+				}
 				
-				if(cantAEnviar != 0){
-					InsumoDTO insumo = new InsumoDTO();
-					insumo.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
-					insumo.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
+			}
+			
+		}
+		
+		
+		if(!vCantPedida1 && vCantPedida2 && !vCantPedida3 && !vCantPedida4){
+			
+			RemitoProvisionInsumoDTO remito = new RemitoProvisionInsumoDTO();
+			remito.setEmpleado(usuario);
+			remito.setEstadoOrden("GENERADA");
+			remito.setFechaEdicion(new Date());
+			remito.setFechaGenaracion(new Date());
+			remito.setObservaciones(this.observacionesDelRemitoTa.getText());
+			remito.setIdOrdenProvisionInsumo(orden.getIdOrdenProvisionInsumo());
+			
+			for(int i = 1; i < tablaElementos.getRowCount(); i++){
+				
+				if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
 					
-					RenglonRemitoProvisionInsumoDTO renglon = new RenglonRemitoProvisionInsumoDTO();
-					renglon.setItem(i);
-					renglon.setInsumo(insumo);
-					renglon.setCantidadEntregada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANTENT)).getText()));
+					Integer cantAEnviar = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANTENT)).getText());
 					
-					remito.getRenglonRemitoProvisionInsumos().add(renglon);		
-				}	
+					if(cantAEnviar != 0){
+						InsumoDTO insumo = new InsumoDTO();
+						insumo.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
+						insumo.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
+						
+						RenglonRemitoProvisionInsumoDTO renglon = new RenglonRemitoProvisionInsumoDTO();
+						renglon.setItem(i);
+						renglon.setInsumo(insumo);
+						renglon.setCantidadEntregada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANTENT)).getText()));
+						
+						remito.getRenglonRemitoProvisionInsumos().add(renglon);		
+					}	
+				}
+			}
+			
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.registrarRemitoProvisionInsumo(remito, new AsyncCallback<Boolean>(){
+				
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result == true)
+						Window.alert("El Remito de la Orden de Provision de Insumos ha sido generado de manera exitosa");
+					else
+						Window.alert("El Remito de la Orden de Provision de Insumos NO ha sido generado");
+					cancelar();
+				}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");
+					
+				}
+			});
+		}
+		else{
+			if(entro == true){
+				if(vCantPedida1)
+					Window.alert("La cantidad pedida para un insumo seleccionado nunca puede ser nula");
+				else if(!vCantPedida2)
+					Window.alert("La cantidad pedida debe de ser un número");
+				else if(vCantPedida3)
+					Window.alert("La cantidad pedida NO debe ser mayor a la faltante");
+				else if(vCantPedida4)
+					Window.alert("La cantidad pedida NO debe ser mayor a la disponible");
 			}
 		}
 		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.registrarRemitoProvisionInsumo(remito, new AsyncCallback<Boolean>(){
-			
-			@Override
-			public void onSuccess(Boolean result) {
-				if(result == true)
-					Window.alert("El Remito de la Orden de Provision de Insumos ha sido generado de manera exitosa");
-				else
-					Window.alert("El Remito de la Orden de Provision de Insumos NO ha sido generado");
-				cancelar();
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR EN EL SERVICIO");
-				
-			}
-		});
+		
 		
 	}
 
@@ -478,6 +529,8 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 
 					TextBox cantEntregadaTb = new TextBox();
 					CheckBox check = new CheckBox();	
+					if(result == 0)
+						check.setEnabled(false);
 					
 					tablaElementos.setWidget(itemInterno, COL_ITEM, new Label("" + ren.getIdRenglon()));
 					tablaElementos.setWidget(itemInterno, COL_INSUMO, new Label(ren.getInsumo().getNombre()));
@@ -528,14 +581,19 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 	protected void cerrarAutomaticamenteOrdenProvisionInsumo(){
 		
+		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+		String fecha = fmtDate.format(new Date());
+		
 		
 		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.cerrarOrdenesProvision(new AsyncCallback<Boolean>() {
+		produccionService.cerrarOrdenesProvision(fecha, new AsyncCallback<Boolean>() {
 			
 			@Override
 			public void onSuccess(Boolean result) {
-				
-				
+				if(result)
+					Window.alert("Ha sido cerrada la orden de provisión de insumo correspondiente al remito recién cerrado");
+				else
+					Window.alert("Problema al cerrar la orden de provisión de insumo correspondiente al remito recién cerrado");
 			}
 			
 			@Override
@@ -549,7 +607,6 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 		
 	}
-	
 	
 	
 	

@@ -39,6 +39,8 @@ public interface VentasService extends RemoteService {
 
 	int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException;
 
+	List<ClienteDTO> getEmpresas() throws IllegalArgumentException;
+
 
 
 }

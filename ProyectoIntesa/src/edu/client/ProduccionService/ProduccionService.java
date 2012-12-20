@@ -54,6 +54,10 @@ public interface ProduccionService extends RemoteService {
 
 	List<Long> getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden) throws IllegalArgumentException;
 
-	Boolean cerrarOrdenesProvision() throws IllegalArgumentException;
+	boolean cerrarOrdenesProvision(String fecha) throws IllegalArgumentException;
+
+	boolean registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException;
+
+	
 
 }

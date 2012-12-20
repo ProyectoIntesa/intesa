@@ -123,9 +123,6 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		return adminVnetas.registrarCambiosCliente(nuevo);
 	}
 	
-	
-	
-	
 	@Override
 	public List<String> getNombresEmpresas() throws IllegalArgumentException {
 		
@@ -177,7 +174,30 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 	}
 	
-	
+	@Override
+	public List<ClienteDTO> getEmpresas() throws IllegalArgumentException{
+		
+		List<ClienteDTO> result = new LinkedList<ClienteDTO>();
+		Ventas adminVentas = new Ventas();
+		List<Cliente> busqueda = adminVentas.getEmpresas();
+		
+		for (Cliente cliente : busqueda) {
+			
+			ClienteDTO nuevo = new ClienteDTO();
+			nuevo.setNombre(cliente.getNombre());
+			nuevo.setRubro(cliente.getRubro());
+			nuevo.setTelefono(cliente.getTelefono());
+			nuevo.setMail(cliente.getMail());
+			
+			result.add(nuevo);		
+			
+		}
+		
+		return result;
+		
+		
+	}
+		
 	@Override
 	public List<ClienteDTO> getEmpresasPorRubro(String nombre) throws IllegalArgumentException{
 		
@@ -201,8 +221,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 		
 	}
-	
-	
+		
 	@Override
 	public List<ContactoDTO> getEmpresasPorContacto(String nombre) throws IllegalArgumentException{
 		
@@ -232,9 +251,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 		
 	}
-	
-	
-	
+		
 	@Override
 	public ClienteDTO getEmpresaCompleta(String nombre)  throws IllegalArgumentException{
 			
@@ -289,8 +306,6 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 	}
 	
-	
-	
 	@Override
 	public ContactoDTO getContactoCompleto(String nombreContacto, String nombreEmpresa) throws IllegalArgumentException{
 		
@@ -312,9 +327,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		return nuevo;
 		
 	}
-	
-	
-	
+		
 	@Override
 	public Boolean eliminarContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
 		
@@ -325,7 +338,6 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 		
 	}
-	
 	
 	@Override
 	public Boolean eliminarEmpresa(String nombreEmpresa) throws IllegalArgumentException{
@@ -362,8 +374,7 @@ public class VentasServiceImpl extends RemoteServiceServlet implements VentasSer
 		
 		
 	}
-	
-	
+		
 	@Override
 	public int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
 		

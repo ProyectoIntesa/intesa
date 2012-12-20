@@ -236,83 +236,203 @@ public class P_BuscarInsumo extends PopupPanel {
 				
 		if (insumo.getValue() == true) {
 			
-					
+			
 			String insumo = insumoSb.getText();
 
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			if(insumo.compareTo("")==0){
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			comprasService.getInsumosSegunParametro("insumo", insumo, new AsyncCallback<List<InsumoDTO>>() {
-				@Override
-				public void onSuccess(List<InsumoDTO> result) {
-					if (result.size() > 0) {
-						insumos = result;
-						cargarInsumos();
-					} else
-						Window.alert("No se han encontrado resultados");
+				comprasService.getInsumosSegunParametro("", "", new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
 
-				}
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar el insumo");
-				}
-			});
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+				
+			}else{
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getInsumosSegunParametro("insumo", insumo, new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+			}
+			
+
 		
 			
 		}else if (marca.getValue() == true) {
 			
 			String marca = marcaSb.getText();
 			
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			if(marca.compareTo("")==0){
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			comprasService.getInsumosSegunParametro("marca", marca, new AsyncCallback<List<InsumoDTO>>() {
-				@Override
-				public void onSuccess(List<InsumoDTO> result) {
-					if (result.size() > 0) {
-						insumos = result;
-						cargarInsumos();
-					} else
-						Window.alert("No se han encontrado resultados");
+				comprasService.getInsumosSegunParametro("", "", new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
 
-				}
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar el insumo");
-				}
-			});
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+				
+			}else{
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getInsumosSegunParametro("marca", marca, new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+			}
+
 			
 			
 		}else if (categoria.getValue() == true) {
 			
 			String categoria = categoriaSb.getText();
 			
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			if(categoria.compareTo("")==0){
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			comprasService.getInsumosSegunParametro("categoria", categoria, new AsyncCallback<List<InsumoDTO>>() {
-				@Override
-				public void onSuccess(List<InsumoDTO> result) {
-					if (result.size() > 0) {
-						insumos = result;
-						cargarInsumos();
-					} else
-						Window.alert("No se han encontrado resultados");
+				comprasService.getInsumosSegunParametro("", "", new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
 
-				}
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar el insumo");
-				}
-			});
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+				
+			}else{
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getInsumosSegunParametro("categoria", categoria, new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+			}
+			
+
 			
 		}else if (proveedor.getValue() == true) {
 			
 			String proveedor = proveedorSb.getText();
 			
+			if(proveedor.compareTo("")==0){
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getInsumosSegunParametro("", "", new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+				
+			}else{
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+				comprasService.getInsumosSegunParametro("proveedor", proveedor, new AsyncCallback<List<InsumoDTO>>() {
+					@Override
+					public void onSuccess(List<InsumoDTO> result) {
+						if (result.size() > 0) {
+							insumos = result;
+							cargarInsumos();
+						} else
+							Window.alert("No se han encontrado resultados");
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR al buscar el insumo");
+					}
+				});
+			}
+			
+
+			
+		}else if (insumo.getValue() == false && marca.getValue() == false && categoria.getValue() == false && proveedor.getValue() == false){
+			
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
-			comprasService.getInsumosSegunParametro("proveedor", proveedor, new AsyncCallback<List<InsumoDTO>>() {
+			comprasService.getInsumosSegunParametro("", "", new AsyncCallback<List<InsumoDTO>>() {
 				@Override
 				public void onSuccess(List<InsumoDTO> result) {
 					if (result.size() > 0) {
@@ -328,6 +448,7 @@ public class P_BuscarInsumo extends PopupPanel {
 					Window.alert("ERROR al buscar el insumo");
 				}
 			});
+			
 			
 		}
 		

@@ -89,5 +89,5 @@ public interface ComprasService extends RemoteService {
 
 	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviada() throws IllegalArgumentException;
 
-
+	List<ProveedorDTO> getEmpresas() throws IllegalArgumentException;
 }

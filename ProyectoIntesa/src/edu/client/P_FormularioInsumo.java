@@ -365,54 +365,87 @@ public class P_FormularioInsumo  extends Composite {
 
 	protected void cargarInsumo(ClickEvent event) {
 		
+		Validaciones validar = new Validaciones();
+		
+		boolean vNombreInsumo = validar.textBoxVacio(this.nombreInsumoTb.getText());
+		boolean vCategoriaInsumo = validar.textBoxVacio(this.categoriaInsumoTb.getText());
+		boolean vMarcaInsumo = validar.textBoxVacio(this.marcaInsumoTb.getText());
+		boolean vLote1 = validar.textBoxVacio(this.loteCompraInsumoTb.getText());
+		boolean vLote2 = validar.textBoxSoloNumeros(this.loteCompraInsumoTb.getText());
+		boolean vStock1 = validar.textBoxVacio(this.stockSeguridadInsumoTb.getText());
+		boolean vStock2 = validar.textBoxSoloNumeros(this.stockSeguridadInsumoTb.getText());
 		
 		
-		
-		InsumoDTO insumo = new InsumoDTO();
-		insumo.setNombre(this.nombreInsumoTb.getText());
-		insumo.setMarca(this.marcaInsumoTb.getText());
-		insumo.setCategoria(this.categoriaInsumoTb.getText());
-		insumo.setObservaciones(this.observacionesTb.getText());
-		int lote = Integer.parseInt(this.loteCompraInsumoTb.getText());
-		insumo.setLoteCompra(lote);
-		int stock = Integer.parseInt(this.stockSeguridadInsumoTb.getText());
-		insumo.setStockSeguridad(stock);
-		
-		
-		if (tablaElemento.getRowCount() > 1){
+		if(!vNombreInsumo && !vCategoriaInsumo && !vMarcaInsumo && !vLote1 && !vStock1 && vLote2 && vStock2){
 			
-			for (int i = 1; i < tablaElemento.getRowCount(); i++){
+			InsumoDTO insumo = new InsumoDTO();
+			insumo.setNombre(this.nombreInsumoTb.getText());
+			insumo.setMarca(this.marcaInsumoTb.getText());
+			insumo.setCategoria(this.categoriaInsumoTb.getText());
+			insumo.setObservaciones(this.observacionesTb.getText());
+			int lote = Integer.parseInt(this.loteCompraInsumoTb.getText());
+			insumo.setLoteCompra(lote);
+			int stock = Integer.parseInt(this.stockSeguridadInsumoTb.getText());
+			insumo.setStockSeguridad(stock);
+			
+			
+			if (tablaElemento.getRowCount() > 1){
 				
-				ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
-				prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-				prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
-				double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
-				prov.setPrecio(precio);
-				
-				insumo.getProveedor().add(prov);
+				for (int i = 1; i < tablaElemento.getRowCount(); i++){
+					
+					ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
+					prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+					prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
+					double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
+					prov.setPrecio(precio);
+					
+					insumo.getProveedor().add(prov);
+					
+				}
 				
 			}
+		
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.registrarNuevoInsumo(insumo, new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("NUEVO INSUMO REGISTRADO!!!");
+						padre.remove(numeroElemento(constante.nuevoInsumo()));
+					} else
+						Window.alert("NO SE PUDO REGISTRAR EL INSUMO");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+			});
+			
 			
 		}
-	
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.registrarNuevoInsumo(insumo, new AsyncCallback<Boolean>() {
-
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					Window.alert("NUEVO INSUMO REGISTRADO!!!");
-					padre.remove(numeroElemento(constante.nuevoInsumo()));
-				} else
-					Window.alert("NO SE PUDO REGISTRAR EL INSUMO");
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-
-			}
-		});
+		else{
+						
+			if(vNombreInsumo)
+				Window.alert("El nombre del insumo no puede ser nulo");
+			else if(vCategoriaInsumo)
+				Window.alert("La categoria del insumo no puede ser nula");
+			else if(vMarcaInsumo)
+				Window.alert("La marca del insumo no puede ser nula");
+			else if(vLote1)
+				Window.alert("El número de lote de compra no puede ser nulo");
+			else if(!vLote2)
+				Window.alert("La cantidad de lote de compra debe estar compuesta de números");
+			else if(vStock1)
+				Window.alert("El stock de seguridad no puede ser nulo");
+			else if(!vStock2)
+				Window.alert("La cantidad de stock de seguridad debe estar compuesta de números");
+			
+		}
+		
+		
 		
 		
 		
@@ -422,56 +455,80 @@ public class P_FormularioInsumo  extends Composite {
 		
 	}
 	
-	protected void cargarInsumoModificado(ClickEvent event){
+protected void cargarInsumoModificado(ClickEvent event){
 		
-		InsumoDTO insumo = new InsumoDTO();
-		insumo.setIdInsumo(this.insumoDTO.getIdInsumo());
-		insumo.setNombre(this.nombreInsumoTb.getText());
-		insumo.setMarca(this.marcaInsumoTb.getText());
-		insumo.setCategoria(this.categoriaInsumoTb.getText());
-		insumo.setObservaciones(this.observacionesTb.getText());
-		int lote = Integer.parseInt(this.loteCompraInsumoTb.getText());
-		insumo.setLoteCompra(lote);
-		int stock = Integer.parseInt(this.stockSeguridadInsumoTb.getText());
-		insumo.setStockSeguridad(stock);
+		Validaciones validar = new Validaciones();
+		
+		boolean vLote1 = validar.textBoxVacio(this.loteCompraInsumoTb.getText());
+		boolean vLote2 = validar.textBoxSoloNumeros(this.loteCompraInsumoTb.getText());
+		boolean vStock1 = validar.textBoxVacio(this.stockSeguridadInsumoTb.getText());
+		boolean vStock2 = validar.textBoxSoloNumeros(this.stockSeguridadInsumoTb.getText());
 		
 		
-		if (tablaElemento.getRowCount() > 1){
+		if(!vLote1 && !vStock1 && vLote2 && vStock2){
 			
-			for (int i = 1; i < tablaElemento.getRowCount(); i++){
+			InsumoDTO insumo = new InsumoDTO();
+			insumo.setIdInsumo(this.insumoDTO.getIdInsumo());
+			insumo.setNombre(this.nombreInsumoTb.getText());
+			insumo.setMarca(this.marcaInsumoTb.getText());
+			insumo.setCategoria(this.categoriaInsumoTb.getText());
+			insumo.setObservaciones(this.observacionesTb.getText());
+			int lote = Integer.parseInt(this.loteCompraInsumoTb.getText());
+			insumo.setLoteCompra(lote);
+			int stock = Integer.parseInt(this.stockSeguridadInsumoTb.getText());
+			insumo.setStockSeguridad(stock);
+			
+			
+			if (tablaElemento.getRowCount() > 1){
 				
-				ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
-				prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-				prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
-				double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
-				prov.setPrecio(precio);
-				
-				insumo.getProveedor().add(prov);
+				for (int i = 1; i < tablaElemento.getRowCount(); i++){
+					
+					ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
+					prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+					prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
+					double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
+					prov.setPrecio(precio);
+					
+					insumo.getProveedor().add(prov);
+					
+				}
 				
 			}
+		
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.registrarCambioInsumo(insumo, new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("El insumo ha sido modificado");
+						padre.remove(numeroElemento(constante.modificarInsumo()));
+					} else
+						Window.alert("NO se ha podido modificar el insumo");
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+			});
+		}
+		
+
+		
+		else{
+			
+			if(vLote1)
+				Window.alert("El número de lote de compra no puede ser nulo");
+			else if(!vLote2)
+				Window.alert("La cantidad de lote de compra debe estar compuesta de números");
+			else if(vStock1)
+				Window.alert("El stock de seguridad no puede ser nulo");
+			else if(!vStock2)
+				Window.alert("La cantidad de stock de seguridad debe estar compuesta de números");
 			
 		}
-	
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.registrarCambioInsumo(insumo, new AsyncCallback<Boolean>() {
-
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					Window.alert("El insumo ha sido modificado");
-					padre.remove(numeroElemento(constante.modificarInsumo()));
-				} else
-					Window.alert("NO se ha podido modificar el insumo");
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-
-			}
-		});
-		
-		
 		
 		
 		

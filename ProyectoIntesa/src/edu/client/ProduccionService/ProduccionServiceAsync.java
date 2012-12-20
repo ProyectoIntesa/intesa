@@ -52,6 +52,10 @@ public interface ProduccionServiceAsync {
 
 	void getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden, AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
 
-	void cerrarOrdenesProvision(AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	void cerrarOrdenesProvision(String fecha, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	
 
 }

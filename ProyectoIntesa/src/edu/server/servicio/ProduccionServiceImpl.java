@@ -134,6 +134,46 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 	}
 	
 	@Override
+	public boolean registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+		Insumos adminInsumos = new Insumos();
+		Produccion adminProduccion = new Produccion();
+		EstadoOrden estado = new EstadoOrden();
+		Estado adminEstado = new Estado();
+		int idEstado = adminEstado.getIdEstado("VALIDADA");
+		estado.setIdEstadoOrden(idEstado);
+		estado.setNombre("VALIDADA");
+		Empleado registradoPor = new Empleado();
+		registradoPor.setIdEmpleado(orden.getEmpleadoByIdPedidoPor().getIdEmpleado());
+		Empleado registradoPara = new Empleado();
+		registradoPara.setIdEmpleado(orden.getEmpleadoByIdPedidoPara().getIdEmpleado());
+		
+		OrdenProvisionInsumo nuevaOrden = new OrdenProvisionInsumo();
+		nuevaOrden.setEmpleadoByIdPedidoPara(registradoPara);
+		nuevaOrden.setEmpleadoByIdPedidoPor(registradoPor);
+		nuevaOrden.setEstadoOrden(estado);
+		nuevaOrden.setFechaEdicion(orden.getFechaEdicion());
+		nuevaOrden.setFechaGeneracion(orden.getFechaGeneracion());
+		nuevaOrden.setObservaciones(orden.getObservaciones());
+		
+		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+			 RenglonOrdenProvisionInsumo nuevoRenglon = new RenglonOrdenProvisionInsumo();
+			 RenglonOrdenProvisionInsumoId id = new RenglonOrdenProvisionInsumoId();
+			 id.setIdRenglon(renglon.getIdRenglon());
+			 Insumo insumo = new Insumo();
+			 int idInsumo = adminInsumos.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+			 insumo.setIdInsumo(idInsumo);
+			 nuevoRenglon.setCantidadRequerida(renglon.getCantidadRequerida());
+			 nuevoRenglon.setInsumo(insumo);
+			 nuevoRenglon.setId(id);
+		
+			 nuevaOrden.getRenglonOrdenProvisionInsumos().add(nuevoRenglon);
+		}
+		
+		return adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden);
+		
+	}
+	
+	@Override
 	public List<String> getNombreEstados()throws IllegalArgumentException{
 		
 		Estado adminE = new Estado();
@@ -549,8 +589,9 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 	}
 	
 	@Override
-	public Boolean cerrarOrdenesProvision() throws IllegalArgumentException{
-				
+	public boolean cerrarOrdenesProvision(String fecha) throws IllegalArgumentException{
+			
+		boolean retorno = false;
 		Estado adminEstados = new Estado();
 		int idEstado = adminEstados.getIdEstado("VALIDADA");
 		Produccion adminProd = new Produccion();
@@ -693,13 +734,13 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			
 			int est = adminEstados.getIdEstado("CERRADA");
 			
-			adminProd.cerrarOrdenesProvisionInsumos(id, est);
+			adminProd.cerrarOrdenesProvisionInsumos(id, est, fecha);
 			
-			
+			retorno = true;
 		}
 		
+		return retorno;
 		
-		return true;
 	}
 	
 	@Override

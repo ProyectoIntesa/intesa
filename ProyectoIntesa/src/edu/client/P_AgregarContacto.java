@@ -414,148 +414,206 @@ public class P_AgregarContacto extends PopupPanel {
 
 	}	
 	
-	
-
 	protected void guardar() {
 		
+		Validaciones validar = new Validaciones(); 
 		
-		VentasServiceAsync ventasService = GWT.create(VentasService.class);
-		ventasService.retornaIdContacto(contSelec.getCliente().getNombre(),contSelec.getNombre() , new AsyncCallback<Integer>() {
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+			ventasService.retornaIdContacto(contSelec.getCliente().getNombre(),contSelec.getNombre() , new AsyncCallback<Integer>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR el modificar contacto");
-			}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR el modificar contacto");
+				}
 
-			@Override
-			public void onSuccess(Integer result) {
+				@Override
+				public void onSuccess(Integer result) {
 
-				int idContacto = result;
-				modificarContacto(idContacto);
-			}
+					int idContacto = result;
+					modificarContacto(idContacto);
+				}
 
-		});
+			});
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
+			
+		
+		
+
 
 		
 	}
-
+	
 	protected void guardar2() {
 		
+		Validaciones validar = new Validaciones(); 
 		
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.retornaIdContacto(contSelec.getProveedor().getNombre(),contSelec.getNombre() , new AsyncCallback<Integer>() {
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.retornaIdContacto(contSelec.getProveedor().getNombre(),contSelec.getNombre() , new AsyncCallback<Integer>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR el modificar contacto");
-			}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR el modificar contacto");
+				}
 
-			@Override
-			public void onSuccess(Integer result) {
+				@Override
+				public void onSuccess(Integer result) {
 
-				int idContacto = result;
-				modificarContacto2(idContacto);
-			}
+					int idContacto = result;
+					modificarContacto2(idContacto);
+				}
 
-		});
+			});
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
 
 		
 	}
-
 
 	protected void modificarContacto(int idContacto) {
 		
-		VentasServiceAsync ventasService = GWT.create(VentasService.class);
-		contSelec.setNombre(this.nombreTb.getText());
-		contSelec.setCargo(this.cargoTb.getText());
-		contSelec.setTelefonoEmpresa(this.telEmpresaTb.getText());
-		contSelec.setInternoEmpresa(this.internoTb.getText());
-		contSelec.setTelefonoParticular(this.telParticularTb.getText());
-		contSelec.setCelular(this.celularTb.getText());
-		contSelec.setMail(this.correoTb.getText());
+		Validaciones validar = new Validaciones(); 
 		
-		ventasService.modificarContacto(contSelec, idContacto, new AsyncCallback<Boolean>() {
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			VentasServiceAsync ventasService = GWT.create(VentasService.class);
+			contSelec.setNombre(this.nombreTb.getText());
+			contSelec.setCargo(this.cargoTb.getText());
+			contSelec.setTelefonoEmpresa(this.telEmpresaTb.getText());
+			contSelec.setInternoEmpresa(this.internoTb.getText());
+			contSelec.setTelefonoParticular(this.telParticularTb.getText());
+			contSelec.setCelular(this.celularTb.getText());
+			contSelec.setMail(this.correoTb.getText());
+			
+			ventasService.modificarContacto(contSelec, idContacto, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al modificar contacto");
-			}
-
-			@Override
-			public void onSuccess(Boolean result) {
-				
-				if (result){
-					Window.alert("El contacto ha sido modificado de manera exitosa");
-					cerrar();
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR al modificar contacto");
 				}
-				else{
-					Window.alert("El contacto no se ha podido modificar");
-					cerrar();
-				}
-				
-			}
 
-		});
+				@Override
+				public void onSuccess(Boolean result) {
+					
+					if (result){
+						Window.alert("El contacto ha sido modificado de manera exitosa");
+						cerrar();
+					}
+					else{
+						Window.alert("El contacto no se ha podido modificar");
+						cerrar();
+					}
+					
+				}
+
+			});
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
+
 		
 	}
-
 	
 	protected void modificarContacto2(int idContacto) {
 		
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		contSelec.setNombre(this.nombreTb.getText());
-		contSelec.setCargo(this.cargoTb.getText());
-		contSelec.setTelefonoEmpresa(this.telEmpresaTb.getText());
-		contSelec.setInternoEmpresa(this.internoTb.getText());
-		contSelec.setTelefonoParticular(this.telParticularTb.getText());
-		contSelec.setCelular(this.celularTb.getText());
-		contSelec.setMail(this.correoTb.getText());
+		Validaciones validar = new Validaciones(); 
 		
-		comprasService.modificarContacto(contSelec, idContacto, new AsyncCallback<Boolean>() {
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			contSelec.setNombre(this.nombreTb.getText());
+			contSelec.setCargo(this.cargoTb.getText());
+			contSelec.setTelefonoEmpresa(this.telEmpresaTb.getText());
+			contSelec.setInternoEmpresa(this.internoTb.getText());
+			contSelec.setTelefonoParticular(this.telParticularTb.getText());
+			contSelec.setCelular(this.celularTb.getText());
+			contSelec.setMail(this.correoTb.getText());
+			
+			comprasService.modificarContacto(contSelec, idContacto, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al modificar contacto");
-			}
-
-			@Override
-			public void onSuccess(Boolean result) {
-				
-				if (result){
-					Window.alert("El contacto ha sido modificado de manera exitosa");
-					cerrar();
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR al modificar contacto");
 				}
-				else{
-					Window.alert("El contacto no se ha podido modificar");
-					cerrar();
-				}
-				
-			}
 
-		});
+				@Override
+				public void onSuccess(Boolean result) {
+					
+					if (result){
+						Window.alert("El contacto ha sido modificado de manera exitosa");
+						cerrar();
+					}
+					else{
+						Window.alert("El contacto no se ha podido modificar");
+						cerrar();
+					}
+					
+				}
+
+			});
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
+
 		
 	}
 
-
 	protected void agregar() {
 
-		this.padre.capturarDatos(nombreTb.getText(), cargoTb.getText(),
-				telEmpresaTb.getText(), internoTb.getText(),
-				telParticularTb.getText(), celularTb.getText(),
-				correoTb.getText());
+		Validaciones validar = new Validaciones(); 
+		
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			this.padre.capturarDatos(nombreTb.getText(), cargoTb.getText(),
+					telEmpresaTb.getText(), internoTb.getText(),
+					telParticularTb.getText(), celularTb.getText(),
+					correoTb.getText());
 
-		this.hide();
+			this.hide();
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
+		
+		
+
 
 	}
 	
 	protected void agregar2() {
 
-		this.padre2.capturarDatos(nombreTb.getText(), cargoTb.getText(),
-				telEmpresaTb.getText(), internoTb.getText(),
-				telParticularTb.getText(), celularTb.getText(),
-				correoTb.getText());
 
-		this.hide();
+		
+		Validaciones validar = new Validaciones(); 
+		
+		boolean vNombreContacto = validar.textBoxVacio(this.nombreTb.getText());
+		
+		if(!vNombreContacto){
+			this.padre2.capturarDatos(nombreTb.getText(), cargoTb.getText(),
+					telEmpresaTb.getText(), internoTb.getText(),
+					telParticularTb.getText(), celularTb.getText(),
+					correoTb.getText());
+
+			this.hide();
+		}
+		else{
+			Window.alert("El nombre del contacto no puede ser nulo");
+		}
 
 	}
 

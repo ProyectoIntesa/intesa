@@ -212,14 +212,14 @@ public class Produccion {
 		
 	}
 
-	public boolean cerrarOrdenesProvisionInsumos(Long nroOrden, int estado){
+	public boolean cerrarOrdenesProvisionInsumos(Long nroOrden, int estado, String fechaCierre){
 
 		Boolean respuesta = false;
 		int result = 0;
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			sec.beginTransaction();
-			result = sec.createSQLQuery("update Orden_Provision_Insumo set id_Estado_Orden = "+estado+" where id_Orden_Provision_Insumo = "+nroOrden).executeUpdate();
+			result = sec.createSQLQuery("update Orden_Provision_Insumo set id_Estado_Orden = "+estado+", fecha_Cierre = '"+fechaCierre+"' where id_Orden_Provision_Insumo = "+nroOrden).executeUpdate();
 			sec.getTransaction().commit();
 			if (result == 1)
 				respuesta = true;

@@ -384,7 +384,31 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		
 		
 	}
+	
+	@Override
+	public List<ProveedorDTO> getEmpresas() throws IllegalArgumentException{
 		
+		List<ProveedorDTO> result = new LinkedList<ProveedorDTO>();
+		Proveedores adminProv = new Proveedores();
+		List<Proveedor> busqueda = adminProv.getEmpresas();
+		
+		for (Proveedor proveedor : busqueda) {
+			
+			ProveedorDTO nuevo = new ProveedorDTO();
+			nuevo.setNombre(proveedor.getNombre());
+			nuevo.setRubro(proveedor.getRubro());
+			nuevo.setTelefono(proveedor.getTelefono());
+			nuevo.setMail(proveedor.getMail());
+			
+			result.add(nuevo);		
+			
+		}
+		
+		return result;
+		
+		
+	}
+	
 	@Override
 	public int retornaIdContacto(String nombreEmpresa, String nombreContacto) throws IllegalArgumentException{
 		

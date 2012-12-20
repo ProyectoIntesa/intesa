@@ -74,7 +74,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 		String nombre = responsable.split(", ")[1];
 		String apellido = responsable.split(", ")[0];
-		String rol = rolUsuario;
+		final String rol = rolUsuario;
 		
 		listaInsumosYMarcas = new LinkedList<String[]>();
 		listaInsumos = new LinkedList<String>();
@@ -134,7 +134,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		generar = new Button(constante.generar());
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				registrarOrden();
+				registrarOrden(rol);
 			}
 		});
 		
@@ -267,7 +267,9 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 	}
 	
-	protected void registrarOrden() {
+	protected void registrarOrden(String rol) {
+		
+
 		OrdenProvisionInsumoDTO nueva = new OrdenProvisionInsumoDTO();
 		int pos = this.empPideLb.getSelectedIndex();
 		nueva.setFechaEdicion(new Date());
@@ -288,68 +290,102 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 			nueva.getRenglonOrdenProvisionInsumos().add(renglon);
 		}
 		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Boolean>() {
+		if(rol.compareTo("SUPERVISOR PRODUCCION") == 0){
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					Window.alert("Se ha generado corectamente la orden");
-					padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
-				} else {
-					Window.alert("No se pudo efectuar la acción");
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("Se ha generado corectamente la orden");
+						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
+					} else {
+						Window.alert("No se pudo efectuar la acción");
+					}
 				}
-			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
 
-			}
-		});
+				}
+			});
+		}
+		if(rol.compareTo("GERENTE PRODUCCION") == 0){
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.registrarOrdenProvisionInsumoGerente(nueva, new AsyncCallback<Boolean>() {
 
-		
-		
-		
-		
-		
-	}
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("Se ha generado corectamente la orden");
+						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
+					} else {
+						Window.alert("No se pudo efectuar la acción");
+					}
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+			});
+		}
+	
+
+	
+	
+}
 
 	protected void agregarInsumo() {
 		
-		if(insumoLb.getSelectedIndex() != 0 && marcaLb.getSelectedIndex() != 0 && cantTb.getText().compareTo("") != 0){
-			
-			final String nombreInsumo = insumoLb.getItemText(insumoLb.getSelectedIndex());
-			final String nombreMarca = marcaLb.getItemText(marcaLb.getSelectedIndex());
-			Integer cantidad = Integer.parseInt(cantTb.getText());
-						
-			int fila = tablaElemento.getRowCount();
-
-			Label eliminar = new Label("");
-			eliminar.setSize("16px", "16px");
-			eliminar.setStyleName("labelBorrar");
-			eliminar.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					String[] nombreYMarca={nombreInsumo,nombreMarca};
-					eliminar(nombreYMarca);
-				}
-			});
-
-			tablaElemento.setWidget(fila, COL_INSUMO, new Label(nombreInsumo));
-			tablaElemento.setWidget(fila, COL_MARCA, new Label(nombreMarca));
-			tablaElemento.setWidget(fila, COL_CANTREQUERIDA, new Label(cantidad+""));
-			tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
-			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
-			tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
-
-			String[] nombreYMarca={nombreInsumo,nombreMarca};
-			this.listaInsumosYMarcas.add(nombreYMarca);
-			
-		}
-		else{
-			Window.alert("Se deben seleccionar todos los campos");
-		}
+		Validaciones validar = new Validaciones();
 		
+		boolean vCantidad = validar.textBoxSoloNumeros(this.cantTb.getText());
+				
+			if(insumoLb.getSelectedIndex() != 0 && marcaLb.getSelectedIndex() != 0 && cantTb.getText().compareTo("") != 0){
+				
+				if(vCantidad){
+					final String nombreInsumo = insumoLb.getItemText(insumoLb.getSelectedIndex());
+					final String nombreMarca = marcaLb.getItemText(marcaLb.getSelectedIndex());
+					Integer cantidad = Integer.parseInt(cantTb.getText());
+								
+					int fila = tablaElemento.getRowCount();
+		
+					Label eliminar = new Label("");
+					eliminar.setSize("16px", "16px");
+					eliminar.setStyleName("labelBorrar");
+					eliminar.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							String[] nombreYMarca={nombreInsumo,nombreMarca};
+							eliminar(nombreYMarca);
+						}
+					});
+		
+					tablaElemento.setWidget(fila, COL_INSUMO, new Label(nombreInsumo));
+					tablaElemento.setWidget(fila, COL_MARCA, new Label(nombreMarca));
+					tablaElemento.setWidget(fila, COL_CANTREQUERIDA, new Label(cantidad+""));
+					tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
+					tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+					tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
+		
+					String[] nombreYMarca={nombreInsumo,nombreMarca};
+					this.listaInsumosYMarcas.add(nombreYMarca);
+				}
+				else{
+					Window.alert("La cantidad especificada debe ser un número");
+				}
+				
+				
+
+				
+			}
+			else{
+				Window.alert("Se deben seleccionar el nombre del insumo, la marca y la cantidad que se desea");
+			}
+		
+
 		
 		
 	}

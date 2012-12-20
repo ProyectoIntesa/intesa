@@ -143,8 +143,17 @@ public class P_AgregarProveedor extends PopupPanel {
 	}
 	
 	protected void agregarProveedor(){
-		this.padre.capturarDatos(this.proveedorLb.getItemText(this.proveedorLb.getSelectedIndex()), precioTb.getText(), observacionesTa.getText());
-		this.hide();	
+		
+		Validaciones validar = new Validaciones();
+		
+		boolean vPrecio = validar.textBoxVacio(this.precioTb.getText());
+		
+		if(!vPrecio){
+			this.padre.capturarDatos(this.proveedorLb.getItemText(this.proveedorLb.getSelectedIndex()), precioTb.getText(), observacionesTa.getText());
+			this.hide();
+		}
+		else
+			Window.alert("El precio no puede ser nulo");
 		
 	}
 		
