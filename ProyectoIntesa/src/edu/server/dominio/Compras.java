@@ -20,6 +20,12 @@ public class Compras {
 
 	}
 
+	/**
+	 * registra un nuevo proveedor en el sistema
+	 * 
+	 * @param proveedor
+	 * @return
+	 */
 	public Boolean registrarProveedor(Proveedor proveedor) {
 
 		AdministradorLocalidades adminLoc = new AdministradorLocalidades();
@@ -74,6 +80,12 @@ public class Compras {
 
 	}
 
+	/**
+	 * registra cambios en un proveedor existente
+	 * 
+	 * @param proveedorNuevo
+	 * @return
+	 */
 	public Boolean registrarCambiosProveedor(Proveedor proveedorNuevo) {
 
 		Proveedores prov = new Proveedores();
@@ -144,10 +156,15 @@ public class Compras {
 
 	}
 
-
-
+	/**
+	 * permite eliminar un contacto asociado a un proveedor
+	 * 
+	 * @param nombreEmpresa
+	 * @param nombreContacto
+	 * @return
+	 */
 	public Boolean eliminarContacto(String nombreEmpresa, String nombreContacto) {
-		
+
 		Proveedores prov = new Proveedores();
 		Contacto contacto = prov.getContactoCompleto(nombreContacto, nombreEmpresa);
 		Boolean result = false;
@@ -168,10 +185,15 @@ public class Compras {
 		return result;
 
 	}
-	
 
+	/**
+	 * elimina un proveedor del sistema
+	 * 
+	 * @param nombreEmpresa
+	 * @return
+	 */
 	public Boolean eliminarEmpresa(String nombreEmpresa) {
-		
+
 		Proveedores prov = new Proveedores();
 		Boolean result = false;
 		Proveedor emp = prov.getEmpresaCompleta(nombreEmpresa);
@@ -197,8 +219,12 @@ public class Compras {
 
 	}
 
-
-
+	/**
+	 * registra cambios ocurridos en un contacto
+	 * 
+	 * @param contactoNuevo
+	 * @return
+	 */
 	public Boolean registrarCambiosContacto(Contacto contactoNuevo) {
 
 		Boolean result = false;
@@ -219,7 +245,12 @@ public class Compras {
 		return result;
 	}
 
-
+	/**
+	 * registra en el sistema un nuevo insumo
+	 * 
+	 * @param insumo
+	 * @return
+	 */
 	public boolean registrarInsumo(Insumo insumo) {
 
 		boolean result = false;
@@ -272,8 +303,13 @@ public class Compras {
 
 		return result;
 	}
-	
 
+	/**
+	 * registra cambios en el insumo
+	 * 
+	 * @param insumo
+	 * @return
+	 */
 	public boolean registrarCambioInsumo(Insumo insumo) {
 
 		boolean result = false;
@@ -305,23 +341,32 @@ public class Compras {
 		return result;
 	}
 
-
+	/**
+	 * devuelve el ultimo número de orden de compras registrado
+	 * 
+	 * @param sec
+	 * @return
+	 */
 	public long getMaxIdOrdenCompraInsumo(Session sec) {
 		Object result;
 		result = (Object) sec.createSQLQuery("select Max(nro_Orden_Compra_Insumo_Generada) from Orden_Compra_Insumo").uniqueResult();
-		if (result == null){
+		if (result == null) {
 			long primero = 0;
 			result = primero;
-		}		
-		else{
+		} else {
 			long nro = Long.parseLong(result.toString());
 			result = nro;
 		}
-		
-		
+
 		return (long) result;
 	}
 
+	/**
+	 * elimina del sistema un insumo
+	 * 
+	 * @param insumo
+	 * @return
+	 */
 	public boolean eliminarInsumo(Insumo insumo) {
 
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -344,26 +389,33 @@ public class Compras {
 
 	}
 
-	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumo orden){
+	/**
+	 * registra en el sistema una nueva orden de compras, si su estado es
+	 * generada se le asigna su correspondiente número de orden
+	 * 
+	 * @param orden
+	 * @return
+	 */
+	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumo orden) {
 		boolean result = false;
-		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			Object aux = new Object();
 			sec.beginTransaction();
-			if(orden.getEstadoOrden().getNombre().compareTo("GENERADA") == 0){
-			
-				Long nroOrden = this.getMaxIdOrdenCompraInsumo(sec)+1;
+			if (orden.getEstadoOrden().getNombre().compareTo("GENERADA") == 0) {
+
+				Long nroOrden = this.getMaxIdOrdenCompraInsumo(sec) + 1;
 				orden.setNroOrdenCompraInsumoGenerada(nroOrden);
-				
+
 			}
-			
-			aux= sec.save(orden);
-			
+
+			aux = sec.save(orden);
+
 			for (RenglonOrdenCompraInsumo renglon : orden.getRenglonOrdenCompraInsumos()) {
 				renglon.getId().setNroOrdenCompraInsumo((long) aux);
 				sec.save(renglon);
 				ProveedorDeInsumo prov = new ProveedorDeInsumo();
-				prov = (ProveedorDeInsumo) renglon.getInsumo().getProveedorDeInsumos().toArray()[0];				
+				prov = (ProveedorDeInsumo) renglon.getInsumo().getProveedorDeInsumos().toArray()[0];
 				sec.update(prov);
 			}
 			sec.getTransaction().commit();
@@ -375,58 +427,74 @@ public class Compras {
 		return result;
 	}
 
+	/**
+	 * retorna una lista de órdenes de compras de insumos, según un tipo de
+	 * filtro pasado por parametro
+	 * 
+	 * @param idEstado
+	 * @param idProv
+	 * @param fecDesde
+	 * @param fecHasta
+	 * @return
+	 */
+	public List<OrdenCompraInsumo> getOrdenCompraInsumo(int idEstado, int idProv, String fecDesde, String fecHasta) {
 
-	public List<OrdenCompraInsumo> getOrdenCompraInsumo(int idEstado, int idProv, String fecDesde, String fecHasta){
-		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		Estado adminEstado = new Estado();
-			
-		String criterios = " where id_Estado_Orden != "+ adminEstado.getIdEstado("EDICION");
-		
-		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+
+		String criterios = " where id_Estado_Orden != " + adminEstado.getIdEstado("EDICION");
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
-		
-		if(idEstado != 0){
-			criterios = criterios+" and id_Estado_Orden = "+idEstado;
+
+		if (idEstado != 0) {
+			criterios = criterios + " and id_Estado_Orden = " + idEstado;
 		}
-		
-		if(idProv != 0){
-			criterios = criterios+" and id_Proveedor = "+idProv;
+
+		if (idProv != 0) {
+			criterios = criterios + " and id_Proveedor = " + idProv;
 		}
-		if(fecDesde.compareTo("") != 0){
-				criterios = criterios+" and fecha_Edicion between '"+fecDesde+"' and '"+fecHasta+"'";
+		if (fecDesde.compareTo("") != 0) {
+			criterios = criterios + " and fecha_Edicion between '" + fecDesde + "' and '" + fecHasta + "'";
 		}
-		
-		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
-		
+
+		result = sec.createQuery("from OrdenCompraInsumo" + criterios).list();
+
 		sec.close();
-		
+
 		return result;
 	}
-	
 
-	public OrdenCompraInsumo getOrdenCompraInsumoSegunId(long idOrden){
-		
+	/**
+	 * retorna una orden de compras de acuerdo al id de la orden pasada por parametro
+	 * @param idOrden
+	 * @return
+	 */
+	public OrdenCompraInsumo getOrdenCompraInsumoSegunId(long idOrden) {
+
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
-		sec.beginTransaction();		
-		
+		sec.beginTransaction();
+
 		OrdenCompraInsumo orden = new OrdenCompraInsumo();
-		
+
 		orden = (OrdenCompraInsumo) sec.get(orden.getClass(), idOrden);
-		
-		
+
 		sec.close();
 		return orden;
-		
-		
+
 	}
 
-	
-	public boolean cancelarOrdenCompraInsumo(long  idOrden, int estado){
+	/**
+	 * cambia el estado de la orden al estado pasado por parametro
+	 * @param idOrden
+	 * @param estado
+	 * @return
+	 */
+	public boolean cancelarOrdenCompraInsumo(long idOrden, int estado) {
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 		try {
-			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = "+estado+" where nro_Orden_Compra_Insumo = "+idOrden).executeUpdate();
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = " + estado + " where nro_Orden_Compra_Insumo = " + idOrden).executeUpdate();
 			sec.getTransaction().commit();
 			return true;
 		} catch (HibernateException he) {
@@ -435,61 +503,67 @@ public class Compras {
 		}
 	}
 
+	/**
+	 *  retorna una lista de órdenes de compras de insumos en estado de edición
+	 * @return
+	 */
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoGuardada() {
 
-	public List<OrdenCompraInsumo> getOrdenCompraInsumoGuardada(){
-		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		Estado adminEstado = new Estado();
-			
-		String criterios = " where id_Estado_Orden = "+ adminEstado.getIdEstado("EDICION");
-		
-		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
+
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("EDICION");
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
 
-		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
-		
-		sec.close();
-		
-		return result;
-	}
-	
+		result = sec.createQuery("from OrdenCompraInsumo" + criterios).list();
 
-	public List<OrdenCompraInsumo> getOrdenCompraInsumoEnviada(){
-		
-		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
-		Estado adminEstado = new Estado();
-			
-		String criterios = " where id_Estado_Orden = "+ adminEstado.getIdEstado("ENVIADA");
-		
-		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();	
-		sec.beginTransaction();
-
-		result = sec.createQuery("from OrdenCompraInsumo"+criterios).list();
-		
 		sec.close();
-			
+
 		return result;
 	}
 
+	/**
+	 *  retorna una lista de ordendes de compras de insumos que esten en estado enviada
+	 * @return
+	 */
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoEnviada() {
 
-	
-	public int getIdOrdenCompraInsumo(long nroOrden){
-		
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		Estado adminEstado = new Estado();
+
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA");
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createQuery("from OrdenCompraInsumo" + criterios).list();
+
+		sec.close();
+
+		return result;
+	}
+
+	/**
+	 * retorna el id de un orden segun su número de orden.
+	 * @param nroOrden
+	 * @return
+	 */
+	public int getIdOrdenCompraInsumo(long nroOrden) {
+
 		Object objeto = new Object();
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
-				
-		objeto = sec.createQuery("from OrdenCompraInsumo where nroOrdenCompraInsumoGenerada = "+nroOrden).uniqueResult();
-		
+
+		objeto = sec.createQuery("from OrdenCompraInsumo where nroOrdenCompraInsumoGenerada = " + nroOrden).uniqueResult();
+
 		int result = (int) ((OrdenCompraInsumo) objeto).getNroOrdenCompraInsumo();
-				
+
 		sec.close();
-				
+
 		return result;
-		
-		
+
 	}
 
-
-	
 }

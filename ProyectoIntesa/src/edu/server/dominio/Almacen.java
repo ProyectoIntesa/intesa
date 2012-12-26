@@ -18,7 +18,13 @@ public class Almacen {
 	public Almacen(){
 		
 	}
-	
+	/**
+	 *  Devuelve la lista completa de ingresos registrados para una orden de compra de insumos
+	 *  pasada como parametro
+	 *  
+	 * @param idOrdenCompraInsumo
+	 * @return lista de ingresos
+	 */
 	public List<IngresoInsumos> getRemitosExternos(long idOrdenCompraInsumo){
 		
 		long idoci = idOrdenCompraInsumo;
@@ -35,6 +41,11 @@ public class Almacen {
 
 	}
 	
+	/**
+	 *  registra el ingreso de insumos al sistema
+	 * @param remito
+	 * @return
+	 */
 	public Boolean registrarRemitoExterno(IngresoInsumos remito){
 		
 		Boolean result = false;
@@ -62,6 +73,12 @@ public class Almacen {
 		return result;
 	}
 	
+	/**
+	 *  retorna el ingreso correspondiente al número de orden y remito pasados como parametro
+	 * @param idOrden
+	 * @param nroRemito
+	 * @return
+	 */
 	public IngresoInsumos getRemitoExternoCompleto(long idOrden, long nroRemito){
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();
@@ -79,6 +96,12 @@ public class Almacen {
 		return result;
 	}
 	
+	/**
+	 *  lista de los remitos usados en la provisión de insumos, correspondientes a una orden de prvisión pasada como
+	 *  parametro
+	 * @param idOrdenProvisionInsumo
+	 * @return
+	 */
 	public List<RemitoInternoInsumo> getRemitosInternos(long idOrdenProvisionInsumo){
 		
 		List<RemitoInternoInsumo> result = new LinkedList<RemitoInternoInsumo>();
@@ -95,7 +118,11 @@ public class Almacen {
 	}
 	
 
-	
+	/**
+	 * registra un remito interno de provisión de insumos
+	 * @param remito
+	 * @return
+	 */
 	public long registrarRemitoProvisionInsumo(RemitoInternoInsumo remito){
 		
 		long result = -1;
@@ -114,6 +141,11 @@ public class Almacen {
 		
 	}
 	
+	/**
+	 * registra los renglones correspondientes a un remito pasado como parametro
+	 * @param remito
+	 * @return
+	 */
 	public Boolean registrarRenglonesDelRemitoProvisionInsumo(RemitoInternoInsumo remito){
 		Boolean result = false;
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();

@@ -129,7 +129,25 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		cerrarOrden = new Button(constante.cerrarOrden());
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				// registrarOrden("GENERADA");
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.ordenDeComprasCompleta(idOrden,  new AsyncCallback<Boolean>(){
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						Window.alert("La orden puede cerrarce");
+						salir();
+					} else {
+						Window.alert("No se ha podido cambiar el estado de la orden");
+					}
+				}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+
+				}
+
+			});
 			}
 		});
 

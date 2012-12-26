@@ -89,6 +89,8 @@ public interface ComprasServiceAsync {
 
 	void getEmpresas(AsyncCallback<List<ProveedorDTO>> callback) throws IllegalArgumentException;
 
+	void ordenDeComprasCompleta(long idOrden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
 
 
 
