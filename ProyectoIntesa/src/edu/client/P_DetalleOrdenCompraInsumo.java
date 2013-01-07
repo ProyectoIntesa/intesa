@@ -65,6 +65,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private OrdenCompraInsumoDTO orden;
 	private boolean accionSalir;
 	private boolean imprimir;
+
 	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden) {
 
 		super(false);
@@ -129,34 +130,53 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		cerrarOrden = new Button(constante.cerrarOrden());
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.ordenDeComprasCompleta(idOrden,  new AsyncCallback<Boolean>(){
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
 
-				@Override
-				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("La orden puede cerrarce");
-						salir();
-					} else {
-						Window.alert("No se ha podido cambiar el estado de la orden");
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							Window.alert("La orden puede cerrarce");
+							salir();
+						} else {
+							Window.alert("No se ha podido cambiar el estado de la orden");
+						}
 					}
-				}
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
 
-				}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR DE SERVICIO");
 
-			});
+					}
+
+				});
 			}
 		});
 
 		enviarOrden = new Button(constante.enviarOrden());
 		enviarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				imprimir = true;
-				accionSalir = true;
-				salir();
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.cancelarOrdencompraInsumo(idOrden, "ENVIADA", new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							imprimir = true;
+							accionSalir = true;
+							salir();
+						} else {
+							Window.alert("No se ha podido cambiar el estado de la orden");
+						}
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR DE SERVICIO");
+
+					}
+
+				});
 			}
 		});
 
@@ -290,8 +310,10 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		// formulario.setSize("1000px", "1300px");
 		ScrollPanel tabla = new ScrollPanel();
 		tabla.setStyleName("tabla");
-
-		tabla.setHeight(cantidad * 22 + "px");
+		if (cantidad > 5)
+			tabla.setHeight(cantidad * 22 + "px");
+		else
+			tabla.setHeight("400 px");
 		FlexTable elementos = new FlexTable();
 		tabla.setWidget(elementos);
 		elementos.setSize("100%", "100%");
