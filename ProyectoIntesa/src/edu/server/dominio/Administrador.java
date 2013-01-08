@@ -388,7 +388,7 @@ public class Administrador {
 		String nombre = (String) sec.createSQLQuery("select nombre from empleado where id_empleado = "+idEmpleado).uniqueResult();
 		String apellido = (String) sec.createSQLQuery("select apellido from empleado where id_empleado = "+idEmpleado).uniqueResult();
 		sec.close();
-		return nombre+" "+apellido;
+		return apellido+", "+nombre;
 	}
 	
 }

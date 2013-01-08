@@ -91,6 +91,8 @@ public interface ComprasServiceAsync {
 
 	void ordenDeComprasCompleta(long idOrden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
+	void actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
 
 
 

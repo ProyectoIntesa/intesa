@@ -344,6 +344,9 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 										imprimir = true;
 										salir();
 									}
+									else if (detalle.cerrada()== true){
+										buscar();
+									}
 								}
 							});
 							

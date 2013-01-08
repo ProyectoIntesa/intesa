@@ -1,5 +1,7 @@
 package edu.server.dominio;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -564,6 +566,49 @@ public class Compras {
 
 		return result;
 
+	}
+	
+	/**
+	 * actualiza una orden de compras.
+	 * @param orden
+	 * @return
+	 */
+	public boolean actualizarOrdenCompraInsumos(OrdenCompraInsumo orden) {
+		boolean result = false;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			
+			sec.beginTransaction();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+			
+			String fechaC = dateFormat.format(orden.getFechaCierre());
+			String fecha = "update orden_compra_insumo set fecha_Cierre = '"+fechaC+"' where nro_orden_compra_insumo = "+orden.getNroOrdenCompraInsumo();
+			String estado = "update orden_compra_insumo set id_estado_orden = "+orden.getEstadoOrden().getIdEstadoOrden()+" where nro_orden_compra_insumo = "+orden.getNroOrdenCompraInsumo();
+			String total = "update orden_compra_insumo set total = "+orden.getTotal()+" where nro_orden_compra_insumo = "+orden.getNroOrdenCompraInsumo();
+			
+		
+			sec.createSQLQuery(fecha).executeUpdate();
+			sec.createSQLQuery(estado).executeUpdate();
+			sec.createSQLQuery(total).executeUpdate();		
+
+			for (RenglonOrdenCompraInsumo renglon : orden.getRenglonOrdenCompraInsumos()) {
+				
+				ProveedorDeInsumo prov = new ProveedorDeInsumo();
+				prov = (ProveedorDeInsumo) renglon.getInsumo().getProveedorDeInsumos().toArray()[0];
+				String subtt = "update Renglon_Orden_Compra_Insumo set subtotal = "+renglon.getSubtotal()+" where nro_Orden_Compra_Insumo = "+renglon.getId().getNroOrdenCompraInsumo()+" and id_Renglon_Orden_Compra_Insumo= "+renglon.getId().getIdRenglonOrdenCompraInsumo();
+				String precio = "update Proveedor_de_Insumo set precio = "+prov.getPrecio()+" where id_Insumo = "+renglon.getInsumo().getIdInsumo()+" and id_Proveedor= "+prov.getId().getIdProveedor();
+				System.out.println(precio);
+				sec.createSQLQuery(subtt).executeUpdate();
+				sec.createSQLQuery(precio).executeUpdate();
+			}
+			sec.getTransaction().commit();
+			
+			result = true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+		return result;
 	}
 
 }

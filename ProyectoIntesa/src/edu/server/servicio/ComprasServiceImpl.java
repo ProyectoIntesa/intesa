@@ -992,4 +992,63 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return completa;
 	}
 
+	@Override
+	public boolean actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException {
+		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		Empleado adEmpleado = new Empleado();
+		ModoDeEnvio adminModo = new ModoDeEnvio();
+		Proveedores adminProv = new Proveedores();
+		Insumos adminInsumo = new Insumos();
+		String nombre = orden.getEmpleado().split(", ")[1];
+		String apellido = orden.getEmpleado().split(", ")[0];
+		
+		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
+		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
+		Proveedor prov = adminProv.getProveedorPorNombre(orden.getProveedor());
+		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio());
+		edu.server.repositorio.Empleado responsable = new edu.server.repositorio.Empleado();
+		responsable.setIdEmpleado(idEmpleado);
+		responsable.setApellido(apellido);
+		responsable.setNombre(nombre);
+		nueva.setEmpleado(responsable);
+		nueva.setProveedor(prov);
+		nueva.setFechaCierre(orden.getFechaCierre());
+		EstadoOrden eo = new EstadoOrden();
+		eo.setIdEstadoOrden(idEstado);
+		eo.setNombre(orden.getEstadoOrden());
+		nueva.setEstadoOrden(eo);
+		ModoEnvio me = new ModoEnvio();
+		me.setIdModoEnvio(idModoEnvio);
+		me.setDescripcion(orden.getModoEnvio());
+		nueva.setModoEnvio(me);
+		nueva.setIva(orden.getIva());
+		nueva.setFechaEdicion(orden.getFechaEdicion());
+		nueva.setNroOrdenCompraInsumo(orden.getIdOrden());
+		nueva.setFormaPago(orden.getFormaPago());
+		nueva.setTotal(orden.getTotal());
+		nueva.setObservaciones(orden.getObservaciones());
+		for (RenglonOrdenCompraInsumoDTO ren : orden.getRenglonOrdenCompraInsumos()) {
+			RenglonOrdenCompraInsumo renglon = new RenglonOrdenCompraInsumo();
+			RenglonOrdenCompraInsumoId id = new RenglonOrdenCompraInsumoId();
+			id.setIdRenglonOrdenCompraInsumo(ren.getItem());
+			id.setNroOrdenCompraInsumo(orden.getIdOrden());
+			renglon.setCantidad(ren.getCantidad());
+			renglon.setSubtotal(ren.getSubtotal());
+			renglon.setId(id);
+			int idInsumo = adminInsumo.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
+			Insumo insu = new Insumo();
+			ProveedorDeInsumo provInsumo = new ProveedorDeInsumo();
+			ProveedorDeInsumoId provInsumoId = new ProveedorDeInsumoId(prov.getCodigoProveedor(), idInsumo);
+			provInsumo.setId(provInsumoId);
+			provInsumo.setPrecio(ren.getPrecio());
+			insu.getProveedorDeInsumos().add(provInsumo);
+			insu.setIdInsumo(idInsumo);
+			renglon.setInsumo(insu);
+			nueva.getRenglonOrdenCompraInsumos().add(renglon);
+		}
+
+		return adminCompras.actualizarOrdenCompraInsumos(nueva);
+	}
 }

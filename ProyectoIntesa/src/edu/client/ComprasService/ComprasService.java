@@ -92,4 +92,6 @@ public interface ComprasService extends RemoteService {
 	List<ProveedorDTO> getEmpresas() throws IllegalArgumentException;
 
 	boolean ordenDeComprasCompleta(long idOrden) throws IllegalArgumentException;
+
+	boolean actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
 }

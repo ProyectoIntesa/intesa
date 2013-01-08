@@ -1,13 +1,11 @@
 package edu.client;
 
-import java.util.Date;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -17,7 +15,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.TextBox;
 
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
@@ -65,7 +62,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private OrdenCompraInsumoDTO orden;
 	private boolean accionSalir;
 	private boolean imprimir;
-
+	private boolean cerrada;
 	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden) {
 
 		super(false);
@@ -73,7 +70,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		setStyleName("fondoPopup");
 		final long idOrden = orden.getIdOrden();
 		accionSalir = false;
-
+		cerrada = false;
 		tituloFormulario = new Label(constante.ordenCompraDeInsumo());
 		tituloFormulario.setStyleName("labelTitulo");
 		lineaTabla = new Label();
@@ -136,10 +133,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
-							Window.alert("La orden puede cerrarce");
-							salir();
+							verDetalle();
 						} else {
-							Window.alert("No se ha podido cambiar el estado de la orden");
+							Window.alert("La orden no puede cerrarce");
 						}
 					}
 
@@ -370,4 +366,26 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		return this.imprimir;
 	}
 
+	private void verDetalle(){
+		final P_DetalleOrdenCompraInsumoCierre detalle = new P_DetalleOrdenCompraInsumoCierre(orden);		
+		detalle.setGlassEnabled(true);
+		detalle.center();
+		detalle.show();	
+		detalle.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {				
+			
+				if (detalle.cambioEstado())
+				{						
+					cerrada = true;	
+					salir();
+				}
+			}
+		});
+	}
+	
+	public boolean cerrada(){
+		return this.cerrada;
+	}
 }
