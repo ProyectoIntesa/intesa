@@ -133,10 +133,25 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
-							verDetalle();
+							verDetalle("completa");
 						} else {
-							Window.alert("La orden no puede cerrarce");
-						}
+							final MensajeConfirmacion mensaje = new MensajeConfirmacion(constante.mensajeOrden());
+							mensaje.setGlassEnabled(true);
+							mensaje.center();
+							mensaje.show();	
+							mensaje.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {				
+								
+									if (mensaje.acepta())
+									{						
+										verDetalle("parcial");
+									}
+								}
+							});
+							
+ 						}
 					}
 
 					@Override
@@ -366,8 +381,8 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		return this.imprimir;
 	}
 
-	private void verDetalle(){
-		final P_DetalleOrdenCompraInsumoCierre detalle = new P_DetalleOrdenCompraInsumoCierre(orden);		
+	private void verDetalle(String tipo){
+		final P_DetalleOrdenCompraInsumoCierre detalle = new P_DetalleOrdenCompraInsumoCierre(orden, tipo);		
 		detalle.setGlassEnabled(true);
 		detalle.center();
 		detalle.show();	
@@ -377,7 +392,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			public void onClose(CloseEvent<PopupPanel> event) {				
 			
 				if (detalle.cambioEstado())
-				{						
+				{	
 					cerrada = true;	
 					salir();
 				}
