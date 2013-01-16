@@ -8,6 +8,15 @@ public interface Constantes extends Constants {
 	 @DefaultStringValue("IMPRIMIR")
 	  String imprimir(); 
 	 
+	 @DefaultStringValue("CARGAR A LA ORDEN")
+	  String cargarALaOrden(); 
+	 
+	 @DefaultStringValue("COMPRA DE INSUMOS")
+	  String compraDeInsumos(); 
+	 
+	 @DefaultStringValue("VALIDAR COMPRAS")
+	  String validarCompras(); 
+	 
 	 @DefaultStringValue("NO SE COMPLETO LA RECEPCIÓN DE LA ORDEN, DESEA CONTINUAR CON EL CIERRE. LA ORDEN QUEDARÁ CERRADA EN FORMA PARCIAL")
 	  String mensajeOrden(); 
 	 

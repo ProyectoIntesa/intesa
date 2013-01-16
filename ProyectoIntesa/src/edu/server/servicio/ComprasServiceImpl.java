@@ -15,6 +15,7 @@ import edu.server.dominio.Empleado;
 import edu.server.dominio.Estado;
 import edu.server.dominio.Insumos;
 import edu.server.dominio.ModoDeEnvio;
+import edu.server.dominio.Produccion;
 import edu.server.dominio.Proveedores;
 import edu.server.repositorio.Categoria;
 import edu.server.repositorio.Contacto;
@@ -26,6 +27,7 @@ import edu.server.repositorio.Localidad;
 import edu.server.repositorio.Marca;
 import edu.server.repositorio.ModoEnvio;
 import edu.server.repositorio.OrdenCompraInsumo;
+import edu.server.repositorio.OrdenProvisionInsumo;
 import edu.server.repositorio.Pais;
 import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
@@ -39,6 +41,7 @@ import edu.shared.DTO.DireccionDTO;
 import edu.shared.DTO.InsumoCantidad;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
+import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.ProveedorDTO;
 import edu.shared.DTO.ProveedorDeInsumosDTO;
 import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
@@ -701,6 +704,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 	@Override
 	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException {
+		
 		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
 		Compras adminCompras = new Compras();
 		Estado adminEstado = new Estado();
@@ -760,6 +764,91 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 
 	@Override
+	public boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja) throws IllegalArgumentException {
+		
+		boolean primerBandera = false;
+		boolean segundaBandera = false;
+		
+		primerBandera = this.eliminarOrdenCompraInsumos(ordenVieja);
+		
+		segundaBandera = this.registrarOrdenCompraInsumos(orden);
+		
+		if(primerBandera && segundaBandera){
+			return true;			
+		}
+		else{
+			return false;
+		}
+			
+		
+	}
+	
+	@Override
+	public boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException {
+		
+		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		Empleado adEmpleado = new Empleado();
+		ModoDeEnvio adminModo = new ModoDeEnvio();
+		Proveedores adminProv = new Proveedores();
+		Insumos adminInsumo = new Insumos();
+		String nombre = orden.getEmpleado().split(", ")[1];
+		String apellido = orden.getEmpleado().split(", ")[0];
+		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
+		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
+		Proveedor prov = adminProv.getProveedorPorNombre(orden.getProveedor());
+		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio());
+		edu.server.repositorio.Empleado responsable = new edu.server.repositorio.Empleado();
+		responsable.setIdEmpleado(idEmpleado);
+		responsable.setApellido(apellido);
+		responsable.setNombre(nombre);
+		nueva.setEmpleado(responsable);
+		nueva.setProveedor(prov);
+		EstadoOrden eo = new EstadoOrden();
+		eo.setIdEstadoOrden(idEstado);
+		eo.setNombre(orden.getEstadoOrden());
+		nueva.setEstadoOrden(eo);
+		ModoEnvio me = new ModoEnvio();
+		me.setIdModoEnvio(idModoEnvio);
+		me.setDescripcion(orden.getModoEnvio());
+		nueva.setModoEnvio(me);
+		nueva.setIva(orden.getIva());
+		nueva.setFechaEdicion(orden.getFechaEdicion());
+		if (orden.getFechaGeneracion() != null) {
+			nueva.setFechaGeneracion(orden.getFechaGeneracion());
+		}
+		nueva.setFormaPago(orden.getFormaPago());
+		nueva.setTotal(orden.getTotal());
+		nueva.setObservaciones(orden.getObservaciones());
+		nueva.setNroOrdenCompraInsumo(orden.getIdOrden());
+
+		for (RenglonOrdenCompraInsumoDTO ren : orden.getRenglonOrdenCompraInsumos()) {
+			RenglonOrdenCompraInsumo renglon = new RenglonOrdenCompraInsumo();
+			RenglonOrdenCompraInsumoId id = new RenglonOrdenCompraInsumoId();
+			id.setIdRenglonOrdenCompraInsumo(ren.getItem());
+			renglon.setCantidad(ren.getCantidad());
+			renglon.setSubtotal(ren.getSubtotal());
+			renglon.setId(id);
+			int idInsumo = adminInsumo.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
+			Insumo insu = new Insumo();
+			ProveedorDeInsumo provInsumo = new ProveedorDeInsumo();
+			ProveedorDeInsumoId provInsumoId = new ProveedorDeInsumoId(prov.getCodigoProveedor(), idInsumo);
+			provInsumo.setId(provInsumoId);
+			provInsumo.setPrecio(ren.getPrecio());
+			insu.getProveedorDeInsumos().add(provInsumo);
+			insu.setIdInsumo(idInsumo);
+			renglon.setInsumo(insu);
+			nueva.getRenglonOrdenCompraInsumos().add(renglon);
+		}
+
+		return adminCompras.eliminarOrdenCompraInsumos(nueva);
+		
+		
+		
+	}
+
+	@Override
 	public List<String> getNombreEstados() throws IllegalArgumentException {
 
 		Estado adminE = new Estado();
@@ -785,6 +874,11 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		for (OrdenCompraInsumo orden : result) {
 			OrdenCompraInsumoDTO ordendto = new OrdenCompraInsumoDTO();
 			ordendto.setIdOrden(orden.getNroOrdenCompraInsumo());
+			ordendto.setFechaEdicion(orden.getFechaEdicion());
+			
+			if(orden.getFechaGeneracion() != null)
+				ordendto.setFechaGeneracion(orden.getFechaGeneracion());
+			
 			if (orden.getNroOrdenCompraInsumoGenerada() == 0) {
 				ordendto.setNroOrden("S/N");
 			} else {
@@ -886,9 +980,47 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.cancelarOrdenCompraInsumo(idOrden, idEstado);
 
 	}
-
+	
+	@Override 
+	public Boolean cancelarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("CANCELADA");
+		
+		for (Long nroOrden : listaOrdenes) {
+			
+			result = adminCompras.cancelarOrdenesComprasInsumos(nroOrden,est);
+			if(result == false)
+				break;
+	
+		}
+		return result;
+		
+	}
+	
+	@Override 
+	public Boolean validarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("VALIDADA");
+		
+		for (Long nroOrden : listaOrdenes) {
+			
+			result = adminCompras.validarOrdenesComprasInsumos(nroOrden,est);
+			if(result == false)
+				break;
+	
+		}
+		return result;
+		
+	}
+	
 	@Override
-	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException {
+ 	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException {
 
 		Administrador adminAdmin = new Administrador();
 		Compras adminCompras = new Compras();
@@ -1051,4 +1183,6 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 		return adminCompras.actualizarOrdenCompraInsumos(nueva);
 	}
+
+
 }

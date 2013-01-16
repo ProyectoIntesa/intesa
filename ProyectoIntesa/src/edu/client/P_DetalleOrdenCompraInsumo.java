@@ -63,7 +63,8 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private boolean accionSalir;
 	private boolean imprimir;
 	private boolean cerrada;
-	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden) {
+	
+	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden, String usuario) {
 
 		super(false);
 		this.orden = orden;
@@ -257,17 +258,20 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		panel.setWidget(8, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(8, 0, 4);
 
-		if (orden.getEstadoOrden().compareTo("GENERADA") == 0) {
-			panel.setWidget(9, 1, cancelarOrden);
-			panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		} else if (orden.getEstadoOrden().compareTo("VALIDADA") == 0) {
-			panel.setWidget(9, 1, enviarOrden);
-			panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		} else if (orden.getEstadoOrden().compareTo("ENVIADA") == 0) {
-			panel.setWidget(9, 1, cerrarOrden);
-			panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		if(usuario.compareTo("GERENTE PRODUCCION") != 0){
+			
+			if (orden.getEstadoOrden().compareTo("GENERADA") == 0) {
+				panel.setWidget(9, 1, cancelarOrden);
+				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+			} else if (orden.getEstadoOrden().compareTo("VALIDADA") == 0) {
+				panel.setWidget(9, 1, enviarOrden);
+				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+			} else if (orden.getEstadoOrden().compareTo("ENVIADA") == 0) {
+				panel.setWidget(9, 1, cerrarOrden);
+				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+			}			
 		}
-
+		
 		panel.setWidget(9, 3, salir);
 		panel.getCellFormatter().setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_CENTER);
 

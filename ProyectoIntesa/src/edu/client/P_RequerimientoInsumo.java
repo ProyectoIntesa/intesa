@@ -47,6 +47,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 	
 	private Button salir;
 	private Button armarOrden;
+	private Button cargarALaOrden;
 	private Button agregar;
 	
 	private ListBox insumo;
@@ -318,8 +319,258 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 		
 	}
+
+	public P_RequerimientoInsumo(String nada){
 		
+		super(false);
+		setStyleName("fondoPopup");
+		
+		listaTablaInsumosAdic = new LinkedList<String[]>();
+		
+		titulo = new Label(constante.requerimientosDeInsumo());
+		titulo.setStyleName("labelTitulo");
+		
+		tituloReqNec = new Label(constante.requerimientosNecesarios());
+		tituloReqNec.setStyleName("labelTitulo");
+				
+		contenedorTablaReqNec = new ScrollPanel();
+		contenedorTablaReqNec.setStyleName("tabla");
+		contenedorTablaReqNec.setHeight("200px");
+		tablaElementoReqNec = new FlexTable();
+		contenedorTablaReqNec.setWidget(tablaElementoReqNec);
+		tablaElementoReqNec.setSize("100%", "100%");
+
+		tablaElementoReqNec.setText(0, COL_CHECK, "");
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_CHECK, "5%");		
+		tablaElementoReqNec.setText(0, COL_INSUMONEC, constante.insumo());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_INSUMONEC, "31%");
+		tablaElementoReqNec.setText(0, COL_MARCANEC, constante.marca());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_MARCANEC, "31%");
+		tablaElementoReqNec.setText(0, COL_PROVEEDORNEC, constante.proveedor());
+		tablaElementoReqNec.getCellFormatter().setWidth(0, COL_PROVEEDORNEC, "31%");
+		tablaElementoReqNec.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+		comprasService.getRequerimientosInsumosCompletos(new AsyncCallback<List<InsumoDTO>>() {
+			@Override
+			public void onSuccess(List<InsumoDTO> result) {
+			if(!result.isEmpty())
+				cargarListaTablaInsumosNec(result);
+			else
+				Window.alert("No hay requerimientos de insumos");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DEL SERVICIO");
+			}
+		});
+				
+		
+		
+		tituloReqAdic = new Label(constante.requerimientosAdicionales());
+		tituloReqAdic.setStyleName("labelTitulo");
+		
+		listaInsumos = new LinkedList<String>();
+		
+		
+		comprasService.getNombresInsumos("", new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarListaInsumos(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("No se pudo cargar la lista de insumos");
+			}
+		});
+		
+		
+		listaMarcas = new LinkedList<String>();
+		listaProveedores = new LinkedList<String>();
+		
+		insumoAdic = new Label(constante.insumo());
+		insumoAdic.setStyleName("gwt-LabelFormulario");
+		marcaInsumoAdic = new Label(constante.marca());
+		marcaInsumoAdic.setStyleName("gwt-LabelFormulario");
+		provInsumoAdic = new Label(constante.proveedor());
+		provInsumoAdic.setStyleName("gwt-LabelFormulario");
+		
+		insumo = new ListBox();
+		insumo.setStyleName("gwt-ListBox");
+		insumo.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+								
+				if(insumo.getSelectedIndex() != 0){
+					marca.setEnabled(true);
+					
+					ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+					comprasService.getNombresMarcasSegunInsumo(insumo.getItemText(insumo.getSelectedIndex()), new AsyncCallback<List<String>>() {
+						@Override
+						public void onSuccess(List<String> result) {
+							cargarListaMarcas(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("No se pudo cargar la lista de marcas");
+						}
+					});
+					
+					
+					
+				}
+				else{
+					marca.setEnabled(false);
+					proveedor.setEnabled(false);
+				}
+				
+			}
+		});
+		
+		marca = new ListBox();
+		marca.setStyleName("gwt-ListBox");
+		marca.setEnabled(false);
+		marca.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+							
+				if(marca.getSelectedIndex() != 0){
+					proveedor.setEnabled(true);
+					
+					ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+
+					String nombreInsumo = insumo.getItemText(insumo.getSelectedIndex());
+					String nombreMarca = marca.getItemText(marca.getSelectedIndex());
+					
+					comprasService.getNombresProvSegunInsumoYMarca(nombreInsumo,nombreMarca, new AsyncCallback<List<String>>() {
+						@Override
+						public void onSuccess(List<String> result) {
+							cargarListaProveedores(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("No se pudo cargar la lista de proveedores");
+						}
+					});
+
+					
+				}
+				else
+					proveedor.setEnabled(false);
+				
+			}
+		});
+		
+		proveedor = new ListBox();
+		proveedor.setStyleName("gwt-ListBox");	
+		proveedor.setEnabled(false);
+
+		
+		agregar = new Button(constante.agregar());
+		agregar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+				agregarInsumoAdicional();			
+				
+			}
+		});
+		
+		contenedorTablaReqAdic = new ScrollPanel();
+		contenedorTablaReqAdic.setStyleName("tabla");
+		contenedorTablaReqAdic.setHeight("200px");
+		tablaElementoReqAdic = new FlexTable();
+		contenedorTablaReqAdic.setWidget(tablaElementoReqAdic);
+		tablaElementoReqAdic.setSize("100%", "100%");
+		
+		tablaElementoReqAdic.setText(0, COL_INSUMO, constante.insumo());
+		tablaElementoReqAdic.getCellFormatter().setWidth(0, COL_INSUMO, "31%");
+		tablaElementoReqAdic.setText(0, COL_MARCA, constante.marca());
+		tablaElementoReqAdic.getCellFormatter().setWidth(0, COL_MARCA, "31%");
+		tablaElementoReqAdic.setText(0, COL_PROVEEDOR, constante.proveedor());
+		tablaElementoReqAdic.getCellFormatter().setWidth(0, COL_PROVEEDOR, "31%");
+		tablaElementoReqAdic.setText(0, COL_BORRAR, "");
+		tablaElementoReqAdic.getCellFormatter().setWidth(0, COL_BORRAR, "5%");
+		tablaElementoReqAdic.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		
+		pie = new Label();
+		pie.setStyleName("labelTitulo");
+			
+		
+		salir = new Button(constante.salir());
+		salir.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				salir();
+			}
+		});
+		
+		cargarALaOrden = new Button(constante.cargarALaOrden());
+		cargarALaOrden.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				armarOrden();
+			}
+		});
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cargarALaOrden);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		
+		contenedor = new FlexTable();
+		contenedor.setSize("800px", "300px");
+		
+		contenedor.setWidget(0, 0, titulo);
+		contenedor.getFlexCellFormatter().setColSpan(0, 0, 3);
+
+		contenedor.setWidget(1, 0, tituloReqNec);
+		contenedor.getFlexCellFormatter().setColSpan(1, 0, 3);
+		
+		contenedor.setWidget(2, 0, contenedorTablaReqNec);
+		contenedor.getFlexCellFormatter().setColSpan(2, 0, 3);
+		
+		contenedor.setWidget(3, 0, tituloReqAdic);
+		contenedor.getFlexCellFormatter().setColSpan(3, 0, 3);
+		
+		contenedor.setWidget(4, 0, insumoAdic);
+		contenedor.setWidget(5, 0, insumo);
+		contenedor.getCellFormatter().setWidth(5, 0, "30%");
+		contenedor.setWidget(4, 1, marcaInsumoAdic);
+		contenedor.setWidget(5, 1, marca);
+		contenedor.getCellFormatter().setWidth(5, 1, "30%");
+		contenedor.setWidget(4, 2, provInsumoAdic);
+		contenedor.setWidget(5, 2, proveedor);
+		contenedor.getCellFormatter().setWidth(5, 2, "30%");
+		
+		contenedor.setWidget(6, 0, agregar);
+		contenedor.getFlexCellFormatter().setColSpan(6, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		contenedor.setWidget(7, 0, contenedorTablaReqAdic);
+		contenedor.getFlexCellFormatter().setColSpan(7, 0, 3);
+		
+		contenedor.setWidget(8, 0, pie);
+		contenedor.getFlexCellFormatter().setColSpan(8, 0, 3);		
+
+		contenedor.setWidget(9, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+			
+
+		setWidget(contenedor);
+
+		
+	}
+	
 	protected void armarOrden() {
+		
 		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
 		boolean primeraPasada = true;
 		boolean bandera = false;

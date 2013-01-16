@@ -1,5 +1,6 @@
 package edu.client;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -125,7 +126,6 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 		tipo_ordenLb = new ListBox();
 		tipo_ordenLb.setStyleName("gwt-TextArea");
 		
-		tipo_ordenLb.addItem(constante.todos());
 		tipo_ordenLb.addItem(constante.ordenCompraDeInsumo());
 		tipo_ordenLb.addItem(constante.ordenCompraDeProducto());
 		tipo_ordenLb.addItem(constante.ordenCotizacionDeProducto());
@@ -233,45 +233,76 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 		
 		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 		switch (tipo_ordenLb.getSelectedIndex()){
+		
 			case 0: {
-				
-				break;
-			}
-			case 1: {
 				
 				String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
 				String unProv = proveedorLb.getItemText(proveedorLb.getSelectedIndex());
-				
+							
 				String fecDesde = "";
 				String fecHasta = "";
 				
 				if(fechaCb.getValue() == true){
-					fecDesde = fechaDesdeDb.getTextBox().getText();
-					fecHasta = fechaHastaDb.getTextBox().getText();					
-				}
-				
 								
-				
-				comprasService.getOrdenCompraInsumo(unEstado, unProv, fecDesde, fecHasta, new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
+					fecDesde = fechaDesdeDb.getTextBox().getText();
+					fecHasta = fechaHastaDb.getTextBox().getText();	
 					
-					@Override
-					public void onSuccess(List<OrdenCompraInsumoDTO> result) {
-						cargarOrdenesCompraInsumo(result);
+					if(fecDesde.compareTo("") == 0 || fecHasta.compareTo("") == 0){
+						
+						Window.alert("Si se desea filtrar la búsqueda por fecha, se deben ingresar si o si las dos");
 					}
+					else{
+						
+						Date fecDesdeDate = new Date();
+						fecDesdeDate = fechaDesdeDb.getValue();
+						Date fecHastaDate = new Date();
+						fecHastaDate = fechaHastaDb.getValue();
+						
+						if(fecDesdeDate.before(fecHastaDate) == true){
+							
+							comprasService.getOrdenCompraInsumo(unEstado, unProv, fecDesde, fecHasta, new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
+								
+								@Override
+								public void onSuccess(List<OrdenCompraInsumoDTO> result) {
+									cargarOrdenesCompraInsumo(result);
+								}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert("ERROR EN EL SERVICIO");
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("ERROR EN EL SERVICIO");
+								}
+							});
+						}
+						else{
+							Window.alert("La fecha desde debe ser menor a la fecha hasta");
+						}
+							
 					}
-				});
+				}
+				else{
+					comprasService.getOrdenCompraInsumo(unEstado, unProv, fecDesde, fecHasta, new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
+						
+						@Override
+						public void onSuccess(List<OrdenCompraInsumoDTO> result) {
+							cargarOrdenesCompraInsumo(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR EN EL SERVICIO");
+						}
+					});
+				}
+				break;
+			}
+			case 1: {
+				tablaElementos.clear();
+				Window.alert("Momentaneamente no se encuentra disponible");
 				break;
 			}
 			case 2: {
-				
-				break;
-			}
-			case 3: {
-				
+				tablaElementos.clear();
+				Window.alert("Momentaneamente no se encuentra disponible");
 				break;
 			}
 			default: {
@@ -326,7 +357,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 						@Override
 						public void onSuccess(OrdenCompraInsumoDTO result) {
 							
-							final P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result);		
+							final P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result,"COMPRAS");		
 							detalle.setGlassEnabled(true);
 							detalle.center();
 							detalle.show();							

@@ -94,4 +94,19 @@ public interface ComprasService extends RemoteService {
 	boolean ordenDeComprasCompleta(long idOrden) throws IllegalArgumentException;
 
 	boolean actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
+
+	boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja) throws IllegalArgumentException;
+
+	boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
+
+	Boolean cancelarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException;
+
+	Boolean validarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException;
+
+
+	
+
+	
+
+
 }

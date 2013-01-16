@@ -72,7 +72,6 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 		tipo_ordenLb = new ListBox();
 		tipo_ordenLb.setStyleName("gwt-TextArea");
 		
-		tipo_ordenLb.addItem(constante.todos());
 		tipo_ordenLb.addItem(constante.ordenCompraDeInsumo());
 		tipo_ordenLb.addItem(constante.ordenCompraDeProducto());
 		tipo_ordenLb.addItem(constante.ordenCotizacionDeProducto());
@@ -140,11 +139,8 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 		
 		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 		switch (tipo_ordenLb.getSelectedIndex()){
+
 			case 0: {
-				
-				break;
-			}
-			case 1: {
 					
 				comprasService.getOrdenCompraInsumoGuardada(new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
 					
@@ -160,12 +156,14 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 				});
 				break;
 			}
-			case 2: {
-				
+			case 1: {
+				tablaElementos.clear();
+				Window.alert("Momentaneamente no disponible");
 				break;
 			}
-			case 3: {
-				
+			case 2: {
+				tablaElementos.clear();
+				Window.alert("Momentaneamente no disponible");				
 				break;
 			}
 			default: {

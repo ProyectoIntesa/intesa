@@ -38,6 +38,7 @@ public class P_PantallaGerenteProduccion extends Composite {
 	private TreeItem nuevaOrdenSuministroInsumos;
 	private TreeItem buscarOrdenSuministroInsumos;
 	private TreeItem validarOrdenSuministroInsumos;
+	private TreeItem ordenCompraInsumos;
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
@@ -119,6 +120,17 @@ public class P_PantallaGerenteProduccion extends Composite {
 		validarOrdenSuministroInsumos.setStyleName("suElementoMenu");
 		ordenSuministro.addItem(validarOrdenSuministroInsumos);		
 
+		
+		TreeItem validarCompras = menuLateral.addItem(constante.validarCompras());
+		validarCompras.setStyleName("elementoMenu");
+		
+		ordenCompraInsumos = new TreeItem(constante.deInsumos());
+		ordenCompraInsumos.setStyleName("suElementoMenu");
+		validarCompras.addItem(ordenCompraInsumos);
+		
+		
+		
+		
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				procesa(event);
@@ -203,13 +215,22 @@ public class P_PantallaGerenteProduccion extends Composite {
 		
 		if (event.getSelectedItem() == validarOrdenSuministroInsumos) {
 			
-			
 			P_ValidarCancelarOrdenProvisionInsumos popUp = new P_ValidarCancelarOrdenProvisionInsumos();
 			popUp.setGlassEnabled(true);
 			popUp.center();
 			popUp.show();
 
 			
+			
+		}
+		
+		
+		if (event.getSelectedItem() == ordenCompraInsumos) {
+			
+			P_ValidarCancelarOrdenCompraInsumos popUp = new P_ValidarCancelarOrdenCompraInsumos();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
 			
 		}
 

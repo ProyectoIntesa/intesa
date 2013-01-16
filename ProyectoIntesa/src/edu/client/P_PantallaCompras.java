@@ -413,7 +413,6 @@ public class P_PantallaCompras extends Composite {
 
 	}
 	
-	
 	protected void abrirPantallaImpresion(FlexTable formu) {
 		P_ImpresionCompras imprime = new P_ImpresionCompras(formu, usuario);
 		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));

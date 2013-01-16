@@ -14,6 +14,7 @@ import edu.server.repositorio.OrdenCompraInsumo;
 import edu.server.repositorio.Proveedor;
 import edu.server.repositorio.ProveedorDeInsumo;
 import edu.server.repositorio.RenglonOrdenCompraInsumo;
+import edu.server.repositorio.RenglonOrdenCompraInsumoId;
 import edu.server.util.HibernateUtil;
 
 public class Compras {
@@ -505,6 +506,32 @@ public class Compras {
 		}
 	}
 
+	public boolean cancelarOrdenesComprasInsumos(Long nroOrden, int estado) {
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		try {
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = " + estado + " where nro_Orden_Compra_Insumo_Generada = " + nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			return true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+	}
+		
+	public boolean validarOrdenesComprasInsumos(Long nroOrden, int estado) {
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		try {
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = " + estado + " where nro_Orden_Compra_Insumo_Generada = " + nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			return true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+	}
+		
 	/**
 	 *  retorna una lista de órdenes de compras de insumos en estado de edición
 	 * @return
@@ -611,4 +638,29 @@ public class Compras {
 		return result;
 	}
 
+	public boolean eliminarOrdenCompraInsumos(OrdenCompraInsumo orden){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		boolean result = false;
+
+		try {
+
+			sec.beginTransaction();
+			
+			for(RenglonOrdenCompraInsumo renglon : orden.getRenglonOrdenCompraInsumos()){
+				sec.createQuery("delete from RenglonOrdenCompraInsumo where nro_Orden_Compra_Insumo = " + orden.getNroOrdenCompraInsumo()).executeUpdate();	
+			}
+			
+			sec.delete(orden);
+			sec.getTransaction().commit();
+			result = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return result;
+	}
+	
 }

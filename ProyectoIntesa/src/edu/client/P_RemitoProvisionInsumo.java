@@ -64,7 +64,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private Label observacion;
 
 	private Button cancelar;
-	private Button generarRemito;
+	private Button imprimirRemito;
 	private Button salir;
 	private Button cerrarRemito;
 	
@@ -268,9 +268,10 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			}
 		});
 		
-		generarRemito = new Button(constante.generarRemito());
-		generarRemito.addClickHandler(new ClickHandler() {
+		imprimirRemito = new Button(constante.imprimir());
+		imprimirRemito.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				//aca se debe imprimir la orden!!!
 				guardarRemitoProvisionInterno();
 			}
 		});
@@ -337,7 +338,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			
 		panel.setWidget(11, 1, cancelar);
 		panel.getCellFormatter().setHorizontalAlignment(11, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(11, 2, generarRemito);
+		panel.setWidget(11, 2, imprimirRemito);
 		panel.getCellFormatter().setHorizontalAlignment(11, 2, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		
@@ -389,7 +390,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 	}		
 	
-protected void guardarRemitoProvisionInterno() {
+	protected void guardarRemitoProvisionInterno() {
 		
 		Validaciones validar = new Validaciones();
 		boolean vCantPedida1 = false;

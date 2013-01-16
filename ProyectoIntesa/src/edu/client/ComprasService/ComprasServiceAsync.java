@@ -93,7 +93,21 @@ public interface ComprasServiceAsync {
 
 	void actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
+	void registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
+	void eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void cancelarOrdenCompraInsumo(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void validarOrdenCompraInsumo(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+
+
+	
+
+
+
+	
 
 
 }
