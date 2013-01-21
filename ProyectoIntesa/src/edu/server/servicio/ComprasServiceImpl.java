@@ -452,6 +452,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		nuevo.setLoteCompra(insumo.getLoteCompra());
 		nuevo.setStockSeguridad(insumo.getStockSeguridad());
 		nuevo.setObservaciones(insumo.getObservaciones());
+		nuevo.setNecesidadCompra(true);
 
 		if (insumo.getProveedor().size() > 0) {
 
@@ -471,7 +472,16 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			}
 		}
 
-		return adminCompras.registrarInsumo(nuevo);
+		if(adminCompras.registrarInsumo(nuevo)){
+			Insumos adminInsumos = new Insumos();
+			int idInsumo = adminInsumos.getIdInsumo(nuevo.getNombre(), nuevo.getMarca().getNombre());
+			return adminInsumos.setNecesidadCompraEnUno(idInsumo);
+			
+		}
+		else{
+			return false;
+		}
+		
 
 	}
 

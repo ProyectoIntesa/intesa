@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -261,13 +263,36 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 			info.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					
+					
+					
+					
+					
 					Cell celda = tablaElementos.getCellForEvent(event);
 					OrdenCompraInsumoDTO or = obtenerElementoListaOrdenes(celda.getRowIndex()-1);
-					P_DetalleOrdenCompraInsumo detalleOrden = new P_DetalleOrdenCompraInsumo(or,"GERENTE PRODUCCION");
-					detalleOrden.setGlassEnabled(true);
-					detalleOrden.center();
-					detalleOrden.show();
+					
+					
+					ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 
+					comprasService.getOrdenCompraInsumoSegunId(or.getIdOrden(),new AsyncCallback<OrdenCompraInsumoDTO>() {
+						
+						@Override
+						public void onSuccess(OrdenCompraInsumoDTO result) {
+							
+							P_DetalleOrdenCompraInsumo detalleOrden = new P_DetalleOrdenCompraInsumo(result, "GERENTE PRODUCCION");
+							detalleOrden.setGlassEnabled(true);
+							detalleOrden.center();
+							detalleOrden.show();						
+
+							
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("No se ha podido cargar la lista de sugerencias");
+						}
+					});
+					
+	
 				}
 			});
 			

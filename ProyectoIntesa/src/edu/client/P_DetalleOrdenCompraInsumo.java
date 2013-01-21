@@ -146,7 +146,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 								public void onClose(CloseEvent<PopupPanel> event) {				
 								
 									if (mensaje.acepta())
-									{						
+									{				
 										verDetalle("parcial");
 									}
 								}
@@ -257,9 +257,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 
 		panel.setWidget(8, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(8, 0, 4);
-
-		if(usuario.compareTo("GERENTE PRODUCCION") != 0){
 			
+		if(usuario.compareTo("COMPRAS") == 0){
+		
 			if (orden.getEstadoOrden().compareTo("GENERADA") == 0) {
 				panel.setWidget(9, 1, cancelarOrden);
 				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
@@ -269,13 +269,17 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			} else if (orden.getEstadoOrden().compareTo("ENVIADA") == 0) {
 				panel.setWidget(9, 1, cerrarOrden);
 				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
-			}			
+			}
 		}
+		
+			
+
 		
 		panel.setWidget(9, 3, salir);
 		panel.getCellFormatter().setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_CENTER);
 
 		int item = 1;
+		
 		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {
 
 			tablaElementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));
@@ -386,6 +390,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	}
 
 	private void verDetalle(String tipo){
+		
 		final P_DetalleOrdenCompraInsumoCierre detalle = new P_DetalleOrdenCompraInsumoCierre(orden, tipo);		
 		detalle.setGlassEnabled(true);
 		detalle.center();
@@ -397,6 +402,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			
 				if (detalle.cambioEstado())
 				{	
+					
 					cerrada = true;	
 					salir();
 				}
@@ -407,4 +413,5 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	public boolean cerrada(){
 		return this.cerrada;
 	}
+	
 }

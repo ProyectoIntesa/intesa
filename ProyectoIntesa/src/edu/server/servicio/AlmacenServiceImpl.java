@@ -108,7 +108,15 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 			int idInsumo = adminInsumo.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
 			
 			Insumo insumo = adminInsumo.getInsumoCompleto(idInsumo, "");
+				
+			double cantDisponible = ((insumo.getCantidad())+(renglon.getCantIngresada()));
 			
+			adminInsumo.setCantInsumo(idInsumo, cantDisponible);
+			
+			if(cantDisponible>=insumo.getStockSeguridad())
+				System.out.println("---------------------------------------------------");
+				adminInsumo.setNecesidadCompraEnCero(idInsumo);
+				
 			RenglonIngresoInsumosId renglonId = new RenglonIngresoInsumosId(renglon.getItem(), remito.getIdOrdenCompra(), remito.getIdRemitoEx());
 			
 			RenglonIngresoInsumos renglonGuardar = new RenglonIngresoInsumos();
@@ -195,8 +203,7 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 		return result;
 		
 	}
-	
-	
+		
 	@Override
 	public List<OrdenProvisionInsumoDTO> getOrdenProvisionInsumo(String estado, int empleadoPor, int empleadoPara, String fecDesde, String fecHasta) throws IllegalArgumentException{
 		
@@ -291,8 +298,7 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 		
 		return orden;
 	}
-	
-	
+		
 	public InsumoDTO getInsumoCompleto(int idInsumo, String nombreInsumo)  throws IllegalArgumentException {
 		
 		InsumoDTO result = new InsumoDTO();

@@ -305,55 +305,120 @@ public class P_RemitoExterno extends PopupPanel {
 		
 	protected void guardarRemitoExterno() {
 		
-		RemitoExternoDTO remito = new RemitoExternoDTO();
 		
-		remito.setEmpleado(this.usuario);
-		remito.setFechaIngreso(new Date());
-		remito.setIdOrdenCompra(ordenCompraInsumo.getIdOrden());
-		remito.setObservaciones(this.observacionesTa.getText());
-		remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
+		Validaciones validar = new Validaciones();
+		boolean entro = false;
+		boolean vCantRecibida1 = false;
+		boolean vCantRecibida2 = false;
+		boolean vCantRecibida3 = false;
+		boolean vNroRemito1 = false;
+		boolean vNroRemito2 = false;
+		
+		
+		String nroRemito = new String(this.nroRemitoExTb.getText());
+		vNroRemito1 = validar.textBoxVacio(nroRemito);
+		vNroRemito2 = validar.textBoxSoloNumeros(nroRemito);
+		
+		
+		
 		
 		for (int i = 1; i < tablaElementos.getRowCount(); i++) {
 			
 			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
 
-				Integer cant_recibida = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
+				entro = true;
+				String cantRecibida = new String(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
+				vCantRecibida1 = validar.textBoxVacio(cantRecibida);
+				vCantRecibida2 = validar.textBoxSoloNumeros(cantRecibida);
 				
-				if(cant_recibida != 0){					
-					InsumoDTO insu = new InsumoDTO();
-					insu.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
-					insu.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
+				if(!vCantRecibida1 && vCantRecibida2){
 					
-					RenglonRemitoExternoDTO renglon = new RenglonRemitoExternoDTO();
-					renglon.setItem(i);
-					renglon.setInsumo(insu);
-					renglon.setCantIngresada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText()));
-					renglon.setCantFaltante(new Double(((Label) tablaElementos.getWidget(i, COL_CANT_FALTANTE)).getText()));
+					Float cantRe = Float.parseFloat(((TextBox)tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
+					Float cantFa = Float.parseFloat(((Label)tablaElementos.getWidget(i, COL_CANT_FALTANTE)).getText());
+					
+					
+					if(cantRe > cantFa)
+						vCantRecibida3 = true;
 
-					remito.getRenglonRemitoExterno().add(renglon);				
-				}
+				}			
 			}
-		}		
-		AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
-		almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
-	
-			@Override
-			public void onSuccess(Boolean result) {
-				if(result){
-					Window.alert("El Remito Externo ha sido guardado de forma exitosa");
-					cancelar();
+		}	
+		
+		
+		if(!vCantRecibida1 && vCantRecibida2 && !vCantRecibida3 && !vNroRemito1 && vNroRemito2){
+			
+			RemitoExternoDTO remito = new RemitoExternoDTO();
+			
+			remito.setEmpleado(this.usuario);
+			remito.setFechaIngreso(new Date());
+			remito.setIdOrdenCompra(ordenCompraInsumo.getIdOrden());
+			remito.setObservaciones(this.observacionesTa.getText());
+			remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
+			
+			for (int i = 1; i < tablaElementos.getRowCount(); i++) {
+				
+				if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+
+					
+					
+					Integer cant_recibida = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
+					
+					
+					if(cant_recibida != 0){					
+						InsumoDTO insu = new InsumoDTO();
+						insu.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
+						insu.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
+						
+						RenglonRemitoExternoDTO renglon = new RenglonRemitoExternoDTO();
+						renglon.setItem(i);
+						renglon.setInsumo(insu);
+						renglon.setCantIngresada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText()));
+						renglon.setCantFaltante(new Double(((Label) tablaElementos.getWidget(i, COL_CANT_FALTANTE)).getText()));
+
+						remito.getRenglonRemitoExterno().add(renglon);				
+					}
 				}
-				else{
-					Window.alert("El Remito Externo NO ha sido guardado");
-					cancelar();
+			}	
+
+			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+			almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
+		
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result){
+						Window.alert("El Remito Externo ha sido guardado de forma exitosa");
+						cancelar();
+					}
+					else{
+						Window.alert("El Remito Externo NO ha sido guardado");
+						cancelar();
+					}
 				}
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+				}
+			});
+			
+			
+			
+		}
+		else{
+			if(entro == true){
+				if(vCantRecibida1)
+					Window.alert("La cantidad recibida para un insumo seleccionado nunca puede ser nula");
+				else if(!vCantRecibida2)
+					Window.alert("La cantidad recibida debe de ser un número");
+				else if(vCantRecibida3)
+					Window.alert("La cantidad recibida NO debe puede ser mayor a la faltante");
+				else if(vNroRemito1)
+					Window.alert("Se debe agregar el número del remito");
+				else if(!vNroRemito2)
+					Window.alert("El número de remito no puede estar compuesto por letras");
 			}
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-			}
-		});
-	
+		}
+		
+
 	}
 
 	private void cargarTabla(OrdenCompraInsumoDTO ordenInsumo){

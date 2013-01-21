@@ -373,7 +373,48 @@ public class Insumos {
 		return respuesta;
 		
 	}
+	
+	public boolean setNecesidadCompraEnCero(int idInsumo){
+		
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Insumo set necesidad_Compra = "+0+" where id_Insumo = "+idInsumo).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
 
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
+	}
+
+	public boolean setNecesidadCompraEnUno(int idInsumo){
+		
+		Boolean respuesta = false;
+		int result = 0;
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			result = sec.createSQLQuery("update Insumo set necesidad_Compra = "+1+" where id_Insumo = "+idInsumo).executeUpdate();
+			sec.getTransaction().commit();
+			if (result == 1)
+				respuesta = true;
+
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}
+
+		return respuesta;
+		
+	}
 
 
 

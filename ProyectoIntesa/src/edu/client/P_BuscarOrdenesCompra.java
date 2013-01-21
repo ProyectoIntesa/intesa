@@ -357,7 +357,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 						@Override
 						public void onSuccess(OrdenCompraInsumoDTO result) {
 							
-							final P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result,"COMPRAS");		
+							final P_DetalleOrdenCompraInsumo detalle = new P_DetalleOrdenCompraInsumo(result, "COMPRAS");		
 							detalle.setGlassEnabled(true);
 							detalle.center();
 							detalle.show();							
@@ -370,12 +370,12 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 									{						
 										buscar();							
 									}
-									else if(detalle.imprimir()== true){
+									else if(detalle.imprimir() == true){
 										impresion = detalle.armarImpresion();
 										imprimir = true;
 										salir();
 									}
-									else if (detalle.cerrada()== true){
+									else if (detalle.cerrada() == true){
 										buscar();
 									}
 								}

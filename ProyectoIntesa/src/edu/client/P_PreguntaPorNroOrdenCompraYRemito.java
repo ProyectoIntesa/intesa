@@ -135,22 +135,28 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		
 		if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeInsumo()) == 0){
 			nroRemitoLb.clear();
-			String nroOrdenCompraInsumo = this.nroOrdenCompraLb.getItemText(nroOrdenCompraLb.getSelectedIndex());
-			Long id = Long.parseLong(nroOrdenCompraInsumo);
+			
+			if(nroOrdenCompraLb.getSelectedIndex() != -1)
+			{
+				String nroOrdenCompraInsumo = this.nroOrdenCompraLb.getItemText(nroOrdenCompraLb.getSelectedIndex());
+				
+				Long id = Long.parseLong(nroOrdenCompraInsumo);
 
-			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
-			almacenService.getRemitosExternos(id, new AsyncCallback<List<Long>>() {
+				AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+				almacenService.getRemitosExternos(id, new AsyncCallback<List<Long>>() {
 
-				@Override
-				public void onSuccess(List<Long> result) {
-					cargarListaConRemitosExternosDeInsumos(result);
-				}
+					@Override
+					public void onSuccess(List<Long> result) {
+						cargarListaConRemitosExternosDeInsumos(result);
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("No se ha podido cargar la lista de sugerencias");
-				}
-			});
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("No se ha podido cargar la lista de sugerencias");
+					}
+				});
+			}
+			
 		}
 		else if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeProducto()) == 0){
 			nroRemitoLb.clear();
