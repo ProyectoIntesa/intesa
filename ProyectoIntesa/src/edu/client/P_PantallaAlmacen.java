@@ -52,6 +52,8 @@ public class P_PantallaAlmacen extends Composite {
 	
 	public P_PantallaAlmacen(String usuarioLogueado) {
 
+		Window.setTitle("INTESA - ALMACÉN");
+		
 		try {
 			this.usuario = usuarioLogueado;
 			ancho = Window.getClientWidth() - 15;

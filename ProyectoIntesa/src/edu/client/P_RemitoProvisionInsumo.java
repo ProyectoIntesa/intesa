@@ -364,29 +364,34 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	
 	protected void cerrarRemitoProvisionInterno() {
 			
-		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
-		String fecha = fmtDate.format(new Date());
-		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.cerrarRemitoProvisionInsumos(remitoLocal,fecha, new AsyncCallback<Boolean>() {
+		boolean confirm = Window.confirm("Está seguro que desea cerrar el remito?");
+		if (confirm == true){
+			
+			DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+			String fecha = fmtDate.format(new Date());
+			
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.cerrarRemitoProvisionInsumos(remitoLocal,fecha, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onSuccess(Boolean result) {
-				if(result){
-					Window.alert("El remito ha sido cerrado");
-					cerrarAutomaticamenteOrdenProvisionInsumo();
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result){
+						Window.alert("El remito ha sido cerrado");
+						cerrarAutomaticamenteOrdenProvisionInsumo();
+					}
+					else
+						Window.alert("El remito NO ha sido cerrado");
+					cancelar();
 				}
-				else
-					Window.alert("El remito NO ha sido cerrado");
-				cancelar();
-			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
 
-			}
-		});
+				}
+			});
+		}
+
 		
 	}		
 	
@@ -593,8 +598,6 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			public void onSuccess(Boolean result) {
 				if(result)
 					Window.alert("Ha sido cerrada la orden de provisión de insumo correspondiente al remito recién cerrado");
-				else
-					Window.alert("Problema al cerrar la orden de provisión de insumo correspondiente al remito recién cerrado");
 			}
 			
 			@Override

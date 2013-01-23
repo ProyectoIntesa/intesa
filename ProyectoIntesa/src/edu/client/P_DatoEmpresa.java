@@ -127,7 +127,10 @@ public class P_DatoEmpresa extends PopupPanel {
 		eliminar = new Button(constante.eliminarCliente());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminarCliente();
+				
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el cliente?");
+				if(confirm==true)
+					eliminarCliente();
 			}
 		});
 		
@@ -281,10 +284,12 @@ public class P_DatoEmpresa extends PopupPanel {
 			}
 		});
 
-		eliminar = new Button(constante.eliminarCliente());
+		eliminar = new Button(constante.eliminarProveedor());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminarProveedor();
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el proveedor?");
+				if(confirm==true)
+					eliminarProveedor();
 			}
 		});
 		
@@ -409,7 +414,9 @@ public class P_DatoEmpresa extends PopupPanel {
 		eliminar = new Button(constante.eliminarContacto());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminarContacto(nombreEmpresa, contSelec.getNombre());
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el contacto?");
+				if(confirm==true)
+					eliminarContacto(nombreEmpresa, contSelec.getNombre());
 			}
 		});
 
@@ -502,7 +509,9 @@ public class P_DatoEmpresa extends PopupPanel {
 		eliminar = new Button(constante.eliminarContacto());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminarContacto2(nombreEmpresa, contSelec.getNombre());
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el contacto?");
+				if(confirm==true)
+					eliminarContacto2(nombreEmpresa, contSelec.getNombre());
 			}
 		});
 
@@ -641,8 +650,8 @@ public class P_DatoEmpresa extends PopupPanel {
 	protected void eliminarProveedor() {
 		
 		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		
-		comprasService.eliminarEmpresa(empSelec.getNombre(), new AsyncCallback<Boolean>() {
+				
+		comprasService.eliminarEmpresa(empSelec2.getNombre(), new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				if(result)

@@ -6,13 +6,64 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 public interface Constantes extends Constants {
 
 	 @DefaultStringValue("IMPRIMIR")
-	  String imprimir(); 
+	  String imprimir();
+	 
+	 @DefaultStringValue("INSUMO (*)")
+	  String insumoAsterisco();
+	 	 
+	 @DefaultStringValue("CANTIDAD (*)")
+	  String cantidadAsterisco();
+	 
+	 @DefaultStringValue("ELIMINAR PROVEEDOR")
+	  String eliminarProveedor();
+	 
+	 @DefaultStringValue("NOMBRE (*)")
+	  String nombreAsterisco();
+	 
+	 @DefaultStringValue("CATEGORIA (*)")
+	  String categoriaAsterisco();
+	 
+	 @DefaultStringValue("MARCA (*)")
+	  String marcaAsterisco();
+	 
+	 @DefaultStringValue("LOTE COMPRA (*)")
+	  String loteCompraAsterisco();
+	 
+	 @DefaultStringValue("STOCK SEGURIDAD (*)")
+	  String stockSeguridadAsterisco();
+	 
+	 @DefaultStringValue("PRECIO (*)")
+	  String precioAsterisco();
 	 
 	 @DefaultStringValue("CARGAR A LA ORDEN")
 	  String cargarALaOrden(); 
 	 
 	 @DefaultStringValue("COMPRA DE INSUMOS")
-	  String compraDeInsumos(); 
+	  String compraDeInsumos();
+	 
+	 @DefaultStringValue("EMPRESA (*)")
+	  String empresaAsterisco();
+	 
+	 @DefaultStringValue("CUIT (*)")
+	  String cuitAsterisco();
+	 
+	 @DefaultStringValue("RESPONSABLE (*)")
+	  String responsableAsterisco();
+	 
+	 @DefaultStringValue("PAIS (*)")
+	  String paisAsterisco();
+	 
+	 @DefaultStringValue("PROVINCIA (*)")
+	  String provinciaAsterisco();
+	 
+	 @DefaultStringValue("LOCALIDAD (*)")
+	  String localidadAsterisco();
+	 
+	 @DefaultStringValue("CALLE (*)")
+	  String calleAsterisco();
+	 
+	 @DefaultStringValue("ALTURA (*)")
+	  String alturaAsterisco();
 	 
 	 @DefaultStringValue("VALIDAR COMPRAS")
 	  String validarCompras(); 

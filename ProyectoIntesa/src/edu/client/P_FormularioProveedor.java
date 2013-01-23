@@ -120,17 +120,17 @@ public class P_FormularioProveedor extends Composite {
 		inferior = new Label("");
 		inferior.setStyleName("labelTitulo");
 
-		nombreEmpresa = new Label(constante.empresa());
+		nombreEmpresa = new Label(constante.empresaAsterisco());
 		nombreEmpresa.setStyleName("gwt-LabelFormulario");
-		nroCuit = new Label(constante.cuit());
+		nroCuit = new Label(constante.cuitAsterisco());
 		nroCuit.setStyleName("gwt-LabelFormulario");
-		responsable = new Label(constante.responsable());
+		responsable = new Label(constante.responsableAsterisco());
 		responsable.setStyleName("gwt-LabelFormulario");
 		rubro = new Label(constante.rubro());
 		rubro.setStyleName("gwt-LabelFormulario");
-		calle = new Label(constante.calle());
+		calle = new Label(constante.calleAsterisco());
 		calle.setStyleName("gwt-LabelFormulario");
-		altura = new Label(constante.altura());
+		altura = new Label(constante.alturaAsterisco());
 		altura.setStyleName("gwt-LabelFormulario");
 		piso = new Label(constante.piso());
 		piso.setStyleName("gwt-LabelFormulario");
@@ -138,13 +138,13 @@ public class P_FormularioProveedor extends Composite {
 		oficina.setStyleName("gwt-LabelFormulario");
 		cpa = new Label(constante.cpa());
 		cpa.setStyleName("gwt-LabelFormulario");
-		localidad = new Label(constante.localidad());
+		localidad = new Label(constante.localidadAsterisco());
 		localidad.setStyleName("gwt-LabelFormulario");
 		codigoPostal = new Label(constante.codigoPostal());
 		codigoPostal.setStyleName("gwt-LabelFormulario");
-		provincia = new Label(constante.provincia());
+		provincia = new Label(constante.provinciaAsterisco());
 		provincia.setStyleName("gwt-LabelFormulario");
-		pais = new Label(constante.pais());
+		pais = new Label(constante.paisAsterisco());
 		pais.setStyleName("gwt-LabelFormulario");
 		telefono = new Label(constante.telefono());
 		telefono.setStyleName("gwt-LabelFormulario");
@@ -337,15 +337,15 @@ public class P_FormularioProveedor extends Composite {
 
 		nombreEmpresa = new Label(constante.empresa());
 		nombreEmpresa.setStyleName("gwt-LabelFormulario");
-		nroCuit = new Label(constante.cuit());
+		nroCuit = new Label(constante.cuitAsterisco());
 		nroCuit.setStyleName("gwt-LabelFormulario");
-		responsable = new Label(constante.responsable());
+		responsable = new Label(constante.responsableAsterisco());
 		responsable.setStyleName("gwt-LabelFormulario");
 		rubro = new Label(constante.rubro());
 		rubro.setStyleName("gwt-LabelFormulario");
-		calle = new Label(constante.calle());
+		calle = new Label(constante.calleAsterisco());
 		calle.setStyleName("gwt-LabelFormulario");
-		altura = new Label(constante.altura());
+		altura = new Label(constante.alturaAsterisco());
 		altura.setStyleName("gwt-LabelFormulario");
 		piso = new Label(constante.piso());
 		piso.setStyleName("gwt-LabelFormulario");
@@ -353,13 +353,13 @@ public class P_FormularioProveedor extends Composite {
 		oficina.setStyleName("gwt-LabelFormulario");
 		cpa = new Label(constante.cpa());
 		cpa.setStyleName("gwt-LabelFormulario");
-		localidad = new Label(constante.localidad());
+		localidad = new Label(constante.localidadAsterisco());
 		localidad.setStyleName("gwt-LabelFormulario");
 		codigoPostal = new Label(constante.codigoPostal());
 		codigoPostal.setStyleName("gwt-LabelFormulario");
-		provincia = new Label(constante.provincia());
+		provincia = new Label(constante.provinciaAsterisco());
 		provincia.setStyleName("gwt-LabelFormulario");
-		pais = new Label(constante.pais());
+		pais = new Label(constante.paisAsterisco());
 		pais.setStyleName("gwt-LabelFormulario");
 		telefono = new Label(constante.telefono());
 		telefono.setStyleName("gwt-LabelFormulario");
@@ -666,35 +666,11 @@ public class P_FormularioProveedor extends Composite {
 			
 		}
 		else{
-
-			if(vNombreEmpresa)
-				Window.alert("El nombre de la empresa no puede ser nulo");
-			else if (vCuit)
-				Window.alert("El número de cuit no puede ser nulo");
-			else if (vResponsable)
-				Window.alert("El campo responsable no puede ser nulo");
-			else if (vTipoProveedor)
-				Window.alert("El campo tipo de proveedor no puede ser nulo");
-			else if (vPais)
-				Window.alert("El país no puede ser nulo");
-			else if (vProv)
-				Window.alert("La provincia no puede ser nula");
-			else if (vLocalidad)
-				Window.alert("La localidad no puede ser nula");
-			else if (vCalle)
-				Window.alert("La calle no puede ser nula");
-			else if (vAltura)
-				Window.alert("La altura no puede ser nula");
-			
+			Window.alert("Los campos que poseen (*) son oblicatorios");			
 		}
-		
-		
-		
-		
-
 	}
 		
-public void guardarCambiosProveedor(ClickEvent event) {
+	public void guardarCambiosProveedor(ClickEvent event) {
 		
 		Validaciones validar = new Validaciones();
 		
@@ -770,22 +746,7 @@ public void guardarCambiosProveedor(ClickEvent event) {
 			});
 		}
 		else{
-			if (vCuit)
-				Window.alert("El número de cuit no puede ser nulo");
-			else if (vResponsable)
-				Window.alert("El campo responsable no puede ser nulo");
-			else if (vTipoProveedor)
-				Window.alert("El campo tipo de proveedor no puede ser nulo");
-			else if (vPais)
-				Window.alert("El país no puede ser nulo");
-			else if (vProv)
-				Window.alert("La provincia no puede ser nula");
-			else if (vLocalidad)
-				Window.alert("La localidad no puede ser nula");
-			else if (vCalle)
-				Window.alert("La calle no puede ser nula");
-			else if (vAltura)
-				Window.alert("La altura no puede ser nula");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 		
 		

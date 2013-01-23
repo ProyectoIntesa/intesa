@@ -605,6 +605,7 @@ public class P_BuscarCliente extends PopupPanel {
 			empresa.setValue(false);
 			rubro.setValue(false);
 			contactoSb.getTextBox().setEnabled(true);
+			contactoSb.setFocus(true);
 			empresaSb.getTextBox().setValue("");
 			empresaSb.getTextBox().setEnabled(false);
 			rubroSb.getTextBox().setValue("");
@@ -626,6 +627,7 @@ public class P_BuscarCliente extends PopupPanel {
 			contacto.setValue(false);
 			empresa.setValue(false);
 			rubroSb.getTextBox().setEnabled(true);
+			rubroSb.setFocus(true);
 			empresaSb.getTextBox().setValue("");
 			empresaSb.getTextBox().setEnabled(false);
 			contactoSb.getTextBox().setValue("");
@@ -646,6 +648,7 @@ public class P_BuscarCliente extends PopupPanel {
 			contacto.setValue(false);
 			rubro.setValue(false);
 			empresaSb.getTextBox().setEnabled(true);
+			empresaSb.setFocus(true);
 			contactoSb.getTextBox().setValue("");
 			contactoSb.getTextBox().setEnabled(false);
 			rubroSb.getTextBox().setValue("");

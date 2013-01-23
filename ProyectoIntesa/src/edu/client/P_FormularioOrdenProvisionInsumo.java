@@ -105,11 +105,11 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		empPide.setStyleName("gwt-LabelFormulario");
 		fechaEdicion = new Label(constante.fechaEdicion()+": "+fecha);
 		fechaEdicion.setStyleName("gwt-LabelFormulario");
-		insumo = new Label(constante.insumo());
+		insumo = new Label(constante.insumoAsterisco());
 		insumo.setStyleName("gwt-LabelFormulario");
-		marca = new Label(constante.marca());
+		marca = new Label(constante.marcaAsterisco());
 		marca.setStyleName("gwt-LabelFormulario");
-		cant = new Label(constante.cantidad());
+		cant = new Label(constante.cantidadAsterisco());
 		cant.setStyleName("gwt-LabelFormulario");
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
@@ -234,13 +234,13 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 		formulario.setWidget(2, 0, insumo);
 		formulario.setWidget(2, 1, insumoLb);
-		formulario.getCellFormatter().setWidth(2, 1, "30%");
+		formulario.getCellFormatter().setWidth(2, 1, "20%");
 		formulario.setWidget(2, 2, marca);
 		formulario.setWidget(2, 3, marcaLb);
-		formulario.getCellFormatter().setWidth(2, 3, "30%");
+		formulario.getCellFormatter().setWidth(2, 3, "20%");
 		formulario.setWidget(2, 4, cant);
 		formulario.setWidget(2, 5, cantTb);
-		formulario.getCellFormatter().setWidth(2, 5, "30%");
+		formulario.getCellFormatter().setWidth(2, 5, "20%");
 		
 		formulario.setWidget(3, 0, agregar);
 		formulario.getFlexCellFormatter().setColSpan(3, 0, 6);
@@ -382,7 +382,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 				
 			}
 			else{
-				Window.alert("Se deben seleccionar el nombre del insumo, la marca y la cantidad que se desea");
+				Window.alert("Los campos que poseen (*) son oblicatorios");
 			}
 		
 

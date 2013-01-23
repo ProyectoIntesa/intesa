@@ -45,6 +45,9 @@ public class P_PantallaGerenteProduccion extends Composite {
 	private String rolUsuario;
 
 	public P_PantallaGerenteProduccion(String usuarioLogueado, String rolUsuario) {
+		
+		Window.setTitle("INTESA - GERENTE PRODUCCIÓN");
+		
 		this.usuario = usuarioLogueado;
 		this.rolUsuario = rolUsuario;
 		ancho = Window.getClientWidth() - 15;

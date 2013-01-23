@@ -43,6 +43,9 @@ public class P_PantallaSupervisorProduccion extends Composite {
 	private String rolUsuario;
 
 	public P_PantallaSupervisorProduccion(String usuarioLogueado,String rolUsuarioLogueado) {
+		
+		Window.setTitle("INTESA - SUPERVISOR PRODUCCIÓN");		
+		
 		this.usuario = usuarioLogueado;
 		this.rolUsuario = rolUsuarioLogueado;
 		ancho = Window.getClientWidth() - 15;

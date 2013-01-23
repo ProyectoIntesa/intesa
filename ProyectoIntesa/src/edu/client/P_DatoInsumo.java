@@ -99,7 +99,9 @@ public class P_DatoInsumo extends PopupPanel {
 		eliminar = new Button(constante.eliminarInsumo());
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminarInsumo();
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el insumo?");
+				if(confirm==true)
+					eliminarInsumo();
 			}
 		});
 		

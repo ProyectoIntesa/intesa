@@ -538,6 +538,7 @@ public class P_BuscarInsumo extends PopupPanel {
 			marca.setValue(false);
 			categoria.setValue(false);
 			proveedorSb.getTextBox().setEnabled(true);
+			proveedorSb.setFocus(true);
 			insumoSb.getTextBox().setValue("");
 			insumoSb.getTextBox().setEnabled(false);
 			marcaSb.getTextBox().setValue("");
@@ -564,6 +565,7 @@ public class P_BuscarInsumo extends PopupPanel {
 			marca.setValue(false);
 			insumo.setValue(false);
 			categoriaSb.getTextBox().setEnabled(true);
+			categoriaSb.setFocus(true);
 			insumoSb.getTextBox().setValue("");
 			insumoSb.getTextBox().setEnabled(false);
 			proveedorSb.getTextBox().setValue("");
@@ -589,6 +591,7 @@ public class P_BuscarInsumo extends PopupPanel {
 			insumo.setValue(false);
 			categoria.setValue(false);
 			marcaSb.getTextBox().setEnabled(true);
+			marcaSb.setFocus(true);
 			proveedorSb.getTextBox().setValue("");
 			proveedorSb.getTextBox().setEnabled(false);
 			insumoSb.getTextBox().setValue("");
@@ -630,6 +633,7 @@ public class P_BuscarInsumo extends PopupPanel {
 			marca.setValue(false);
 			categoria.setValue(false);
 			insumoSb.getTextBox().setEnabled(true);
+			insumoSb.setFocus(true);
 			proveedorSb.getTextBox().setValue("");
 			proveedorSb.getTextBox().setEnabled(false);
 			marcaSb.getTextBox().setValue("");

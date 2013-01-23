@@ -53,7 +53,7 @@ public class P_AgregarProveedor extends PopupPanel {
 		nuevoProveedor.setStyleName("labelTitulo");
 		proveedor = new Label(constante.proveedor());
 		proveedor.setStyleName("gwt-LabelFormularioDerecho");
-		precio = new Label(constante.precio());
+		precio = new Label(constante.precioAsterisco());
 		precio.setStyleName("gwt-LabelFormularioDerecho");		
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
@@ -153,7 +153,7 @@ public class P_AgregarProveedor extends PopupPanel {
 			this.hide();
 		}
 		else
-			Window.alert("El precio no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		
 	}
 		

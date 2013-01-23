@@ -59,7 +59,7 @@ public class P_AgregarContacto extends PopupPanel {
 		
 		encabezado = new Label(constante.nuevoContacto());
 		encabezado.setStyleName("labelTitulo");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormularioDerecho");
 		cargo = new Label(constante.cargo());
 		cargo.setStyleName("gwt-LabelFormularioDerecho");
@@ -147,7 +147,7 @@ public class P_AgregarContacto extends PopupPanel {
 		
 		encabezado = new Label(constante.nuevoContacto());
 		encabezado.setStyleName("labelTitulo");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormularioDerecho");
 		cargo = new Label(constante.cargo());
 		cargo.setStyleName("gwt-LabelFormularioDerecho");
@@ -235,7 +235,7 @@ public class P_AgregarContacto extends PopupPanel {
 		
 		encabezado = new Label(constante.modificarContacto());
 		encabezado.setStyleName("labelTitulo");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormularioDerecho");
 		cargo = new Label(constante.cargo());
 		cargo.setStyleName("gwt-LabelFormularioDerecho");
@@ -330,7 +330,7 @@ public class P_AgregarContacto extends PopupPanel {
 		
 		encabezado = new Label(constante.modificarContacto());
 		encabezado.setStyleName("labelTitulo");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormularioDerecho");
 		cargo = new Label(constante.cargo());
 		cargo.setStyleName("gwt-LabelFormularioDerecho");
@@ -439,7 +439,7 @@ public class P_AgregarContacto extends PopupPanel {
 			});
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 			
 		
@@ -474,7 +474,7 @@ public class P_AgregarContacto extends PopupPanel {
 			});
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 
 		
@@ -520,7 +520,7 @@ public class P_AgregarContacto extends PopupPanel {
 			});
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 
 		
@@ -566,7 +566,7 @@ public class P_AgregarContacto extends PopupPanel {
 			});
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 
 		
@@ -587,7 +587,7 @@ public class P_AgregarContacto extends PopupPanel {
 			this.hide();
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 		
 		
@@ -612,7 +612,7 @@ public class P_AgregarContacto extends PopupPanel {
 			this.hide();
 		}
 		else{
-			Window.alert("El nombre del contacto no puede ser nulo");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 
 	}

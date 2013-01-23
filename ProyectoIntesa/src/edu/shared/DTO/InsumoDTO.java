@@ -18,6 +18,7 @@ public class InsumoDTO  implements java.io.Serializable{
 	private int loteCompra;
 	private int stockSeguridad;
 	private int idInsumo;
+	private boolean necesidadCompra;
 	private List<ProveedorDTO> listaProveedores; 	
 	private List<ProveedorDeInsumosDTO> proveedor;
 	
@@ -28,6 +29,16 @@ public class InsumoDTO  implements java.io.Serializable{
 	}
 	
 	
+	public boolean isNecesidadCompra() {
+		return necesidadCompra;
+	}
+
+
+	public void setNecesidadCompra(boolean necesidadCompra) {
+		this.necesidadCompra = necesidadCompra;
+	}
+
+
 	public List<ProveedorDTO> getListaProveedores() {
 		return listaProveedores;
 	}

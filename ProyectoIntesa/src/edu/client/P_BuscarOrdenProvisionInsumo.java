@@ -1,5 +1,6 @@
 package edu.client;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import com.google.gwt.core.client.GWT;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.ui.*;
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.EmpleadoDTO;
+import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.UsuarioCompDTO;
 
@@ -401,65 +403,131 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	
 	protected void buscarComoGerente() {
 		
-		String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
-		
 		String fecDesde = "";
 		String fecHasta = "";
 		
 		if(fechaCb.getValue() == true){
+						
 			fecDesde = fechaDesdeDb.getTextBox().getText();
-			fecHasta = fechaHastaDb.getTextBox().getText();					
-		}
+			fecHasta = fechaHastaDb.getTextBox().getText();	
+			
+			if(fecDesde.compareTo("") == 0 || fecHasta.compareTo("") == 0){
+				
+				Window.alert("Si se desea filtrar la búsqueda por fecha, se deben ingresar si o si las dos");
+			}
+			else{
+				
+				Date fecDesdeDate = new Date();
+				fecDesdeDate = fechaDesdeDb.getValue();
+				Date fecHastaDate = new Date();
+				fecHastaDate = fechaHastaDb.getValue();
+				
+				if(fecDesdeDate.before(fecHastaDate) == true){
+					String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
+					
+					int posPor = generadaPorLb.getSelectedIndex();
+					int idEmpleadoPor;
+					
+					
+					if(posPor <= 0) {
+						idEmpleadoPor = 0;
+					}
+					else {		
+						idEmpleadoPor = this.listaGeneradosPor.get(posPor-1).getIdEmpleado();
+					}
+						
+					int posPara;
+					int idEmpleadoPara;
+					
+					if(this.generadaParaLb.getItemCount() <= 0){
+						posPara = 0;
+						idEmpleadoPara = 0;
+						
+					} 
+					else {
+						
+						posPara = generadaParaLb.getSelectedIndex();
+						
+						if(posPara == 0)
+							idEmpleadoPara = 0;
+						else {
+							idEmpleadoPara = this.listaGeneradosPara.get(posPara-1).getIdEmpleado();
+						}
 
-		int posPor = generadaPorLb.getSelectedIndex();
-		int idEmpleadoPor;
+					}
+						
+					ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+					produccionService.getOrdenProvisionInsumo(unEstado, idEmpleadoPor, idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+						@Override
+						public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
+							cargarTabla(result);			
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR DE SERVICIO");
+						}
+					});
+
+				}
+				else{
+					Window.alert("La fecha desde debe ser menor a la fecha hasta");
+				}
 		
-		
-		if(posPor <= 0) {
-			idEmpleadoPor = 0;
-		}
-		else {		
-			idEmpleadoPor = this.listaGeneradosPor.get(posPor-1).getIdEmpleado();
-		}
+			}
 		
 			
-		
-		int posPara;
-		int idEmpleadoPara;
-		
-		if(this.generadaParaLb.getItemCount() <= 0){
-			posPara = 0;
-			idEmpleadoPara = 0;
-			
-		} 
+		}
 		else {
+			String unEstado = estadoLb.getItemText(estadoLb.getSelectedIndex());
 			
-			posPara = generadaParaLb.getSelectedIndex();
+			int posPor = generadaPorLb.getSelectedIndex();
+			int idEmpleadoPor;
 			
-			if(posPara == 0)
+			
+			if(posPor <= 0) {
+				idEmpleadoPor = 0;
+			}
+			else {		
+				idEmpleadoPor = this.listaGeneradosPor.get(posPor-1).getIdEmpleado();
+			}
+				
+			int posPara;
+			int idEmpleadoPara;
+			
+			if(this.generadaParaLb.getItemCount() <= 0){
+				posPara = 0;
 				idEmpleadoPara = 0;
+				
+			} 
 			else {
-				idEmpleadoPara = this.listaGeneradosPara.get(posPara-1).getIdEmpleado();
-			}
+				
+				posPara = generadaParaLb.getSelectedIndex();
+				
+				if(posPara == 0)
+					idEmpleadoPara = 0;
+				else {
+					idEmpleadoPara = this.listaGeneradosPara.get(posPara-1).getIdEmpleado();
+				}
 
+			}
+				
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.getOrdenProvisionInsumo(unEstado, idEmpleadoPor, idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+				@Override
+				public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
+					cargarTabla(result);			
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+				}
+			});
 		}
+		
 			
-		
 
-		
-		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.getOrdenProvisionInsumo(unEstado, idEmpleadoPor, idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
-			@Override
-			public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
-				cargarTabla(result);			
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
-			}
-		});
 		
 		
 		
@@ -477,31 +545,61 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		else 
 			idEmpleadoPara = this.emp.getListaEmpACargo().get(pos-1).getIdEmpleado();
 		
-		
+
 		
 		String fecDesde = "";
 		String fecHasta = "";
 		
 		if(fechaCb.getValue() == true){
+						
 			fecDesde = fechaDesdeDb.getTextBox().getText();
-			fecHasta = fechaHastaDb.getTextBox().getText();					
-		}
-		
-		
-		
-		ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-		produccionService.getOrdenProvisionInsumo(unEstado, this.emp.getIdEmpleado(), idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
-			@Override
-			public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
-				cargarTabla(result);			
+			fecHasta = fechaHastaDb.getTextBox().getText();	
+			
+			if(fecDesde.compareTo("") == 0 || fecHasta.compareTo("") == 0){
+				
+				Window.alert("Si se desea filtrar la búsqueda por fecha, se deben ingresar si o si las dos");
 			}
+			else{
+				
+				Date fecDesdeDate = new Date();
+				fecDesdeDate = fechaDesdeDb.getValue();
+				Date fecHastaDate = new Date();
+				fecHastaDate = fechaHastaDb.getValue();
+				
+				if(fecDesdeDate.before(fecHastaDate) == true){
+					ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+					produccionService.getOrdenProvisionInsumo(unEstado, this.emp.getIdEmpleado(), idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+						@Override
+						public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
+							cargarTabla(result);			
+						}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("ERROR DE SERVICIO");
+						}
+					});
+				}
+				else{
+					Window.alert("La fecha desde debe ser menor a la fecha hasta");
+				}
 			}
-		});
-		
+		}
+		else {
+			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
+			produccionService.getOrdenProvisionInsumo(unEstado, this.emp.getIdEmpleado(), idEmpleadoPara, fecDesde, fecHasta, new AsyncCallback<List<OrdenProvisionInsumoDTO>>() {
+				@Override
+				public void onSuccess(List<OrdenProvisionInsumoDTO> result) {	
+					cargarTabla(result);			
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
+				}
+			});
+		}
+				
 	}
 	
 	protected void cargarGeneradaParaLbConTODOS(){
@@ -687,7 +785,8 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		estadoLb.addItem("TODOS");
 		
 		for (String sugerencia : result) {
-			estadoLb.addItem(sugerencia);
+			if(sugerencia.compareTo("EDICION") != 0)
+				estadoLb.addItem(sugerencia);
 		}
 
 	}

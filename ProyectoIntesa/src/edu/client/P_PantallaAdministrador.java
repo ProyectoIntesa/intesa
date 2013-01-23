@@ -56,6 +56,8 @@ public class P_PantallaAdministrador extends Composite {
 	
 	public P_PantallaAdministrador(String usuarioLogueado) {
 
+		Window.setTitle("INTESA - ADMINISTRADOR");
+		
 		try {
 			ancho = Window.getClientWidth() - 15;
 			alto = Window.getClientHeight() - 13;

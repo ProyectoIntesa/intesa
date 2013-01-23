@@ -70,6 +70,9 @@ public class P_PantallaCompras extends Composite {
 	private OrdenCompraInsumoDTO ordenInsumo;
 
 	public P_PantallaCompras(String usuarioLogueado) {
+		
+		Window.setTitle("INTESA - COMPRAS");
+		
 		usuario= usuarioLogueado;
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;

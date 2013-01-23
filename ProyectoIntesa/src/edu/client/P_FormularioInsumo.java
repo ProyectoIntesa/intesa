@@ -74,17 +74,17 @@ public class P_FormularioInsumo  extends Composite {
 		
 		insumo = new Label(constante.insumo());
 		insumo.setStyleName("labelTitulo");
-		nombreInsumo = new Label(constante.nombre());
+		nombreInsumo = new Label(constante.nombreAsterisco());
 		nombreInsumo.setStyleName("gwt-LabelFormulario");
-		categoriaInsumo = new Label(constante.categoria());
+		categoriaInsumo = new Label(constante.categoriaAsterisco());
 		categoriaInsumo.setStyleName("gwt-LabelFormulario");
-		marcaInsumo = new Label(constante.marca());
+		marcaInsumo = new Label(constante.marcaAsterisco());
 		marcaInsumo.setStyleName("gwt-LabelFormulario");
 		inventario = new Label(constante.inventariol());
 		inventario.setStyleName("labelTitulo");
-		loteCompraInsumo = new Label(constante.loteCompra());
+		loteCompraInsumo = new Label(constante.loteCompraAsterisco());
 		loteCompraInsumo.setStyleName("gwt-LabelFormulario");
-		stockSeguridadInsumo = new Label(constante.stockSeguridad());
+		stockSeguridadInsumo = new Label(constante.stockSeguridadAsterisco());
 		stockSeguridadInsumo.setStyleName("gwt-LabelFormulario");
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
@@ -208,9 +208,9 @@ public class P_FormularioInsumo  extends Composite {
 		marcaInsumo.setStyleName("gwt-LabelFormulario");
 		inventario = new Label(constante.inventariol());
 		inventario.setStyleName("labelTitulo");
-		loteCompraInsumo = new Label(constante.loteCompra());
+		loteCompraInsumo = new Label(constante.loteCompraAsterisco());
 		loteCompraInsumo.setStyleName("gwt-LabelFormulario");
-		stockSeguridadInsumo = new Label(constante.stockSeguridad());
+		stockSeguridadInsumo = new Label(constante.stockSeguridadAsterisco());
 		stockSeguridadInsumo.setStyleName("gwt-LabelFormulario");
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
@@ -427,35 +427,11 @@ public class P_FormularioInsumo  extends Composite {
 			
 		}
 		else{
-						
-			if(vNombreInsumo)
-				Window.alert("El nombre del insumo no puede ser nulo");
-			else if(vCategoriaInsumo)
-				Window.alert("La categoria del insumo no puede ser nula");
-			else if(vMarcaInsumo)
-				Window.alert("La marca del insumo no puede ser nula");
-			else if(vLote1)
-				Window.alert("El número de lote de compra no puede ser nulo");
-			else if(!vLote2)
-				Window.alert("La cantidad de lote de compra debe estar compuesta de números");
-			else if(vStock1)
-				Window.alert("El stock de seguridad no puede ser nulo");
-			else if(!vStock2)
-				Window.alert("La cantidad de stock de seguridad debe estar compuesta de números");
-			
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			Window.alert("Los campos que poseen (*) son oblicatorios");
+		}	
 	}
 	
-protected void cargarInsumoModificado(ClickEvent event){
+	protected void cargarInsumoModificado(ClickEvent event){
 		
 		Validaciones validar = new Validaciones();
 		
@@ -477,6 +453,8 @@ protected void cargarInsumoModificado(ClickEvent event){
 			insumo.setLoteCompra(lote);
 			int stock = Integer.parseInt(this.stockSeguridadInsumoTb.getText());
 			insumo.setStockSeguridad(stock);
+			insumo.setCantidad(this.insumoDTO.getCantidad());
+			insumo.setNecesidadCompra(this.insumoDTO.isNecesidadCompra());
 			
 			
 			if (tablaElemento.getRowCount() > 1){
@@ -518,22 +496,8 @@ protected void cargarInsumoModificado(ClickEvent event){
 
 		
 		else{
-			
-			if(vLote1)
-				Window.alert("El número de lote de compra no puede ser nulo");
-			else if(!vLote2)
-				Window.alert("La cantidad de lote de compra debe estar compuesta de números");
-			else if(vStock1)
-				Window.alert("El stock de seguridad no puede ser nulo");
-			else if(!vStock2)
-				Window.alert("La cantidad de stock de seguridad debe estar compuesta de números");
-			
+			Window.alert("Los campos que poseen (*) son oblicatorios");			
 		}
-		
-		
-		
-		
-		
 	}
 
 	protected void agregarProveedor(ClickEvent event) {

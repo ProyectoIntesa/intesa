@@ -512,6 +512,9 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		nuevo.setLoteCompra(insumo.getLoteCompra());
 		nuevo.setStockSeguridad(insumo.getStockSeguridad());
 		nuevo.setObservaciones(insumo.getObservaciones());
+		nuevo.setCantidad(insumo.getCantidad());
+		nuevo.setNecesidadCompra(insumo.isNecesidadCompra());
+		//mantener la cantidad y la necesidad de compra
 
 		if (insumo.getProveedor().size() > 0) {
 
@@ -610,6 +613,9 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		result.setLoteCompra(insumo.getLoteCompra());
 		result.setStockSeguridad(insumo.getStockSeguridad());
 		result.setObservaciones(insumo.getObservaciones());
+		
+		result.setNecesidadCompra(insumo.isNecesidadCompra());
+		
 		if (insumo.getCantidad() != -1 && insumo.getCantidad() != 0) {
 			result.setCantidad(insumo.getCantidad());
 		} else {

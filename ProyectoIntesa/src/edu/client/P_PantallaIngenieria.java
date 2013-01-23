@@ -43,6 +43,8 @@ public class P_PantallaIngenieria extends Composite {
 	private TabPanel panelTrabajo;
 
 	public P_PantallaIngenieria(String usuarioLogueado) {
+		
+		Window.setTitle("INTESA - INGENIERÍA");
 
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;

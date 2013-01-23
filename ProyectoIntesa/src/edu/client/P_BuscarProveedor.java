@@ -710,6 +710,7 @@ public class P_BuscarProveedor extends PopupPanel {
 			rubro.setValue(false);
 			tipo.setValue(false);
 			contactoSb.getTextBox().setEnabled(true);
+			contactoSb.setFocus(true);
 			empresaSb.getTextBox().setValue("");
 			empresaSb.getTextBox().setEnabled(false);
 			rubroSb.getTextBox().setValue("");
@@ -736,6 +737,7 @@ public class P_BuscarProveedor extends PopupPanel {
 			tipo.setValue(false);
 			empresa.setValue(false);
 			rubroSb.getTextBox().setEnabled(true);
+			rubroSb.setFocus(true);
 			empresaSb.getTextBox().setValue("");
 			empresaSb.getTextBox().setEnabled(false);
 			contactoSb.getTextBox().setValue("");
@@ -761,6 +763,7 @@ public class P_BuscarProveedor extends PopupPanel {
 			rubro.setValue(false);
 			empresa.setValue(false);
 			tipoSb.getTextBox().setEnabled(true);
+			tipoSb.setFocus(true);
 			empresaSb.getTextBox().setValue("");
 			empresaSb.getTextBox().setEnabled(false);
 			contactoSb.getTextBox().setValue("");
@@ -786,6 +789,7 @@ public class P_BuscarProveedor extends PopupPanel {
 			rubro.setValue(false);
 			tipo.setValue(false);
 			empresaSb.getTextBox().setEnabled(true);
+			empresaSb.setFocus(true);
 			contactoSb.getTextBox().setValue("");
 			contactoSb.getTextBox().setEnabled(false);
 			rubroSb.getTextBox().setValue("");

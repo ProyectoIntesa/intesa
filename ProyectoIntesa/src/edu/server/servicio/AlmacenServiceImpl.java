@@ -113,9 +113,9 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 			
 			adminInsumo.setCantInsumo(idInsumo, cantDisponible);
 			
-			if(cantDisponible>=insumo.getStockSeguridad())
-				System.out.println("---------------------------------------------------");
+			if(cantDisponible>insumo.getStockSeguridad()){
 				adminInsumo.setNecesidadCompraEnCero(idInsumo);
+			}
 				
 			RenglonIngresoInsumosId renglonId = new RenglonIngresoInsumosId(renglon.getItem(), remito.getIdOrdenCompra(), remito.getIdRemitoEx());
 			

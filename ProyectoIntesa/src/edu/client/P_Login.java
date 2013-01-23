@@ -54,6 +54,8 @@ public class P_Login extends Composite {
 
 	public P_Login() {
 
+		Window.setTitle("Ingeniería Técnica S.A.");
+		
 		ancho = Window.getClientWidth() - 10;
 		alto = Window.getClientHeight() - 13;
 		altoCentro = Window.getClientHeight() - 168;

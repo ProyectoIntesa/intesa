@@ -569,18 +569,119 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		
 	}
 	
+//	protected void armarOrden() {
+//		
+//		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
+//		List<InsumoDTO> listaAux = new LinkedList<InsumoDTO>();
+//		boolean primeraPasada = true;
+//		boolean bandera = false;
+//
+//		for(int i = 1; i < tablaElementoReqNec.getRowCount(); i++){
+//			
+//			boolean resultCheck = ((CheckBox)tablaElementoReqNec.getWidget(i, COL_CHECK)).getValue();
+//						
+//			if(resultCheck){
+//			
+//				if(primeraPasada){
+//					int indiceProv = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
+//					proveedorElegido = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceProv);
+//					primeraPasada = false;
+//				}
+//				
+//				int indiceAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
+//				String provAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceAux);	
+//			
+//				if(provAux.compareTo(proveedorElegido) == 0){
+//										
+//					String nombreInsumo = ((Label)tablaElementoReqNec.getWidget(i, COL_INSUMONEC)).getText();
+//					String nombreMarca = ((Label)tablaElementoReqNec.getWidget(i, COL_MARCANEC)).getText();
+//					InsumoDTO nuevo = new InsumoDTO();
+//					nuevo.setNombre(nombreInsumo);
+//					nuevo.setMarca(nombreMarca);
+//					
+//					if(listaOrdenCompraInsumo.size() != 0){
+//						
+//						for (InsumoDTO insumo : listaOrdenCompraInsumo) {
+//							
+//							if(insumo.getNombre().compareTo(nuevo.getNombre()) != 0 || insumo.getMarca().compareTo(nuevo.getMarca()) != 0){
+//								listaOrdenCompraInsumo.add(nuevo);
+//							}
+//						}
+//					}
+//					else{
+//						listaOrdenCompraInsumo.add(nuevo);
+//					}
+//						
+//				}
+//				else{
+//					Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
+//					bandera = true;
+//					break;
+//				}
+//			}	
+//		}
+//		
+//		for(int i = 1; i < tablaElementoReqAdic.getRowCount(); i++){
+//			
+//			if(primeraPasada){
+//				proveedorElegido = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
+//				primeraPasada = false;
+//			}
+//			 			
+//			String provAux = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
+//						
+//			if (provAux.compareTo(proveedorElegido) == 0) {
+//				
+//				String nombreInsumo = ((Label) tablaElementoReqAdic.getWidget(i, COL_INSUMO)).getText();
+//				String nombreMarca = ((Label) tablaElementoReqAdic.getWidget(i, COL_MARCA)).getText();
+//				InsumoDTO nuevo = new InsumoDTO();
+//				nuevo.setNombre(nombreInsumo);
+//				nuevo.setMarca(nombreMarca);
+//
+//				if(listaOrdenCompraInsumo.size() != 0){
+//					
+//					for (InsumoDTO insumo : listaOrdenCompraInsumo) {
+//					
+//						if(insumo.getNombre().compareTo(nuevo.getNombre()) != 0 || insumo.getMarca().compareTo(nuevo.getMarca()) != 0){
+//							listaOrdenCompraInsumo.add(nuevo);
+//						}
+//					}
+//				}
+//				else{
+//					listaOrdenCompraInsumo.add(nuevo);
+//				}
+//
+//			} 
+//			else {
+//				Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
+//				bandera = true;
+//				break;
+//			}
+//	
+//		}	
+//		
+//		if(!bandera){
+//			this.agregarOrden = true;
+//			salir();
+//		}
+//		
+//		
+//		
+//	}
+	
 	protected void armarOrden() {
 		
 		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
+		List<InsumoDTO> listaAux = new LinkedList<InsumoDTO>();
 		boolean primeraPasada = true;
 		boolean bandera = false;
 
 		for(int i = 1; i < tablaElementoReqNec.getRowCount(); i++){
 			
 			boolean resultCheck = ((CheckBox)tablaElementoReqNec.getWidget(i, COL_CHECK)).getValue();
-						
-			if(resultCheck){
 			
+			if(resultCheck){
+				
 				if(primeraPasada){
 					int indiceProv = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
 					proveedorElegido = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceProv);
@@ -591,22 +692,21 @@ public class P_RequerimientoInsumo extends PopupPanel {
 				String provAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceAux);	
 			
 				if(provAux.compareTo(proveedorElegido) == 0){
-										
+					
 					String nombreInsumo = ((Label)tablaElementoReqNec.getWidget(i, COL_INSUMONEC)).getText();
 					String nombreMarca = ((Label)tablaElementoReqNec.getWidget(i, COL_MARCANEC)).getText();
 					InsumoDTO nuevo = new InsumoDTO();
 					nuevo.setNombre(nombreInsumo);
 					nuevo.setMarca(nombreMarca);
 					
-					listaOrdenCompraInsumo.add(nuevo);
-					
+					listaAux.add(nuevo);		
 				}
 				else{
 					Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
 					bandera = true;
 					break;
-				}
-			}	
+				}	
+			}		
 		}
 		
 		for(int i = 1; i < tablaElementoReqAdic.getRowCount(); i++){
@@ -615,26 +715,44 @@ public class P_RequerimientoInsumo extends PopupPanel {
 				proveedorElegido = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
 				primeraPasada = false;
 			}
-			 
+			 			
 			String provAux = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
-			
+						
 			if (provAux.compareTo(proveedorElegido) == 0) {
-
+				
 				String nombreInsumo = ((Label) tablaElementoReqAdic.getWidget(i, COL_INSUMO)).getText();
 				String nombreMarca = ((Label) tablaElementoReqAdic.getWidget(i, COL_MARCA)).getText();
 				InsumoDTO nuevo = new InsumoDTO();
 				nuevo.setNombre(nombreInsumo);
 				nuevo.setMarca(nombreMarca);
 
-				listaOrdenCompraInsumo.add(nuevo);
-
-			} else {
+				listaAux.add(nuevo);
+			} 
+			else {
 				Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
 				bandera = true;
 				break;
 			}
-	
-		}	
+		}
+		
+		for (InsumoDTO insumoD : listaAux) {
+			
+			boolean banderita = false;
+			
+			for (InsumoDTO insumoS : listaOrdenCompraInsumo) {
+				if(insumoS.getNombre().compareTo(insumoD.getNombre()) == 0 || insumoS.getNombre().compareTo(insumoD.getNombre()) == 0){
+					banderita = true;
+					break;
+				}
+			}
+			
+			if(banderita == false){
+				listaOrdenCompraInsumo.add(insumoD);
+			}
+		}
+		
+		
+		
 		if(!bandera){
 			this.agregarOrden = true;
 			salir();
@@ -643,7 +761,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		
 		
 	}
-
+	
 	protected void cargarListaTablaInsumosNec(List<InsumoDTO> result) {
 		
 		for (InsumoDTO insumoDTO : result) {

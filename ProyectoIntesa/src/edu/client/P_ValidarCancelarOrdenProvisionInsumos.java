@@ -69,24 +69,52 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 		cancelarOrdenes = new Button(constante.cancelarOrdenes());
 		cancelarOrdenes.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cancelarOrdenes();
+				boolean bandera = false;
+
 				for(int i = 1; i < tablaElementos.getRowCount(); i++){
-					tablaElementos.removeRow(i);
+					if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+						bandera = true;
+						break;
+					}
 				}
-				listaOrdenProvisionInsumo.clear();
-				cargarTabla();
+				if(bandera == true){
+					boolean confirm = Window.confirm("Está seguro de que desea cancelar las órdenes de provisión seleccionadas?");
+					if(confirm==true){
+						cancelarOrdenes();
+						for(int i = 1; i < tablaElementos.getRowCount(); i++){
+							tablaElementos.removeRow(i);
+						}
+						listaOrdenProvisionInsumo.clear();
+						cargarTabla();
+					}
+				}
+				
+
 			}
 		});
 		
 		validarOrdenes = new Button(constante.validarOrdenes());
 		validarOrdenes.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				validar();
+				boolean bandera = false;
+
 				for(int i = 1; i < tablaElementos.getRowCount(); i++){
-					tablaElementos.removeRow(i);
+					if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+						bandera = true;
+						break;
+					}
 				}
-				listaOrdenProvisionInsumo.clear();
-				cargarTabla();
+				if(bandera == true){
+					validar();
+					for(int i = 1; i < tablaElementos.getRowCount(); i++){
+						tablaElementos.removeRow(i);
+					}
+					listaOrdenProvisionInsumo.clear();
+					cargarTabla();
+				}
+				
+				
+
 			}
 		});
 		

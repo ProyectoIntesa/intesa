@@ -49,7 +49,7 @@ public class P_PantallaVentas extends Composite {
 
 	public P_PantallaVentas(String usuarioLogueado) {
 
-
+		Window.setTitle("INTESA - VENTAS");
 		
 		ancho = Window.getClientWidth() - 15;
 		alto = Window.getClientHeight() - 13;

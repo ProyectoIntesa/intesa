@@ -102,6 +102,7 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		cerrarOrden = new Button(constante.cerrarOrden());
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				actualizaValores();
 				cambioEstado = true;
 				if (tipo.compareTo("completa") == 0){
 					cambiarEstado("CERRADA");
