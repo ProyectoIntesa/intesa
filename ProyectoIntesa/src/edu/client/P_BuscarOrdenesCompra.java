@@ -45,6 +45,8 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones1;
+	private FlexTable botones2;
 
 	private Label proveedor;
 	private Label tipo_orden;
@@ -189,6 +191,14 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 			}
 		});
 	
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, buscar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, salir);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		panel.setWidget(0, 0, buscarPor);
 		panel.getFlexCellFormatter().setColSpan(0, 0, 6);
 
@@ -209,19 +219,19 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 		panel.setWidget(3, 4, fechaHasta);
 		panel.setWidget(3, 5, fechaHastaDb);
 		
-		panel.setWidget(4, 0, buscar);
+		panel.setWidget(4, 0, botones1);
 		panel.getFlexCellFormatter().setColSpan(4, 0, 6);
 		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
-				
+						
 		panel.setWidget(5, 0, contenedorTabla);
 		panel.getFlexCellFormatter().setColSpan(5, 0, 6);
 		
 		panel.setWidget(6, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(6, 0, 6);
 
-		panel.setWidget(7, 0, salir);
+		panel.setWidget(7, 0, botones2);
 		panel.getFlexCellFormatter().setColSpan(7, 0, 6);
-		panel.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 	
 		
 		setWidget(panel);

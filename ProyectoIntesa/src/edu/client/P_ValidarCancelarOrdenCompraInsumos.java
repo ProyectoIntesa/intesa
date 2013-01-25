@@ -39,6 +39,7 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones;
 
 	private Constantes constante = GWT.create(Constantes.class);
 	
@@ -122,6 +123,14 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, cancelarOrdenes);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, validarOrdenes);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		panel = new FlexTable();
 		panel.setSize("1000px", "300px");
 		contenedorTabla = new ScrollPanel();
@@ -149,14 +158,9 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 		panel.setWidget(2, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(2, 0, 5);
 
-		panel.setWidget(3, 1, salir);
-		panel.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		panel.setWidget(3, 2, cancelarOrdenes);
-		panel.getCellFormatter().setHorizontalAlignment(3, 2, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		panel.setWidget(3, 3, validarOrdenes);
-		panel.getCellFormatter().setHorizontalAlignment(3, 3, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(3, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(3, 0, 5);
+		panel.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 	
 		cargarTabla();
 		

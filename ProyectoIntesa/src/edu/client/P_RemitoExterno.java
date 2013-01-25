@@ -14,6 +14,8 @@ import edu.client.AlmacenService.AlmacenService;
 import edu.client.AlmacenService.AlmacenServiceAsync;
 import edu.client.ComprasService.ComprasService;
 import edu.client.ComprasService.ComprasServiceAsync;
+import edu.client.ProduccionService.ProduccionService;
+import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenCompraInsumoDTO;
 import edu.shared.DTO.RemitoExternoDTO;
@@ -55,7 +57,7 @@ public class P_RemitoExterno extends PopupPanel {
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
-	
+	private FlexTable botones;
 	
 	private String usuario;	
 	
@@ -162,6 +164,11 @@ public class P_RemitoExterno extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, aceptar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		panel.setWidget(0, 0, titulo);
 		panel.getFlexCellFormatter().setColSpan(0, 0, 2);
@@ -191,10 +198,9 @@ public class P_RemitoExterno extends PopupPanel {
 		panel.setWidget(9, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(9, 0, 2);
 
-		panel.setWidget(10, 0, aceptar);
-		panel.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(10, 1, cancelar);
-		panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(10, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(10, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			
 		setWidget(panel);
 		
@@ -261,6 +267,10 @@ public class P_RemitoExterno extends PopupPanel {
 			}
 		});
 				
+		botones = new FlexTable();
+		botones.setWidget(0, 0, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
 		
 		panel.setWidget(0, 0, titulo);
 		panel.getFlexCellFormatter().setColSpan(0, 0, 2);
@@ -292,8 +302,9 @@ public class P_RemitoExterno extends PopupPanel {
 		panel.setWidget(9, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(9, 0, 2);
 
-		panel.setWidget(10, 1, salir);
-		panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(10, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(10, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			
 		cargarTabla(remito);
 		
@@ -348,10 +359,11 @@ public class P_RemitoExterno extends PopupPanel {
 		if(!vCantRecibida1 && vCantRecibida2 && !vCantRecibida3 && !vNroRemito1 && vNroRemito2){
 			
 			RemitoExternoDTO remito = new RemitoExternoDTO();
-			
+		
 			remito.setEmpleado(this.usuario);
 			remito.setFechaIngreso(new Date());
 			remito.setIdOrdenCompra(ordenCompraInsumo.getIdOrden());
+			final Long idOrden = remito.getIdOrdenCompra();
 			remito.setObservaciones(this.observacionesTa.getText());
 			remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
 			
@@ -382,11 +394,12 @@ public class P_RemitoExterno extends PopupPanel {
 
 			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
 			almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
-		
+						
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
 						Window.alert("El Remito Externo ha sido guardado de forma exitosa");
+						verificarSiEstaCompleta(idOrden);
 						cancelar();
 					}
 					else{
@@ -421,6 +434,51 @@ public class P_RemitoExterno extends PopupPanel {
 
 	}
 
+	protected void verificarSiEstaCompleta(Long idOrden){
+		
+		final Long idOrdenP = idOrden;
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
+	
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					cambiarEstadoARecibidaCompleta(idOrdenP);
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+
+			}
+
+		});		
+	}
+	
+	protected void cambiarEstadoARecibidaCompleta(Long idOrden){
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.recibidaCompletaOrdenCompraInsumo(idOrden, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("La orden de compra de insumos correspondiente al remito externo ingresado a pasado al estado CERRADA COMPLETA");
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR DE SERVICIO");
+
+			}
+
+		});	
+		
+	}
+	
 	private void cargarTabla(OrdenCompraInsumoDTO ordenInsumo){
 				
 		int item = 1;
@@ -495,4 +553,10 @@ public class P_RemitoExterno extends PopupPanel {
 	protected void salir() {
 		this.hide();
 	}
+
+
+
+
+
+
 }

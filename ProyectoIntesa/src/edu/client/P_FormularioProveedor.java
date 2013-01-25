@@ -53,6 +53,8 @@ public class P_FormularioProveedor extends Composite {
 	private FlexTable formularioCliente;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
+	private FlexTable botones1;
+	private FlexTable botones2;
 
 	// etiquetas de los campos
 	private Label nombreEmpresa;
@@ -205,6 +207,16 @@ public class P_FormularioProveedor extends Composite {
 			}
 		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, btnNuevoContacto);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, btnAgregar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, btnCancelar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
 		contenedorTabla.setHeight("200px");
@@ -269,7 +281,9 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.setWidget(7, 0, datosContactos);
 		formularioCliente.getFlexCellFormatter().setColSpan(7, 0, 10);
 
-		formularioCliente.setWidget(8, 4, btnNuevoContacto);
+		formularioCliente.setWidget(8, 0, botones1);
+		formularioCliente.getFlexCellFormatter().setColSpan(8, 0, 10);
+		formularioCliente.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		formularioCliente.setWidget(9, 0, contenedorTabla);
 		formularioCliente.getFlexCellFormatter().setColSpan(9, 0, 10);
@@ -284,9 +298,9 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.setWidget(12, 0, inferior);
 		formularioCliente.getFlexCellFormatter().setColSpan(12, 0, 10);
 
-		formularioCliente.setWidget(13, 2, btnAgregar);
-
-		formularioCliente.setWidget(13, 5, btnCancelar);
+		formularioCliente.setWidget(13, 0, botones2);
+		formularioCliente.getFlexCellFormatter().setColSpan(13, 0, 10);
+		formularioCliente.getCellFormatter().setHorizontalAlignment(13, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		tablaElemento.setText(0, COL_NOMBRE, constante.nombre());
 		tablaElemento.getCellFormatter().setWidth(0, COL_NOMBRE, "14%");
@@ -440,6 +454,16 @@ public class P_FormularioProveedor extends Composite {
 			}
 		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, btnNuevoContacto);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, btnAgregar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, btnCancelar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
 		contenedorTabla.setHeight("200px");
@@ -505,7 +529,9 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.setWidget(7, 0, datosContactos);
 		formularioCliente.getFlexCellFormatter().setColSpan(7, 0, 10);
 
-		formularioCliente.setWidget(8, 4, btnNuevoContacto);
+		formularioCliente.setWidget(8, 0, botones1);
+		formularioCliente.getFlexCellFormatter().setColSpan(8, 0, 10);
+		formularioCliente.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		formularioCliente.setWidget(9, 0, contenedorTabla);
 		formularioCliente.getFlexCellFormatter().setColSpan(9, 0, 10);
@@ -520,9 +546,9 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.setWidget(12, 0, inferior);
 		formularioCliente.getFlexCellFormatter().setColSpan(12, 0, 10);
 
-		formularioCliente.setWidget(13, 2, btnAgregar);
-
-		formularioCliente.setWidget(13, 5, btnCancelar);
+		formularioCliente.setWidget(13, 0, botones2);
+		formularioCliente.getFlexCellFormatter().setColSpan(13, 0, 10);
+		formularioCliente.getCellFormatter().setHorizontalAlignment(13, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		tablaElemento.setText(0, COL_NOMBRE, constante.nombre());
 		tablaElemento.getCellFormatter().setWidth(0, COL_NOMBRE, "14%");

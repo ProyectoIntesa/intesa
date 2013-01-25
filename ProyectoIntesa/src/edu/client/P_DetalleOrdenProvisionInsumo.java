@@ -40,6 +40,7 @@ public class P_DetalleOrdenProvisionInsumo  extends PopupPanel {
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones;
 	
 	private OrdenProvisionInsumoDTO orden;
 	private boolean accionSalir;
@@ -99,6 +100,9 @@ public class P_DetalleOrdenProvisionInsumo  extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		panel = new FlexTable();
 		panel.setSize("1000px", "300px");
@@ -144,9 +148,10 @@ public class P_DetalleOrdenProvisionInsumo  extends PopupPanel {
 		
 		panel.setWidget(7, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(7, 0, 4);
-			
-		panel.setWidget(8, 1, salir);
-		panel.getCellFormatter().setHorizontalAlignment(8, 1, HasHorizontalAlignment.ALIGN_CENTER);
+
+		panel.setWidget(8, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(8, 0, 4);
+		panel.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		int item = 1;

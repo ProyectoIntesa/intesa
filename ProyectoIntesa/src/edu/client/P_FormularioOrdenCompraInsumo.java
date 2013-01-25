@@ -83,10 +83,11 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private FlexTable formulario;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
+	private FlexTable botones;
 
 	private String titulo;
 	private List<InsumoDTO> insumos;
-	private List<double[]> cantidadYsubTotal;
+	private List<Double[]> cantidadYsubTotal;
 	private String prov;
 	private List<String> envio;
 	private String usuario;
@@ -167,18 +168,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		generar = new Button(constante.generar());
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				boolean result = actualizaValores();
-				if(result)
-					registrarOrden("GENERADA");
+				actualizaValores();
+				registrarOrden("GENERADA");
 			}
 		});
 
 		guardar = new Button(constante.guardar());
 		guardar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				boolean result = actualizaValores();
-				if(result)
-					registrarOrden("EDICION");
+				actualizaValores();
+				registrarOrden("EDICION");
 			}
 		});
 
@@ -189,6 +188,14 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, guardar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, generar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		actualizarValores = new Button(constante.actualizarTotal());
 		actualizarValores.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -256,9 +263,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		formulario.setWidget(7, 0, pie);
 		formulario.getFlexCellFormatter().setColSpan(7, 0, 6);
 
-		formulario.setWidget(8, 0, guardar);
-		formulario.setWidget(8, 2, generar);
-		formulario.setWidget(8, 4, cancelar);
+		formulario.setWidget(8, 0, botones);
+		formulario.getFlexCellFormatter().setColSpan(8, 0, 6);
+		formulario.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		initWidget(formulario);
 
@@ -275,13 +282,20 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		this.prov = this.ordenInsumo.getProveedor();
 		this.usuario = this.ordenInsumo.getEmpleado();
 		insumos = new LinkedList<InsumoDTO>();
-		cantidadYsubTotal =  new LinkedList<double []>();
+		cantidadYsubTotal =  new LinkedList<Double []>();
 		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha = fmtDate.format(this.ordenInsumo.getFechaEdicion());
 		
 		for (RenglonOrdenCompraInsumoDTO renglon : ordenInsumo.getRenglonOrdenCompraInsumos()) {
 			insumos.add(renglon.getInsumo());
-			double []contenido = {renglon.getCantidad(),renglon.getSubtotal()};
+			
+			Double subtotal;
+			if(renglon.getSubtotal() == null)
+				subtotal = null;
+			else
+				subtotal = renglon.getSubtotal();
+			
+			Double []contenido = {renglon.getCantidad(),subtotal};
 			cantidadYsubTotal.add(contenido);
 		}
 
@@ -352,18 +366,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		generar.addClickHandler(new ClickHandler() {
 						
 			public void onClick(ClickEvent event) {
-				boolean result = actualizaValoresEnModificacion();
-				if(result)
-					registrarCambiosEnOrden("GENERADA",fechaEd,ordenVieja);
+				actualizaValoresEnModificacion();
+				registrarCambiosEnOrden("GENERADA",fechaEd,ordenVieja);
 			}
 		});
 
 		guardar = new Button(constante.guardar());
 		guardar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				boolean result = actualizaValoresEnModificacion();
-				if(result)
-					registrarCambiosEnOrden("EDICION",fechaEd,ordenVieja);
+				actualizaValoresEnModificacion();
+				registrarCambiosEnOrden("EDICION",fechaEd,ordenVieja);
 			}
 		});
 
@@ -383,6 +395,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 				cancelarOrden(event,ordenVieja);
 			}
 		});
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, guardar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, generar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, cancelarOrden);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 3, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 3, HasHorizontalAlignment.ALIGN_CENTER);
 
 		actualizarValores = new Button(constante.actualizarTotal());
 		actualizarValores.addClickHandler(new ClickHandler() {
@@ -484,10 +506,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		formulario.setWidget(7, 0, pie);
 		formulario.getFlexCellFormatter().setColSpan(7, 0, 6);
 
-		formulario.setWidget(8, 0, guardar);
-		formulario.setWidget(8, 1, generar);
-		formulario.setWidget(8, 2, salir);
-		formulario.setWidget(8, 3, cancelarOrden);
+		formulario.setWidget(8, 0, botones);
+		formulario.getFlexCellFormatter().setColSpan(8, 0, 6);
+		formulario.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		initWidget(formulario);
 
@@ -514,7 +535,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 					
 					if(bandera == true){
 						insumos.add(insumo);
-						double []contenido = {0,0};
+						Double []contenido = {0.0,0.0};
 						cantidadYsubTotal.add(contenido);
 					}
 						
@@ -536,6 +557,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		nuevaOrden.setEstadoOrden(estado);
 		nuevaOrden.setEmpleado(usuario);
 		nuevaOrden.setFechaEdicion(new Date());
+		boolean banderita = false;
 		if (estado.compareTo("GENERADA") == 0) {
 			nuevaOrden.setFechaGeneracion(new Date());
 		}
@@ -551,37 +573,74 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			InsumoDTO insu = new InsumoDTO();
 			insu.setMarca(((Label) tablaElemento.getWidget(i, COL_MARCA)).getText());
 			insu.setNombre(((Label) tablaElemento.getWidget(i, COL_INSUMO)).getText());
-			renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText()));
+			
+			
+			if(estado.compareTo("GENERADA") == 0){
+				if(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText().compareTo("") == 0){
+					banderita = true;
+					break;
+				}					
+				else
+					renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText()));
+			}
+			else{
+				if(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText().compareTo("") == 0){
+					banderita = true;
+					break;
+				}
+				else
+					renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText()));
+			}
+				
 			renglon.setItem(i);
-			renglon.setPrecio(new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText()));
-			renglon.setSubtotal(new Double(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL)).getText()));
+			
+			if(((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText().compareTo("") == 0)
+				renglon.setPrecio();
+			else
+				renglon.setPrecio(new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText()));
+			
+			if(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL)).getText().compareTo("") == 0)
+				renglon.setSubtotal();
+			else
+				renglon.setSubtotal(new Double(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL)).getText()));
+			
+			
+			
+			
 			renglon.setInsumo(insu);
 			nuevaOrden.getRenglonOrdenCompraInsumos().add(renglon);
 		}
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.registrarOrdenCompraInsumos(nuevaOrden, new AsyncCallback<Boolean>() {
+		
+		if(banderita == false){
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.registrarOrdenCompraInsumos(nuevaOrden, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					String accion = "";
-					if (estado.compareTo("GENERADA") == 0)
-						accion = "generado";
-					else
-						accion = "guardado";
-					Window.alert("Se ha " + accion + " corectamente la orden");
-					padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
-				} else {
-					Window.alert("No se pudo efectuar la acción");
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						String accion = "";
+						if (estado.compareTo("GENERADA") == 0)
+							accion = "generado";
+						else
+							accion = "guardado";
+						Window.alert("Se ha " + accion + " corectamente la orden");
+						padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
+					} else {
+						Window.alert("No se pudo efectuar la acción");
+					}
 				}
-			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
 
-			}
-		});
+				}
+			});
+		}
+		else{
+			Window.alert("No se puede generar o guardar una orden de compra de insumos sino se establecen todas las cantidades");
+		}
+
 
 	}
 	
@@ -591,6 +650,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		nuevaOrden.setEstadoOrden(estado);
 		nuevaOrden.setEmpleado(usuario);
 		nuevaOrden.setFechaEdicion(fechaEdicion);
+		boolean banderita = false;
 		if (estado.compareTo("GENERADA") == 0) {
 			nuevaOrden.setFechaGeneracion(new Date());
 		}
@@ -606,37 +666,70 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			InsumoDTO insu = new InsumoDTO();
 			insu.setMarca(((Label) tablaElemento.getWidget(i, COL_MARCA_MOD)).getText());
 			insu.setNombre(((Label) tablaElemento.getWidget(i, COL_INSUMO_MOD)).getText());
-			renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText()));
+			
+			if(estado.compareTo("GENERADA") == 0){
+				if(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText().compareTo("") == 0){
+					banderita = true;
+					break;
+				}					
+				else
+					renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText()));
+			}
+			else{
+				if(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText().compareTo("") == 0)
+					renglon.setCantidad();
+				else
+					renglon.setCantidad(new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText()));
+			}
+					
+			
 			renglon.setItem(i);
-			renglon.setPrecio(new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText()));
-			renglon.setSubtotal(new Double(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL_MOD)).getText()));
+			
+			if(((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText().compareTo("") == 0)
+				renglon.setPrecio();
+			else
+				renglon.setPrecio(new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText()));
+			
+			if(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL_MOD)).getText().compareTo("") == 0)
+				renglon.setSubtotal();
+			else
+				renglon.setSubtotal(new Double(((Label) tablaElemento.getWidget(i, COL_SUBTOTAL_MOD)).getText()));
+			
 			renglon.setInsumo(insu);
 			nuevaOrden.getRenglonOrdenCompraInsumos().add(renglon);
 		}
-		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.registrarModificacionOrdenCompraInsumos(nuevaOrden, ordenVieja, new AsyncCallback<Boolean>() {
+		
+		
+		if(banderita == false){
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.registrarModificacionOrdenCompraInsumos(nuevaOrden, ordenVieja, new AsyncCallback<Boolean>() {
 
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					String accion = "";
-					if (estado.compareTo("GENERADA") == 0)
-						accion = "generado";
-					else
-						accion = "guardado";
-					Window.alert("Se ha " + accion + " corectamente la orden");
-					padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
-				} else {
-					Window.alert("No se pudo efectuar la acción");
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result) {
+						String accion = "";
+						if (estado.compareTo("GENERADA") == 0)
+							accion = "generado";
+						else
+							accion = "guardado";
+						Window.alert("Se ha " + accion + " corectamente la orden");
+						padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
+					} else {
+						Window.alert("No se pudo efectuar la acción");
+					}
 				}
-			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR DE SERVICIO");
 
-			}
-		});
+				}
+			});
+		}
+		else{
+			Window.alert("No se puede generar una orden de compra de insumos sino se establecen todas las cantidades");
+		}
+
 
 	}
 
@@ -660,15 +753,22 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		for (InsumoDTO insumo : insumos) {
 			TextBox precioTb = new TextBox();
 			TextBox cantidadRequeridaTb = new TextBox();
-			double precio = insumo.getProveedor().get(0).getPrecio();
-			precioTb.setText("" + precio);
+			
 			tablaElemento.setWidget(item, COL_ITEM, new Label("" + item));
 			tablaElemento.setWidget(item, COL_INSUMO, new Label(insumo.getNombre()));
 			tablaElemento.setWidget(item, COL_MARCA, new Label(insumo.getMarca()));
 			tablaElemento.setWidget(item, COL_CANTCOMPRAR, cantidadRequeridaTb);
-			tablaElemento.setWidget(item, COL_SUBTOTAL, new Label("0"));
+			tablaElemento.setWidget(item, COL_SUBTOTAL, new Label(""));
 			tablaElemento.setWidget(item, COL_CANTINVENTARIO, new Label(insumo.getCantidad() + ""));
 			tablaElemento.setWidget(item, COL_LOTE, new Label(insumo.getLoteCompra() + ""));
+			if(insumo.getProveedor().get(0).getPrecio() == null)
+				precioTb.setText("");
+			else{
+				Double precio = insumo.getProveedor().get(0).getPrecio();
+				precioTb.setText("" + precio);
+			}
+
+			
 			tablaElemento.setWidget(item, COL_PRECIOUNITARIO, precioTb);
 			tablaElemento.getRowFormatter().setStyleName(item, "tablaRenglon");
 			item++;
@@ -700,11 +800,10 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			TextBox precioTb = new TextBox();
 			TextBox cantidadRequeridaTb = new TextBox();
 			
-			double cantRec = cantidadYsubTotal.get(item-1)[0];
+			Double cantRec = cantidadYsubTotal.get(item-1)[0];
 			
 			cantidadRequeridaTb.setText(cantRec+"");
-			double precio = insumo.getProveedor().get(0).getPrecio();
-			precioTb.setText("" + precio);
+
 			
 			tablaElemento.setWidget(item, COL_BORRAR_MOD, quitar);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(item, COL_BORRAR_MOD, HasHorizontalAlignment.ALIGN_CENTER);
@@ -712,9 +811,27 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			tablaElemento.setWidget(item, COL_INSUMO_MOD, new Label(insumo.getNombre()));
 			tablaElemento.setWidget(item, COL_MARCA_MOD, new Label(insumo.getMarca()));
 			tablaElemento.setWidget(item, COL_CANTCOMPRAR_MOD, cantidadRequeridaTb);
-			tablaElemento.setWidget(item, COL_SUBTOTAL_MOD, new Label(cantidadYsubTotal.get(item-1)[1]+""));
+			
+			String subTotal;
+			if(cantidadYsubTotal.get(item-1)[1] == null)
+				subTotal = "";
+			else{
+				Double sub = cantidadYsubTotal.get(item-1)[1];
+				subTotal = "" + sub;
+			}
+			
+			
+			tablaElemento.setWidget(item, COL_SUBTOTAL_MOD, new Label(subTotal));
 			tablaElemento.setWidget(item, COL_CANTINVENTARIO_MOD, new Label(insumo.getCantidad() + ""));
 			tablaElemento.setWidget(item, COL_LOTE_MOD, new Label(insumo.getLoteCompra() + ""));
+			
+			if(insumo.getProveedor().get(0).getPrecio() == null)
+				precioTb.setText("");
+			else{
+				Double precio = insumo.getProveedor().get(0).getPrecio();
+				precioTb.setText("" + precio);
+			}
+			
 			tablaElemento.setWidget(item, COL_PRECIOUNITARIO_MOD, precioTb);
 			tablaElemento.getRowFormatter().setStyleName(item, "tablaRenglon");
 
@@ -767,68 +884,101 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 		return elemento;
 	}
-
-	public boolean actualizaValores() {
-		
-		Validaciones valida = new Validaciones();
-		double tt = 0.0;
-		boolean validacionCorrecta = true;
-		
-		for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-		
-			double cantidad = 0.0;
-			
-			if ((((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText()).compareTo("")!= 0) {
-			
-				String cant = ((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText();
-				
-				if (valida.textBoxSoloNumeros(cant))
-					cantidad = new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText());
-				else{
-					Window.alert("La cantidad a comprar de todos los insumos debe ser un número");
-					validacionCorrecta = false;
-				}
-			}
-			else{
-				Window.alert("La cantidad a comprar de todos los insumos debe de ser establecida si o si");
-				validacionCorrecta = false;
-			}
-			
-			double precio = new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText());
-			double stt = precio * cantidad;
-			tt = tt + stt;
-			((Label) tablaElemento.getWidget(i, COL_SUBTOTAL)).setText(stt + "");
-		}
-		totalTb.setText(tt + "");
-		return validacionCorrecta;
-	}
 	
-	public boolean actualizaValoresEnModificacion() {
-		Validaciones valida = new Validaciones();
-		double tt = 0.0;
-		boolean validacionCorrecta = true;
-		for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-			double cantidad = 0.0;
-			if ((((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText()).compareTo("")!= 0) {
-				String cant = ((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText();
-				if (valida.textBoxSoloNumeros(cant))
-					cantidad = new Double(((TextBox) tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText());
+	public void actualizaValores() {
+
+		Double costoTotal = 0.0;
+		Validaciones validar = new Validaciones();
+		boolean vCantCompra = false;
+		boolean vPrecio = false;
+		
+		for(int i = 1; i < tablaElemento.getRowCount(); i++){
+			
+			boolean banderola = false;
+			Double costoInsumo = 0.0;
+			
+			String cantComprar = ((TextBox)tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText();
+			String precio = ((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText();
+			
+			if((cantComprar).compareTo("") != 0 && (precio).compareTo("") != 0){
+				
+				vCantCompra = validar.textBoxSoloNumeros(cantComprar);
+				vPrecio = validar.textBoxSoloNumeros(precio);
+				
+				if(vCantCompra == true && vPrecio == true){
+					
+					Double cantComprarD = Double.parseDouble(((TextBox)tablaElemento.getWidget(i, COL_CANTCOMPRAR)).getText());
+					Double precioD = Double.parseDouble(((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO)).getText());
+					Double costo = cantComprarD*precioD;
+					costoInsumo = costo;
+					costoTotal+= costo;
+				}
 				else{
-					Window.alert("La cantidad a comprar de todos los insumos debe ser un número");
-					validacionCorrecta = false;
+					banderola = true;
 				}
 			}
-			else{
-				Window.alert("La cantidad a comprar de todos los insumos debe de ser establecida si o si");
-				validacionCorrecta = false;
+			else {
+				banderola = true;
 			}
-				
-			double precio = new Double(((TextBox) tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText());
-			double stt = precio * cantidad;
-			tt = tt + stt;
-			((Label) tablaElemento.getWidget(i, COL_SUBTOTAL_MOD)).setText(stt + "");
+		
+			if(banderola == false){
+				Double subTotal = costoInsumo;
+				((Label) tablaElemento.getWidget(i, COL_SUBTOTAL)).setText(""+subTotal);
+			}
+			
 		}
-		totalTb.setText(tt + "");
-		return validacionCorrecta;
-	}
+
+			
+		totalTb.setText(""+costoTotal);
+	
+}
+	
+	public void actualizaValoresEnModificacion() {
+
+		Double costoTotal = 0.0;
+		Validaciones validar = new Validaciones();
+		boolean vCantCompra = false;
+		boolean vPrecio = false;
+		
+		for(int i = 1; i < tablaElemento.getRowCount(); i++){
+			
+			boolean banderola = false;
+			Double costoInsumo = 0.0;
+			
+			String cantComprar = ((TextBox)tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText();
+			String precio = ((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText();
+			
+			if((cantComprar).compareTo("") != 0 && (precio).compareTo("") != 0){
+				
+				vCantCompra = validar.textBoxSoloNumeros(cantComprar);
+				vPrecio = validar.textBoxSoloNumeros(precio);
+				
+				if(vCantCompra == true && vPrecio == true){
+					
+					Double cantComprarD = Double.parseDouble(((TextBox)tablaElemento.getWidget(i, COL_CANTCOMPRAR_MOD)).getText());
+					Double precioD = Double.parseDouble(((TextBox)tablaElemento.getWidget(i, COL_PRECIOUNITARIO_MOD)).getText());
+					Double costo = cantComprarD*precioD;
+					costoInsumo = costo;
+					costoTotal+= costo;
+				}
+				else{
+					banderola = true;
+				}
+			}
+			else {
+				banderola = true;
+			}
+		
+			if(banderola == false){
+				Double subTotal = costoInsumo;
+				((Label) tablaElemento.getWidget(i, COL_SUBTOTAL_MOD)).setText(""+subTotal);
+			}
+			
+		}
+
+			
+		totalTb.setText(""+costoTotal);
+	
+}
+	
 }

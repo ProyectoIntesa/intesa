@@ -66,6 +66,10 @@ public class ProveedorDeInsumo implements java.io.Serializable {
 	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
+	
+	public void setPrecio() {
+		this.precio = null;
+	}
 
 	public String getObservaciones() {
 		return this.observaciones;

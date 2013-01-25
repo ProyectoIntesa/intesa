@@ -62,6 +62,9 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 	private boolean cambioEstado;
 	private OrdenCompraInsumoDTO orden;
 	private boolean accionSalir;
+	private FlexTable botones;
+	private FlexTable lineaTotal;
+	
 
 	public P_DetalleOrdenCompraInsumoCierre(OrdenCompraInsumoDTO orden, final String tipo) {
 
@@ -94,11 +97,13 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		iva.setStyleName("gwt-LabelFormulario");
 		estado = new Label(constante.estado() + ": " + orden.getEstadoOrden());
 		estado.setStyleName("gwt-LabelFormulario");
-		total = new Label(constante.total() + ": " + orden.getTotal());
+		total = new Label(""+orden.getTotal());
 		total.setStyleName("gwt-LabelFormulario");
 		observacion = new Label(orden.getObservaciones());
 		observacion.setStyleName("gwt-LabelFormulario");
-
+		totals = new Label(constante.total() + ": ");
+		totals.setStyleName("gwt-LabelFormulario");
+		
 		cerrarOrden = new Button(constante.cerrarOrden());
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -114,12 +119,11 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 				}
 			}
 		});
-		cerrarOrden.setEnabled(false);
+		
 		actualizar = new Button(constante.actualizarTotal());
 		actualizar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				actualizaValores();
-				cerrarOrden.setEnabled(true);
 			}
 		});
 
@@ -131,6 +135,21 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, cerrarOrden);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		lineaTotal = new FlexTable();
+		lineaTotal.setWidget(0, 0, actualizar);
+		lineaTotal.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaTotal.setWidget(0, 1, totals);
+		lineaTotal.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaTotal.setWidget(0, 2, total);
+		lineaTotal.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+
+		
 		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha = fmtDate.format(orden.getFechaGeneracion());
 
@@ -177,9 +196,11 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 
 		panel.setWidget(4, 0, contenedorTabla);
 		panel.getFlexCellFormatter().setColSpan(4, 0, 4);
-		panel.setWidget(5, 1, actualizar);
-		panel.setWidget(5, 3, total);
-
+	
+		panel.setWidget(5, 0, lineaTotal);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 4);
+		panel.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
+		
 		panel.setWidget(6, 0, observaciones);
 		panel.getFlexCellFormatter().setColSpan(6, 0, 4);
 
@@ -188,10 +209,10 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 
 		panel.setWidget(8, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(8, 0, 4);
-		panel.setWidget(9, 1, cerrarOrden);
-		panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(9, 3, salir);
-		panel.getCellFormatter().setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		panel.setWidget(9, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+		panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
 
 		int item = 1;
 		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {
@@ -222,24 +243,34 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 	}
 
 	public void actualizaValores() {
-		Validaciones valida = new Validaciones();
-		double tt = 0.0;
+
+		Double tt = 0.0;
+		
 		for (int i = 1; i < tablaElementos.getRowCount(); i++) {
-			double cantidad = 0.0;
+			
+			Double cantidad = 0.0;
 			cantidad = new Double(((Label) tablaElementos.getWidget(i, COL_CANT)).getText());
-			double precio = new Double(((TextBox) tablaElementos.getWidget(i, COL_PRECIOUNITARIO)).getText());
-			double stt = precio * cantidad;
+			
+			Double precio = 0.0;
+			if(((TextBox) tablaElementos.getWidget(i, COL_PRECIOUNITARIO)).getText() != null){
+				precio = new Double(((TextBox) tablaElementos.getWidget(i, COL_PRECIOUNITARIO)).getText());
+			}
+					
+			Double stt = precio * cantidad;
+			
 			tt = tt + stt;
+			
 			((Label) tablaElementos.getWidget(i, COL_SUBTOTAL)).setText(stt + "");
 		}
+		
 		total.setText(tt + "");
-		totals = new Label(constante.total() + ": ");
-		totals.setStyleName("gwt-LabelFormularioDerecho");
-		panel.setWidget(5, 2, totals);
-		panel.setWidget(5, 3, total);
+		panel.setWidget(5, 0, lineaTotal);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 4);
+		panel.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
 	}
 
 	public void cambiarEstado(String estado) {
+		
 		this.orden.setEstadoOrden(estado);
 		orden.setTotal(new Double(this.total.getText()));
 		orden.getRenglonOrdenCompraInsumos().clear();

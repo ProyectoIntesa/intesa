@@ -36,6 +36,7 @@ public class P_AgregarProveedor extends PopupPanel {
 	private TextBox precioTb;
 	private TextArea observacionesTa;
 	private ListBox proveedorLb;
+	private FlexTable botones;
 	
 	private Button btnAgregar;
 	private Button btnCancelar;
@@ -53,7 +54,7 @@ public class P_AgregarProveedor extends PopupPanel {
 		nuevoProveedor.setStyleName("labelTitulo");
 		proveedor = new Label(constante.proveedor());
 		proveedor.setStyleName("gwt-LabelFormularioDerecho");
-		precio = new Label(constante.precioAsterisco());
+		precio = new Label(constante.precio());
 		precio.setStyleName("gwt-LabelFormularioDerecho");		
 		observaciones = new Label(constante.observaciones());
 		observaciones.setStyleName("labelTitulo");
@@ -86,6 +87,12 @@ public class P_AgregarProveedor extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, btnAgregar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, btnCancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedor.setWidget(0, 0, nuevoProveedor);
 		contenedor.getFlexCellFormatter().setColSpan(0, 0, 2);
 		
@@ -104,10 +111,10 @@ public class P_AgregarProveedor extends PopupPanel {
 		contenedor.setWidget(5, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(5, 0, 2);	
 		
-		contenedor.setWidget(6, 0, btnAgregar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		contenedor.setWidget(6, 1, btnCancelar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.setWidget(6, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(6, 0, 2);
+		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		setWidget(contenedor);
 
 		contenedor.setSize("300px", "300px");
@@ -143,17 +150,9 @@ public class P_AgregarProveedor extends PopupPanel {
 	}
 	
 	protected void agregarProveedor(){
-		
-		Validaciones validar = new Validaciones();
-		
-		boolean vPrecio = validar.textBoxVacio(this.precioTb.getText());
-		
-		if(!vPrecio){
-			this.padre.capturarDatos(this.proveedorLb.getItemText(this.proveedorLb.getSelectedIndex()), precioTb.getText(), observacionesTa.getText());
-			this.hide();
-		}
-		else
-			Window.alert("Los campos que poseen (*) son oblicatorios");
+				
+		this.padre.capturarDatos(this.proveedorLb.getItemText(this.proveedorLb.getSelectedIndex()), precioTb.getText(), observacionesTa.getText());
+		this.hide();
 		
 	}
 		

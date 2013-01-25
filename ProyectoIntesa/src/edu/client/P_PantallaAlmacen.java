@@ -252,7 +252,6 @@ public class P_PantallaAlmacen extends Composite {
 		}
 		
 	}
-
 	
 	private int numeroElemento(String titulo) {
 

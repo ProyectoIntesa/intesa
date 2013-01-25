@@ -1,3 +1,4 @@
+
 package edu.client;
 
 import com.google.gwt.core.client.GWT;
@@ -23,6 +24,7 @@ public class P_AgregarContacto extends PopupPanel {
 	P_FormularioCliente padre;
 	P_FormularioProveedor padre2;
 	private FlexTable contenedor;
+	private FlexTable botones;
 
 	private Constantes constante = GWT.create(Constantes.class);
 	
@@ -103,6 +105,12 @@ public class P_AgregarContacto extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, agregar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		pie = new Label("");
 		pie.setStyleName("labelTitulo");
 		
@@ -126,10 +134,10 @@ public class P_AgregarContacto extends PopupPanel {
 		contenedor.setWidget(8, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(8, 0, 2);
 		
-		contenedor.setWidget(9, 0, agregar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		contenedor.setWidget(9, 1, cancelar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.setWidget(9, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		setWidget(contenedor);
 
 		contenedor.setSize("300px", "300px");
@@ -191,6 +199,12 @@ public class P_AgregarContacto extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, agregar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		pie = new Label("");
 		pie.setStyleName("labelTitulo");
 		
@@ -214,10 +228,10 @@ public class P_AgregarContacto extends PopupPanel {
 		contenedor.setWidget(8, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(8, 0, 2);
 		
-		contenedor.setWidget(9, 0, agregar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		contenedor.setWidget(9, 1, cancelar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.setWidget(9, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		setWidget(contenedor);
 
 		contenedor.setSize("300px", "300px");
@@ -286,6 +300,12 @@ public class P_AgregarContacto extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, agregar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		pie = new Label("");
 		pie.setStyleName("labelTitulo");
 		
@@ -309,10 +329,10 @@ public class P_AgregarContacto extends PopupPanel {
 		contenedor.setWidget(8, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(8, 0, 2);
 		
-		contenedor.setWidget(9, 0, agregar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		contenedor.setWidget(9, 1, cancelar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.setWidget(9, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		setWidget(contenedor);
 
 		contenedor.setSize("300px", "300px");
@@ -381,6 +401,12 @@ public class P_AgregarContacto extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, agregar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		pie = new Label("");
 		pie.setStyleName("labelTitulo");
 		
@@ -404,10 +430,10 @@ public class P_AgregarContacto extends PopupPanel {
 		contenedor.setWidget(8, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(8, 0, 2);
 		
-		contenedor.setWidget(9, 0, agregar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		contenedor.setWidget(9, 1, cancelar);
-		contenedor.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.setWidget(9, 0, botones);
+		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		setWidget(contenedor);
 
 		contenedor.setSize("300px", "300px");

@@ -40,6 +40,7 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones;
 
 	private Label tipo_orden;
 	
@@ -110,6 +111,10 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 			}
 		});
 	
+		botones = new FlexTable();
+		botones.setWidget(0, 0, salirB);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		panel.setWidget(0, 0, ver);
 		panel.getFlexCellFormatter().setColSpan(0, 0, 4);
 
@@ -125,9 +130,9 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 		panel.setWidget(3, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(3, 0, 4);
 
-		panel.setWidget(4, 0, salirB);
+		panel.setWidget(4, 0, botones);
 		panel.getFlexCellFormatter().setColSpan(4, 0, 4);
-		panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 	
 		
 		setWidget(panel);

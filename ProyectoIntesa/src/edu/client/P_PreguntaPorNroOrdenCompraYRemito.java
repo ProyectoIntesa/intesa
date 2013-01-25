@@ -37,6 +37,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 	private Button salir;
 	
 	private FlexTable panel;
+	private FlexTable botones;
 	
 	private List<OrdenCompraInsumoDTO> ordenesInsumos;
 	private List<Long> remitosExternosInsumos;
@@ -100,6 +101,11 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, aceptar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		panel = new FlexTable();
 		panel.setSize("700px", "250px");
@@ -119,10 +125,9 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		panel.setWidget(4, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(4, 0, 2);
 		
-		panel.setWidget(5, 0, aceptar);
-		panel.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(5, 1, salir);
-		panel.getCellFormatter().setHorizontalAlignment(5, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(5, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 
 		

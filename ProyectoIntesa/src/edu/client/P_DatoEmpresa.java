@@ -152,6 +152,14 @@ public class P_DatoEmpresa extends PopupPanel {
 		contactos.setStyleName("labelTitulo");
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
+		botones.setWidget(0, 1, eliminar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);	
 
 		panel.setText(0, 0, "EMPRESA: " + empSelec.getNombre());
 		panel.setText(0, 1, "RUBRO: " + empSelec.getRubro());
@@ -201,20 +209,9 @@ public class P_DatoEmpresa extends PopupPanel {
 		panel.setWidget(12, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(12, 0, 2);
 		
-		
-		botones = new FlexTable();
-		botones.setSize("100%", "100%");
-		botones.setWidget(0, 0, modificar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
-		botones.setWidget(0, 1, eliminar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 2, salir);
-		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);		
-		
-		
-		panel.getFlexCellFormatter().setColSpan(12, 0, 2);
 		panel.setWidget(13, 0, botones);
-		
+		panel.getFlexCellFormatter().setColSpan(13, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(13, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		
@@ -293,6 +290,14 @@ public class P_DatoEmpresa extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
+		botones.setWidget(0, 1, eliminar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);	
+		
 		empresa = new Label();
 		rubro = new Label();
 		cuit = new Label();
@@ -359,19 +364,14 @@ public class P_DatoEmpresa extends PopupPanel {
 		
 		panel.setWidget(12, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(12, 0, 2);
+				
+		
+		panel.setWidget(13, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(13, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(13, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
 		
 		
-		botones = new FlexTable();
-		botones.setSize("100%", "100%");
-		botones.setWidget(0, 0, modificar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
-		botones.setWidget(0, 1, eliminar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 2, salir);
-		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);		
-		
-		
-		panel.getFlexCellFormatter().setColSpan(12, 0, 2);
+
 		panel.setWidget(13, 0, botones);
 		
 		
@@ -419,6 +419,14 @@ public class P_DatoEmpresa extends PopupPanel {
 					eliminarContacto(nombreEmpresa, contSelec.getNombre());
 			}
 		});
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
+		botones.setWidget(0, 1, eliminar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);	
 
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
@@ -456,21 +464,9 @@ public class P_DatoEmpresa extends PopupPanel {
 		panel.getFlexCellFormatter().setColSpan(7, 0, 2);
 		
 		
-		botones = new FlexTable();
-		botones.setSize("100%", "100%");
-		botones.setWidget(0, 0, modificar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
-		botones.setWidget(0, 1, eliminar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 2, salir);
-		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);		
-		
-		
-		panel.getFlexCellFormatter().setColSpan(8, 0, 2);
 		panel.setWidget(8, 0, botones);
-		
-		
-		
+		panel.getFlexCellFormatter().setColSpan(8, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);		
 		
 		
 		setWidget(panel);
@@ -515,6 +511,14 @@ public class P_DatoEmpresa extends PopupPanel {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
+		botones.setWidget(0, 1, eliminar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);	
+		
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
 		contactos = new Label("INFORMACIÓN DEL CONTACTO");
@@ -551,23 +555,9 @@ public class P_DatoEmpresa extends PopupPanel {
 		panel.getFlexCellFormatter().setColSpan(7, 0, 2);
 		
 		
-		botones = new FlexTable();
-		botones.setSize("100%", "100%");
-		botones.setWidget(0, 0, modificar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
-		botones.setWidget(0, 1, eliminar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 2, salir);
-		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);		
-		
-		
-		panel.getFlexCellFormatter().setColSpan(8, 0, 2);
 		panel.setWidget(8, 0, botones);
-		
-		
-		
-		
-		
+		panel.getFlexCellFormatter().setColSpan(8, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);		
 		setWidget(panel);
 		panel.setSize("400px", "300px");
 

@@ -40,10 +40,10 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 	private Button salir;
 	
 	private FlexTable panel;
+	private FlexTable botones;
 	
 	private List<OrdenProvisionInsumoDTO> ordenesInsumos;
 
-	
 	public P_PreguntaPorOrdenProvisionYRemito(String accionRealizar) {
 
 		super(false);
@@ -92,6 +92,11 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, aceptar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		panel = new FlexTable();
 		panel.setSize("700px", "250px");
@@ -108,10 +113,9 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		panel.setWidget(3, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(3, 0, 2);
 		
-		panel.setWidget(4, 0, aceptar);
-		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(4, 1, salir);
-		panel.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(4, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(4, 0, 2);
+		panel.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 
 		
@@ -173,9 +177,7 @@ public class P_PreguntaPorOrdenProvisionYRemito extends PopupPanel {
 		
 		
 	}
-	
-	
-	
+		
 	protected void cargarSugerenciaRemitos(String accionRealizar) {
 				
 		if(tipoOrdenProvisionLb.getItemText(tipoOrdenProvisionLb.getSelectedIndex()).compareTo(constante.ordenDeProvisionDeInsumos()) == 0){

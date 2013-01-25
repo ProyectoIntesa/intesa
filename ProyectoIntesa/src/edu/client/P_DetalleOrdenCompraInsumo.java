@@ -52,12 +52,20 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 
 	private Button cancelarOrden;
 	private Button salir;
+	private Button salir1;
+	private Button salir2;
+	private Button salir3;
 	private Button enviarOrden;
 	private Button cerrarOrden;
 
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones1;
+	private FlexTable botones2;
+	private FlexTable botones3;
+	private FlexTable botones4;
+	private FlexTable botones5;
 
 	private OrdenCompraInsumoDTO orden;
 	private boolean accionSalir;
@@ -133,6 +141,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
+								
 				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 				comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
 
@@ -193,7 +202,60 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 				salir();
 			}
 		});
+		
+		salir1 = new Button(constante.salir());
+		salir1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
+		
+		salir2 = new Button(constante.salir());
+		salir2.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
+		
+		salir3 = new Button(constante.salir());
+		salir3.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, cancelarOrden);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones1.setWidget(0, 1, salir1);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, enviarOrden);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, salir2);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones3 = new FlexTable();
+		botones3.setWidget(0, 0, cerrarOrden);
+		botones3.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones3.setWidget(0, 1, salir3);
+		botones3.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones5 = new FlexTable();
+		botones5.setWidget(0, 0, cerrarOrden);
+		botones5.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones5.setWidget(0, 1, salir3);
+		botones5.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones4 = new FlexTable();
+		botones4.setWidget(0, 0, salir);
+		botones4.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		
 		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha = fmtDate.format(orden.getFechaGeneracion());
 
@@ -255,25 +317,39 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		if(usuario.compareTo("COMPRAS") == 0){
 		
 			if (orden.getEstadoOrden().compareTo("GENERADA") == 0) {
-				panel.setWidget(9, 1, cancelarOrden);
-				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+				panel.setWidget(9, 0, botones1);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("VALIDADA") == 0) {
-				panel.setWidget(9, 1, enviarOrden);
-				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+				panel.setWidget(9, 0, botones2);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("ENVIADA") == 0) {
-				panel.setWidget(9, 1, cerrarOrden);
-				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
-			} else if (orden.getEstadoOrden().compareTo("ENTREGADA PARCIAL") == 0) {
-				panel.setWidget(9, 1, cerrarOrden);
-				panel.getCellFormatter().setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_CENTER);
+				panel.setWidget(9, 0, botones3);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+			} else if (orden.getEstadoOrden().compareTo("RECIBIDA PARCIAL") == 0) {
+				panel.setWidget(9, 0, botones3);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+			} else if (orden.getEstadoOrden().compareTo("RECIBIDA COMPLETA") == 0) {
+				panel.setWidget(9, 0, botones5);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+			} else {
+				panel.setWidget(9, 0, botones4);
+				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);				
 			}
+			
+		}
+		else {
+			panel.setWidget(9, 0, botones4);
+			panel.getFlexCellFormatter().setColSpan(9, 0, 4);
+			panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);		
 		}
 		
-			
 
-		
-		panel.setWidget(9, 3, salir);
-		panel.getCellFormatter().setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_CENTER);
 
 		int item = 1;
 		

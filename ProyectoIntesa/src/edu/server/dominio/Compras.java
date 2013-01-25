@@ -421,6 +421,7 @@ public class Compras {
 				prov = (ProveedorDeInsumo) renglon.getInsumo().getProveedorDeInsumos().toArray()[0];
 				sec.update(prov);
 			}
+						
 			sec.getTransaction().commit();
 			result = true;
 		} catch (HibernateException he) {
@@ -531,6 +532,32 @@ public class Compras {
 			return false;
 		}
 	}
+	
+	public boolean estadoEntregaParcialOrdenCompraInsumo(Long nroOrden, int estado) {
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		try {
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = " + estado + " where nro_Orden_Compra_Insumo_Generada = " + nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			return true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}		
+	}
+		
+	public boolean recibidaCompletaOrdenCompraInsumo(Long nroOrden, int estado) {
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		try {
+			sec.createSQLQuery("update orden_compra_insumo set id_Estado_Orden = " + estado + " where nro_Orden_Compra_Insumo = " + nroOrden).executeUpdate();
+			sec.getTransaction().commit();
+			return true;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return false;
+		}		
+	}
 		
 	/**
 	 *  retorna una lista de órdenes de compras de insumos en estado de edición
@@ -562,7 +589,7 @@ public class Compras {
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		Estado adminEstado = new Estado();
 
-		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA");
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA PARCIAL");
 
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();

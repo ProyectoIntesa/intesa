@@ -61,6 +61,8 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 	private FlexTable formulario;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
+	private FlexTable botones1;
+	private FlexTable botones2;
 	
 	private List<String> listaInsumos;
 	private List<String> listaMarcas;
@@ -137,6 +139,17 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 				registrarOrden(rol);
 			}
 		});
+		
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, agregar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, generar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, cancelar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		
 		empPideLb = new ListBox();
 		empPideLb.setStyleName("gwt-ListBox");
@@ -242,7 +255,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		formulario.setWidget(2, 5, cantTb);
 		formulario.getCellFormatter().setWidth(2, 5, "20%");
 		
-		formulario.setWidget(3, 0, agregar);
+		formulario.setWidget(3, 0, botones1);
 		formulario.getFlexCellFormatter().setColSpan(3, 0, 6);
 		formulario.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
@@ -257,8 +270,9 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		formulario.setWidget(7, 0, pie);
 		formulario.getFlexCellFormatter().setColSpan(7, 0, 6);
 
-		formulario.setWidget(8, 1, generar);
-		formulario.setWidget(8, 4, cancelar);
+		formulario.setWidget(8, 0, botones2);
+		formulario.getFlexCellFormatter().setColSpan(8, 0, 6);
+		formulario.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		initWidget(formulario);
@@ -425,7 +439,6 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 	}
 
-
 	protected void cargarListaInsumos(List<String> result) {
 		
 		List <String> aux = new LinkedList<String>();
@@ -443,7 +456,6 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 			this.insumoLb.addItem(insumo);
 		}
 	}
-
 
 	private void cancelar(){
 		padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));

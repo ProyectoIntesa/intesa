@@ -75,7 +75,10 @@ public class P_DatoInsumo extends PopupPanel {
 		for (int i = 0; i < insumoSelec.getProveedor().size(); i++){
 			
 			tablaElementos.setText(i+1, COL_NOMBRE_PROVEEDOR, insumoSelec.getProveedor().get(i).getNombre());
-			tablaElementos.setText(i+1, COL_PRECIO, ""+insumoSelec.getProveedor().get(i).getPrecio());
+			if(insumoSelec.getProveedor().get(i).getPrecio() != null)
+				tablaElementos.setText(i+1, COL_PRECIO, ""+insumoSelec.getProveedor().get(i).getPrecio());
+			else
+				tablaElementos.setText(i+1, COL_PRECIO, "");
 			tablaElementos.setText(i+1, COL_OBSERVACIONES, insumoSelec.getProveedor().get(i).getObservaciones());
 			tablaElementos.getRowFormatter().setStyleName(i+1, "tablaRenglon");
 			
@@ -104,6 +107,14 @@ public class P_DatoInsumo extends PopupPanel {
 					eliminarInsumo();
 			}
 		});
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
+		botones.setWidget(0, 1, eliminar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 2, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);	
 		
 		insumo = new Label();
 		marca = new Label();
@@ -140,20 +151,9 @@ public class P_DatoInsumo extends PopupPanel {
 		panel.setWidget(5, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(5, 0, 3);
 		
-		botones = new FlexTable();
-		botones.setSize("100%", "100%");
-		botones.setWidget(0, 0, modificar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);		
-		botones.setWidget(0, 1, eliminar);
-		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 2, salir);
-		botones.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);		
-		
-		
-		panel.getFlexCellFormatter().setColSpan(6, 0, 3);
 		panel.setWidget(6, 0, botones);
-		
-		
+		panel.getFlexCellFormatter().setColSpan(6, 0, 3);
+		panel.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		

@@ -328,7 +328,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 				
 				ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
 				
-				Float precio = Float.parseFloat(prov.getPrecio().toString());
+				Double precio = Double.parseDouble(prov.getPrecio().toString());
 				
 				proveedor.setPrecio(precio);
 				proveedor.setNombre(prov.getProveedor().getNombre());
@@ -742,7 +742,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return retorno;
 		
 	}
-	
+		
 	@Override
 	public List<Long> getRemitosInternosInsumosSegunIdOrdenProvision(long idOrden) throws IllegalArgumentException{
 		Produccion adminProd = new Produccion();

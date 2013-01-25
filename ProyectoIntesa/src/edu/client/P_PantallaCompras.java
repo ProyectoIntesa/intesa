@@ -71,7 +71,8 @@ public class P_PantallaCompras extends Composite {
 
 	public P_PantallaCompras(String usuarioLogueado) {
 		
-		Window.setTitle("INTESA - COMPRAS");
+		Window.setTitle("INTESA - COMPRAS");	
+		
 		
 		usuario= usuarioLogueado;
 		ancho = Window.getClientWidth() - 15;

@@ -38,6 +38,8 @@ public class P_BuscarProveedor extends PopupPanel {
 	private FlexTable contenedor;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
+	private FlexTable botones1;
+	private FlexTable botones2;
 
 	private Constantes constante = GWT.create(Constantes.class);
 
@@ -193,6 +195,14 @@ public class P_BuscarProveedor extends PopupPanel {
 			}
 		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, buscar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, salir);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
 		contenedorTabla.setHeight("200px");
@@ -216,7 +226,7 @@ public class P_BuscarProveedor extends PopupPanel {
 		contenedor.setWidget(2, 2, tipo);
 		contenedor.setWidget(2, 3, tipoSb);		
 
-		contenedor.setWidget(3, 0, buscar);
+		contenedor.setWidget(3, 0, botones1);
 		contenedor.getFlexCellFormatter().setColSpan(3, 0, 4);
 		contenedor.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
@@ -226,9 +236,9 @@ public class P_BuscarProveedor extends PopupPanel {
 		contenedor.setWidget(5, 0, pie);
 		contenedor.getFlexCellFormatter().setColSpan(5, 0, 4);
 
-		contenedor.setWidget(6, 0, salir);
+		contenedor.setWidget(6, 0, botones2);
 		contenedor.getFlexCellFormatter().setColSpan(6, 0, 4);
-		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		setWidget(contenedor);
 		contenedor.setSize("600px", "300px");

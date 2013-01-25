@@ -13,14 +13,14 @@ public class RenglonOrdenCompraInsumo implements java.io.Serializable {
 	private RenglonOrdenCompraInsumoId id;
 	private Insumo insumo;
 	private OrdenCompraInsumo ordenCompraInsumo;
-	private double cantidad;
+	private Double cantidad;
 	private Double subtotal;
 
 	public RenglonOrdenCompraInsumo() {
 	}
 
 	public RenglonOrdenCompraInsumo(RenglonOrdenCompraInsumoId id,
-			Insumo insumo, OrdenCompraInsumo ordenCompraInsumo, double cantidad) {
+			Insumo insumo, OrdenCompraInsumo ordenCompraInsumo, Double cantidad) {
 		this.id = id;
 		this.insumo = insumo;
 		this.ordenCompraInsumo = ordenCompraInsumo;
@@ -29,7 +29,7 @@ public class RenglonOrdenCompraInsumo implements java.io.Serializable {
 
 	public RenglonOrdenCompraInsumo(RenglonOrdenCompraInsumoId id,
 			Insumo insumo, OrdenCompraInsumo ordenCompraInsumo,
-			double cantidad, Double subtotal) {
+			Double cantidad, Double subtotal) {
 		this.id = id;
 		this.insumo = insumo;
 		this.ordenCompraInsumo = ordenCompraInsumo;
@@ -61,7 +61,7 @@ public class RenglonOrdenCompraInsumo implements java.io.Serializable {
 		this.ordenCompraInsumo = ordenCompraInsumo;
 	}
 
-	public double getCantidad() {
+	public Double getCantidad() {
 		return this.cantidad;
 	}
 
@@ -76,5 +76,11 @@ public class RenglonOrdenCompraInsumo implements java.io.Serializable {
 	public void setSubtotal(Double subtotal) {
 		this.subtotal = subtotal;
 	}
+	
+	public void setSubtotal() {
+		this.subtotal = null;
+	}
 
+	
+	
 }

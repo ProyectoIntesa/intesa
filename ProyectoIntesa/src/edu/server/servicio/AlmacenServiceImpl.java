@@ -77,11 +77,14 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 
 	@Override
 	public Boolean registrarRemitoExterno(RemitoExternoDTO remito) throws IllegalArgumentException{
+		
 		Insumos adminInsumo = new Insumos();
 		Almacen adminAlmacen = new Almacen();
 		Empleado adminEmpleado = new Empleado();
 		Administrador admin = new Administrador();
 		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("RECIBIDA PARCIAL");
 		
 		int idEmpleado = adminEmpleado.getIdEmpleado(remito.getEmpleado());
 		
@@ -129,7 +132,15 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 			
 		}
 		
-		return adminAlmacen.registrarRemitoExterno(remitoGuardar);
+		boolean result = adminAlmacen.registrarRemitoExterno(remitoGuardar); 
+		
+		if(result == true){
+			return	adminCompras.estadoEntregaParcialOrdenCompraInsumo(orden.getNroOrdenCompraInsumoGenerada(), est);
+		}
+		else
+			return false;
+		
+		 
 		
 	}
 
@@ -326,7 +337,7 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 				
 				ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
 				
-				Float precio = Float.parseFloat(prov.getPrecio().toString());
+				Double precio = Double.parseDouble(prov.getPrecio().toString());
 				
 				proveedor.setPrecio(precio);
 				proveedor.setNombre(prov.getProveedor().getNombre());

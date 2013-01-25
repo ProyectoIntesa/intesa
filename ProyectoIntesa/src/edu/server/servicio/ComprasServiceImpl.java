@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.ComprasService.ComprasService;
@@ -465,8 +466,13 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 				nuevoProv.setId(idPI);
 				nuevoProv.setInsumo(nuevo);
 				nuevoProv.setObservaciones(proveedor.getObservaciones());
-				nuevoProv.setPrecio(proveedor.getPrecio());
-
+				
+				if(proveedor.getPrecio() != null){
+					nuevoProv.setPrecio(proveedor.getPrecio());
+				}
+				else{
+					nuevoProv.setPrecio(null);
+				}
 				nuevo.getProveedorDeInsumos().add(nuevoProv);
 
 			}
@@ -514,7 +520,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		nuevo.setObservaciones(insumo.getObservaciones());
 		nuevo.setCantidad(insumo.getCantidad());
 		nuevo.setNecesidadCompra(insumo.isNecesidadCompra());
-		//mantener la cantidad y la necesidad de compra
+		
 
 		if (insumo.getProveedor().size() > 0) {
 
@@ -527,7 +533,14 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 				nuevoProv.setId(idPI);
 				nuevoProv.setInsumo(nuevo);
 				nuevoProv.setObservaciones(proveedor.getObservaciones());
-				nuevoProv.setPrecio(proveedor.getPrecio());
+				if(proveedor.getPrecio() != null){
+					
+					nuevoProv.setPrecio(proveedor.getPrecio());
+				}
+				else{
+					nuevoProv.setPrecio(null);
+				}
+					
 
 				nuevo.getProveedorDeInsumos().add(nuevoProv);
 
@@ -628,9 +641,13 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 			ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
 
-			Float precio = Float.parseFloat(prov.getPrecio().toString());
+			if(prov.getPrecio() == null)
+				proveedor.setPrecio();
+			else{
+				Double precio = Double.parseDouble(prov.getPrecio().toString());
+				proveedor.setPrecio(precio);
+			}
 
-			proveedor.setPrecio(precio);
 			proveedor.setNombre(prov.getProveedor().getNombre());
 			proveedor.setObservaciones(prov.getObservaciones());
 
@@ -761,15 +778,29 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 			RenglonOrdenCompraInsumo renglon = new RenglonOrdenCompraInsumo();
 			RenglonOrdenCompraInsumoId id = new RenglonOrdenCompraInsumoId();
 			id.setIdRenglonOrdenCompraInsumo(ren.getItem());
+			
+			
 			renglon.setCantidad(ren.getCantidad());
-			renglon.setSubtotal(ren.getSubtotal());
+						
+			if(ren.getSubtotal() != null)
+				renglon.setSubtotal(ren.getSubtotal());
+			else
+				renglon.setSubtotal();
+			
+			
+			
 			renglon.setId(id);
 			int idInsumo = adminInsumo.getIdInsumo(ren.getInsumo().getNombre(), ren.getInsumo().getMarca());
 			Insumo insu = new Insumo();
 			ProveedorDeInsumo provInsumo = new ProveedorDeInsumo();
 			ProveedorDeInsumoId provInsumoId = new ProveedorDeInsumoId(prov.getCodigoProveedor(), idInsumo);
 			provInsumo.setId(provInsumoId);
-			provInsumo.setPrecio(ren.getPrecio());
+			
+			if(ren.getPrecio() != null)
+				provInsumo.setPrecio(ren.getPrecio());
+			else
+				provInsumo.setPrecio();
+			
 			insu.getProveedorDeInsumos().add(provInsumo);
 			insu.setIdInsumo(idInsumo);
 			renglon.setInsumo(insu);
@@ -957,7 +988,11 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 			renglonNuevo.setItem(idRenglon);
 			renglonNuevo.setCantidad(renglon.getCantidad());
-			renglonNuevo.setSubtotal(renglon.getSubtotal());
+			
+			if(renglon.getSubtotal() == null)
+				renglonNuevo.setSubtotal();
+			else
+				renglonNuevo.setSubtotal(renglon.getSubtotal());
 
 			InsumoDTO insumo = new InsumoDTO();
 			insumo = this.getInsumoCompleto(renglon.getInsumo().getIdInsumo(), "");
@@ -1031,6 +1066,34 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 				break;
 	
 		}
+		return result;
+		
+	}
+		
+	@Override 
+	public Boolean recibidaCompletaOrdenCompraInsumo(Long nroOrden) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("RECIBIDA COMPLETA");
+				
+		result = adminCompras.recibidaCompletaOrdenCompraInsumo(nroOrden,est);
+		
+		return result;
+		
+	}
+	
+	@Override 
+	public Boolean estadoEntregaParcialOrdenCompraInsumo(Long nroOrden) throws IllegalArgumentException{
+		
+		Boolean result = true;
+		Compras adminCompras = new Compras();
+		Estado adminEstado = new Estado();
+		int est = adminEstado.getIdEstado("RECIBIDA PARCIAL");
+		
+		result = adminCompras.estadoEntregaParcialOrdenCompraInsumo(nroOrden,est);
+		
 		return result;
 		
 	}
@@ -1201,4 +1264,5 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 
 
+	
 }

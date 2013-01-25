@@ -66,11 +66,14 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private Button cancelar;
 	private Button imprimirRemito;
 	private Button salir;
+	private Button salir1;
 	private Button cerrarRemito;
 	
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
+	private FlexTable botones;
+	private FlexTable botones1;
 	
 	private TextArea observacionesDelRemitoTa;
 	
@@ -137,12 +140,31 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			}
 		});
 		
+		salir1 = new Button(constante.salir());
+		salir1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				cancelar();
+			}
+		});
+		
 		cerrarRemito = new Button(constante.cerrarRemito());
 		cerrarRemito.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cerrarRemitoProvisionInterno();
 			}
 		});
+		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, cerrarRemito);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir1);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, salir);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
 		
 		panel = new FlexTable();
 		panel.setSize("1000px", "300px");
@@ -191,15 +213,19 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		panel.getFlexCellFormatter().setColSpan(9, 0, 3);
 			
 		if(accionRealizar.compareTo("buscar")==0){
-			panel.setWidget(10, 1, this.salir);
-			panel.getCellFormatter().setHorizontalAlignment(10, 2, HasHorizontalAlignment.ALIGN_CENTER);
+			panel.setWidget(10, 0, botones1);
+			panel.getFlexCellFormatter().setColSpan(10, 0, 3);
+			panel.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
 		if(accionRealizar.compareTo("cerrar")==0){
-			panel.setWidget(10, 1, this.cerrarRemito);
-			panel.getCellFormatter().setHorizontalAlignment(10, 1, HasHorizontalAlignment.ALIGN_CENTER);
-			panel.setWidget(10, 2, this.salir);
-			panel.getCellFormatter().setHorizontalAlignment(10, 2, HasHorizontalAlignment.ALIGN_CENTER);
+			panel.setWidget(10, 0, botones);
+			panel.getFlexCellFormatter().setColSpan(10, 0, 3);
+			panel.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
+		
+
+		
+
 		
 
 
@@ -276,6 +302,12 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			}
 		});
 		
+		botones = new FlexTable();
+		botones.setWidget(0, 0, imprimirRemito);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, cancelar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		
 		panel = new FlexTable();
 		panel.setSize("1000px", "300px");
@@ -336,10 +368,9 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		panel.setWidget(10, 0, pie);
 		panel.getFlexCellFormatter().setColSpan(10, 0, 3);
 			
-		panel.setWidget(11, 1, cancelar);
-		panel.getCellFormatter().setHorizontalAlignment(11, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		panel.setWidget(11, 2, imprimirRemito);
-		panel.getCellFormatter().setHorizontalAlignment(11, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		panel.setWidget(11, 0, botones);
+		panel.getFlexCellFormatter().setColSpan(11, 0, 3);
+		panel.getCellFormatter().setHorizontalAlignment(11, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		

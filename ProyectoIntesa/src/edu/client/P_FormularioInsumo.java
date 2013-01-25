@@ -59,6 +59,8 @@ public class P_FormularioInsumo  extends Composite {
 	private FlexTable formularioInsumo;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
+	private FlexTable botones1;
+	private FlexTable botones2;
 	
 	private ArrayList<String> elementos;
 	private String titulo;
@@ -109,8 +111,8 @@ public class P_FormularioInsumo  extends Composite {
 
 			}
 		});
-
-		btnCargar = new Button(constante.cargar());
+		
+		btnCargar = new Button(constante.agregar());
 		btnCargar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cargarInsumo(event);
@@ -123,6 +125,15 @@ public class P_FormularioInsumo  extends Composite {
 				cancelar(event);
 			}
 		});
+
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, btnAgregarProveedor);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, btnCargar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, btnCancelar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		
 		contenedorTabla = new ScrollPanel();
@@ -175,7 +186,10 @@ public class P_FormularioInsumo  extends Composite {
 		formularioInsumo.setWidget(6, 0, proveedor);
 		formularioInsumo.getFlexCellFormatter().setColSpan(6, 0, 6);
 		
-		formularioInsumo.setWidget(7, 2, btnAgregarProveedor);
+		
+		formularioInsumo.setWidget(7, 0, botones1);
+		formularioInsumo.getFlexCellFormatter().setColSpan(7, 0, 6);
+		formularioInsumo.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		formularioInsumo.setWidget(8, 0, contenedorTabla);
 		formularioInsumo.getFlexCellFormatter().setColSpan(8, 0, 6);
@@ -183,8 +197,9 @@ public class P_FormularioInsumo  extends Composite {
 		formularioInsumo.setWidget(9, 0, pie);
 		formularioInsumo.getFlexCellFormatter().setColSpan(9, 0, 6);
 		
-		formularioInsumo.setWidget(10, 2, btnCargar);
-		formularioInsumo.setWidget(10, 4, btnCancelar);
+		formularioInsumo.setWidget(10, 0, botones2);
+		formularioInsumo.getFlexCellFormatter().setColSpan(10, 0, 6);
+		formularioInsumo.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(formularioInsumo);
 	}
@@ -260,6 +275,14 @@ public class P_FormularioInsumo  extends Composite {
 			}
 		});
 		
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, btnAgregarProveedor);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, btnCargar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, btnCancelar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
@@ -311,7 +334,9 @@ public class P_FormularioInsumo  extends Composite {
 		formularioInsumo.setWidget(6, 0, proveedor);
 		formularioInsumo.getFlexCellFormatter().setColSpan(6, 0, 6);
 		
-		formularioInsumo.setWidget(7, 2, btnAgregarProveedor);
+		formularioInsumo.setWidget(7, 0, botones1);
+		formularioInsumo.getFlexCellFormatter().setColSpan(7, 0, 6);
+		formularioInsumo.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		formularioInsumo.setWidget(8, 0, contenedorTabla);
 		formularioInsumo.getFlexCellFormatter().setColSpan(8, 0, 6);
@@ -319,8 +344,9 @@ public class P_FormularioInsumo  extends Composite {
 		formularioInsumo.setWidget(9, 0, pie);
 		formularioInsumo.getFlexCellFormatter().setColSpan(9, 0, 6);
 		
-		formularioInsumo.setWidget(10, 2, btnCargar);
-		formularioInsumo.setWidget(10, 4, btnCancelar);
+		formularioInsumo.setWidget(10, 0, botones2);
+		formularioInsumo.getFlexCellFormatter().setColSpan(10, 0, 6);
+		formularioInsumo.getCellFormatter().setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		for (int i = 0; i < insumoDto.getProveedor().size(); i++){
@@ -337,7 +363,10 @@ public class P_FormularioInsumo  extends Composite {
 			});
 			
 			tablaElemento.setWidget(i+1, COL_NOMBRE, new Label(insumoDto.getProveedor().get(i).getNombre()));
-			tablaElemento.setWidget(i+1, COL_PRECIO, new Label(""+insumoDto.getProveedor().get(i).getPrecio()));
+			if(insumoDto.getProveedor().get(i).getPrecio() != null)
+				tablaElemento.setWidget(i+1, COL_PRECIO, new Label(""+insumoDto.getProveedor().get(i).getPrecio()));
+			else
+				tablaElemento.setWidget(i+1, COL_PRECIO, new Label(""));
 			tablaElemento.setWidget(i+1, COL_OBSERVACIONES, new Label(insumoDto.getProveedor().get(i).getObservaciones()));
 			tablaElemento.setWidget(i+1, COL_BORRAR, eliminar);
 			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(i+1, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
@@ -395,9 +424,13 @@ public class P_FormularioInsumo  extends Composite {
 					
 					ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
 					prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-					prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
-					double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
-					prov.setPrecio(precio);
+					prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());		
+					
+					String pre = (((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText());
+					if(pre.compareTo("") != 0){
+						double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
+						prov.setPrecio(precio);						
+					}
 					
 					insumo.getProveedor().add(prov);
 					
@@ -464,8 +497,13 @@ public class P_FormularioInsumo  extends Composite {
 					ProveedorDeInsumosDTO prov = new ProveedorDeInsumosDTO();
 					prov.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
 					prov.setObservaciones(((Label) tablaElemento.getWidget(i, COL_OBSERVACIONES)).getText());
-					double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
-					prov.setPrecio(precio);
+					
+					String pre = (((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText());
+					if(pre.compareTo("") != 0){
+						double precio = Double.parseDouble(((Label) tablaElemento.getWidget(i, COL_PRECIO)).getText()); 
+						prov.setPrecio(precio);						
+					}
+
 					
 					insumo.getProveedor().add(prov);
 					
@@ -510,27 +548,41 @@ public class P_FormularioInsumo  extends Composite {
 	
 	public void capturarDatos(String nombre, String precio, String observaciones) {
 
-		final String nombreProveedor = nombre;
-		int fila = tablaElemento.getRowCount();
+		boolean bandera = false;
+		
+		for(int i = 1; i < tablaElemento.getRowCount(); i++){
+			if(nombre.compareTo(((Label)tablaElemento.getWidget(i, COL_NOMBRE)).getText()) == 0)
+				bandera = true;
+		}
+		
+		if(bandera == false){
+			final String nombreProveedor = nombre;
+			int fila = tablaElemento.getRowCount();
 
-		Label eliminar = new Label("");
-		eliminar.setSize("16px", "16px");
-		eliminar.setStyleName("labelBorrar");
-		eliminar.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				eliminar(nombreProveedor);
-			}
-		});
+			Label eliminar = new Label("");
+			eliminar.setSize("16px", "16px");
+			eliminar.setStyleName("labelBorrar");
+			eliminar.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					eliminar(nombreProveedor);
+				}
+			});
 
-		tablaElemento.setWidget(fila, COL_NOMBRE, new Label(nombreProveedor));
-		tablaElemento.setWidget(fila, COL_PRECIO, new Label(precio));
-		tablaElemento.setWidget(fila, COL_OBSERVACIONES, new Label(observaciones));
-		tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
-		tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+			tablaElemento.setWidget(fila, COL_NOMBRE, new Label(nombreProveedor));
+			if(precio != null)
+				tablaElemento.setWidget(fila, COL_PRECIO, new Label(precio));
+			else
+				tablaElemento.setWidget(fila, COL_PRECIO, new Label(""));
+			tablaElemento.setWidget(fila, COL_OBSERVACIONES, new Label(observaciones));
+			tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
+			tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
 
-		tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
+			tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
 
-		elementos.add(nombreProveedor);
+			elementos.add(nombreProveedor);
+		}
+		else
+			Window.alert("No es posible agregar 2 veces el mismo proveedor para el mismo insumo");
 	}
 		
 	private void eliminar(String unProveedor) {

@@ -103,6 +103,10 @@ public interface ComprasService extends RemoteService {
 
 	Boolean validarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException;
 
+	Boolean estadoEntregaParcialOrdenCompraInsumo(Long nroOrden) throws IllegalArgumentException;
+
+	Boolean recibidaCompletaOrdenCompraInsumo(Long nroOrden) throws IllegalArgumentException;
+
 
 	
 

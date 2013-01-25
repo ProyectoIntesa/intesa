@@ -101,6 +101,10 @@ public interface ComprasServiceAsync {
 
 	void validarOrdenCompraInsumo(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
+	void estadoEntregaParcialOrdenCompraInsumo(Long nroOrden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void recibidaCompletaOrdenCompraInsumo(Long nroOrden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
 
 
 	

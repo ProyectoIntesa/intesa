@@ -60,6 +60,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 	private ScrollPanel contenedorTablaReqAdic;
 	private FlexTable tablaElementoReqAdic;
 	private FlexTable botones;
+	private FlexTable botones1;
 	
 	private List<String> listaInsumos;
 	private List<String> listaMarcas;
@@ -234,6 +235,10 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			}
 		});
 		
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, agregar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTablaReqAdic = new ScrollPanel();
 		contenedorTablaReqAdic.setStyleName("tabla");
 		contenedorTablaReqAdic.setHeight("200px");
@@ -255,7 +260,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		pie.setStyleName("labelTitulo");
 			
 		
-		salir = new Button(constante.salir());
+		salir = new Button(constante.cancelar());
 		salir.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				salir();
@@ -270,9 +275,9 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		});
 		
 		botones = new FlexTable();
-		botones.setWidget(0, 0, salir);
+		botones.setWidget(0, 0, armarOrden);
 		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 1, armarOrden);
+		botones.setWidget(0, 1, salir);
 		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		
@@ -301,7 +306,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		contenedor.setWidget(5, 2, proveedor);
 		contenedor.getCellFormatter().setWidth(5, 2, "30%");
 		
-		contenedor.setWidget(6, 0, agregar);
+		contenedor.setWidget(6, 0, botones1);
 		contenedor.getFlexCellFormatter().setColSpan(6, 0, 3);
 		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
@@ -313,6 +318,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 		contenedor.setWidget(9, 0, botones);
 		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			
 
 		setWidget(contenedor);
@@ -483,6 +489,10 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			}
 		});
 		
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, agregar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTablaReqAdic = new ScrollPanel();
 		contenedorTablaReqAdic.setStyleName("tabla");
 		contenedorTablaReqAdic.setHeight("200px");
@@ -504,7 +514,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		pie.setStyleName("labelTitulo");
 			
 		
-		salir = new Button(constante.salir());
+		salir = new Button(constante.cancelar());
 		salir.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				salir();
@@ -519,11 +529,10 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		});
 		
 		botones = new FlexTable();
-		botones.setWidget(0, 0, salir);
+		botones.setWidget(0, 0, cargarALaOrden);
 		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones.setWidget(0, 1, cargarALaOrden);
+		botones.setWidget(0, 1, salir);
 		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		
 		
 		contenedor = new FlexTable();
 		contenedor.setSize("800px", "300px");
@@ -550,7 +559,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 		contenedor.setWidget(5, 2, proveedor);
 		contenedor.getCellFormatter().setWidth(5, 2, "30%");
 		
-		contenedor.setWidget(6, 0, agregar);
+		contenedor.setWidget(6, 0, botones1);
 		contenedor.getFlexCellFormatter().setColSpan(6, 0, 3);
 		contenedor.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
@@ -562,113 +571,14 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 		contenedor.setWidget(9, 0, botones);
 		contenedor.getFlexCellFormatter().setColSpan(9, 0, 3);
+		contenedor.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			
 
 		setWidget(contenedor);
 
 		
 	}
-	
-//	protected void armarOrden() {
-//		
-//		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
-//		List<InsumoDTO> listaAux = new LinkedList<InsumoDTO>();
-//		boolean primeraPasada = true;
-//		boolean bandera = false;
-//
-//		for(int i = 1; i < tablaElementoReqNec.getRowCount(); i++){
-//			
-//			boolean resultCheck = ((CheckBox)tablaElementoReqNec.getWidget(i, COL_CHECK)).getValue();
-//						
-//			if(resultCheck){
-//			
-//				if(primeraPasada){
-//					int indiceProv = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
-//					proveedorElegido = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceProv);
-//					primeraPasada = false;
-//				}
-//				
-//				int indiceAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getSelectedIndex(); 
-//				String provAux = ((ListBox)tablaElementoReqNec.getWidget(i, COL_PROVEEDORNEC)).getItemText(indiceAux);	
-//			
-//				if(provAux.compareTo(proveedorElegido) == 0){
-//										
-//					String nombreInsumo = ((Label)tablaElementoReqNec.getWidget(i, COL_INSUMONEC)).getText();
-//					String nombreMarca = ((Label)tablaElementoReqNec.getWidget(i, COL_MARCANEC)).getText();
-//					InsumoDTO nuevo = new InsumoDTO();
-//					nuevo.setNombre(nombreInsumo);
-//					nuevo.setMarca(nombreMarca);
-//					
-//					if(listaOrdenCompraInsumo.size() != 0){
-//						
-//						for (InsumoDTO insumo : listaOrdenCompraInsumo) {
-//							
-//							if(insumo.getNombre().compareTo(nuevo.getNombre()) != 0 || insumo.getMarca().compareTo(nuevo.getMarca()) != 0){
-//								listaOrdenCompraInsumo.add(nuevo);
-//							}
-//						}
-//					}
-//					else{
-//						listaOrdenCompraInsumo.add(nuevo);
-//					}
-//						
-//				}
-//				else{
-//					Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
-//					bandera = true;
-//					break;
-//				}
-//			}	
-//		}
-//		
-//		for(int i = 1; i < tablaElementoReqAdic.getRowCount(); i++){
-//			
-//			if(primeraPasada){
-//				proveedorElegido = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
-//				primeraPasada = false;
-//			}
-//			 			
-//			String provAux = ((Label)tablaElementoReqAdic.getWidget(i, COL_PROVEEDOR)).getText();
-//						
-//			if (provAux.compareTo(proveedorElegido) == 0) {
-//				
-//				String nombreInsumo = ((Label) tablaElementoReqAdic.getWidget(i, COL_INSUMO)).getText();
-//				String nombreMarca = ((Label) tablaElementoReqAdic.getWidget(i, COL_MARCA)).getText();
-//				InsumoDTO nuevo = new InsumoDTO();
-//				nuevo.setNombre(nombreInsumo);
-//				nuevo.setMarca(nombreMarca);
-//
-//				if(listaOrdenCompraInsumo.size() != 0){
-//					
-//					for (InsumoDTO insumo : listaOrdenCompraInsumo) {
-//					
-//						if(insumo.getNombre().compareTo(nuevo.getNombre()) != 0 || insumo.getMarca().compareTo(nuevo.getMarca()) != 0){
-//							listaOrdenCompraInsumo.add(nuevo);
-//						}
-//					}
-//				}
-//				else{
-//					listaOrdenCompraInsumo.add(nuevo);
-//				}
-//
-//			} 
-//			else {
-//				Window.alert("Se debe seleccionar el mismo proveedor para todos los insumos");
-//				bandera = true;
-//				break;
-//			}
-//	
-//		}	
-//		
-//		if(!bandera){
-//			this.agregarOrden = true;
-//			salir();
-//		}
-//		
-//		
-//		
-//	}
-	
+		
 	protected void armarOrden() {
 		
 		listaOrdenCompraInsumo = new LinkedList<InsumoDTO>();
