@@ -32,7 +32,7 @@ public interface ProduccionService extends RemoteService {
 
 	double getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenProvisionInsumo) throws IllegalArgumentException;
 
-	Boolean registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException;
+	Long registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException;
 
 	List<Long> idsRemitosInternosInsumos() throws IllegalArgumentException;
 
@@ -57,6 +57,8 @@ public interface ProduccionService extends RemoteService {
 	boolean cerrarOrdenesProvision(String fecha) throws IllegalArgumentException;
 
 	boolean registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException;
+
+	RemitoProvisionInsumoDTO registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito, String nada) throws IllegalArgumentException;
 
 	
 

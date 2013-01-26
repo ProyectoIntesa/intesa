@@ -51,21 +51,27 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private Label observacion;
 
 	private Button cancelarOrden;
-	private Button salir;
 	private Button salir1;
 	private Button salir2;
 	private Button salir3;
+	private Button salir4;
+	private Button salir5;
+	private Button salir6;
 	private Button enviarOrden;
-	private Button cerrarOrden;
+	private Button cerrarOrden1;
+	private Button cerrarOrden2;
+	private Button cerrarOrden3;
 
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
-	private FlexTable botones1;
-	private FlexTable botones2;
-	private FlexTable botones3;
-	private FlexTable botones4;
-	private FlexTable botones5;
+	private FlexTable botonesSalir;
+	private FlexTable botonesGenerada;
+	private FlexTable botonesValidada;
+	private FlexTable botonesEnviada;
+	private FlexTable botonesRecibidaParcial;
+	private FlexTable botonesRecibidaCompleta;
+	private FlexTable lineaTotal;
 
 	private OrdenCompraInsumoDTO orden;
 	private boolean accionSalir;
@@ -137,14 +143,11 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			}
 		});
 
-		cerrarOrden = new Button(constante.cerrarOrden());
-		cerrarOrden.addClickHandler(new ClickHandler() {
-			
+		cerrarOrden1 = new Button(constante.cerrarOrden());
+		cerrarOrden1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-								
 				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 				comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
-
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
@@ -157,13 +160,63 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 							}	
  						}
 					}
-
 					@Override
 					public void onFailure(Throwable caught) {
 						Window.alert("ERROR DE SERVICIO");
 
 					}
+				});
+			}
+		});
 
+		cerrarOrden2 = new Button(constante.cerrarOrden());
+		cerrarOrden2.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							verDetalle("completa");
+						} else {
+							
+							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta la orden quedará cerrada en forma parcial");
+							if(confirm == true){
+								verDetalle("parcial");
+							}	
+ 						}
+					}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR DE SERVICIO");
+
+					}
+				});
+			}
+		});
+		
+		cerrarOrden3 = new Button(constante.cerrarOrden());
+		cerrarOrden3.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.ordenDeComprasCompleta(idOrden, new AsyncCallback<Boolean>() {
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							verDetalle("completa");
+						} else {
+							
+							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta la orden quedará cerrada en forma parcial");
+							if(confirm == true){
+								verDetalle("parcial");
+							}	
+ 						}
+					}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR DE SERVICIO");
+
+					}
 				});
 			}
 		});
@@ -195,14 +248,6 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			}
 		});
 
-		salir = new Button(constante.salir());
-		salir.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				accionSalir = true;
-				salir();
-			}
-		});
-		
 		salir1 = new Button(constante.salir());
 		salir1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -226,35 +271,69 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 				salir();
 			}
 		});
+		
+		salir4 = new Button(constante.salir());
+		salir4.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
+		
+		salir5 = new Button(constante.salir());
+		salir5.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
+		
+		salir6 = new Button(constante.salir());
+		salir6.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				accionSalir = true;
+				salir();
+			}
+		});
 
-		botones1 = new FlexTable();
-		botones1.setWidget(0, 0, cancelarOrden);
-		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones1.setWidget(0, 1, salir1);
-		botones1.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesGenerada = new FlexTable();
+		botonesGenerada.setWidget(0, 0, cancelarOrden);
+		botonesGenerada.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesGenerada.setWidget(0, 1, salir1);
+		botonesGenerada.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		botones2 = new FlexTable();
-		botones2.setWidget(0, 0, enviarOrden);
-		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones2.setWidget(0, 1, salir2);
-		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesValidada = new FlexTable();
+		botonesValidada.setWidget(0, 0, enviarOrden);
+		botonesValidada.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesValidada.setWidget(0, 1, salir2);
+		botonesValidada.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		botones3 = new FlexTable();
-		botones3.setWidget(0, 0, cerrarOrden);
-		botones3.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones3.setWidget(0, 1, salir3);
-		botones3.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesEnviada = new FlexTable();
+		botonesEnviada.setWidget(0, 0, cerrarOrden1);
+		botonesEnviada.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesEnviada.setWidget(0, 1, salir3);
+		botonesEnviada.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		botones5 = new FlexTable();
-		botones5.setWidget(0, 0, cerrarOrden);
-		botones5.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		botones5.setWidget(0, 1, salir3);
-		botones5.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesRecibidaParcial = new FlexTable();
+		botonesRecibidaParcial.setWidget(0, 0, cerrarOrden2);
+		botonesRecibidaParcial.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesRecibidaParcial.setWidget(0, 1, salir4);
+		botonesRecibidaParcial.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		botones4 = new FlexTable();
-		botones4.setWidget(0, 0, salir);
-		botones4.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesRecibidaCompleta = new FlexTable();
+		botonesRecibidaCompleta.setWidget(0, 0, cerrarOrden3);
+		botonesRecibidaCompleta.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botonesRecibidaCompleta.setWidget(0, 1, salir5);
+		botonesRecibidaCompleta.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		botonesSalir = new FlexTable();
+		botonesSalir.setWidget(0, 0, salir6);
+		botonesSalir.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
+		lineaTotal = new FlexTable();
+		lineaTotal.setWidget(0, 0, total);
+		lineaTotal.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		
 		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha = fmtDate.format(orden.getFechaGeneracion());
@@ -303,7 +382,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		panel.setWidget(4, 0, contenedorTabla);
 		panel.getFlexCellFormatter().setColSpan(4, 0, 4);
 
-		panel.setWidget(5, 3, total);
+		panel.setWidget(5, 0, lineaTotal);
+		panel.getFlexCellFormatter().setColSpan(5, 0, 4);
+		panel.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		panel.setWidget(6, 0, observaciones);
 		panel.getFlexCellFormatter().setColSpan(6, 0, 4);
@@ -317,34 +398,34 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		if(usuario.compareTo("COMPRAS") == 0){
 		
 			if (orden.getEstadoOrden().compareTo("GENERADA") == 0) {
-				panel.setWidget(9, 0, botones1);
+				panel.setWidget(9, 0, botonesGenerada);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("VALIDADA") == 0) {
-				panel.setWidget(9, 0, botones2);
+				panel.setWidget(9, 0, botonesValidada);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("ENVIADA") == 0) {
-				panel.setWidget(9, 0, botones3);
+				panel.setWidget(9, 0, botonesEnviada);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("RECIBIDA PARCIAL") == 0) {
-				panel.setWidget(9, 0, botones3);
+				panel.setWidget(9, 0, botonesRecibidaParcial);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else if (orden.getEstadoOrden().compareTo("RECIBIDA COMPLETA") == 0) {
-				panel.setWidget(9, 0, botones5);
+				panel.setWidget(9, 0, botonesRecibidaCompleta);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 			} else {
-				panel.setWidget(9, 0, botones4);
+				panel.setWidget(9, 0, botonesSalir);
 				panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 				panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);				
 			}
 			
 		}
 		else {
-			panel.setWidget(9, 0, botones4);
+			panel.setWidget(9, 0, botonesSalir);
 			panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 			panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);		
 		}
@@ -371,7 +452,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	}
 
 	public FlexTable armarImpresion() {
+		
 		FlexTable formulario = new FlexTable();
+		
 		formulario.setWidget(1, 0, tituloFormulario);
 		formulario.getFlexCellFormatter().setColSpan(1, 0, 4);
 
@@ -388,7 +471,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		formulario.setWidget(4, 0, lineaTabla);
 		formulario.getFlexCellFormatter().setColSpan(4, 0, 4);
 
-		formulario.setWidget(6, 3, total);
+		formulario.setWidget(6, 0, lineaTotal);
+		formulario.getFlexCellFormatter().setColSpan(6, 0, 4);
+		formulario.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		formulario.setWidget(7, 0, observaciones);
 		formulario.getFlexCellFormatter().setColSpan(7, 0, 4);
@@ -399,7 +484,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		formulario.setWidget(9, 0, pie);
 		formulario.getFlexCellFormatter().setColSpan(9, 0, 4);
 		int cantidad = orden.getRenglonOrdenCompraInsumos().size();
-		// formulario.setSize("1000px", "1300px");
+		
 		ScrollPanel tabla = new ScrollPanel();
 		tabla.setStyleName("tabla");
 		if (cantidad > 5)
@@ -430,16 +515,19 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			elementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));
 			elementos.setWidget(item, COL_MARCA, new Label(renglon.getInsumo().getMarca()));
 			elementos.setWidget(item, COL_CANT, new Label(renglon.getCantidad() + ""));
+			
 			if (renglon.getPrecio() == 0)
 				elementos.setWidget(item, COL_PRECIOUNITARIO, new Label(""));
 			else
 				elementos.setWidget(item, COL_PRECIOUNITARIO, new Label(renglon.getPrecio() + ""));
+			
 			if (renglon.getSubtotal() == 0) {
 				elementos.setWidget(item, COL_SUBTOTAL, new Label(""));
 				total.setText(constante.total() + ": ");
 			} else
 				elementos.setWidget(item, COL_SUBTOTAL, new Label(renglon.getSubtotal() + ""));
-			elementos.getRowFormatter().setStyleName(item, "tablaRenglonImpresion");
+			
+			elementos.getRowFormatter().setStyleName(item, "tablaRenglon2");
 			item++;
 
 		}

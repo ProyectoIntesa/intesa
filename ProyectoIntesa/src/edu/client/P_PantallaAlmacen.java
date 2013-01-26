@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -12,8 +14,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -226,10 +230,20 @@ public class P_PantallaAlmacen extends Composite {
 				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO INTERNO");
 			}
 			else{
-				P_PreguntarPorOrdenProvision popUp = new P_PreguntarPorOrdenProvision(this.usuario);
+				final P_PreguntarPorOrdenProvision popUp = new P_PreguntarPorOrdenProvision(this.usuario);
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+					
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+											
+						if(popUp.getImprimir() == true)
+							abrirPantallaImpresion(popUp.getOrdenImprimir());
+						
+					}
+				});
 			}
 		}
 		
@@ -269,4 +283,18 @@ public class P_PantallaAlmacen extends Composite {
 			return elemento;
 		}
 
+	protected void abrirPantallaImpresion(FlexTable formu) {
+		
+		P_ImpresionCompras imprime = new P_ImpresionCompras(formu, usuario);
+		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		RootPanel.get().add(imprime); 
+		try { 
+			 this.finalize(); 
+		} 
+		catch(Throwable e) { 
+			e.printStackTrace(); 
+		}
+		 
+	}
+	
 }

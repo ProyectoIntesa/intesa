@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
@@ -37,6 +40,8 @@ public class P_PreguntarPorOrdenProvision extends PopupPanel {
 	
 	private FlexTable panel;
 	private FlexTable botones;
+	private FlexTable ordenImprimir;
+	private boolean imprimir;
 	
 	private List<OrdenProvisionInsumoDTO> ordenesInsumos;
 	
@@ -131,10 +136,26 @@ public class P_PreguntarPorOrdenProvision extends PopupPanel {
 				@Override
 				public void onSuccess(OrdenProvisionInsumoDTO result) {
 
-					P_RemitoProvisionInsumo detalle = new P_RemitoProvisionInsumo(result,usuario);		
+					final P_RemitoProvisionInsumo detalle = new P_RemitoProvisionInsumo(result,usuario);		
 					detalle.setGlassEnabled(true);
 					detalle.center();
-					detalle.show();							
+					detalle.show();	
+					detalle.addCloseHandler(new CloseHandler<PopupPanel>() {
+						
+						@Override
+						public void onClose(CloseEvent<PopupPanel> event) {
+						
+							if(detalle.getImprimir() == true){
+								
+								ordenImprimir = detalle.getOrdenImprimir();
+								imprimir = true;
+								
+								salir();
+								
+							}
+							
+						}
+					});
 					
 				}
 				@Override
@@ -150,6 +171,14 @@ public class P_PreguntarPorOrdenProvision extends PopupPanel {
 		
 	}
 
+	public FlexTable getOrdenImprimir(){
+		return this.ordenImprimir;
+	}
+	
+	public boolean getImprimir(){
+		return this.imprimir;
+	}
+	
 	protected void cargarSugerenciaOrdenes() {
 		
 		

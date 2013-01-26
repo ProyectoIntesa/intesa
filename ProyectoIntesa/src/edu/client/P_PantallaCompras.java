@@ -423,8 +423,10 @@ public class P_PantallaCompras extends Composite {
 		RootPanel.get().add(imprime); 
 		try { 
 			 this.finalize(); 
-		} catch(Throwable e) 
-		{ e.printStackTrace(); }
+		} 
+		catch(Throwable e) { 
+			e.printStackTrace(); 
+		}
 		 
 	}
 

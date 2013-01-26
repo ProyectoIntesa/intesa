@@ -461,4 +461,6 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 	public FlexTable formulario(){
 		return this.impresion;
 	}
+	
+
 }

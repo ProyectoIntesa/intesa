@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.tools.zip.AsiExtraField;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,12 +22,14 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 import edu.client.ProduccionService.ProduccionService;
 import edu.client.ProduccionService.ProduccionServiceAsync;
 import edu.shared.DTO.InsumoDTO;
 import edu.shared.DTO.OrdenProvisionInsumoDTO;
 import edu.shared.DTO.RemitoProvisionInsumoDTO;
+import edu.shared.DTO.RenglonOrdenCompraInsumoDTO;
 import edu.shared.DTO.RenglonOrdenProvisionInsumoDTO;
 import edu.shared.DTO.RenglonRemitoProvisionInsumoDTO;
 
@@ -62,7 +66,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private Label fechaCierre;
 	private Label estado;
 	private Label observacion;
-
+	
 	private Button cancelar;
 	private Button imprimirRemito;
 	private Button salir;
@@ -74,11 +78,22 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	private FlexTable tablaElementos;
 	private FlexTable botones;
 	private FlexTable botones1;
+	private FlexTable ordenImprimir;
+	private boolean imprimir;
 	
 	private TextArea observacionesDelRemitoTa;
 	
 	private OrdenProvisionInsumoDTO orden;
 	private boolean accionSalir;
+	
+	//------------para el formulario de impresion
+	
+	private Label tituloFormularioImpresion;
+	private Label observacionesImpresion;
+	private Label lineaInfoImpresion;
+	private Label pieImpresion;
+		
+	//-------------------------------------------
 	
 	private String usuario;
 	private RemitoProvisionInsumoDTO remitoLocal;
@@ -242,6 +257,27 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		this.usuario = usuarioLogueado;
 		setStyleName("fondoPopup");
 		accionSalir = false;
+		imprimir = false;
+		ordenImprimir = new FlexTable();
+		
+		//-----se inicializan objetos de impresion
+		
+		tituloFormularioImpresion = new Label("REMITO PROVISION DE INSUMO");
+		tituloFormularioImpresion.setStyleName("labelTitulo");	
+		
+		lineaInfoImpresion = new Label("");
+		lineaInfoImpresion.setStyleName("labelTitulo");
+		
+		observacionesImpresion = new Label("OBSERVACIONES");
+		observacionesImpresion.setStyleName("labelTitulo");
+		
+		pieImpresion = new Label("");
+		pieImpresion.setStyleName("labelTitulo");
+		
+		
+		//----------------------------------------
+		
+		
 		
 		tituloFormulario = new Label("GENERAR REMITO PARA LA SIGUIENTE ORDEN DE PROVISION DE INSUMOS");
 		tituloFormulario.setStyleName("labelTitulo");
@@ -297,8 +333,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		imprimirRemito = new Button(constante.imprimir());
 		imprimirRemito.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//aca se debe imprimir la orden!!!
-				guardarRemitoProvisionInterno();
+				guardarRemitoProvisionInterno();						
 			}
 		});
 		
@@ -426,6 +461,79 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 	}		
 	
+	protected FlexTable armarImpresion(){
+
+		FlexTable formulario = new FlexTable();
+		
+		formulario.setWidget(1, 0, tituloFormularioImpresion);
+		formulario.getFlexCellFormatter().setColSpan(1, 0, 3);
+		
+		formulario.setWidget(2, 0, new Label(constante.nroOrdenProvision()+": "+this.orden.getIdOrdenProvisionInsumo()));
+		formulario.setWidget(2, 1, new Label(constante.nroDeRemito()+": "+this.remitoLocal.getIdRemitoInsumo()));
+		
+		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
+		String fecha = fmtDate.format(this.orden.getFechaGeneracion());
+		formulario.setWidget(2, 2, new Label(constante.fechaGeneracion()+": "+fecha));		
+				
+		formulario.setWidget(3, 0, new Label(constante.generadoPor()+": "+this.orden.getEmpleadoByIdPedidoPor().getNombre()+" "+this.orden.getEmpleadoByIdPedidoPor().getApellido()));
+		
+		formulario.setWidget(4, 0, new Label(constante.generadoPara()+": "+this.orden.getEmpleadoByIdPedidoPara().getNombre()+" "+this.orden.getEmpleadoByIdPedidoPara().getApellido()));
+		
+		formulario.setWidget(5, 0, lineaInfoImpresion);
+		formulario.getFlexCellFormatter().setColSpan(5, 0, 3);
+
+		
+		
+		formulario.setWidget(7, 0, observacionesImpresion);
+		formulario.getFlexCellFormatter().setColSpan(7, 0, 3);
+
+		formulario.setWidget(8, 0, new Label(this.remitoLocal.getObservaciones()));
+		formulario.getFlexCellFormatter().setColSpan(8, 0, 3);
+		
+		formulario.setWidget(9, 0, pieImpresion);
+		formulario.getFlexCellFormatter().setColSpan(9, 0, 3);
+		
+		int cantidad = orden.getRenglonOrdenProvisionInsumos().size();
+		
+		ScrollPanel tabla = new ScrollPanel();
+		tabla.setStyleName("tabla");
+		if (cantidad > 5)
+			tabla.setHeight(cantidad*22+" px");
+		else
+			tabla.setHeight("400 px");
+		
+		FlexTable elementos = new FlexTable();
+		tabla.setWidget(elementos);
+		elementos.setSize("100%", "100%");
+		elementos.setText(0, COL_ITEM, constante.item());
+		elementos.getCellFormatter().setWidth(0, COL_ITEM, "16%");
+		elementos.setText(0, COL_INSUMO, constante.insumo());
+		elementos.getCellFormatter().setWidth(0, COL_INSUMO, "16%");
+		elementos.setText(0, COL_MARCA, constante.marca());
+		elementos.getCellFormatter().setWidth(0, COL_MARCA, "16%");
+		elementos.setText(0, COL_CANT, constante.cantidad());
+		elementos.getCellFormatter().setWidth(0, COL_CANT, "16%");
+		elementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
+		
+		int item = 1;
+		
+		for(RenglonRemitoProvisionInsumoDTO renglon : this.remitoLocal.getRenglonRemitoProvisionInsumos()) {
+			
+			elementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));
+			elementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));
+			elementos.setWidget(item, COL_MARCA, new Label(renglon.getInsumo().getMarca()));
+			elementos.setWidget(item, COL_CANT, new Label(renglon.getCantidadEntregada() + ""));	
+			elementos.getRowFormatter().setStyleName(item, "tablaRenglon2");
+			item++;
+		}
+		
+		formulario.setWidget(6, 0, tabla);
+		formulario.getFlexCellFormatter().setColSpan(6, 0, 3);
+		
+		return formulario;
+		
+	}
+	
 	protected void guardarRemitoProvisionInterno() {
 		
 		Validaciones validar = new Validaciones();
@@ -434,7 +542,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		boolean vCantPedida3 = false;
 		boolean vCantPedida4 = false;
 		boolean entro = false;
-		
+
 		
 		for(int i = 1; i < tablaElementos.getRowCount(); i++){
 			
@@ -492,22 +600,26 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 					}	
 				}
 			}
-			
+						
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.registrarRemitoProvisionInsumo(remito, new AsyncCallback<Boolean>(){
+			produccionService.registrarRemitoProvisionInsumo(remito, "", new AsyncCallback<RemitoProvisionInsumoDTO>(){
 				
 				@Override
-				public void onSuccess(Boolean result) {
-					if(result == true)
-						Window.alert("El Remito de la Orden de Provision de Insumos ha sido generado de manera exitosa");
-					else
+				public void onSuccess(RemitoProvisionInsumoDTO result) {
+					
+					if(result != null){
+						remitoLocal = result;
+						ordenImprimir = armarImpresion();
+						imprimir = true;
+					}
+					else{
 						Window.alert("El Remito de la Orden de Provision de Insumos NO ha sido generado");
+					}
 					cancelar();
 				}
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-					
+					Window.alert("ERROR EN EL SERVICIO");					
 				}
 			});
 		}
@@ -523,11 +635,9 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 					Window.alert("La cantidad pedida NO debe ser mayor a la disponible");
 			}
 		}
-		
-		
-		
+				
 	}
-
+		
 	protected void cargarTabla(OrdenProvisionInsumoDTO result) {
 		
 		int item = 1;
@@ -643,9 +753,13 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 	}
 	
+	protected boolean getImprimir(){
+		return this.imprimir;
+	}
 	
-	
-	
+	protected FlexTable getOrdenImprimir(){
+		return this.ordenImprimir;
+	}
 	
 	
 	

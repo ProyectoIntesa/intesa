@@ -30,7 +30,7 @@ public interface ProduccionServiceAsync {
 
 	void getCantFaltanteInsumo(InsumoDTO insumo, long idOrdenProvisionInsumo, AsyncCallback<Double> callback) throws IllegalArgumentException;
 
-	void registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	void registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito, AsyncCallback<Long> callback) throws IllegalArgumentException;
 
 	void idsRemitosInternosInsumos(AsyncCallback<List<Long>> callback) throws IllegalArgumentException;
 
@@ -55,6 +55,8 @@ public interface ProduccionServiceAsync {
 	void cerrarOrdenesProvision(String fecha, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito, String nada, AsyncCallback<RemitoProvisionInsumoDTO> callback) throws IllegalArgumentException;
 
 	
 

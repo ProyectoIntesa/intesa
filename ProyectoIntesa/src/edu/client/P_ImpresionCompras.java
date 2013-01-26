@@ -7,12 +7,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class P_ImpresionCompras extends Composite {
 	
 	private Constantes constante = GWT.create(Constantes.class);
 	FlexTable formulario;
+	private FlexTable botones;
 	String usuario;
 	private Button imprimir;
 	private Button salir;
@@ -34,13 +36,21 @@ public class P_ImpresionCompras extends Composite {
 			}
 		});
 		
-		formulario.setWidget(0, 0, salir );
-		formulario.setWidget(0, 1, imprimir );
+		botones = new FlexTable();
+		botones.setWidget(0, 0, imprimir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		formulario.setWidget(0, 0, botones);
+		formulario.getFlexCellFormatter().setColSpan(0, 0, 0);
+		formulario.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
 		
 		initWidget(formulario);
 	}
 
 	protected void salir() {
+		
 		 P_PantallaCompras compras = new P_PantallaCompras(usuario);
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(compras);

@@ -370,9 +370,9 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		cantidadFaltante = cantidadFaltante - cantidadIngresada;
 		return cantidadFaltante;
 	}
-	
+		
 	@Override
-	public Boolean registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException{
+	public Long registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito) throws IllegalArgumentException{
 		
 		Almacen adminAlmacen = new Almacen();
 		edu.server.dominio.Empleado adminEmpleado = new edu.server.dominio.Empleado();
@@ -426,10 +426,91 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 				remitoGuardar.getRenglonRemitoInternoInsumos().add(renglonGuardar);
 			}
 			
-			return adminAlmacen.registrarRenglonesDelRemitoProvisionInsumo(remitoGuardar);	
+			boolean result = adminAlmacen.registrarRenglonesDelRemitoProvisionInsumo(remitoGuardar);
+			
+			if(result == true)
+				return idRemito;
+			else
+				return (long) -1.0;
 		}
 		else{
-			return false;
+			return (long) -1.0;
+		}
+	}
+	
+	@Override
+	public RemitoProvisionInsumoDTO registrarRemitoProvisionInsumo(RemitoProvisionInsumoDTO remito,String nada) throws IllegalArgumentException{
+		
+		Almacen adminAlmacen = new Almacen();
+		edu.server.dominio.Empleado adminEmpleado = new edu.server.dominio.Empleado();
+		Estado adminEstado = new Estado();
+		Produccion adminProd = new Produccion();
+		Insumos adminInsumo = new Insumos();
+		Insumo insumo = new Insumo();
+		
+		int idEstado = adminEstado.getIdEstado(remito.getEstadoOrden());
+		EstadoOrden est = adminEstado.getEstadoCompleto(idEstado);
+		
+		int idEmpleado = adminEmpleado.getIdEmpleado(remito.getEmpleado());
+		Empleado emp = adminEmpleado.getEmpleado(idEmpleado);
+		
+		OrdenProvisionInsumo opi = new OrdenProvisionInsumo();
+		opi = adminProd.getOrdenProvisionInsumoSegunId(remito.getIdOrdenProvisionInsumo());
+		
+		RemitoInternoInsumo remitoGuardar = new RemitoInternoInsumo();
+		remitoGuardar.setEmpleado(emp);
+		remitoGuardar.setEstadoOrden(est);
+		remitoGuardar.setFechaCierre(remito.getFechaCierre());
+		remitoGuardar.setFechaEdicion(remito.getFechaEdicion());
+		remitoGuardar.setFechaGenaracion(remito.getFechaGenaracion());
+		remitoGuardar.setObservaciones(remito.getObservaciones());
+		remitoGuardar.setOrdenProvisionInsumo(opi);
+		
+		long idRemito = adminAlmacen.registrarRemitoProvisionInsumo(remitoGuardar); 
+				
+		if(idRemito != -1){
+			
+			Iterator renglones = remito.getRenglonRemitoProvisionInsumos().iterator();
+			
+			while(renglones.hasNext()){
+				
+				RenglonRemitoProvisionInsumoDTO renglon = (RenglonRemitoProvisionInsumoDTO) renglones.next();
+				
+				int idInsumo = adminInsumo.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+				insumo = adminInsumo.getInsumoCompleto(idInsumo, "");
+		
+				double cantDisponible = ((insumo.getCantidad())-(renglon.getCantidadEntregada()));
+				adminInsumo.setCantInsumo(idInsumo, cantDisponible);
+				
+				RenglonRemitoInternoInsumoId renglonId = new RenglonRemitoInternoInsumoId(renglon.getItem(),idRemito);
+
+				RenglonRemitoInternoInsumo renglonGuardar = new RenglonRemitoInternoInsumo();
+				
+				renglonGuardar.setId(renglonId);
+				renglonGuardar.setInsumo(insumo);
+				renglonGuardar.setCantidadEntregada(renglon.getCantidadEntregada());
+				
+				remitoGuardar.getRenglonRemitoInternoInsumos().add(renglonGuardar);
+			}
+			
+			boolean result = adminAlmacen.registrarRenglonesDelRemitoProvisionInsumo(remitoGuardar);
+			
+			if(result == true){
+				
+				RemitoProvisionInsumoDTO remitoDevolver = new RemitoProvisionInsumoDTO();
+				remitoDevolver = this.getOrdenRemitoInternoInsumoSegunId(idRemito);
+				return remitoDevolver;
+			}
+			else{
+				RemitoProvisionInsumoDTO remitoDevolver = new RemitoProvisionInsumoDTO();
+				remitoDevolver = null;
+				return remitoDevolver;
+			}
+		}
+		else{
+			RemitoProvisionInsumoDTO remitoDevolver = new RemitoProvisionInsumoDTO();
+			remitoDevolver = null;
+			return remitoDevolver;
 		}
 	}
 
