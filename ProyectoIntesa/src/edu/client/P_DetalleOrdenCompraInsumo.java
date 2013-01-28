@@ -48,6 +48,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private Label iva;
 	private Label estado;
 	private Label total;
+	private Label totalI;
 	private Label observacion;
 
 	private Button cancelarOrden;
@@ -72,11 +73,19 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 	private FlexTable botonesRecibidaParcial;
 	private FlexTable botonesRecibidaCompleta;
 	private FlexTable lineaTotal;
+	private FlexTable lineaTotalI;
+	
 
 	private OrdenCompraInsumoDTO orden;
-	private boolean accionSalir;
-	private boolean imprimir;
-	private boolean cerrada;
+
+	
+	private boolean cierreOrdenCerrar;
+	private boolean cierreOrdenSalir;
+	private boolean cierreOrdenCancelar;
+	private boolean cierreOrdenImprimir;
+	
+	
+	
 	
 	public P_DetalleOrdenCompraInsumo(OrdenCompraInsumoDTO orden, String usuario) {
 
@@ -84,8 +93,11 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		this.orden = orden;
 		setStyleName("fondoPopup");
 		final long idOrden = orden.getIdOrden();
-		accionSalir = false;
-		cerrada = false;
+
+		this.cierreOrdenCerrar = false;
+		this.cierreOrdenSalir = false;
+		
+		
 		tituloFormulario = new Label(constante.ordenCompraDeInsumo());
 		tituloFormulario.setStyleName("labelTitulo");
 		lineaTabla = new Label();
@@ -111,6 +123,10 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		estado.setStyleName("gwt-LabelFormulario");
 		total = new Label(constante.total() + ": " + orden.getTotal());
 		total.setStyleName("gwt-LabelFormulario");
+		totalI = new Label(constante.total() + ": " + orden.getTotal());
+		totalI.setStyleName("gwt-LabelFormulario");
+		
+		
 		observacion = new Label(orden.getObservaciones());
 		observacion.setStyleName("gwt-LabelFormulario");
 
@@ -127,6 +143,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 						public void onSuccess(Boolean result) {
 							if (result) {
 								Window.alert("La orden ha sido CANCELADA");
+								cierreOrdenCancelar = true;
 								salir();
 							} else {
 								Window.alert("No se ha podido cambiar el estado de la orden");
@@ -230,8 +247,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
-							imprimir = true;
-							accionSalir = true;
+							cierreOrdenImprimir = true;
 							salir();
 						} else {
 							Window.alert("No se ha podido cambiar el estado de la orden");
@@ -251,7 +267,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir1 = new Button(constante.salir());
 		salir1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -259,7 +275,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir2 = new Button(constante.salir());
 		salir2.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -267,7 +283,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir3 = new Button(constante.salir());
 		salir3.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -275,7 +291,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir4 = new Button(constante.salir());
 		salir4.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -283,7 +299,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir5 = new Button(constante.salir());
 		salir5.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -291,7 +307,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		salir6 = new Button(constante.salir());
 		salir6.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				cierreOrdenSalir = true;
 				salir();
 			}
 		});
@@ -334,6 +350,9 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		lineaTotal.setWidget(0, 0, total);
 		lineaTotal.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
+		lineaTotalI = new FlexTable();
+		lineaTotalI.setWidget(0, 0, totalI);
+		lineaTotalI.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
 		String fecha = fmtDate.format(orden.getFechaGeneracion());
@@ -471,7 +490,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		formulario.setWidget(4, 0, lineaTabla);
 		formulario.getFlexCellFormatter().setColSpan(4, 0, 4);
 
-		formulario.setWidget(6, 0, lineaTotal);
+		formulario.setWidget(6, 0, lineaTotalI);
 		formulario.getFlexCellFormatter().setColSpan(6, 0, 4);
 		formulario.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
@@ -516,12 +535,12 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			elementos.setWidget(item, COL_MARCA, new Label(renglon.getInsumo().getMarca()));
 			elementos.setWidget(item, COL_CANT, new Label(renglon.getCantidad() + ""));
 			
-			if (renglon.getPrecio() == 0)
+			if (renglon.getPrecio() == null)
 				elementos.setWidget(item, COL_PRECIOUNITARIO, new Label(""));
 			else
 				elementos.setWidget(item, COL_PRECIOUNITARIO, new Label(renglon.getPrecio() + ""));
 			
-			if (renglon.getSubtotal() == 0) {
+			if (renglon.getSubtotal() == null) {
 				elementos.setWidget(item, COL_SUBTOTAL, new Label(""));
 				total.setText(constante.total() + ": ");
 			} else
@@ -542,12 +561,20 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 
 	}
 
-	public boolean getAccionSalir() {
-		return this.accionSalir;
+	public boolean getCierreOrdenCerrar() {
+		return this.cierreOrdenCerrar;
 	}
 
-	public boolean imprimir() {
-		return this.imprimir;
+	public boolean getCierreOrdenImprimir() {
+		return this.cierreOrdenImprimir;
+	}
+	
+	public boolean getCierreOrdenSalir() {
+		return this.cierreOrdenSalir;
+	}
+	
+	public boolean getCierreOrdenCancelar() {
+		return this.cierreOrdenCancelar;
 	}
 
 	private void verDetalle(String tipo){
@@ -561,17 +588,19 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			@Override
 			public void onClose(CloseEvent<PopupPanel> event) {				
 			
-				if (detalle.cambioEstado())
+				if (detalle.getCierreOrdenCerrar() == true)
 				{	
-					cerrada = true;	
+					Window.alert("La orden ha sido CERRADA");
+					cierreOrdenCerrar = true;
+					salir();
+				}
+				if(detalle.getCierreOrdenSalir() == true)
+				{	
+					cierreOrdenSalir = true;
 					salir();
 				}
 			}
 		});
 	}
-	
-	public boolean cerrada(){
-		return this.cerrada;
-	}
-	
+		
 }

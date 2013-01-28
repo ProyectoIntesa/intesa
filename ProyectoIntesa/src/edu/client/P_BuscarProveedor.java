@@ -70,6 +70,8 @@ public class P_BuscarProveedor extends PopupPanel {
 	private ProveedorDTO empresaInfo;
 	private ContactoDTO contactoInfo;
 	private boolean modificarProveedor;
+	private boolean salirEliminar;
+	private boolean salirContacto;
 
 	public P_BuscarProveedor() {
 
@@ -79,6 +81,8 @@ public class P_BuscarProveedor extends PopupPanel {
 		contenedor = new FlexTable();
 
 		this.modificarProveedor = false;
+		this.salirEliminar = false;
+		this.salirContacto = false;
 
 		listaEmpresas = new MultiWordSuggestOracle();
 		listaRubros = new MultiWordSuggestOracle();
@@ -618,20 +622,22 @@ public class P_BuscarProveedor extends PopupPanel {
 							final P_DatoEmpresa popUp = new P_DatoEmpresa(empresaInfo);
 							popUp.setGlassEnabled(true);
 							popUp.center();
-							popUp.show();
+							popUp.show();							
+							
 							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-							boolean modificar = false;
-
+								boolean modificar = false;
+								boolean salirEliminar = false;
 								@Override
 								public void onClose(CloseEvent<PopupPanel> event) {
 
 									modificar = popUp.getModificarProveedor();
+									salirEliminar = popUp.getSalirEliminar();
 
 									if (modificar == true) {
 										modificarProveedor();
 									}
-									if (modificar == false) {
-										salir();
+									if (salirEliminar == true) {
+										salirEliminar();
 									}
 								}
 							});
@@ -698,11 +704,29 @@ public class P_BuscarProveedor extends PopupPanel {
 						public void onSuccess(ContactoDTO result) {
 							contactoInfo = result;
 
-							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo, nombreEmp, rubroEmp, "");
+							final P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo, nombreEmp, rubroEmp, "");
 							datoEmpresa.setGlassEnabled(true);
 							datoEmpresa.center();
 							datoEmpresa.show();
-							salir();
+
+							datoEmpresa.addCloseHandler(new CloseHandler<PopupPanel>() {
+								boolean salirContacto = false;
+								boolean salirEliminar = false;
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {
+
+									salirContacto = datoEmpresa.getSalirContacto();
+									salirEliminar = datoEmpresa.getSalirEliminar();
+
+									if (salirContacto == true) {
+										salirContacto();
+									}
+									if (salirEliminar == true) {
+										salirEliminar();
+									}
+								}
+							});
+							
 						}
 
 					});
@@ -714,6 +738,15 @@ public class P_BuscarProveedor extends PopupPanel {
 
 	}
 
+	protected void salirContacto(){
+		this.salirContacto = true;
+		salir();
+	}
+	
+	public boolean getSalirContacto(){
+		return this.salirContacto;
+	}
+	
 	protected void seleccionContacto() {
 		if (contacto.getValue() == true) {
 			empresa.setValue(false);
@@ -823,5 +856,15 @@ public class P_BuscarProveedor extends PopupPanel {
 		this.hide();
 
 	}
+	
+	protected void salirEliminar(){
+		this.salirEliminar = true;
+		salir();		
+	}
+	
+	public boolean getSalirEliminar(){
+		return this.salirEliminar;
+	}
+	
 
 }

@@ -478,9 +478,12 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 				
 				int idInsumo = adminInsumo.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
 				insumo = adminInsumo.getInsumoCompleto(idInsumo, "");
-		
+						
 				double cantDisponible = ((insumo.getCantidad())-(renglon.getCantidadEntregada()));
-				adminInsumo.setCantInsumo(idInsumo, cantDisponible);
+				if(cantDisponible<insumo.getStockSeguridad()){
+					adminInsumo.setNecesidadCompraEnUno(idInsumo);
+					adminInsumo.setCantInsumo(idInsumo, cantDisponible);
+				}
 				
 				RenglonRemitoInternoInsumoId renglonId = new RenglonRemitoInternoInsumoId(renglon.getItem(),idRemito);
 

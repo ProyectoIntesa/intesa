@@ -275,13 +275,22 @@ public class P_PantallaCompras extends Composite {
 						
 						proveedorSelec= popUp.getProveedorDTO();
 						boolean modificar = popUp.getModificarProveedor();
-					
+						boolean salirEliminar = popUp.getSalirEliminar();
+						boolean salirContacto = popUp.getSalirContacto();
+						
 						if (modificar == true)
 						{
 							modificarProveedor();
 						}
+						if (salirEliminar == true){
+							buscar();
+						}
+						if (salirContacto == true){
+							buscar();
+						}
 					}
 				});
+				
 			}
 			
 		}
@@ -323,11 +332,16 @@ public class P_PantallaCompras extends Composite {
 						
 						insumoSelec= popUp.getInsumoDTO();
 						boolean modificar = popUp.getModificarInsumo();
-					
+						boolean salirEliminar = popUp.getSalirEliminar();
+								
 						if (modificar == true)
 						{
 							modificarInsumo();
 						}
+						if (salirEliminar == true)
+							buscarInsumo();
+						
+						
 					}
 				});
 			}
@@ -374,10 +388,19 @@ public class P_PantallaCompras extends Composite {
 				@Override
 				public void onClose(CloseEvent<PopupPanel> event) {				
 				
-					if (popUp.imprimir())
-					{						
-						abrirPantallaImpresion(popUp.formulario());							
+					if (popUp.getImprimirOrden()){			
+						abrirPantallaImpresion(popUp.formulario());
 					}
+					else if (popUp.getCancelarOrden()){
+						
+					}
+					else if (popUp.getCerrarOrden()){
+						
+					}
+					else if (popUp.getSalirOrden()){
+						
+					}
+					
 				}
 			});
 			
@@ -535,5 +558,64 @@ public class P_PantallaCompras extends Composite {
 
 		return elemento;
 	}
+	
+	protected void buscarInsumo(){
+		final P_BuscarInsumo popUp = new P_BuscarInsumo();
+		popUp.setGlassEnabled(true);
+		popUp.center();
+		popUp.show();
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				
+				insumoSelec= popUp.getInsumoDTO();
+				boolean modificar = popUp.getModificarInsumo();
+				boolean salirEliminar = popUp.getSalirEliminar();
+						
+				if (modificar == true)
+				{
+					modificarInsumo();
+				}
+				if (salirEliminar == true)
+					buscarInsumo();
+				
+				
+			}
+		});
+	}
+	
+	protected void buscar(){
+				
+		final P_BuscarProveedor popUp = new P_BuscarProveedor();
+		popUp.setGlassEnabled(true);
+		popUp.center();
+		popUp.show();
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				
+				proveedorSelec= popUp.getProveedorDTO();
+				boolean modificar = popUp.getModificarProveedor();
+				boolean salirEliminar = popUp.getSalirEliminar();
+				
+				if (modificar == true)
+				{
+					modificarProveedor();
+				}
+				if (salirEliminar == true){
+					buscar();
+				}
+			}
+		});
+		
+		
+		
+		
+		
+		
+	}
+
+	
 }

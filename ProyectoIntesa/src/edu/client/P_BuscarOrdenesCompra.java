@@ -69,10 +69,15 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 	
 	private DateBox fechaDesdeDb;
 	private DateBox fechaHastaDb;
-	private boolean imprimir;
 	private FlexTable impresion;
 	List<OrdenCompraInsumoDTO> ordenes;
 
+	private boolean CerrarOrden;
+	private boolean SalirOrden;
+	private boolean CancelarOrden;
+	private boolean ImprimirOrden;
+	
+	
 	
 	public P_BuscarOrdenesCompra() {
 
@@ -80,7 +85,13 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 		setStyleName("fondoPopup");
 		
-		imprimir = false;	
+		CerrarOrden = false;
+		SalirOrden = false;
+		CancelarOrden = false;
+		ImprimirOrden = false;
+		
+		
+		
 		fechaCb = new CheckBox(constante.fechaEdicion());
 		fechaCb.setStyleName("check");
 		fechaCb.setWordWrap(false);
@@ -375,17 +386,24 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 								@Override
 								public void onClose(CloseEvent<PopupPanel> event) {
-																						
-									if (detalle.getAccionSalir() == false)
-									{						
-										buscar();							
+										
+									boolean cierreOrdenCerrar = detalle.getCierreOrdenCerrar();
+									boolean cierreOrdenSalir = detalle.getCierreOrdenSalir();
+									boolean cierreOrdenCancelar = detalle.getCierreOrdenCancelar();
+									boolean cierreOrdenImprimir = detalle.getCierreOrdenImprimir();
+									
+									if (cierreOrdenSalir == true)
+									{								
 									}
-									else if(detalle.imprimir() == true){
+									else if(cierreOrdenImprimir == true){
 										impresion = detalle.armarImpresion();
-										imprimir = true;
+										ImprimirOrden = true;
 										salir();
 									}
-									else if (detalle.cerrada() == true){
+									else if (cierreOrdenCerrar == true){
+										buscar();
+									}
+									else if (cierreOrdenCancelar == true){
 										buscar();
 									}
 								}
@@ -454,9 +472,21 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 	}
 	
-	public boolean imprimir(){
-	 return this.imprimir;
+	public boolean getImprimirOrden(){
+	 return this.ImprimirOrden;
 	}
+	
+	public boolean getCerrarOrden(){
+		 return this.CerrarOrden;
+		}
+	
+	public boolean getCancelarOrden(){
+		 return this.CancelarOrden;
+		}
+	
+	public boolean getSalirOrden(){
+		 return this.SalirOrden;
+		}
 	
 	public FlexTable formulario(){
 		return this.impresion;

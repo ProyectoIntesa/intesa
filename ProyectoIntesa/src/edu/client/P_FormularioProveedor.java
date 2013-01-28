@@ -160,7 +160,7 @@ public class P_FormularioProveedor extends Composite {
 		sugerenciaCPA.setStyleName("gwt-LabelLink");
 		observacion = new Label(constante.observaciones());
 		observacion.setStyleName("gwt-LabelFormulario");
-		tipoProveedor = new Label(constante.tipoProveedor());
+		tipoProveedor = new Label(constante.tipoProveedorAsterisco());
 		tipoProveedor.setStyleName("gwt-LabelFormulario");
 
 		nombreEmpresaTb = new TextBox();
@@ -387,7 +387,7 @@ public class P_FormularioProveedor extends Composite {
 		sugerenciaCPA.setStyleName("gwt-LabelLink");
 		observacion = new Label(constante.observaciones());
 		observacion.setStyleName("gwt-LabelFormulario");
-		tipoProveedor = new Label(constante.tipoProveedor());
+		tipoProveedor = new Label(constante.tipoProveedorAsterisco());
 		tipoProveedor.setStyleName("gwt-LabelFormulario");
 
 		nombreEmpresaTb = new TextBox();
@@ -676,10 +676,10 @@ public class P_FormularioProveedor extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("NUEVO PROVEEDOR REGISTRADO!!!");
+						Window.alert("El proveedor se ha registrado correctamente");
 						padre.remove(numeroElemento(constante.nuevoProveedor()));
 					} else
-						Window.alert("NO SE PUDO REGISTRAR EL PROVEEDOR");
+						Window.alert("No se ha podido registrar el proveedor");
 				}
 
 				@Override

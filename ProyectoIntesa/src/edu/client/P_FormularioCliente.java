@@ -654,10 +654,10 @@ public class P_FormularioCliente extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("NUEVO CLIENTE REGISTRADO!!!");
+						Window.alert("El cliente se ha registrado correctamente");
 						padre.remove(numeroElemento(constante.nuevoCliente()));
 					} else
-						Window.alert("NO SE PUDO REGISTRAR EL CLIENTE");
+						Window.alert("No se pudo registrar el cliente");
 				}
 
 				@Override

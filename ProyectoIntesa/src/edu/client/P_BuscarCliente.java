@@ -67,6 +67,8 @@ public class P_BuscarCliente extends PopupPanel {
 	private ClienteDTO empresaInfo;
 	private ContactoDTO contactoInfo;
 	private boolean modificarCliente;
+	private boolean salirEliminar;
+	private boolean salirContacto;
 
 	public P_BuscarCliente() {
 
@@ -77,6 +79,8 @@ public class P_BuscarCliente extends PopupPanel {
 		contenedor = new FlexTable();
 
 		this.modificarCliente = false;
+		this.salirEliminar = false;
+		this.salirContacto = false;
 
 		listaEmpresas = new MultiWordSuggestOracle();
 		listaRubros = new MultiWordSuggestOracle();
@@ -517,17 +521,18 @@ public class P_BuscarCliente extends PopupPanel {
 							popUp.show();
 							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 								boolean modificar = false;
-
+								boolean salirEliminar = false;
 								@Override
 								public void onClose(CloseEvent<PopupPanel> event) {
 
 									modificar = popUp.getModificarCliente();
+									salirEliminar = popUp.getSalirEliminar();
 
 									if (modificar == true) {
 										modificarCliente();
 									}
-									if (modificar == false) {
-										salir();
+									if (salirEliminar == true) {
+										salirEliminar();
 									}
 								}
 							});
@@ -542,6 +547,15 @@ public class P_BuscarCliente extends PopupPanel {
 		}
 	}
 
+	protected void salirEliminar(){
+		this.salirEliminar = true;
+		salir();		
+	}
+	
+	public boolean getSalirEliminar(){
+		return this.salirEliminar;
+	}
+	
 	public void modificarCliente() {
 		this.modificarCliente = true;
 		this.hide();
@@ -593,12 +607,28 @@ public class P_BuscarCliente extends PopupPanel {
 						@Override
 						public void onSuccess(ContactoDTO result) {
 							contactoInfo = result;
-
-							P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo, nombreEmp, rubroEmp);
+							
+							final P_DatoEmpresa datoEmpresa = new P_DatoEmpresa(contactoInfo, nombreEmp, rubroEmp);
 							datoEmpresa.setGlassEnabled(true);
 							datoEmpresa.center();
 							datoEmpresa.show();
-							salir();
+							datoEmpresa.addCloseHandler(new CloseHandler<PopupPanel>() {
+								boolean salirContacto = false;
+								boolean salirEliminar = false;
+								@Override
+								public void onClose(CloseEvent<PopupPanel> event) {
+
+									salirContacto = datoEmpresa.getSalirContacto();
+									salirEliminar = datoEmpresa.getSalirEliminar();
+
+									if (salirContacto == true) {
+										salirContacto();
+									}
+									if (salirEliminar == true) {
+										salirEliminar();
+									}
+								}
+							});
 						}
 
 					});
@@ -610,6 +640,15 @@ public class P_BuscarCliente extends PopupPanel {
 
 	}
 
+	protected void salirContacto(){
+		this.salirContacto = true;
+		salir();
+	}
+	
+	public boolean getSalirContacto(){
+		return this.salirContacto;
+	}
+	
 	protected void seleccionContacto() {
 		if (contacto.getValue() == true) {
 			empresa.setValue(false);

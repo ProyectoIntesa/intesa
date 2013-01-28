@@ -3,6 +3,8 @@ package edu.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -62,6 +64,9 @@ public class P_DatoEmpresa extends PopupPanel {
 	private ContactoDTO contSelec;
 	private boolean modificarCliente = false;
 	private boolean modificarProveedor = false;
+	private boolean salirEliminar = false;
+	private boolean salirContacto = false;
+	
 	private String empresaContacto;
 	
 	public P_DatoEmpresa(ClienteDTO empSelec) {
@@ -129,8 +134,10 @@ public class P_DatoEmpresa extends PopupPanel {
 			public void onClick(ClickEvent event) {
 				
 				boolean confirm = Window.confirm("Está seguro de que desea eliminar el cliente?");
-				if(confirm==true)
+				if(confirm==true){
 					eliminarCliente();
+				}
+					
 			}
 		});
 		
@@ -569,11 +576,27 @@ public class P_DatoEmpresa extends PopupPanel {
 		ClienteDTO cliente = new ClienteDTO();
 		cliente.setNombre(empresaContacto);
 		contSelec.setCliente(cliente);
-		P_AgregarContacto popUp = new P_AgregarContacto(contSelec);
+		final P_AgregarContacto popUp = new P_AgregarContacto(contSelec);
 		popUp.setGlassEnabled(true);
 		popUp.center();
 		popUp.show();
-		salir();
+		
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+			boolean modificaContacto = false;
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+
+				modificaContacto = popUp.getAgregaSalir();
+
+				if (modificaContacto == true) {
+					salirContacto();
+				}
+				else
+					salir();
+			}
+		});
+		
 		
 		
 		
@@ -585,11 +608,26 @@ public class P_DatoEmpresa extends PopupPanel {
 		ProveedorDTO proveedor = new ProveedorDTO();
 		proveedor.setNombre(empresaContacto);
 		contSelec.setProveedor(proveedor);
-		P_AgregarContacto popUp = new P_AgregarContacto(contSelec,"");
+		final P_AgregarContacto popUp = new P_AgregarContacto(contSelec,"");
 		popUp.setGlassEnabled(true);
 		popUp.center();
 		popUp.show();
-		salir();
+		
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+			boolean modificaContacto = false;
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+
+				modificaContacto = popUp.getAgregaSalir();
+
+				if (modificaContacto == true) {
+					salirContacto();
+				}
+				else
+					salir();
+			}
+		});
 		
 		
 		
@@ -606,7 +644,7 @@ public class P_DatoEmpresa extends PopupPanel {
 					Window.alert("El contacto ha sido eliminado");
 				else
 					Window.alert("El contacto NO ha sido eliminado");
-				salir();
+				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -623,11 +661,12 @@ public class P_DatoEmpresa extends PopupPanel {
 		ventasService.eliminarEmpresa(empSelec.getNombre(), new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
-				if (result)
+				if (result){
 					Window.alert("El cliente ha sido eliminado de manera exitosa");
+				}
 				else
 					Window.alert("El cliente NO ha sido eliminado");
-				salir();
+				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -648,7 +687,7 @@ public class P_DatoEmpresa extends PopupPanel {
 					Window.alert("El proveedor ha sido eliminado de manera exitosa");
 				else
 					Window.alert("El proveedor NO ha sido eliminado");
-				salir();
+				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -679,7 +718,7 @@ public class P_DatoEmpresa extends PopupPanel {
 					Window.alert("El contacto ha sido eliminado");
 				else
 					Window.alert("El contacto NO ha sido eliminado");
-				salir();
+				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -704,6 +743,24 @@ public class P_DatoEmpresa extends PopupPanel {
 
 	public boolean getModificarProveedor(){
 		return modificarProveedor;
+	}
+
+	public boolean getSalirEliminar(){
+		return this.salirEliminar;
+	}
+	
+	protected void salirEliminar(){
+		this.salirEliminar = true;
+		salir();
+	}
+
+	protected void salirContacto(){
+		this.salirContacto = true;
+		salir();
+	}
+	
+	public boolean getSalirContacto(){
+		return this.salirContacto;
 	}
 }
 

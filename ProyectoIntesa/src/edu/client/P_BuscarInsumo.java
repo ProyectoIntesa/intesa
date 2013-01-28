@@ -67,12 +67,16 @@ public class P_BuscarInsumo extends PopupPanel {
 	private boolean modificarInsumo = false; 
 	private List<InsumoDTO> insumos;
 
+	private boolean salirEliminar;
+	
 	public P_BuscarInsumo() {
 
 		super(false);
 		
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
+		
+		salirEliminar = false;
 		
 		listaInsumos = new MultiWordSuggestOracle();
 		listaMarca = new MultiWordSuggestOracle();
@@ -509,18 +513,19 @@ public class P_BuscarInsumo extends PopupPanel {
 							popUp.show();
 							popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 							boolean modificar = false;
-
+							boolean eliminar = false;
 								@Override
 								public void onClose(CloseEvent<PopupPanel> event) {
 
 									modificar = popUp.getModificarInsumo();
-
+									eliminar = popUp.getSalirEliminar();
+									
 									if (modificar == true) {
 										modificarInsumo();
 										salir();
 									}
-									if (modificar == false) {
-										salir();
+									if (eliminar == true) {
+										salirEliminar();
 									}
 								}
 							});
@@ -542,6 +547,15 @@ public class P_BuscarInsumo extends PopupPanel {
 
 	}
 
+	protected void salirEliminar(){
+		this.salirEliminar = true;
+		salir();
+	}
+	
+	protected boolean getSalirEliminar(){
+		return this.salirEliminar;
+	}
+	
 	protected void seleccionProveedor() {
 		if (proveedor.getValue() == true) {
 			insumo.setValue(false);

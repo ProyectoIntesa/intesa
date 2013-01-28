@@ -444,10 +444,10 @@ public class P_FormularioInsumo  extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("NUEVO INSUMO REGISTRADO!!!");
+						Window.alert("El insumo ha sido registrado");
 						padre.remove(numeroElemento(constante.nuevoInsumo()));
 					} else
-						Window.alert("NO SE PUDO REGISTRAR EL INSUMO");
+						Window.alert("No se ha podido registrar el insumo");
 				}
 
 				@Override

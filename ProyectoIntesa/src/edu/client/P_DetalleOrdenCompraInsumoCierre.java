@@ -59,11 +59,12 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElementos;
-	private boolean cambioEstado;
 	private OrdenCompraInsumoDTO orden;
-	private boolean accionSalir;
 	private FlexTable botones;
 	private FlexTable lineaTotal;
+	
+	private boolean cierreOrdenCerrar;
+	private boolean cierreOrdenSalir;
 	
 
 	public P_DetalleOrdenCompraInsumoCierre(OrdenCompraInsumoDTO orden, final String tipo) {
@@ -72,8 +73,10 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		this.orden = orden;
 		setStyleName("fondoPopup");
 		final long idOrden = orden.getIdOrden();
-		accionSalir = false;
-		cambioEstado = false;
+
+		cierreOrdenCerrar = false;
+		cierreOrdenSalir = false;
+		
 		tituloFormulario = new Label(constante.ordenCompraDeInsumo());
 		tituloFormulario.setStyleName("labelTitulo");
 		lineaTabla = new Label();
@@ -108,7 +111,7 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		cerrarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				actualizaValores();
-				cambioEstado = true;
+				
 				if (tipo.compareTo("completa") == 0){
 					cambiarEstado("CERRADA");
 					salir();
@@ -130,7 +133,9 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		salir = new Button(constante.salir());
 		salir.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				accionSalir = true;
+				
+				cierreOrdenSalir = true;
+				
 				salir();
 			}
 		});
@@ -238,8 +243,8 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 
 	}
 
-	public boolean getAccionSalir() {
-		return this.accionSalir;
+	public boolean getCierreOrdenSalir() {
+		return this.cierreOrdenSalir;
 	}
 
 	public void actualizaValores() {
@@ -271,6 +276,8 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 
 	public void cambiarEstado(String estado) {
 		
+		cierreOrdenCerrar = true;
+		
 		this.orden.setEstadoOrden(estado);
 		orden.setTotal(new Double(this.total.getText()));
 		orden.getRenglonOrdenCompraInsumos().clear();
@@ -294,7 +301,7 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					Window.alert("La orden ha sido CERRADA");
+					//Window.alert("La orden ha sido CERRADA");
 					salir();
 				} else {
 					Window.alert("No se ha podido cambiar el estado de la orden");
@@ -309,8 +316,8 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		});
 	}
 
-	public boolean cambioEstado() {
-		return this.cambioEstado;
+	public boolean getCierreOrdenCerrar() {
+		return this.cierreOrdenCerrar;
 	}
 
 }

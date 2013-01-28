@@ -87,12 +87,12 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 					boolean confirm = Window.confirm("Está seguro de que desea cancelar las órdenes de provisión seleccionadas?");
 					if(confirm==true){
 						cancelarOrdenes();
-						for (int i = 1; i < tablaElementos.getRowCount(); i++) {
-							tablaElementos.removeRow(i);
-						}
-						tablaElementos.clear();
-						listaOrdenCompraInsumo.clear();
-						cargarTabla();
+//						for (int i = 1; i < tablaElementos.getRowCount(); i++) {
+//							tablaElementos.removeRow(i);
+//						}
+//						tablaElementos.clear();
+//						listaOrdenCompraInsumo.clear();
+//						cargarTabla();
 					}
 				}
 				
@@ -113,12 +113,12 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 				}
 				if(bandera == true){
 					validar();
-					for (int i = 1; i < tablaElementos.getRowCount(); i++) {
-						tablaElementos.removeRow(i);
-					}
-					tablaElementos.clear();
-					listaOrdenCompraInsumo.clear();
-					cargarTabla();
+//					for (int i = 1; i < tablaElementos.getRowCount(); i++) {
+//						tablaElementos.removeRow(i);
+//					}
+//					tablaElementos.clear();
+//					listaOrdenCompraInsumo.clear();
+//					cargarTabla();
 				}
 			}
 		});
@@ -187,8 +187,10 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 		
 				@Override
 				public void onSuccess(Boolean result) {
-					if(result)
+					if(result){
 						Window.alert("Las ordenes seleccinadas han sido canceladas");
+						cargarTabla();
+					}
 					else
 						Window.alert("Las ordenes NO han sido canceladas");
 				}
@@ -226,8 +228,11 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 		
 				@Override
 				public void onSuccess(Boolean result) {
-					if(result)
+					if(result){
 						Window.alert("Las ordenes seleccinadas han sido validadas");
+						cargarTabla();
+					}
+						
 					else
 						Window.alert("Las ordenes NO han sido validadas");
 				}
@@ -244,7 +249,7 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 	}
 	
 	public void cargarTabla(){
-				
+						
 		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 		comprasService.getOrdenCompraInsumo("GENERADA", "", "", "", new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
 			
@@ -252,8 +257,12 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 			public void onSuccess(List<OrdenCompraInsumoDTO> result) {
 				
 				if(!result.isEmpty()){	
+					borrarTabla();
 					cargarTablaFinal(result);
-				}				
+				}	
+				else{
+					borrarTabla();
+				}
 			}
 			
 			@Override
@@ -264,8 +273,16 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 		});		
 	}
 
-	public void cargarTablaFinal(List<OrdenCompraInsumoDTO> listaOrdenes){
+	public void borrarTabla(){
+		for (int i = 1; i < tablaElementos.getRowCount(); i++) {
+			tablaElementos.removeRow(i);
+		}
+		tablaElementos.clear();
+		listaOrdenCompraInsumo.clear();
+	}
 		
+	public void cargarTablaFinal(List<OrdenCompraInsumoDTO> listaOrdenes){
+				
 		this.listaOrdenCompraInsumo = listaOrdenes;
 		int item = 1;
 				

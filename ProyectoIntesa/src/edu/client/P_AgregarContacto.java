@@ -49,6 +49,8 @@ public class P_AgregarContacto extends PopupPanel {
 	private Button agregar;
 	private Button cancelar;
 	private ContactoDTO contSelec;
+	
+	private boolean agregaSalir;
 
 	public P_AgregarContacto(P_FormularioCliente pantalla) {
 
@@ -56,8 +58,8 @@ public class P_AgregarContacto extends PopupPanel {
 		padre = pantalla;
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
-
 		
+		agregaSalir = false;
 		
 		encabezado = new Label(constante.nuevoContacto());
 		encabezado.setStyleName("labelTitulo");
@@ -151,7 +153,7 @@ public class P_AgregarContacto extends PopupPanel {
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
 
-		
+		agregaSalir = false;
 		
 		encabezado = new Label(constante.nuevoContacto());
 		encabezado.setStyleName("labelTitulo");
@@ -245,7 +247,7 @@ public class P_AgregarContacto extends PopupPanel {
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
 
-		
+		agregaSalir = false;		
 		
 		encabezado = new Label(constante.modificarContacto());
 		encabezado.setStyleName("labelTitulo");
@@ -346,7 +348,7 @@ public class P_AgregarContacto extends PopupPanel {
 		setStyleName("fondoPopup");
 		contenedor = new FlexTable();
 
-		
+		agregaSalir = false;
 		
 		encabezado = new Label(constante.modificarContacto());
 		encabezado.setStyleName("labelTitulo");
@@ -534,7 +536,7 @@ public class P_AgregarContacto extends PopupPanel {
 					
 					if (result){
 						Window.alert("El contacto ha sido modificado de manera exitosa");
-						cerrar();
+						cerrarModificado();
 					}
 					else{
 						Window.alert("El contacto no se ha podido modificar");
@@ -580,7 +582,7 @@ public class P_AgregarContacto extends PopupPanel {
 					
 					if (result){
 						Window.alert("El contacto ha sido modificado de manera exitosa");
-						cerrar();
+						cerrarModificado();
 					}
 					else{
 						Window.alert("El contacto no se ha podido modificar");
@@ -648,4 +650,13 @@ public class P_AgregarContacto extends PopupPanel {
 
 	}
 
+	protected void cerrarModificado(){
+		this.agregaSalir = true;
+		this.hide();
+	}
+	
+	public boolean getAgregaSalir(){
+		return this.agregaSalir;
+	}
+	
 }

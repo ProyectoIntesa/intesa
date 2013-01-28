@@ -82,11 +82,11 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 					boolean confirm = Window.confirm("Está seguro de que desea cancelar las órdenes de provisión seleccionadas?");
 					if(confirm==true){
 						cancelarOrdenes();
-						for(int i = 1; i < tablaElementos.getRowCount(); i++){
-							tablaElementos.removeRow(i);
-						}
-						listaOrdenProvisionInsumo.clear();
-						cargarTabla();
+//						for(int i = 1; i < tablaElementos.getRowCount(); i++){
+//							tablaElementos.removeRow(i);
+//						}
+//						listaOrdenProvisionInsumo.clear();
+//						cargarTabla();
 					}
 				}
 				
@@ -107,11 +107,11 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 				}
 				if(bandera == true){
 					validar();
-					for(int i = 1; i < tablaElementos.getRowCount(); i++){
-						tablaElementos.removeRow(i);
-					}
-					listaOrdenProvisionInsumo.clear();
-					cargarTabla();
+//					for(int i = 1; i < tablaElementos.getRowCount(); i++){
+//						tablaElementos.removeRow(i);
+//					}
+//					listaOrdenProvisionInsumo.clear();
+//					cargarTabla();
 				}
 				
 				
@@ -186,8 +186,14 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 		
 				@Override
 				public void onSuccess(Boolean result) {
-					if(result)
+					if(result){
 						Window.alert("Las Ordenes seleccionadas fueron canceladas");
+						for(int i = 1; i < tablaElementos.getRowCount(); i++){
+							tablaElementos.removeRow(i);
+						}
+						listaOrdenProvisionInsumo.clear();
+						cargarTabla();
+					}
 					else
 						Window.alert("Las Ordenes NO han sido canceladas");
 				}
@@ -224,8 +230,14 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 		
 				@Override
 				public void onSuccess(Boolean result) {
-					if(result)
+					if(result){
 						Window.alert("Las Ordenes seleccionadas fueron validadas");
+						for(int i = 1; i < tablaElementos.getRowCount(); i++){
+							tablaElementos.removeRow(i);
+						}
+						listaOrdenProvisionInsumo.clear();
+						cargarTabla();
+					}
 					else
 						Window.alert("Las Ordenes NO han sido validadas");
 				}

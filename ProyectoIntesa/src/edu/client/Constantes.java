@@ -8,6 +8,9 @@ public interface Constantes extends Constants {
 	 @DefaultStringValue("IMPRIMIR")
 	  String imprimir();
 	 
+	 @DefaultStringValue("TIPO PROVEEDOR (*)")
+	  String tipoProveedorAsterisco();
+	 
 	 @DefaultStringValue("INSUMO (*)")
 	  String insumoAsterisco();
 	 	 

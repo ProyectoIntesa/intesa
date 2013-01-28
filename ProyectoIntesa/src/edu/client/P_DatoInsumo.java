@@ -45,12 +45,16 @@ public class P_DatoInsumo extends PopupPanel {
 	private Button eliminar;
 	
 	private boolean modificarInsumo = false;
+	private boolean salirEliminar = false;
 	
 	private InsumoDTO insumoSelec;
 	
 	public P_DatoInsumo(InsumoDTO insumoSelec) {
 		
 		super(false);
+		
+		this.modificarInsumo = false;
+		this.salirEliminar = false;
 		
 		this.insumoSelec = insumoSelec;
 		
@@ -181,7 +185,7 @@ public class P_DatoInsumo extends PopupPanel {
 			public void onSuccess(Boolean result) {
 				if(result){
 					Window.alert("El insumo ha sido eliminado correctamente");
-					salir();
+					salirEliminar();
 				}
 				else{
 					Window.alert("El insumo NO ha sido eliminado");
@@ -202,6 +206,15 @@ public class P_DatoInsumo extends PopupPanel {
 	protected void salir() {
 		this.hide();
 
+	}
+	
+	protected void salirEliminar(){
+		this.salirEliminar = true;
+		this.hide();
+	}
+	
+	public boolean getSalirEliminar(){
+		return this.salirEliminar;
 	}
 	
 	public boolean getModificarInsumo(){

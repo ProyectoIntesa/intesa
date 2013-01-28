@@ -206,10 +206,18 @@ public class P_PantallaVentas extends Composite {
 						
 						clienteSelec= popUp.getClienteDTO();
 						boolean modificar = popUp.getModificarCliente();
-					
+						boolean salirEliminar = popUp.getSalirEliminar();
+						boolean salirContacto = popUp.getSalirContacto();
+						
 						if (modificar == true)
 						{
 							modificarCliente();
+						}
+						if (salirEliminar == true){
+							buscar();
+						}
+						if (salirContacto == true){
+							buscar();
 						}
 					}
 				});
@@ -241,6 +249,36 @@ public class P_PantallaVentas extends Composite {
 		
 		
 	}
+	
+	protected void buscar(){
+		
+		final P_BuscarCliente popUp = new P_BuscarCliente();
+		popUp.setGlassEnabled(true);
+		popUp.center();
+		popUp.show();
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				
+				clienteSelec= popUp.getClienteDTO();
+				boolean modificar = popUp.getModificarCliente();
+				boolean salirEliminar = popUp.getSalirEliminar();
+				
+				if (modificar == true)
+				{
+					modificarCliente();
+				}
+				if (salirEliminar == true){
+					buscar();
+				}
+			}
+		});
+		
+		
+	}
+	
+
 
 	private int numeroElemento(String titulo) {
 
