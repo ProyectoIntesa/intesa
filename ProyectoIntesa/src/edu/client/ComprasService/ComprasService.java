@@ -107,6 +107,8 @@ public interface ComprasService extends RemoteService {
 
 	Boolean recibidaCompletaOrdenCompraInsumo(Long nroOrden) throws IllegalArgumentException;
 
+	InsumoDTO getInsumoCompleto(String nombre, String marca) throws IllegalArgumentException;
+
 
 	
 

@@ -519,7 +519,12 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		nuevo.setStockSeguridad(insumo.getStockSeguridad());
 		nuevo.setObservaciones(insumo.getObservaciones());
 		nuevo.setCantidad(insumo.getCantidad());
-		nuevo.setNecesidadCompra(insumo.isNecesidadCompra());
+		if(nuevo.getStockSeguridad()>nuevo.getCantidad())
+			nuevo.setNecesidadCompra(true);
+		else
+			nuevo.setNecesidadCompra(false);
+		
+		//nuevo.setNecesidadCompra(insumo.isNecesidadCompra());
 		
 
 		if (insumo.getProveedor().size() > 0) {
@@ -621,6 +626,54 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 		insumo = adminInsumos.getInsumoCompleto(idInsumo, nombreInsumo);
 
+		result.setIdInsumo(insumo.getIdInsumo());
+		result.setNombre(insumo.getNombre());
+		result.setLoteCompra(insumo.getLoteCompra());
+		result.setStockSeguridad(insumo.getStockSeguridad());
+		result.setObservaciones(insumo.getObservaciones());
+		
+		result.setNecesidadCompra(insumo.isNecesidadCompra());
+		
+		if (insumo.getCantidad() != -1 && insumo.getCantidad() != 0) {
+			result.setCantidad(insumo.getCantidad());
+		} else {
+			result.setCantidad(0);
+		}
+		result.setMarca(insumo.getMarca().getNombre());
+		result.setCategoria(insumo.getCategoria().getNombre());
+
+		for (ProveedorDeInsumo prov : insumo.getProveedorDeInsumos()) {
+
+			ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
+
+			if(prov.getPrecio() == null)
+				proveedor.setPrecio();
+			else{
+				Double precio = Double.parseDouble(prov.getPrecio().toString());
+				proveedor.setPrecio(precio);
+			}
+
+			proveedor.setNombre(prov.getProveedor().getNombre());
+			proveedor.setObservaciones(prov.getObservaciones());
+
+			result.getProveedor().add(proveedor);
+
+		}
+
+		return result;
+	}
+	
+	@Override
+	public InsumoDTO getInsumoCompleto(String nombre, String marca) throws IllegalArgumentException {
+
+		Compras adminCompras = new Compras();
+		InsumoDTO result = new InsumoDTO();
+		Insumo insumo = new Insumo();
+		Insumos adminInsumos = new Insumos();
+		int idInsumo = adminInsumos.getIdInsumo(nombre, marca);
+
+		insumo = adminInsumos.getInsumoCompleto(idInsumo, nombre);
+		
 		result.setIdInsumo(insumo.getIdInsumo());
 		result.setNombre(insumo.getNombre());
 		result.setLoteCompra(insumo.getLoteCompra());

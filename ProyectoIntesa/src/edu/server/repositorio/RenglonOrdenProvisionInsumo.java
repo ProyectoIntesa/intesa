@@ -13,14 +13,14 @@ public class RenglonOrdenProvisionInsumo implements java.io.Serializable {
 	private RenglonOrdenProvisionInsumoId id;
 	private OrdenProvisionInsumo ordenProvisionInsumo;
 	private Insumo insumo;
-	private double cantidadRequerida;
+	private Double cantidadRequerida;
 
 	public RenglonOrdenProvisionInsumo() {
 	}
 
 	public RenglonOrdenProvisionInsumo(RenglonOrdenProvisionInsumoId id,
 			OrdenProvisionInsumo ordenProvisionInsumo, Insumo insumo,
-			double cantidadRequerida) {
+			Double cantidadRequerida) {
 		this.id = id;
 		this.ordenProvisionInsumo = ordenProvisionInsumo;
 		this.insumo = insumo;
@@ -52,11 +52,11 @@ public class RenglonOrdenProvisionInsumo implements java.io.Serializable {
 		this.insumo = insumo;
 	}
 
-	public double getCantidadRequerida() {
+	public Double getCantidadRequerida() {
 		return this.cantidadRequerida;
 	}
 
-	public void setCantidadRequerida(double cantidadRequerida) {
+	public void setCantidadRequerida(Double cantidadRequerida) {
 		this.cantidadRequerida = cantidadRequerida;
 	}
 

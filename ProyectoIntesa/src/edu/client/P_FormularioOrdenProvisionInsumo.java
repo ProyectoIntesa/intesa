@@ -357,35 +357,52 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		Validaciones validar = new Validaciones();
 		
 		boolean vCantidad = validar.textBoxSoloNumeros(this.cantTb.getText());
-				
+		boolean bandera = false;
+		
+		
 			if(insumoLb.getSelectedIndex() != 0 && marcaLb.getSelectedIndex() != 0 && cantTb.getText().compareTo("") != 0){
 				
 				if(vCantidad){
 					final String nombreInsumo = insumoLb.getItemText(insumoLb.getSelectedIndex());
 					final String nombreMarca = marcaLb.getItemText(marcaLb.getSelectedIndex());
-					Integer cantidad = Integer.parseInt(cantTb.getText());
-								
-					int fila = tablaElemento.getRowCount();
-		
-					Label eliminar = new Label("");
-					eliminar.setSize("16px", "16px");
-					eliminar.setStyleName("labelBorrar");
-					eliminar.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-							String[] nombreYMarca={nombreInsumo,nombreMarca};
-							eliminar(nombreYMarca);
+					Double cantidad = Double.parseDouble(cantTb.getText());
+						
+					for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+						String nombreInsumoTabla = ((Label)tablaElemento.getWidget(i, COL_INSUMO)).getText();
+						String nombreMarcaTabla = ((Label)tablaElemento.getWidget(i, COL_MARCA)).getText();
+						
+						if(nombreInsumo.compareTo(nombreInsumoTabla)==0 && nombreMarca.compareTo(nombreMarcaTabla)==0){
+							bandera = true;
+							break;
 						}
-					});
-		
-					tablaElemento.setWidget(fila, COL_INSUMO, new Label(nombreInsumo));
-					tablaElemento.setWidget(fila, COL_MARCA, new Label(nombreMarca));
-					tablaElemento.setWidget(fila, COL_CANTREQUERIDA, new Label(cantidad+""));
-					tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
-					tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
-					tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
-		
-					String[] nombreYMarca={nombreInsumo,nombreMarca};
-					this.listaInsumosYMarcas.add(nombreYMarca);
+					}
+					
+					if(bandera == false){
+						int fila = tablaElemento.getRowCount();
+						
+						Label eliminar = new Label("");
+						eliminar.setSize("16px", "16px");
+						eliminar.setStyleName("labelBorrar");
+						eliminar.addClickHandler(new ClickHandler() {
+							public void onClick(ClickEvent event) {
+								String[] nombreYMarca={nombreInsumo,nombreMarca};
+								eliminar(nombreYMarca);
+							}
+						});
+			
+						tablaElemento.setWidget(fila, COL_INSUMO, new Label(nombreInsumo));
+						tablaElemento.setWidget(fila, COL_MARCA, new Label(nombreMarca));
+						tablaElemento.setWidget(fila, COL_CANTREQUERIDA, new Label(cantidad+""));
+						tablaElemento.setWidget(fila, COL_BORRAR, eliminar);
+						tablaElemento.getFlexCellFormatter().setHorizontalAlignment(fila, COL_BORRAR, HasHorizontalAlignment.ALIGN_CENTER);
+						tablaElemento.getRowFormatter().setStyleName(fila, "tablaRenglon");
+			
+						String[] nombreYMarca={nombreInsumo,nombreMarca};
+						this.listaInsumosYMarcas.add(nombreYMarca);
+					}
+					else{
+						Window.alert("No se puede agregar dos veces el mismo insumo en una misma orden de provisión");
+					}
 				}
 				else{
 					Window.alert("La cantidad especificada debe ser un número");

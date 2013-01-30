@@ -46,4 +46,21 @@ public class Validaciones {
 
 	}
 
+	public boolean textBoxSoloNumerosEnterosOFloats(String texto) {
+
+		boolean result = true;
+		if (texto.length() > 0) {
+			for (int i = 0; i < texto.length(); i++) {
+
+				if (Character.isLetter(texto.charAt(i)) && texto.charAt(i) != '.') {
+					result = false;
+					break;
+				}
+			}
+		} else
+			result = false;
+		return result;
+
+	}
+	
 }

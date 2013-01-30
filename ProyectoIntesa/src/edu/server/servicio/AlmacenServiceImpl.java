@@ -350,8 +350,6 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 		
 		return result;
 	}
-	
-	
-	
+
 	
 }

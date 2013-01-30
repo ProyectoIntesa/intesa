@@ -8,6 +8,15 @@ public interface Constantes extends Constants {
 	 @DefaultStringValue("IMPRIMIR")
 	  String imprimir();
 	 
+	 @DefaultStringValue("CANT REAL")
+	  String cantReal();
+	 
+	 @DefaultStringValue("ACTUALIZAR CANTIDAD")
+	  String actualizarCantidad();
+	 
+	 @DefaultStringValue("ACTUALIZAR CANT")
+	  String actualizarCant();
+	 
 	 @DefaultStringValue("TIPO PROVEEDOR (*)")
 	  String tipoProveedorAsterisco();
 	 

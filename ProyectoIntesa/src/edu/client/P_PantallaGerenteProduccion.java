@@ -39,6 +39,7 @@ public class P_PantallaGerenteProduccion extends Composite {
 	private TreeItem buscarOrdenSuministroInsumos;
 	private TreeItem validarOrdenSuministroInsumos;
 	private TreeItem ordenCompraInsumos;
+	private TreeItem actualizarCantidadInsumo;
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
@@ -131,7 +132,12 @@ public class P_PantallaGerenteProduccion extends Composite {
 		ordenCompraInsumos.setStyleName("suElementoMenu");
 		validarCompras.addItem(ordenCompraInsumos);
 		
+		TreeItem insumos = menuLateral.addItem(constante.insumos());
+		insumos.setStyleName("elementoMenu");
 		
+		actualizarCantidadInsumo = new TreeItem(constante.actualizarCant());
+		actualizarCantidadInsumo.setStyleName("suElementoMenu");
+		insumos.addItem(actualizarCantidadInsumo);
 		
 		
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -231,6 +237,15 @@ public class P_PantallaGerenteProduccion extends Composite {
 		if (event.getSelectedItem() == ordenCompraInsumos) {
 			
 			P_ValidarCancelarOrdenCompraInsumos popUp = new P_ValidarCancelarOrdenCompraInsumos();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+			
+		}
+		
+		if (event.getSelectedItem() == actualizarCantidadInsumo) {
+			
+			P_ActualizarCantidadInsumo popUp = new P_ActualizarCantidadInsumo();
 			popUp.setGlassEnabled(true);
 			popUp.center();
 			popUp.show();
