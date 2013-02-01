@@ -306,12 +306,12 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 		
 		if(rol.compareTo("SUPERVISOR PRODUCCION") == 0){
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Boolean>() {
+			produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Long>() {
 
 				@Override
-				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("Se ha generado corectamente la orden");
+				public void onSuccess(Long result) {
+					if (result != -1) {
+						Window.alert("La orden de provisión ha sido generada con el número "+result);
 						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
 					} else {
 						Window.alert("No se pudo efectuar la acción");
@@ -325,14 +325,15 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 				}
 			});
 		}
+		
 		if(rol.compareTo("GERENTE PRODUCCION") == 0){
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
-			produccionService.registrarOrdenProvisionInsumoGerente(nueva, new AsyncCallback<Boolean>() {
+			produccionService.registrarOrdenProvisionInsumoGerente(nueva, new AsyncCallback<Long>() {
 
 				@Override
-				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("Se ha generado corectamente la orden");
+				public void onSuccess(Long result) {
+					if (result != -1) {
+						Window.alert("La orden de provisión ha sido generada con el número "+result);
 						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
 					} else {
 						Window.alert("No se pudo efectuar la acción");

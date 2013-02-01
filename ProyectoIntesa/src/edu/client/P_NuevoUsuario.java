@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -50,6 +51,7 @@ public class P_NuevoUsuario extends Composite {
 	private Button guardar;
 	private Button salir;
 	private Button modificar;
+	private FlexTable botones;
 
 	public List<EmpleadoDTO> listaEmpleados;
 
@@ -69,7 +71,6 @@ public class P_NuevoUsuario extends Composite {
 		adminServie.getEmpleadosSinUsuario(listaEmpleados, new AsyncCallback<List<EmpleadoDTO>>() {
 			@Override
 			public void onSuccess(List<EmpleadoDTO> result) {
-				
 				cargarListaEmpleados(result);
 			}
 
@@ -86,9 +87,9 @@ public class P_NuevoUsuario extends Composite {
 		inferior = new Label("");
 		inferior.setStyleName("labelTitulo");
 
-		usuario = new Label(constante.usuario());
+		usuario = new Label(constante.usuarioAsterisco());
 		usuario.setStyleName("gwt-LabelFormulario");
-		contrasenia = new Label(constante.contrasenia());
+		contrasenia = new Label(constante.contraseniaAsterisco());
 		contrasenia.setStyleName("gwt-LabelFormulario");
 		rol = new Label(constante.rol());
 		rol.setStyleName("gwt-LabelFormulario");
@@ -116,8 +117,13 @@ public class P_NuevoUsuario extends Composite {
 		nroLegajoTb.setStyleName("gwt-TextArea");
 		nroLegajoTb.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				nombreEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getNombre());
-				apellidoEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getApellido());
+				if(listaEmpleados.size() < 1){
+					Window.alert("No existen empleados disponibles");
+				}
+				else{
+					nombreEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getNombre());
+					apellidoEmpleadoTb.setText(listaEmpleados.get(nroLegajoTb.getSelectedIndex()).getApellido());
+				}
 			}
 		});
 
@@ -142,6 +148,12 @@ public class P_NuevoUsuario extends Composite {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, guardar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		formularioUsuario = new FlexTable();
 		formularioUsuario.setStyleName("formatoFormulario");
 		formularioUsuario.setHeight("637px");
@@ -176,8 +188,10 @@ public class P_NuevoUsuario extends Composite {
 		formularioUsuario.setWidget(14, 0, inferior);
 		formularioUsuario.getFlexCellFormatter().setColSpan(14, 0, 2);
 
-		formularioUsuario.setWidget(15, 0, guardar);
-		formularioUsuario.setWidget(15, 1, salir);
+		formularioUsuario.setWidget(15, 0, botones);
+		formularioUsuario.getFlexCellFormatter().setColSpan(15, 0, 2);
+		formularioUsuario.getCellFormatter().setHorizontalAlignment(15, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+
 
 		initWidget(formularioUsuario);
 
@@ -198,7 +212,7 @@ public class P_NuevoUsuario extends Composite {
 
 		usuario = new Label(constante.usuario());
 		usuario.setStyleName("gwt-LabelFormulario");
-		contrasenia = new Label(constante.contrasenia());
+		contrasenia = new Label(constante.contraseniaAsterisco());
 		contrasenia.setStyleName("gwt-LabelFormulario");
 		rol = new Label(constante.rol());
 		rol.setStyleName("gwt-LabelFormulario");
@@ -247,6 +261,12 @@ public class P_NuevoUsuario extends Composite {
 			}
 		});
 
+		botones = new FlexTable();
+		botones.setWidget(0, 0, modificar);
+		botones.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones.setWidget(0, 1, salir);
+		botones.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		formularioUsuario = new FlexTable();
 		formularioUsuario.setStyleName("formatoFormulario");
 		formularioUsuario.setHeight("637px");
@@ -281,8 +301,9 @@ public class P_NuevoUsuario extends Composite {
 		formularioUsuario.setWidget(14, 0, inferior);
 		formularioUsuario.getFlexCellFormatter().setColSpan(14, 0, 2);
 
-		formularioUsuario.setWidget(15, 0, modificar);
-		formularioUsuario.setWidget(15, 1, salir);
+		formularioUsuario.setWidget(15, 0, botones);
+		formularioUsuario.getFlexCellFormatter().setColSpan(15, 0, 2);
+		formularioUsuario.getCellFormatter().setHorizontalAlignment(15, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		initWidget(formularioUsuario);
 
@@ -290,46 +311,52 @@ public class P_NuevoUsuario extends Composite {
 
 	protected void modificar() {
 
-		if (usuarioDTO.getPassUsu().compareTo(this.contraseniaPtb.getText()) == 0) {
-			Window.alert("La contraseña no ha sido modificada");
-		} else {
-
-			AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
-
-			String nombreUsu = this.usuarioTb.getText();
-			String passUsu = this.contraseniaPtb.getText();
-
-			adminService.modificarUsuario(nombreUsu, passUsu, new AsyncCallback<Boolean>() {
-
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR en el servicio");
-				}
-
-				@Override
-				public void onSuccess(Boolean result) {
-					if (result == true)
-						Window.alert("La contraseña del usuario se ha modificado de manera exitosa");
-					else
-						Window.alert("No se ha podido modificar la contraseña");
-
-				}
-			});
-			padre.remove(numeroElemento(tituloTab));
+		if(this.contraseniaPtb.getText().compareTo("")==0){
+			Window.alert("Los campos con * son obligatorios");
 		}
+		else{
+			if (usuarioDTO.getPassUsu().compareTo(this.contraseniaPtb.getText()) == 0) {
+				Window.alert("La contraseña no ha sido modificada");
+			} else {
+
+				AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
+
+				String nombreUsu = this.usuarioTb.getText();
+				String passUsu = this.contraseniaPtb.getText();
+
+				adminService.modificarUsuario(nombreUsu, passUsu, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result == true)
+							Window.alert("La contraseña del usuario se ha modificado de manera exitosa");
+						else
+							Window.alert("No se ha podido modificar la contraseña");
+
+					}
+				});
+				padre.remove(numeroElemento(tituloTab));
+			}
+		}
+
 	}
 
 	public void cargarListaEmpleados(List<EmpleadoDTO> lista) {
 		listaEmpleados = lista;
 		for (int i = 0; i < listaEmpleados.size(); i++) {
 			this.nroLegajoTb.addItem("" + listaEmpleados.get(i).getNroLegajo());
-		}
+		}		
 	}
 
 	public void guardar() {
 
 		if (usuarioTb.getText().isEmpty() || contraseniaPtb.getText().isEmpty()) {
-			Window.alert("NO SE PERMITEN CAMPOS VACÍOS");
+			Window.alert("Los campos con * son obligatorios");
 		} else {
 
 			AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
@@ -340,7 +367,7 @@ public class P_NuevoUsuario extends Composite {
 				public void onSuccess(Boolean result) {
 
 					if (result == true)
-						Window.alert("USUARIO YA EXISTENTE");
+						Window.alert("Usuario ya existente");
 					else {
 						usuarioTieneEmpleado();
 					}
@@ -348,7 +375,7 @@ public class P_NuevoUsuario extends Composite {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("No se ha podido buscar el usuario");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 
 			});
@@ -359,26 +386,34 @@ public class P_NuevoUsuario extends Composite {
 
 	public void usuarioTieneEmpleado() {
 
-		AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
+		if(listaEmpleados.size() < 1){
+			Window.alert("No se puede crear un usuario, ya que no existen empleados sin usuario");
+		}
+		else{
+			AdministradorServiceAsync adminService = GWT.create(AdministradorService.class);
 
-		Integer legajo = new Integer(this.nroLegajoTb.getItemText(this.nroLegajoTb.getSelectedIndex()));
+			Integer legajo = new Integer(this.nroLegajoTb.getItemText(this.nroLegajoTb.getSelectedIndex()));
 
-		adminService.usuarioTieneEmp(legajo, new AsyncCallback<Boolean>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("ERROR en el servicio");
+			adminService.usuarioTieneEmp(legajo, new AsyncCallback<Boolean>() {
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("ERROR EN EL SERVICIO");
 
-			}
-
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result == false) {
-					guardarUsuario();
-				} else {
-					Window.alert("El empleado seleccionado ya posee un usuario registrado");
 				}
-			}
-		});
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result == false) {
+						guardarUsuario();
+					} else {
+						Window.alert("El empleado seleccionado ya posee un usuario registrado");
+					}
+				}
+			});
+		}
+		
+		
+
 	}
 
 	public void guardarUsuario() {
@@ -396,7 +431,7 @@ public class P_NuevoUsuario extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al intentar guardar el nuevo usuario");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 

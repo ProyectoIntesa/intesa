@@ -47,6 +47,8 @@ public class P_NuevoEmpleado extends Composite {
 	private ScrollPanel contenedorTablaAgregar;
 	private FlexTable tablaElemento;
 	private FlexTable tablaElementoAgregar;
+	private FlexTable botones1;
+	private FlexTable botones2;
 
 	private Label nroLegajo;
 	private Label apellido;
@@ -97,11 +99,11 @@ public class P_NuevoEmpleado extends Composite {
 		inferior = new Label("");
 		inferior.setStyleName("labelTitulo");
 
-		nroLegajo = new Label(constante.nroLegajo());
+		nroLegajo = new Label(constante.nroLegajoAsterisco());
 		nroLegajo.setStyleName("gwt-LabelFormulario");
-		apellido = new Label(constante.apellido());
+		apellido = new Label(constante.apellidoAsterisco());
 		apellido.setStyleName("gwt-LabelFormulario");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormulario");
 		puesto = new Label(constante.puesto());
 		puesto.setStyleName("gwt-LabelFormulario");
@@ -133,6 +135,17 @@ public class P_NuevoEmpleado extends Composite {
 			}
 		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, asignar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, guardar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, salir);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTablaAgregar = new ScrollPanel();
 		contenedorTablaAgregar.setStyleName("tabla");
 		contenedorTablaAgregar.setHeight("200px");
@@ -191,7 +204,9 @@ public class P_NuevoEmpleado extends Composite {
 		formularioEmpleado.setWidget(3, 0, contenedorTablaAgregar);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(3, 0, 8);
 
-		formularioEmpleado.setWidget(4, 4, asignar);
+		formularioEmpleado.setWidget(4, 0, botones1);
+		formularioEmpleado.getFlexCellFormatter().setColSpan(4, 0, 8);
+		formularioEmpleado.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		formularioEmpleado.setWidget(5, 0, datosEmpleadoACargo);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(5, 0, 8);
@@ -202,8 +217,9 @@ public class P_NuevoEmpleado extends Composite {
 		formularioEmpleado.setWidget(7, 0, inferior);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(7, 0, 8);
 
-		formularioEmpleado.setWidget(8, 3, guardar);
-		formularioEmpleado.setWidget(8, 4, salir);
+		formularioEmpleado.setWidget(8, 0, botones2);
+		formularioEmpleado.getFlexCellFormatter().setColSpan(8, 0, 8);
+		formularioEmpleado.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		initWidget(formularioEmpleado);
 
@@ -251,9 +267,9 @@ public class P_NuevoEmpleado extends Composite {
 
 		nroLegajo = new Label(constante.nroLegajo());
 		nroLegajo.setStyleName("gwt-LabelFormulario");
-		apellido = new Label(constante.apellido());
+		apellido = new Label(constante.apellidoAsterisco());
 		apellido.setStyleName("gwt-LabelFormulario");
-		nombre = new Label(constante.nombre());
+		nombre = new Label(constante.nombreAsterisco());
 		nombre.setStyleName("gwt-LabelFormulario");
 		puesto = new Label(constante.puesto());
 		puesto.setStyleName("gwt-LabelFormulario");
@@ -286,6 +302,17 @@ public class P_NuevoEmpleado extends Composite {
 			}
 		});
 
+		botones1 = new FlexTable();
+		botones1.setWidget(0, 0, asignar);
+		botones1.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		
+		botones2 = new FlexTable();
+		botones2.setWidget(0, 0, modificar);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		botones2.setWidget(0, 1, salir);
+		botones2.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTablaAgregar = new ScrollPanel();
 		contenedorTablaAgregar.setStyleName("tabla");
 		contenedorTablaAgregar.setHeight("200px");
@@ -344,7 +371,9 @@ public class P_NuevoEmpleado extends Composite {
 		formularioEmpleado.setWidget(3, 0, contenedorTablaAgregar);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(3, 0, 8);
 
-		formularioEmpleado.setWidget(4, 4, asignar);
+		formularioEmpleado.setWidget(4, 0, botones1);
+		formularioEmpleado.getFlexCellFormatter().setColSpan(4, 0, 8);
+		formularioEmpleado.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
 		formularioEmpleado.setWidget(5, 0, datosEmpleadoACargo);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(5, 0, 8);
@@ -355,8 +384,9 @@ public class P_NuevoEmpleado extends Composite {
 		formularioEmpleado.setWidget(7, 0, inferior);
 		formularioEmpleado.getFlexCellFormatter().setColSpan(7, 0, 8);
 
-		formularioEmpleado.setWidget(8, 3, modificar);
-		formularioEmpleado.setWidget(8, 4, salir);
+		formularioEmpleado.setWidget(8, 0, botones2);
+		formularioEmpleado.getFlexCellFormatter().setColSpan(8, 0, 8);
+		formularioEmpleado.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		initWidget(formularioEmpleado);
 
@@ -603,24 +633,20 @@ public class P_NuevoEmpleado extends Composite {
 	protected void guardarEmpleado() {
 
 		Validaciones validador = new Validaciones();
-		
-		boolean resultV1 = validador.textBoxSoloLetras(this.apellidoTb.getText());
 				
-		boolean resultV2 = validador.textBoxSoloLetras(this.nombreTb.getText());
-		
 		boolean resultV3 = validador.textBoxVacio(this.apellidoTb.getText());
 		
 		boolean resultV4 = validador.textBoxVacio(this.nombreTb.getText());
 		
+		boolean resultV2 = validador.textBoxVacio(this.nroLegajoTb.getText());
+		
 		boolean resultV5 = validador.textBoxSoloNumeros(this.nroLegajoTb.getText());
 		
 		
-		if(resultV1 && resultV2 && !resultV3 && !resultV4 && resultV5)
+		if(!resultV2 && !resultV3 && !resultV4 && resultV5)
 		{
 		
 			Integer legajo = new Integer(this.nroLegajoTb.getText());
-
-			// verificar que el nro de legajo del empleado no exista!!!
 
 			AdministradorServiceAsync adminService1 = GWT.create(AdministradorService.class);
 
@@ -643,16 +669,10 @@ public class P_NuevoEmpleado extends Composite {
 			
 		}
 		else{
-			if(!resultV1)
-				Window.alert("El apellido del empleado debe estar compuesto solo por letras");
-			else if(!resultV2)
-				Window.alert("El nombre del empleado debe estar compuesto solo por letras");
-			else if(resultV3)
-				Window.alert("El apellido del empleado no puede ser nulo");
-			else if(resultV4)
-				Window.alert("El nombre del empleado no puede ser nulo");
-			else if(!resultV5)
-				Window.alert("El número de legajo debe estar compuesto solo de números");	
+			if(!resultV5)
+				Window.alert("Los campos con * son obligatorios y el número de legajo debe estar compuesto sólo de números");
+			else
+				Window.alert("Los campos con * son obligatorios");
 		}
 		
 	}

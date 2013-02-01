@@ -39,6 +39,27 @@ public class Produccion {
 		return result;
 	}
 	
+	public long registrarOrdenProvisionInsumo(OrdenProvisionInsumo orden,String nada) {
+		long result = -1;
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			sec.beginTransaction();
+			long aux = (Long) sec.save(orden);
+			
+			for (RenglonOrdenProvisionInsumo renglon : orden.getRenglonOrdenProvisionInsumos()) {
+				renglon.getId().setIdOrdenProvisionInsumo(aux);
+				sec.save(renglon);
+			}
+			sec.getTransaction().commit();
+			result = aux;
+		} catch (HibernateException he) {
+			sec.getTransaction().rollback();
+			return -1;
+		}
+		return result;
+	}
+	
 	
 	public List<OrdenProvisionInsumo> getOrdenProvisionInsumo(int idEstado, int idEmpPor, int idEmpPara, String fecDesde, String fecHasta){
 		

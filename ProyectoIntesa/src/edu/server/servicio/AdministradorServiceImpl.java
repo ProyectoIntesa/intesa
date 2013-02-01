@@ -62,14 +62,12 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		Administrador admin = new Administrador();
 		return admin.usuarioTieneEmpleado(legajo);
 	}
-	
-	
+		
 	@Override
 	public Boolean eliminarUsuario(String nombreUsu) throws IllegalArgumentException {
 		Administrador admin = new Administrador();
 		return admin.eliminarElUsuario(nombreUsu);
 	}
-	
 	
 	@Override
 	public Boolean modificarUsuario(String nombreUsu, String passUsu) throws IllegalArgumentException {

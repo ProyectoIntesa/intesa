@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import edu.client.ProduccionService.ProduccionService;
@@ -93,8 +94,49 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		return empleadoDTO;
 	}
 	
+//	@Override
+//	public boolean registrarOrdenProvisionInsumo(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+//		Insumos adminInsumos = new Insumos();
+//		Produccion adminProduccion = new Produccion();
+//		EstadoOrden estado = new EstadoOrden();
+//		Estado adminEstado = new Estado();
+//		int idEstado = adminEstado.getIdEstado("GENERADA");
+//		estado.setIdEstadoOrden(idEstado);
+//		estado.setNombre("GENERADA");
+//		Empleado registradoPor = new Empleado();
+//		registradoPor.setIdEmpleado(orden.getEmpleadoByIdPedidoPor().getIdEmpleado());
+//		Empleado registradoPara = new Empleado();
+//		registradoPara.setIdEmpleado(orden.getEmpleadoByIdPedidoPara().getIdEmpleado());
+//		
+//		OrdenProvisionInsumo nuevaOrden = new OrdenProvisionInsumo();
+//		nuevaOrden.setEmpleadoByIdPedidoPara(registradoPara);
+//		nuevaOrden.setEmpleadoByIdPedidoPor(registradoPor);
+//		nuevaOrden.setEstadoOrden(estado);
+//		nuevaOrden.setFechaEdicion(orden.getFechaEdicion());
+//		nuevaOrden.setFechaGeneracion(orden.getFechaGeneracion());
+//		nuevaOrden.setObservaciones(orden.getObservaciones());
+//		
+//		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+//			 RenglonOrdenProvisionInsumo nuevoRenglon = new RenglonOrdenProvisionInsumo();
+//			 RenglonOrdenProvisionInsumoId id = new RenglonOrdenProvisionInsumoId();
+//			 id.setIdRenglon(renglon.getIdRenglon());
+//			 Insumo insumo = new Insumo();
+//			 int idInsumo = adminInsumos.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+//			 insumo.setIdInsumo(idInsumo);
+//			 nuevoRenglon.setCantidadRequerida(renglon.getCantidadRequerida());
+//			 nuevoRenglon.setInsumo(insumo);
+//			 nuevoRenglon.setId(id);
+//		
+//			 nuevaOrden.getRenglonOrdenProvisionInsumos().add(nuevoRenglon);
+//		}
+//		
+//		return adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden);
+//		
+//	}
+	
 	@Override
-	public boolean registrarOrdenProvisionInsumo(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+	public Long registrarOrdenProvisionInsumo(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+		
 		Insumos adminInsumos = new Insumos();
 		Produccion adminProduccion = new Produccion();
 		EstadoOrden estado = new EstadoOrden();
@@ -129,12 +171,54 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			 nuevaOrden.getRenglonOrdenProvisionInsumos().add(nuevoRenglon);
 		}
 		
-		return adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden);
+		long result = adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden,"");
+		return result;
 		
 	}
 	
+//	@Override
+//	public boolean registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+//		Insumos adminInsumos = new Insumos();
+//		Produccion adminProduccion = new Produccion();
+//		EstadoOrden estado = new EstadoOrden();
+//		Estado adminEstado = new Estado();
+//		int idEstado = adminEstado.getIdEstado("VALIDADA");
+//		estado.setIdEstadoOrden(idEstado);
+//		estado.setNombre("VALIDADA");
+//		Empleado registradoPor = new Empleado();
+//		registradoPor.setIdEmpleado(orden.getEmpleadoByIdPedidoPor().getIdEmpleado());
+//		Empleado registradoPara = new Empleado();
+//		registradoPara.setIdEmpleado(orden.getEmpleadoByIdPedidoPara().getIdEmpleado());
+//		
+//		OrdenProvisionInsumo nuevaOrden = new OrdenProvisionInsumo();
+//		nuevaOrden.setEmpleadoByIdPedidoPara(registradoPara);
+//		nuevaOrden.setEmpleadoByIdPedidoPor(registradoPor);
+//		nuevaOrden.setEstadoOrden(estado);
+//		nuevaOrden.setFechaEdicion(orden.getFechaEdicion());
+//		nuevaOrden.setFechaGeneracion(orden.getFechaGeneracion());
+//		nuevaOrden.setObservaciones(orden.getObservaciones());
+//		
+//		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+//			 RenglonOrdenProvisionInsumo nuevoRenglon = new RenglonOrdenProvisionInsumo();
+//			 RenglonOrdenProvisionInsumoId id = new RenglonOrdenProvisionInsumoId();
+//			 id.setIdRenglon(renglon.getIdRenglon());
+//			 Insumo insumo = new Insumo();
+//			 int idInsumo = adminInsumos.getIdInsumo(renglon.getInsumo().getNombre(), renglon.getInsumo().getMarca());
+//			 insumo.setIdInsumo(idInsumo);
+//			 nuevoRenglon.setCantidadRequerida(renglon.getCantidadRequerida());
+//			 nuevoRenglon.setInsumo(insumo);
+//			 nuevoRenglon.setId(id);
+//		
+//			 nuevaOrden.getRenglonOrdenProvisionInsumos().add(nuevoRenglon);
+//		}
+//		
+//		return adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden);
+//		
+//	}
+	
 	@Override
-	public boolean registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+	public Long registrarOrdenProvisionInsumoGerente(OrdenProvisionInsumoDTO orden) throws IllegalArgumentException {
+		
 		Insumos adminInsumos = new Insumos();
 		Produccion adminProduccion = new Produccion();
 		EstadoOrden estado = new EstadoOrden();
@@ -169,7 +253,8 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			 nuevaOrden.getRenglonOrdenProvisionInsumos().add(nuevoRenglon);
 		}
 		
-		return adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden);
+		long result = adminProduccion.registrarOrdenProvisionInsumo(nuevaOrden,"");
+		return result;
 		
 	}
 	
