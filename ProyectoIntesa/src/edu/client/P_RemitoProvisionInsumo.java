@@ -419,7 +419,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 		});
@@ -430,7 +430,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 	
 	protected void cerrarRemitoProvisionInterno() {
 			
-		boolean confirm = Window.confirm("Está seguro que desea cerrar el remito?");
+		boolean confirm = Window.confirm("Está seguro de que desea cerrar el remito?");
 		if (confirm == true){
 			
 			DateTimeFormat fmtDate = DateTimeFormat.getFormat("dd/MM/yyyy");
@@ -442,17 +442,17 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("El remito ha sido cerrado");
+						Window.alert("El remito ha sido cerrado de manera exitosa");
 						cerrarAutomaticamenteOrdenProvisionInsumo();
 					}
 					else
-						Window.alert("El remito NO ha sido cerrado");
+						Window.alert("No se ha podido cerrar el remito");
 					cancelar();
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
@@ -613,7 +613,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 						imprimir = true;
 					}
 					else{
-						Window.alert("El Remito de la Orden de Provision de Insumos NO ha sido generado");
+						Window.alert("No se ha podido generar el remito de la orden de provisión de insumos");
 					}
 					cancelar();
 				}
@@ -630,9 +630,9 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 				else if(!vCantPedida2)
 					Window.alert("La cantidad pedida debe de ser un número");
 				else if(vCantPedida3)
-					Window.alert("La cantidad pedida NO debe ser mayor a la faltante");
+					Window.alert("La cantidad pedida NO puede ser mayor a la faltante");
 				else if(vCantPedida4)
-					Window.alert("La cantidad pedida NO debe ser mayor a la disponible");
+					Window.alert("La cantidad pedida NO puede ser mayor a la disponible");
 			}
 		}
 				
@@ -692,7 +692,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
@@ -738,7 +738,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 			@Override
 			public void onSuccess(Boolean result) {
 				if(result)
-					Window.alert("Ha sido cerrada la orden de provisión de insumo correspondiente al remito recién cerrado");
+					Window.alert("La orden de provisión de insumo correspondiente al remito recién cerrado a pasado al estado \"cerrada\"");
 			}
 			
 			@Override

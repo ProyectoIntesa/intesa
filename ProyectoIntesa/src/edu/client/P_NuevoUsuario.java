@@ -76,7 +76,7 @@ public class P_NuevoUsuario extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 
@@ -312,7 +312,7 @@ public class P_NuevoUsuario extends Composite {
 	protected void modificar() {
 
 		if(this.contraseniaPtb.getText().compareTo("")==0){
-			Window.alert("Los campos con * son obligatorios");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 		else{
 			if (usuarioDTO.getPassUsu().compareTo(this.contraseniaPtb.getText()) == 0) {
@@ -334,9 +334,9 @@ public class P_NuevoUsuario extends Composite {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result == true)
-							Window.alert("La contraseña del usuario se ha modificado de manera exitosa");
+							Window.alert("La contraseña del usuario ha sido modificada de manera exitosa");
 						else
-							Window.alert("No se ha podido modificar la contraseña");
+							Window.alert("No se ha podido modificar la contraseña del usuario");
 
 					}
 				});
@@ -356,7 +356,7 @@ public class P_NuevoUsuario extends Composite {
 	public void guardar() {
 
 		if (usuarioTb.getText().isEmpty() || contraseniaPtb.getText().isEmpty()) {
-			Window.alert("Los campos con * son obligatorios");
+			Window.alert("Los campos que poseen (*) son oblicatorios");
 		} else {
 
 			AdministradorServiceAsync adminServie = GWT.create(AdministradorService.class);
@@ -439,9 +439,9 @@ public class P_NuevoUsuario extends Composite {
 			public void onSuccess(Boolean result) {
 
 				if (result == true) {
-					Window.alert("El usuario ha sido registrado de forma exitosa");
+					Window.alert("El usuario ha sido registrado de manera exitosa");
 				} else {
-					Window.alert("El usuario NO se puedo guardar");
+					Window.alert("No se ha podido registrar el usuario");
 				}
 
 			}

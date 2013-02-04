@@ -654,15 +654,15 @@ public class P_FormularioCliente extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("El cliente se ha registrado correctamente");
+						Window.alert("El cliente ha sido registrado de manera exitosa");
 						padre.remove(numeroElemento(constante.nuevoCliente()));
 					} else
-						Window.alert("No se pudo registrar el cliente");
+						Window.alert("No se ha podido registrar el cliente");
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
@@ -741,15 +741,15 @@ public class P_FormularioCliente extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("CAMBIOS DE CLIENTE REGISTRADO!!!");
+						Window.alert("El cliente ha sido modificado de manera exitosa");
 						padre.remove(numeroElemento(constante.modificarCliente()));
 					} else
-						Window.alert("No se han podido registrar los cambios en el cliente");
+						Window.alert("No se ha podido modificar el cliente");
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});

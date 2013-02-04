@@ -116,7 +116,6 @@ public class Almacen {
 		return result;
 
 	}
-	
 
 	/**
 	 * registra un remito interno de provisión de insumos
@@ -166,7 +165,27 @@ public class Almacen {
 		
 	}
 	
-	
-	
+	public Boolean getExistenciaRemitoExterno(long idOrden, long nroRemito){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+			
+		IngresoInsumosId id = new IngresoInsumosId();
+		id.setIdOrdenCompraInsumos(idOrden);
+		id.setNroRemitoExterno(nroRemito);
+		
+		IngresoInsumos result = new IngresoInsumos();
+
+		result.setId(id);
+		result = (IngresoInsumos) sec.get(result.getClass(), id);
+		sec.close();
+				
+		if(result == null)
+			return false;
+		else
+			return true;
+			
+		
+	}
 	
 }

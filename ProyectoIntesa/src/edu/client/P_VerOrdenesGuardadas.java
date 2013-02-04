@@ -172,7 +172,7 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 				break;
 			}
 			default: {
-				Window.alert("La opción seleccionada no corresponde a ninguna funcion");
+				Window.alert("La opción seleccionada no corresponde a ninguna función");
 			}
 			
 		}
@@ -227,7 +227,7 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se ha podido cargar la lista de sugerencias");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					

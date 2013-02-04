@@ -589,7 +589,24 @@ public class Compras {
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		Estado adminEstado = new Estado();
 
-		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA PARCIAL") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA COMPLETA")+ " or id_Estado_Orden = " + adminEstado.getIdEstado("CERRADA PARCIAL")+ " or id_Estado_Orden = " + adminEstado.getIdEstado("CERRADA");
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA PARCIAL");
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createQuery("from OrdenCompraInsumo" + criterios).list();
+
+		sec.close();
+
+		return result;
+	}
+	
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoEnviadaRecibidaCerrada() {
+
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		Estado adminEstado = new Estado();
+
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("ENVIADA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA PARCIAL") + " or id_Estado_Orden = " + adminEstado.getIdEstado("RECIBIDA COMPLETA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("CERRADA") + " or id_Estado_Orden = " + adminEstado.getIdEstado("CERRADA PARCIAL");
 
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();

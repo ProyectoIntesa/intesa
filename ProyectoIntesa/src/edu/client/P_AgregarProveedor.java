@@ -124,7 +124,7 @@ public class P_AgregarProveedor extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR AL CARGAR LA LISTA");
+				Window.alert("ERROR EN EL SERVICIO");
 				
 			}
 

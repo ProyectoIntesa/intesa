@@ -339,6 +339,22 @@ public class Insumos {
 		sec.close();
 		return (int)idInsumo;
 	}
+	
+	public boolean getExistenciaInsumo(String nombre, String marca){
+		
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String consultaMarca = "select id_Marca from Marca where nombre like '"+marca+"'";
+		Object idmarca = sec.createSQLQuery(consultaMarca).uniqueResult();
+		String consultaInsumo = "select id_Insumo from Insumo where nombre like '"+nombre+"' and id_Marca = "+idmarca;
+		Object idInsumo = sec.createSQLQuery(consultaInsumo).uniqueResult();
+		sec.close();
+		
+		if(idInsumo == null)
+			return false;
+		else 
+			return true;
+	}	
 
 	public String getNombreMarca(int idMarca){
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();

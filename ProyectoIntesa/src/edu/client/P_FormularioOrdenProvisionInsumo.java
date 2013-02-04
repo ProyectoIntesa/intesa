@@ -91,7 +91,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de insumos");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -164,7 +164,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -311,16 +311,16 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 				@Override
 				public void onSuccess(Long result) {
 					if (result != -1) {
-						Window.alert("La orden de provisión ha sido generada con el número "+result);
+						Window.alert("La orden de provisión ha sido \"generada\" con el número: "+result);
 						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
 					} else {
-						Window.alert("No se pudo efectuar la acción");
+						Window.alert("No se ha podido efectuar la acción");
 					}
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
@@ -333,16 +333,16 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 				@Override
 				public void onSuccess(Long result) {
 					if (result != -1) {
-						Window.alert("La orden de provisión ha sido generada con el número "+result);
+						Window.alert("La orden de provisión ha sido \"generada\" con el número: "+result);
 						padre.remove(numeroElemento(constante.ordenDeProvisionDeInsumos()));
 					} else {
-						Window.alert("No se pudo efectuar la acción");
+						Window.alert("No se ha podido efectuar la acción");
 					}
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});

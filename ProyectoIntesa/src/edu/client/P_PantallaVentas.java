@@ -191,7 +191,7 @@ public class P_PantallaVentas extends Composite {
 		if (event.getSelectedItem() == buscarCliente) {
 			
 			if(this.numeroElemento(constante.modificarCliente())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR CLIENTE");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR CLIENTE\"");
 			}
 			else{
 				

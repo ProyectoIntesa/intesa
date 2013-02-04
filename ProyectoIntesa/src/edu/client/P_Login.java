@@ -80,7 +80,7 @@ public class P_Login extends Composite {
 
 				loginServie.getUsuario(usuarioTb.getText(), contraseniaTb.getText(), new AsyncCallback<UsuarioDTO>() {
 					public void onFailure(Throwable caught) {
-						Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
+						Window.alert("Usuario y contraseña incorrectas");
 					}
 
 					public void onSuccess(UsuarioDTO result) {
@@ -134,7 +134,7 @@ public class P_Login extends Composite {
 								
 							}
 						} else {
-							Window.alert("USUARIO Y CONTRASEÑA INCORRECTOS");
+							Window.alert("Usuario y contraseña incorrectas");
 						}
 					}
 				});
@@ -172,7 +172,7 @@ public class P_Login extends Composite {
 
 		centro = new LayoutPanel();
 		centro.setSize(ancho + "px", altoCentro + "px");
-		centro.setStyleName("panelFondo2");
+		centro.setStyleName("panelFondo3");
 
 		superior.add(log);
 
@@ -191,20 +191,20 @@ public class P_Login extends Composite {
 		try {
 			this.finalize();
 		} catch (Throwable e) {
-			Window.alert("excepcion: "+e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	protected void inicioPantallaVentas(String usuario) {
 	
-		 P_PantallaVentas ventas = new P_PantallaVentas(usuario);
-			RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
-			RootPanel.get().add(ventas);
-			try {
-				this.finalize();
-			} catch (Throwable e) {
-				Window.alert("excepcion: "+e.getMessage());
-			}
+		P_PantallaVentas ventas = new P_PantallaVentas(usuario);
+		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		RootPanel.get().add(ventas);
+		try {
+			this.finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void inicioPantallaIngenieria(String usuario) {
@@ -213,9 +213,9 @@ public class P_Login extends Composite {
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(ingenieria);
 		 try {
-		 this.finalize();
+			 this.finalize();
 		 } catch (Throwable e) {
-		 e.printStackTrace();
+			 e.printStackTrace();
 		 }
 
 

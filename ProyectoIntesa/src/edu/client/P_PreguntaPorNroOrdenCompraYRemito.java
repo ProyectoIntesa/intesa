@@ -157,7 +157,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("No se ha podido cargar la lista de sugerencias");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 			}
@@ -207,7 +207,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("ERROR DE SERVICIO");
+							Window.alert("ERROR EN EL SERVICIO");
 
 						}
 					});
@@ -231,7 +231,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 		if(tipoOrdenCompraLb.getItemText(tipoOrdenCompraLb.getSelectedIndex()).compareTo(constante.ordenCompraDeInsumo()) == 0){
 			nroOrdenCompraLb.clear();
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.getOrdenCompraInsumoEnviada(new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
+			comprasService.getOrdenCompraInsumoEnviadaRecibidaCerrada(new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
 
 				@Override
 				public void onSuccess(List<OrdenCompraInsumoDTO> result) {
@@ -240,7 +240,7 @@ public class P_PreguntaPorNroOrdenCompraYRemito extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("No se ha podido cargar la lista de sugerencias");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 			});
 		}

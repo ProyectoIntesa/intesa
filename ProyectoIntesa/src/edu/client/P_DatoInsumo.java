@@ -184,11 +184,11 @@ public class P_DatoInsumo extends PopupPanel {
 			@Override
 			public void onSuccess(Boolean result) {
 				if(result){
-					Window.alert("El insumo ha sido eliminado correctamente");
+					Window.alert("El insumo ha sido eliminado de manera exitosa");
 					salirEliminar();
 				}
 				else{
-					Window.alert("El insumo NO ha sido eliminado");
+					Window.alert("No se ha podido eliminar el insumo");
 					salir();
 				}
 			}

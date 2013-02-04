@@ -86,7 +86,7 @@ public class P_NuevoEmpleado extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 
@@ -252,7 +252,7 @@ public class P_NuevoEmpleado extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 
@@ -321,9 +321,9 @@ public class P_NuevoEmpleado extends Composite {
 		tablaElementoAgregar.setSize("100%", "100%");
 		tablaElementoAgregar.setText(0, COL_NROLEGAJO, constante.nroLegajo());
 		tablaElementoAgregar.getCellFormatter().setWidth(0, COL_NROLEGAJO, "24%");
-		tablaElementoAgregar.setText(0, COL_APELLIDO, constante.apellido());
+		tablaElementoAgregar.setText(0, COL_APELLIDO, constante.apellidoAsterisco());
 		tablaElementoAgregar.getCellFormatter().setWidth(0, COL_APELLIDO, "24%");
-		tablaElementoAgregar.setText(0, COL_NOMBRE, constante.nombre());
+		tablaElementoAgregar.setText(0, COL_NOMBRE, constante.nombreAsterisco());
 		tablaElementoAgregar.getCellFormatter().setWidth(0, COL_NOMBRE, "24%");
 		tablaElementoAgregar.setText(0, COL_PUESTO, constante.puesto());
 		tablaElementoAgregar.getCellFormatter().setWidth(0, COL_PUESTO, "24%");
@@ -400,25 +400,15 @@ public class P_NuevoEmpleado extends Composite {
 		
 		Validaciones validador = new Validaciones();
 				
-		boolean resultV1 = validador.textBoxSoloLetras(this.apellidoTb.getText());
-				
-		boolean resultV2 = validador.textBoxSoloLetras(this.nombreTb.getText());
 		
 		boolean resultV3 = validador.textBoxVacio(this.apellidoTb.getText());
 		
 		boolean resultV4 = validador.textBoxVacio(this.nombreTb.getText());
 		
-		if(!resultV3 && !resultV4 && resultV1 && resultV2)
+		if(!resultV3 && !resultV4)
 			modificarEmpleado();
 		else{
-			if(!resultV1)
-				Window.alert("El apellido del empleado debe estar compuesto solo por letras");
-			else if(!resultV2)
-				Window.alert("El nombre del empleado debe estar compuesto solo por letras");
-			else if(resultV3)
-				Window.alert("El apellido del empleado no puede ser nulo");
-			else if(resultV4)
-				Window.alert("El nombre del empleado no puede ser nulo");			
+			Window.alert("Los campos que poseen (*) son oblicatorios");			
 		}
 	}
 
@@ -445,7 +435,7 @@ public class P_NuevoEmpleado extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR en el servicio");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 
@@ -455,7 +445,7 @@ public class P_NuevoEmpleado extends Composite {
 				if (result == true) {
 					Window.alert("El empleado ha sido guardado de manera exitosa");
 				} else {
-					Window.alert("El empleado no ha sido guardado");
+					Window.alert("No se ha podido guardar el empleado");
 				}
 
 			}
@@ -574,7 +564,7 @@ public class P_NuevoEmpleado extends Composite {
 
 					if (codEliminar.compareTo(codEmpleadoCargado) == 0) {
 
-						Window.alert("Uno de los empleados seleccionados ya se encuentra a cargo del empleado en cuestion");
+						Window.alert("Uno de los empleados seleccionados ya se encuentra a cargo del empleado en cuestión");
 						bandera = true;
 						codEmpleadoCargado = "";
 						break;
@@ -654,7 +644,7 @@ public class P_NuevoEmpleado extends Composite {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR en el servicio");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 
 				@Override
@@ -670,9 +660,9 @@ public class P_NuevoEmpleado extends Composite {
 		}
 		else{
 			if(!resultV5)
-				Window.alert("Los campos con * son obligatorios y el número de legajo debe estar compuesto sólo de números");
+				Window.alert("Los campos que poseen (*) son oblicatorios y el número de legajo debe estar compuesto sólo de números");
 			else
-				Window.alert("Los campos con * son obligatorios");
+				Window.alert("Los campos que poseen (*) son oblicatorios");
 		}
 		
 	}
@@ -701,7 +691,7 @@ public class P_NuevoEmpleado extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR en el servicio");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 
@@ -711,7 +701,7 @@ public class P_NuevoEmpleado extends Composite {
 				if (result == true) {
 					Window.alert("El empleado ha sido guardado de manera exitosa");
 				} else {
-					Window.alert("El empleado no ha sido guardado");
+					Window.alert("No se ha podido guardar el empleado");
 				}
 
 			}

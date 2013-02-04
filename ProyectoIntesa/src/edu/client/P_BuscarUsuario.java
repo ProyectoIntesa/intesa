@@ -61,7 +61,7 @@ public class P_BuscarUsuario extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 
@@ -149,7 +149,7 @@ public class P_BuscarUsuario extends PopupPanel {
 			quitar.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					Cell celda = tablaElementos.getCellForEvent(event);
-					boolean respuesta = Window.confirm("Esta seguro de eliminar el usuario: " + (listaUsuarios.get(celda.getRowIndex() - 1)).getNombreUsu()
+					boolean respuesta = Window.confirm("Está seguro de eliminar al usuario: " + (listaUsuarios.get(celda.getRowIndex() - 1)).getNombreUsu()
 							+ "?");
 					if (respuesta)
 						borrarUsuario((listaUsuarios.get(celda.getRowIndex() - 1)).getNombreUsu(), celda.getRowIndex());
@@ -168,7 +168,7 @@ public class P_BuscarUsuario extends PopupPanel {
 		adminService.eliminarUsuario(usuario, new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR en el servicio");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 

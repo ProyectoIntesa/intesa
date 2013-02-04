@@ -641,14 +641,14 @@ public class P_DatoEmpresa extends PopupPanel {
 			@Override
 			public void onSuccess(Boolean result) {
 				if(result)
-					Window.alert("El contacto ha sido eliminado");
+					Window.alert("El contacto ha sido eliminado de manera exitosa");
 				else
-					Window.alert("El contacto NO ha sido eliminado");
+					Window.alert("No se ha podido eliminar el contacto");
 				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al eliminar el contacto");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 	
@@ -665,12 +665,12 @@ public class P_DatoEmpresa extends PopupPanel {
 					Window.alert("El cliente ha sido eliminado de manera exitosa");
 				}
 				else
-					Window.alert("El cliente NO ha sido eliminado");
+					Window.alert("No se ha podido eliminar el cliente");
 				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al eliminar el cliente");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -686,12 +686,12 @@ public class P_DatoEmpresa extends PopupPanel {
 				if(result)
 					Window.alert("El proveedor ha sido eliminado de manera exitosa");
 				else
-					Window.alert("El proveedor NO ha sido eliminado");
+					Window.alert("No se ha podido eliminar el proveedor");
 				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al eliminar el cliente");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -715,14 +715,14 @@ public class P_DatoEmpresa extends PopupPanel {
 			@Override
 			public void onSuccess(Boolean result) {
 				if(result)
-					Window.alert("El contacto ha sido eliminado");
+					Window.alert("El contacto ha sido eliminado de manera exitosa");
 				else
-					Window.alert("El contacto NO ha sido eliminado");
+					Window.alert("No se ha podido eliminar el contacto");
 				salirEliminar();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR al eliminar el contacto");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 	

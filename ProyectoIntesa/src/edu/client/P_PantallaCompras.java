@@ -260,7 +260,7 @@ public class P_PantallaCompras extends Composite {
 		if (event.getSelectedItem() == buscarProveedor) {
 
 			if(this.numeroElemento(constante.modificarProveedor())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR PROVEEDOR");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR PROVEEDOR\"");
 			}
 			else{
 				
@@ -317,7 +317,7 @@ public class P_PantallaCompras extends Composite {
 		if (event.getSelectedItem() == insumosBuscar) {
 			
 			if(this.numeroElemento(constante.modificarInsumo())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR INSUMO");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR INSUMO\"");
 			}
 			else{
 				
@@ -351,7 +351,7 @@ public class P_PantallaCompras extends Composite {
 		if (event.getSelectedItem() == guardadas) {
 
 			if(this.numeroElemento(constante.modificarOrdenDeCompraDeInsumo())!=-1 || this.numeroElemento(constante.modificarOrdenDeCompraDeProductos())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR ORDEN DE COMPRA");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR ORDEN DE COMPRA\"");
 			}
 			else{
 				
@@ -410,7 +410,7 @@ public class P_PantallaCompras extends Composite {
 		if (event.getSelectedItem() == deInsumos) {
 
 			if(this.numeroElemento(constante.ordenDeCompraDeInsumos())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña ORDEN DE COMPRA DE INSUMOS");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"ORDEN DE COMPRA DE INSUMOS\"");
 			}
 			else{
 				

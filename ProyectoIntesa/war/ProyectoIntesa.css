@@ -58,6 +58,17 @@ body {
 	background-color: black;
 }
 
+.panelFondo3 {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: ridge;
+	background-repeat: no-repeat;
+	background-position:center;
+	background-image: url(img/frenteIntesa.jpg);
+	background-color: black;
+}
+
 .superior {
 	margin: 0px 0px 5px;
 	border: outset;

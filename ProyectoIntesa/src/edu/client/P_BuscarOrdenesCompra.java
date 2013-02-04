@@ -131,7 +131,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -155,7 +155,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -270,7 +270,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 					
 					if(fecDesde.compareTo("") == 0 || fecHasta.compareTo("") == 0){
 						
-						Window.alert("Si se desea filtrar la búsqueda por fecha, se deben ingresar si o si las dos");
+						Window.alert("Al filtrar la búsqueda por fechas, es obligatorio el ingreso de ambas fechas");
 					}
 					else{
 						
@@ -295,7 +295,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 							});
 						}
 						else{
-							Window.alert("La fecha desde debe ser menor a la fecha hasta");
+							Window.alert("La fecha \"desde\" debe ser menor a la fecha \"hasta\"");
 						}
 							
 					}
@@ -327,7 +327,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 				break;
 			}
 			default: {
-				Window.alert("La opción seleccionada no corresponde a ninguna funcion");
+				Window.alert("La opción seleccionada no corresponde a ninguna función");
 			}
 			
 		}
@@ -413,7 +413,7 @@ public class P_BuscarOrdenesCompra extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se ha podido cargar la lista de sugerencias");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					

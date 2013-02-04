@@ -93,7 +93,7 @@ public class P_RemitoExterno extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 		});
@@ -358,60 +358,29 @@ public class P_RemitoExterno extends PopupPanel {
 		
 		if(!vCantRecibida1 && vCantRecibida2 && !vCantRecibida3 && !vNroRemito1 && vNroRemito2){
 			
-			RemitoExternoDTO remito = new RemitoExternoDTO();
-		
-			remito.setEmpleado(this.usuario);
-			remito.setFechaIngreso(new Date());
-			remito.setIdOrdenCompra(ordenCompraInsumo.getIdOrden());
-			final Long idOrden = remito.getIdOrdenCompra();
-			remito.setObservaciones(this.observacionesTa.getText());
-			remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
 			
-			for (int i = 1; i < tablaElementos.getRowCount(); i++) {
-				
-				if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
-
-					
-					
-					Integer cant_recibida = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
-					
-					
-					if(cant_recibida != 0){					
-						InsumoDTO insu = new InsumoDTO();
-						insu.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
-						insu.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
-						
-						RenglonRemitoExternoDTO renglon = new RenglonRemitoExternoDTO();
-						renglon.setItem(i);
-						renglon.setInsumo(insu);
-						renglon.setCantIngresada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText()));
-						renglon.setCantFaltante(new Double(((Label) tablaElementos.getWidget(i, COL_CANT_FALTANTE)).getText()));
-
-						remito.getRenglonRemitoExterno().add(renglon);				
-					}
-				}
-			}	
-
+			
+			long nroRemitoEx = Long.parseLong(this.nroRemitoExTb.getText());
+			
 			AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
-			almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
+			almacenService.getExistenciaRemitoExterno(this.ordenCompraInsumo.getIdOrden(),nroRemitoEx, new AsyncCallback<Boolean>() {
 						
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("El Remito Externo ha sido guardado de forma exitosa");
-						verificarSiEstaCompleta(idOrden);
-						cancelar();
+						Window.alert("El \"número de remito externo\" ingresado ya se encuentra cargado para esta orden de compra de insumos");
 					}
 					else{
-						Window.alert("El Remito Externo NO ha sido guardado");
-						cancelar();
+						guardarRemitoExternoFinal();
 					}
 				}
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 			});
+			
+
 			
 			
 			
@@ -423,7 +392,7 @@ public class P_RemitoExterno extends PopupPanel {
 				else if(!vCantRecibida2)
 					Window.alert("La cantidad recibida debe de ser un número");
 				else if(vCantRecibida3)
-					Window.alert("La cantidad recibida NO debe puede ser mayor a la faltante");
+					Window.alert("La cantidad recibida NO puede ser mayor a la faltante");
 				else if(vNroRemito1)
 					Window.alert("Se debe agregar el número del remito");
 				else if(!vNroRemito2)
@@ -434,6 +403,66 @@ public class P_RemitoExterno extends PopupPanel {
 
 	}
 
+	protected void guardarRemitoExternoFinal() {
+		
+		
+		
+		RemitoExternoDTO remito = new RemitoExternoDTO();
+	
+		remito.setEmpleado(this.usuario);
+		remito.setFechaIngreso(new Date());
+		remito.setIdOrdenCompra(ordenCompraInsumo.getIdOrden());
+		final Long idOrden = remito.getIdOrdenCompra();
+		remito.setObservaciones(this.observacionesTa.getText());
+		remito.setIdRemitoEx(new Long(this.nroRemitoExTb.getText()));
+		
+		for (int i = 1; i < tablaElementos.getRowCount(); i++) {
+			
+			if(((CheckBox)tablaElementos.getWidget(i, COL_CHECK)).getValue() == true){
+
+				
+				
+				Integer cant_recibida = new Integer(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText());
+				
+				
+				if(cant_recibida != 0){					
+					InsumoDTO insu = new InsumoDTO();
+					insu.setNombre(((Label) tablaElementos.getWidget(i, COL_INSUMO)).getText());
+					insu.setMarca(((Label) tablaElementos.getWidget(i, COL_MARCA)).getText());
+					
+					RenglonRemitoExternoDTO renglon = new RenglonRemitoExternoDTO();
+					renglon.setItem(i);
+					renglon.setInsumo(insu);
+					renglon.setCantIngresada(new Double(((TextBox) tablaElementos.getWidget(i, COL_CANT_RECIBIDA)).getText()));
+					renglon.setCantFaltante(new Double(((Label) tablaElementos.getWidget(i, COL_CANT_FALTANTE)).getText()));
+
+					remito.getRenglonRemitoExterno().add(renglon);				
+				}
+			}
+		}	
+
+		AlmacenServiceAsync almacenService = GWT.create(AlmacenService.class);
+		almacenService.registrarRemitoExterno(remito, new AsyncCallback<Boolean>() {
+					
+			@Override
+			public void onSuccess(Boolean result) {
+				if(result){
+					Window.alert("El Remito Externo ha sido guardado de manera exitosa");
+					verificarSiEstaCompleta(idOrden);
+					cancelar();
+				}
+				else{
+					Window.alert("No se ha podido guardar el remito externo");
+					cancelar();
+				}
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+	}
+	
 	protected void verificarSiEstaCompleta(Long idOrden){
 		
 		final Long idOrdenP = idOrden;
@@ -450,7 +479,7 @@ public class P_RemitoExterno extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 
@@ -465,13 +494,13 @@ public class P_RemitoExterno extends PopupPanel {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					Window.alert("La orden de compra de insumos correspondiente al remito externo ingresado a pasado al estado CERRADA COMPLETA");
+					Window.alert("La orden de compra de insumos correspondiente al remito externo ingresado a pasado al estado \"cerrada completa\"");
 				}
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 
@@ -509,7 +538,7 @@ public class P_RemitoExterno extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});

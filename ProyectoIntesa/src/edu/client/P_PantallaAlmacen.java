@@ -203,7 +203,7 @@ public class P_PantallaAlmacen extends Composite {
 		if (event.getSelectedItem() == ingresarRemitoEx) {
 
 			if(this.numeroElemento(constante.remitoExterno())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO EXTERNO");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"REMITO EXTERNO\"");
 			}
 			else{
 				
@@ -227,7 +227,7 @@ public class P_PantallaAlmacen extends Composite {
 		if (event.getSelectedItem() == ingresarRemitoIn) {
 			
 			if(this.numeroElemento(constante.remitoExterno())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña REMITO INTERNO");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"REMITO INTERNO\"");
 			}
 			else{
 				final P_PreguntarPorOrdenProvision popUp = new P_PreguntarPorOrdenProvision(this.usuario);

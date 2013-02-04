@@ -134,7 +134,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		cancelarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				boolean confirm = Window.confirm("Está seguro de que desea cancelar la orden de compra de insumos?");
+				boolean confirm = Window.confirm("Está seguro de que desea \"cancelar\" la orden de compra de insumos?");
 				if(confirm == true){
 					ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
 					comprasService.cancelarOrdencompraInsumo(idOrden, "CANCELADA", new AsyncCallback<Boolean>() {
@@ -142,7 +142,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 						@Override
 						public void onSuccess(Boolean result) {
 							if (result) {
-								Window.alert("La orden ha sido CANCELADA");
+								Window.alert("La orden ha sido \"cancelada\"");
 								cierreOrdenCancelar = true;
 								salir();
 							} else {
@@ -152,7 +152,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("ERROR DE SERVICIO");
+							Window.alert("ERROR EN EL SERVICIO");
 
 						}
 					});
@@ -171,7 +171,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 							verDetalle("completa");
 						} else {
 							
-							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta la orden quedará cerrada en forma parcial");
+							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta, la orden quedará cerrada en forma parcial");
 							if(confirm == true){
 								verDetalle("parcial");
 							}	
@@ -179,7 +179,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					}
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR DE SERVICIO");
+						Window.alert("ERROR EN EL SERVICIO");
 
 					}
 				});
@@ -197,7 +197,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 							verDetalle("completa");
 						} else {
 							
-							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta la orden quedará cerrada en forma parcial");
+							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta, la orden quedará cerrada en forma parcial");
 							if(confirm == true){
 								verDetalle("parcial");
 							}	
@@ -205,7 +205,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					}
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR DE SERVICIO");
+						Window.alert("ERROR EN EL SERVICIO");
 
 					}
 				});
@@ -223,7 +223,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 							verDetalle("completa");
 						} else {
 							
-							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta la orden quedará cerrada en forma parcial");
+							boolean confirm = Window.confirm("La recepción de la orden de compra de insumo NO ha sido completada. Si acepta, la orden quedará cerrada en forma parcial");
 							if(confirm == true){
 								verDetalle("parcial");
 							}	
@@ -231,7 +231,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 					}
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR DE SERVICIO");
+						Window.alert("ERROR EN EL SERVICIO");
 
 					}
 				});
@@ -256,7 +256,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR DE SERVICIO");
+						Window.alert("ERROR EN EL SERVICIO");
 
 					}
 
@@ -590,7 +590,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			
 				if (detalle.getCierreOrdenCerrar() == true)
 				{	
-					Window.alert("La orden ha sido CERRADA");
+					Window.alert("La orden ha sido \"cerrada\"");
 					cierreOrdenCerrar = true;
 					salir();
 				}

@@ -25,4 +25,8 @@ public interface AlmacenService extends RemoteService {
 
 	OrdenProvisionInsumoDTO getOrdenProvisionInsumoSegunId(long idOrden) throws IllegalArgumentException;
 
+	Boolean getExistenciaRemitoExterno(long nroOrden, long nroRemitoEx) throws IllegalArgumentException;
+
+
+
 }

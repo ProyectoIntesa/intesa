@@ -84,6 +84,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private ScrollPanel contenedorTabla;
 	private FlexTable tablaElemento;
 	private FlexTable botones;
+	private FlexTable lineaMedia;
 
 	private String titulo;
 	private List<InsumoDTO> insumos;
@@ -117,7 +118,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		comprasService.getModoDeEnvio(new AsyncCallback<List<String>>() {
@@ -130,7 +131,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 		});
@@ -165,6 +166,8 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		totalTb.setText("0");
 		totalTb.setEnabled(false);
 
+
+		
 		generar = new Button(constante.generar());
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -203,6 +206,14 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 			}
 		});
 
+		lineaMedia = new FlexTable();
+		lineaMedia.setWidget(0, 0, actualizarValores);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaMedia.setWidget(0, 1, total);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaMedia.setWidget(0, 2, totalTb);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
 		contenedorTabla.setHeight("400px");
@@ -251,9 +262,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		formulario.setWidget(3, 0, contenedorTabla);
 		formulario.getFlexCellFormatter().setColSpan(3, 0, 6);
 
-		formulario.setWidget(4, 4, total);
-		formulario.setWidget(4, 5, totalTb);
-		formulario.setWidget(4, 3, actualizarValores);
+		formulario.setWidget(4, 0, lineaMedia);
+		formulario.getFlexCellFormatter().setColSpan(4, 0, 6);
+		formulario.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		formulario.setWidget(5, 0, observaciones);
 		formulario.getFlexCellFormatter().setColSpan(5, 0, 6);
@@ -310,7 +321,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -324,7 +335,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 		});
@@ -392,7 +403,10 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		cancelarOrden = new Button(constante.cancelarOrden());
 		cancelarOrden.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cancelarOrden(event,ordenVieja);
+				
+				boolean confirm = Window.confirm("Está seguro de que desea \"cancelar\" la orden de compra de insumo?");
+				if(confirm == true)
+					cancelarOrden(event,ordenVieja);
 			}
 		});
 		
@@ -432,7 +446,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 						
 						if (agregarOrden == true){
 							if(prov.compareTo(proveedorElegido) != 0){
-								Window.alert("El proveedor de los insumos que se desea cargar debe de ser el mismo que el de lo insumos que ya se encuentran en la orden");	
+								Window.alert("El proveedor de los insumos que se desea cargar, debe de ser el mismo que el de lo insumos que ya se encuentran en la orden");	
 							}
 							else{
 								buscarInsumosCompletosYAgregarOrden();
@@ -442,6 +456,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 				});
 			}
 		});
+		
+		lineaMedia = new FlexTable();
+		lineaMedia.setWidget(0, 0, agregarInsumo);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaMedia.setWidget(0, 1, actualizarValores);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaMedia.setWidget(0, 2, total);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		lineaMedia.setWidget(0, 3, totalTb);
+		lineaMedia.getCellFormatter().setHorizontalAlignment(0, 3, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tabla");
@@ -493,10 +517,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		formulario.setWidget(3, 0, contenedorTabla);
 		formulario.getFlexCellFormatter().setColSpan(3, 0, 6);
 
-		formulario.setWidget(4, 4, total);
-		formulario.setWidget(4, 5, totalTb);
-		formulario.setWidget(4, 3, actualizarValores);
-		formulario.setWidget(4, 2, agregarInsumo);
+		formulario.setWidget(4, 0, lineaMedia);
+		formulario.getFlexCellFormatter().setColSpan(4, 0, 6);
+		formulario.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		formulario.setWidget(5, 0, observaciones);
 		formulario.getFlexCellFormatter().setColSpan(5, 0, 6);
@@ -528,7 +551,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 					
 					for (InsumoDTO insu : insumos) {
 						if(insu.getIdInsumo() == insumo.getIdInsumo()){
-							Window.alert("No se pueden agregar a la orden insumos que ya se encuentren en la orden");
+							Window.alert("No se pueden agregar a la orden insumos que ya se encuentren en la misma");
 							bandera = false;
 						}
 					}
@@ -546,7 +569,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -620,25 +643,25 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 					if (result) {
 						String accion = "";
 						if (estado.compareTo("GENERADA") == 0)
-							accion = "generado";
+							accion = "generada";
 						else
-							accion = "guardado";
-						Window.alert("Se ha " + accion + " corectamente la orden");
+							accion = "guardada";
+						Window.alert("La orden ha sido \"" + accion + "\"");
 						padre.remove(numeroElemento(constante.ordenDeCompraDeInsumos()));
 					} else {
-						Window.alert("No se pudo efectuar la acción");
+						Window.alert("No se ha podido efectuar la acción");
 					}
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
 		}
 		else{
-			Window.alert("No se puede generar o guardar una orden de compra de insumos sino se establecen todas las cantidades");
+			Window.alert("No se puede generar o guardar una orden de compra de insumos sino se establecen todas las cantidades previamente");
 		}
 
 
@@ -712,22 +735,22 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 							accion = "generado";
 						else
 							accion = "guardado";
-						Window.alert("Se ha " + accion + " corectamente la orden");
+						Window.alert("La orden ha sido \"" + accion + "\"");
 						padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
 					} else {
-						Window.alert("No se pudo efectuar la acción");
+						Window.alert("No se ha podido efectuar la acción");
 					}
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
 		}
 		else{
-			Window.alert("No se puede generar una orden de compra de insumos sino se establecen todas las cantidades");
+			Window.alert("No se puede generar una orden de compra de insumos sino se establecen todas las cantidades previamente");
 		}
 
 
@@ -856,13 +879,13 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				Window.alert("La orden de compra de insumo ha sido cancelada");
+				Window.alert("La orden ha sido \"cancelada\"");
 				padre.remove(numeroElemento(constante.modificarOrdenCompraDeInsumo()));
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 
 			}
 		});

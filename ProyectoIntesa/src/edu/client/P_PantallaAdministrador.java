@@ -219,7 +219,7 @@ public class P_PantallaAdministrador extends Composite {
 		else if (event.getSelectedItem() == buscarEmpleado) {
 			
 				if(this.numeroElemento(constante.modificarEmpleado())!=-1){
-					Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR EMPLEADO");
+					Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR EMPLEADO\"");
 				}
 				else{
 					
@@ -266,7 +266,7 @@ public class P_PantallaAdministrador extends Composite {
 
 		else if (event.getSelectedItem() == buscarUsuario) {
 			if(this.numeroElemento(constante.modificarUsuario())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña MODIFICAR USUARIO");
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR USUARIO\"");
 			}
 			else{
 				

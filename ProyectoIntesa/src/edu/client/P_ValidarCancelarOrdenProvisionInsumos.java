@@ -79,7 +79,7 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 					}
 				}
 				if(bandera == true){
-					boolean confirm = Window.confirm("Está seguro de que desea cancelar las órdenes de provisión seleccionadas?");
+					boolean confirm = Window.confirm("Está seguro de que desea \"cancelar\" las órdenes de provisión seleccionadas?");
 					if(confirm==true){
 						cancelarOrdenes();
 //						for(int i = 1; i < tablaElementos.getRowCount(); i++){
@@ -187,7 +187,7 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("Las Ordenes seleccionadas fueron canceladas");
+						Window.alert("Las órdenes seleccionadas han sido canceladas de manera exitosa");
 						for(int i = 1; i < tablaElementos.getRowCount(); i++){
 							tablaElementos.removeRow(i);
 						}
@@ -195,7 +195,7 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 						cargarTabla();
 					}
 					else
-						Window.alert("Las Ordenes NO han sido canceladas");
+						Window.alert("No se ha podido cancelar las órdenes seleccionadas");
 				}
 				
 				@Override
@@ -231,7 +231,7 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("Las Ordenes seleccionadas fueron validadas");
+						Window.alert("Las órdenes seleccionadas han sido validadas de manera exitosa");
 						for(int i = 1; i < tablaElementos.getRowCount(); i++){
 							tablaElementos.removeRow(i);
 						}
@@ -239,7 +239,7 @@ public class P_ValidarCancelarOrdenProvisionInsumos extends PopupPanel{
 						cargarTabla();
 					}
 					else
-						Window.alert("Las Ordenes NO han sido validadas");
+						Window.alert("No se ha podido validar las órdenes seleccionadas");
 				}
 				
 				@Override

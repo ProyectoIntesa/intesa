@@ -407,7 +407,7 @@ public class P_FormularioInsumo  extends Composite {
 		
 		if(!vNombreInsumo && !vCategoriaInsumo && !vMarcaInsumo && !vLote1 && !vStock1 && vLote2 && vStock2){
 			
-			InsumoDTO insumo = new InsumoDTO();
+			final InsumoDTO insumo = new InsumoDTO();
 			insumo.setNombre(this.nombreInsumoTb.getText());
 			insumo.setMarca(this.marcaInsumoTb.getText());
 			insumo.setCategoria(this.categoriaInsumoTb.getText());
@@ -438,30 +438,55 @@ public class P_FormularioInsumo  extends Composite {
 				
 			}
 		
+			
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.registrarNuevoInsumo(insumo, new AsyncCallback<Boolean>() {
-
+			
+			comprasService.getExistenciaInsumo(insumo.getNombre(), insumo.getMarca(), new AsyncCallback<Boolean>() {
+				
 				@Override
 				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("El insumo ha sido registrado");
-						padre.remove(numeroElemento(constante.nuevoInsumo()));
-					} else
-						Window.alert("No se ha podido registrar el insumo");
+					// TODO Auto-generated method stub
+					if(result == true)
+						Window.alert("Ya existe un insumo con el nombre y marca ingresada");
+					else
+						RegistrarNuevoInsumo(insumo);
 				}
-
+				
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
-
+					// TODO Auto-generated method stub
+					Window.alert("ERROR EN EL SERVICIO");
 				}
+				
+				
 			});
-			
-			
+						
 		}
 		else{
 			Window.alert("Los campos que poseen (*) son oblicatorios");
 		}	
+	}
+	
+	protected void RegistrarNuevoInsumo(InsumoDTO insumo){
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.registrarNuevoInsumo(insumo, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("El insumo ha sido registrado de manera exitosa");
+					padre.remove(numeroElemento(constante.nuevoInsumo()));
+				} else
+					Window.alert("No se ha podido registrar el insumo");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+
+			}
+		});
 	}
 	
 	protected void cargarInsumoModificado(ClickEvent event){
@@ -517,15 +542,15 @@ public class P_FormularioInsumo  extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("El insumo ha sido modificado");
+						Window.alert("El insumo ha sido modificado de manera exitosa");
 						padre.remove(numeroElemento(constante.modificarInsumo()));
 					} else
-						Window.alert("NO se ha podido modificar el insumo");
+						Window.alert("No se ha podido modificar el insumo");
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});

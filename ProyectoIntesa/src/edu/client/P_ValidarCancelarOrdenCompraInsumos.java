@@ -33,8 +33,9 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 
 	private static final int COL_NROORDEN = 0;
 	private static final int COL_FECHAGENERACION = 1;
-	private static final int COL_MAS_INFO = 2;
-	private static final int COL_CHECK = 3;	
+	private static final int COL_PROV = 2;
+	private static final int COL_MAS_INFO = 3;
+	private static final int COL_CHECK = 4;	
 	
 	private FlexTable panel;
 	private ScrollPanel contenedorTabla;
@@ -84,7 +85,7 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 					}
 				}
 				if(bandera == true){
-					boolean confirm = Window.confirm("Está seguro de que desea cancelar las órdenes de provisión seleccionadas?");
+					boolean confirm = Window.confirm("Está seguro de que desea \"cancelar\" las órdenes de provisión seleccionadas?");
 					if(confirm==true){
 						cancelarOrdenes();
 //						for (int i = 1; i < tablaElementos.getRowCount(); i++) {
@@ -140,9 +141,11 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
 		tablaElementos.setText(0, COL_NROORDEN, constante.nroOrden());
-		tablaElementos.getCellFormatter().setWidth(0, COL_NROORDEN, "35%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_NROORDEN, "25%");
 		tablaElementos.setText(0, COL_FECHAGENERACION, constante.fechaGeneracion());
-		tablaElementos.getCellFormatter().setWidth(0, COL_FECHAGENERACION, "35%");
+		tablaElementos.getCellFormatter().setWidth(0, COL_FECHAGENERACION, "25%");
+		tablaElementos.setText(0, COL_PROV, constante.proveedor());
+		tablaElementos.getCellFormatter().setWidth(0, COL_PROV, "25%");		
 		tablaElementos.setText(0, COL_MAS_INFO, constante.masInformacion());
 		tablaElementos.getCellFormatter().setWidth(0, COL_MAS_INFO, "6%");
 		tablaElementos.setText(0, COL_CHECK, "");
@@ -188,11 +191,11 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("Las ordenes seleccinadas han sido canceladas");
+						Window.alert("Las órdenes seleccionadas han sido canceladas de manera exitosa");
 						cargarTabla();
 					}
 					else
-						Window.alert("Las ordenes NO han sido canceladas");
+						Window.alert("No se ha podido cancelar las órdenes seleccionadas");
 				}
 				
 				@Override
@@ -229,12 +232,12 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 				@Override
 				public void onSuccess(Boolean result) {
 					if(result){
-						Window.alert("Las ordenes seleccinadas han sido validadas");
+						Window.alert("Las órdenes seleccionadas han sido validadas de manera exitosa");
 						cargarTabla();
 					}
 						
 					else
-						Window.alert("Las ordenes NO han sido validadas");
+						Window.alert("No se ha podido validar las órdenes seleccionadas");
 				}
 				
 				@Override
@@ -301,6 +304,8 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 			tablaElementos.getCellFormatter().setWordWrap(item, COL_NROORDEN, true);
 			tablaElementos.setWidget(item, COL_FECHAGENERACION, new Label(fecha));
 			tablaElementos.getCellFormatter().setWordWrap(item, COL_FECHAGENERACION, true);
+			tablaElementos.setWidget(item, COL_PROV, new Label(orden.getProveedor()+""));
+			tablaElementos.getCellFormatter().setWordWrap(item, COL_PROV, true);
 			tablaElementos.setWidget(item, COL_MAS_INFO, info);
 			tablaElementos.getFlexCellFormatter().setHorizontalAlignment(item, COL_MAS_INFO, HasHorizontalAlignment.ALIGN_CENTER);			
 			tablaElementos.setWidget(item, COL_CHECK, check);
@@ -335,7 +340,7 @@ public class P_ValidarCancelarOrdenCompraInsumos extends PopupPanel{
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se ha podido cargar la lista de sugerencias");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					

@@ -351,5 +351,11 @@ public class AlmacenServiceImpl extends RemoteServiceServlet implements AlmacenS
 		return result;
 	}
 
+	@Override
+	public Boolean getExistenciaRemitoExterno(long nroOrden, long nroRemitoEx)  throws IllegalArgumentException {
+		Almacen adminAlmacen = new Almacen();
+		return adminAlmacen.getExistenciaRemitoExterno(nroOrden, nroRemitoEx);
+		
+	}
 	
 }

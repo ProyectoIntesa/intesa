@@ -107,6 +107,10 @@ public interface ComprasServiceAsync {
 
 	void getInsumoCompleto(String nombre, String marca, AsyncCallback<InsumoDTO> callback) throws IllegalArgumentException;
 
+	void getExistenciaInsumo(String nombreInsumo, String marcaInsumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getOrdenCompraInsumoEnviadaRecibidaCerrada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+
 
 
 	

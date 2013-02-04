@@ -454,7 +454,7 @@ public class P_AgregarContacto extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR el modificar contacto");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 
 				@Override
@@ -489,7 +489,7 @@ public class P_AgregarContacto extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR el modificar contacto");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 
 				@Override
@@ -528,7 +528,7 @@ public class P_AgregarContacto extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al modificar contacto");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 
 				@Override
@@ -539,7 +539,7 @@ public class P_AgregarContacto extends PopupPanel {
 						cerrarModificado();
 					}
 					else{
-						Window.alert("El contacto no se ha podido modificar");
+						Window.alert("No se ha podido modificar el contacto");
 						cerrar();
 					}
 					
@@ -585,7 +585,7 @@ public class P_AgregarContacto extends PopupPanel {
 						cerrarModificado();
 					}
 					else{
-						Window.alert("El contacto no se ha podido modificar");
+						Window.alert("No se ha podido modificar el contacto");
 						cerrar();
 					}
 					

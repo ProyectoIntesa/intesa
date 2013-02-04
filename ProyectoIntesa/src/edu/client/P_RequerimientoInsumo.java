@@ -110,12 +110,12 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			if(!result.isEmpty())
 				cargarListaTablaInsumosNec(result);
 			else
-				Window.alert("No hay requerimientos de insumos");
+				Window.alert("NO hay requerimientos de insumos");
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DEL SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 				
@@ -135,7 +135,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de insumos");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -170,7 +170,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de marcas");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					
@@ -209,7 +209,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de proveedores");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 
@@ -364,12 +364,12 @@ public class P_RequerimientoInsumo extends PopupPanel {
 			if(!result.isEmpty())
 				cargarListaTablaInsumosNec(result);
 			else
-				Window.alert("No hay requerimientos de insumos");
+				Window.alert("NO hay requerimientos de insumos");
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DEL SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 				
@@ -389,7 +389,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de insumos");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -424,7 +424,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de marcas");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					
@@ -463,7 +463,7 @@ public class P_RequerimientoInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de proveedores");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 

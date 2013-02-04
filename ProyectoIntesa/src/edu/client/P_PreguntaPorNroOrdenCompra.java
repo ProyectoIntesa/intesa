@@ -157,7 +157,7 @@ public class P_PreguntaPorNroOrdenCompra extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("No se ha podido cargar la lista de sugerencias");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 			});
 		}

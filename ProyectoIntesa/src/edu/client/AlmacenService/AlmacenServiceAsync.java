@@ -23,4 +23,8 @@ public interface AlmacenServiceAsync {
 
 	void getOrdenProvisionInsumoSegunId(long idOrden, AsyncCallback<OrdenProvisionInsumoDTO> callback) throws IllegalArgumentException;
 
+	void getExistenciaRemitoExterno(long nroOrden, long nroRemitoEx, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+
+
 }

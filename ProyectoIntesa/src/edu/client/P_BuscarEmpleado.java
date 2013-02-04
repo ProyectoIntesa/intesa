@@ -59,7 +59,7 @@ public class P_BuscarEmpleado extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR en el servicio, No se pudo cargar la lista de empleados");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 

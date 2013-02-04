@@ -710,6 +710,14 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 		return result;
 	}
+	
+	@Override
+	public Boolean getExistenciaInsumo(String nombreInsumo, String marcaInsumo) throws IllegalArgumentException {
+		
+		Insumos adminInsumos = new Insumos();
+		return adminInsumos.getExistenciaInsumo(nombreInsumo, marcaInsumo);
+		
+	}
 
 	@Override
 	public Boolean eliminarInsumo(InsumoDTO insumo) throws IllegalArgumentException {
@@ -1193,6 +1201,39 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
 
 		result = adminCompras.getOrdenCompraInsumoEnviada();
+
+		for (OrdenCompraInsumo orden : result) {
+
+			OrdenCompraInsumoDTO ordendto = new OrdenCompraInsumoDTO();
+
+			ordendto.setIdOrden(orden.getNroOrdenCompraInsumo());
+
+			DecimalFormat formato = new DecimalFormat("0000000000");
+			String numero = "" + formato.format(orden.getNroOrdenCompraInsumoGenerada());
+			ordendto.setNroOrden(numero);
+
+			ordendto.setEmpleado(adminAdmin.getNombreEmpleado(orden.getEmpleado().getIdEmpleado()));
+
+			ordendto.setProveedor(adminProv.getNombreProveedor(orden.getProveedor().getCodigoProveedor()));
+
+			listaResult.add(ordendto);
+
+		}
+		return listaResult;
+
+	}
+	
+	@Override
+	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviadaRecibidaCerrada() throws IllegalArgumentException {
+
+		Administrador adminAdmin = new Administrador();
+		Compras adminCompras = new Compras();
+		Proveedores adminProv = new Proveedores();
+
+		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
+		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
+
+		result = adminCompras.getOrdenCompraInsumoEnviadaRecibidaCerrada();
 
 		for (OrdenCompraInsumo orden : result) {
 

@@ -676,7 +676,7 @@ public class P_FormularioProveedor extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("El proveedor se ha registrado correctamente");
+						Window.alert("El proveedor ha sido registrado de manera exitosa");
 						padre.remove(numeroElemento(constante.nuevoProveedor()));
 					} else
 						Window.alert("No se ha podido registrar el proveedor");
@@ -684,7 +684,7 @@ public class P_FormularioProveedor extends Composite {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});
@@ -758,15 +758,15 @@ public class P_FormularioProveedor extends Composite {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						Window.alert("CAMBIOS DE PROVEEDOR REGISTRADO!!!");
+						Window.alert("El proveedor ha sido modificado de manera exitosa");
 						padre.remove(numeroElemento(constante.modificarProveedor()));
 					} else
-						Window.alert("No se han podido registrar los cambios en el proveedor");
+						Window.alert("No se ha podido modificar el proveedor");
 				}
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR DE SERVICIO");
+					Window.alert("ERROR EN EL SERVICIO");
 
 				}
 			});

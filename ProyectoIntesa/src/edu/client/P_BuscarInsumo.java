@@ -93,7 +93,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -105,7 +105,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -117,7 +117,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -270,7 +270,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 				
@@ -290,7 +290,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 			}
@@ -319,7 +319,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 				
@@ -339,7 +339,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 			}
@@ -367,7 +367,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 				
@@ -387,7 +387,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 			}
@@ -415,7 +415,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 				
@@ -435,7 +435,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("ERROR al buscar el insumo");
+						Window.alert("ERROR EN EL SERVICIO");
 					}
 				});
 			}
@@ -459,7 +459,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("ERROR al buscar el insumo");
+					Window.alert("ERROR EN EL SERVICIO");
 				}
 			});
 			
@@ -499,7 +499,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("ERROR al buscar insumo");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 
 						@Override
@@ -710,7 +710,7 @@ public class P_BuscarInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se ha podido cargar la lista de sugerencias");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 	

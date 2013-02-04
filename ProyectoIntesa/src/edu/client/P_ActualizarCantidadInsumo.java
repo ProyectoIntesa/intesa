@@ -85,7 +85,7 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("No se pudo cargar la lista de insumos");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 		
@@ -110,7 +110,7 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							Window.alert("No se pudo cargar la lista de marcas");
+							Window.alert("ERROR EN EL SERVICIO");
 						}
 					});
 					

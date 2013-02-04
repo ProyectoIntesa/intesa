@@ -311,7 +311,7 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ERROR DE SERVICIO");
+				Window.alert("ERROR EN EL SERVICIO");
 			}
 		});
 	}
