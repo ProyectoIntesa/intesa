@@ -211,7 +211,7 @@ public class P_PantallaVentas extends Composite {
 						
 						if (modificar == true)
 						{
-							modificarCliente();
+							//modificarCliente();
 						}
 						if (salirEliminar == true){
 							buscar();
@@ -227,28 +227,28 @@ public class P_PantallaVentas extends Composite {
 
 
 	}
-
-	protected void modificarCliente() {
-		String titulo;
-		int tab;
-		titulo = constante.modificarCliente();
-		tab = numeroElemento(titulo);
-
-		if (tab == -1) {
-
-			formulario = new ScrollPanel();
-			formulario.setTitle(titulo);
-			formulario.setStyleName("panelFormulario");
-			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-			P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo,this.clienteSelec,titulo);
-			formulario.add(cliente);
-			panelTrabajo.add(formulario, titulo, false);
-			panelTrabajo.selectTab(numeroElemento(titulo));
-		} else
-			panelTrabajo.selectTab(tab);
-		
-		
-	}
+//
+//	protected void modificarCliente() {
+//		String titulo;
+//		int tab;
+//		titulo = constante.modificarCliente();
+//		tab = numeroElemento(titulo);
+//
+//		if (tab == -1) {
+//
+//			formulario = new ScrollPanel();
+//			formulario.setTitle(titulo);
+//			formulario.setStyleName("panelFormulario");
+//			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+//			P_FormularioCliente cliente = new P_FormularioCliente(panelTrabajo,this.clienteSelec,titulo);
+//			formulario.add(cliente);
+//			panelTrabajo.add(formulario, titulo, false);
+//			panelTrabajo.selectTab(numeroElemento(titulo));
+//		} else
+//			panelTrabajo.selectTab(tab);
+//		
+//		
+//	}
 	
 	protected void buscar(){
 		
@@ -267,7 +267,7 @@ public class P_PantallaVentas extends Composite {
 				
 				if (modificar == true)
 				{
-					modificarCliente();
+					//modificarCliente();
 				}
 				if (salirEliminar == true){
 					buscar();

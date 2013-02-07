@@ -73,7 +73,7 @@ public interface ComprasServiceAsync {
 
 	void getModoDeEnvio(AsyncCallback<List<String>> callback)throws IllegalArgumentException;
 
-	void registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	void registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, String tipoUsuario, AsyncCallback<Boolean> callback);
 
 	void getNombreEstados(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
@@ -83,7 +83,7 @@ public interface ComprasServiceAsync {
 
 	void cancelarOrdencompraInsumo(long idOrden, String estado, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	void getOrdenCompraInsumoGuardada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+	void getOrdenCompraInsumoGuardada(String rolUsuario, String nombreUsuario, String apellidoUsuario, AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
 
 	void getOrdenCompraInsumoEnviada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
 
@@ -93,9 +93,9 @@ public interface ComprasServiceAsync {
 
 	void actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	void registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	void registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja, String tipoUsuario, AsyncCallback<Boolean> callback);
 
-	void eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	void eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, String tipoUsuario, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void cancelarOrdenCompraInsumo(List<Long> listaOrdenes, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
@@ -110,6 +110,22 @@ public interface ComprasServiceAsync {
 	void getExistenciaInsumo(String nombreInsumo, String marcaInsumo, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	void getOrdenCompraInsumoEnviadaRecibidaCerrada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
+
+	void getNombresPaises(AsyncCallback<List<String>> callback);
+
+	void getNombresProvincias(String pais, AsyncCallback<List<String>> callback);
+
+	void getNombresLocalidades(String prov, AsyncCallback<List<String>> callback);
+
+	void getInsumos(AsyncCallback<List<String>> callback);
+
+	void getCategorias(AsyncCallback<List<String>> callback);
+
+	void getMarcas(AsyncCallback<List<String>> callback);
+
+
+
+
 
 
 

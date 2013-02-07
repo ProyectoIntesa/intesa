@@ -60,7 +60,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	private FlexTable botones1;
 	private FlexTable botones2;
 	
-	//elementos que no aperecen en el popup, para supervisor y para gerente
+	//elementos que no aperecen en el popup, para supervisor y para jefe de fabrica
 	private String nombreUsuario;
 	private String apellidoUsuario;
 	private String rolUsuario;
@@ -69,7 +69,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 	private EmpleadoDTO emp;	
 	private List<OrdenProvisionInsumoDTO> ordenesProvision;
 	
-	//elementos que no aparecen en el popup, para gerente unicamente
+	//elementos que no aparecen en el popup, para jefe de fabrica unicamente
 	private List<EmpleadoDTO> listaGeneradosPor;
 	private List<EmpleadoDTO> listaGeneradosPara;
 	private List<Integer> listaIdGeneradosPara;
@@ -85,7 +85,7 @@ public class P_BuscarOrdenProvisionInsumo extends PopupPanel {
 		this.apellidoUsuario = usuario.split(", ")[0]; 
 		this.rolUsuario = rolUsuario;
 		
-		if(rolUsuario.compareTo("SUPERVISOR PRODUCCION") == 0)
+		if(rolUsuario.compareTo("SUPERVISOR") == 0)
 			this.ingresoUnSupervisor();
 		else
 			this.ingresoUnGerente();

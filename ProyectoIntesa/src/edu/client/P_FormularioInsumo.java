@@ -1,6 +1,7 @@
 package edu.client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,6 +45,9 @@ public class P_FormularioInsumo  extends Composite {
 	private Label proveedor;
 	private Label pie;
 	
+	private SuggestBox nombreInsumoSb;
+	private SuggestBox categoriaInsumoSb;
+	private SuggestBox marcaInsumoSb;
 	private TextBox nombreInsumoTb;
 	private TextBox categoriaInsumoTb;
 	private TextBox marcaInsumoTb;
@@ -66,6 +70,9 @@ public class P_FormularioInsumo  extends Composite {
 	private String titulo;
 	private InsumoDTO insumoDTO;
 	
+	private MultiWordSuggestOracle listaInsumos;
+	private MultiWordSuggestOracle listaCategorias;
+	private MultiWordSuggestOracle listaMarcas;
 	
 	public P_FormularioInsumo(TabPanel padre) {
 	
@@ -95,14 +102,66 @@ public class P_FormularioInsumo  extends Composite {
 		pie = new Label();
 		pie.setStyleName("labelTitulo");
 		
-		nombreInsumoTb = new TextBox();
-		categoriaInsumoTb = new TextBox();
-		marcaInsumoTb = new TextBox();
+
 		loteCompraInsumoTb = new TextBox();
 		stockSeguridadInsumoTb = new TextBox();
 		observacionesTb = new TextArea();
 		observacionesTb.setDirectionEstimator(false);
 		observacionesTb.setWidth("100%");
+		
+		listaInsumos = new MultiWordSuggestOracle();
+		listaMarcas = new MultiWordSuggestOracle();
+		listaCategorias = new MultiWordSuggestOracle();
+		
+		nombreInsumoSb = new SuggestBox(listaInsumos);
+		categoriaInsumoSb = new SuggestBox(listaCategorias);
+		marcaInsumoSb = new SuggestBox(listaMarcas);
+			
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.getMarcas(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaMarcas(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		comprasService.getCategorias(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaCategorias(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		comprasService.getInsumos(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaInsumos(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		btnAgregarProveedor = new Button(constante.agregarProveedor());
 		btnAgregarProveedor.addClickHandler(new ClickHandler() {
@@ -163,11 +222,11 @@ public class P_FormularioInsumo  extends Composite {
 		formularioInsumo.getFlexCellFormatter().setColSpan(0, 0, 6);
 		
 		formularioInsumo.setWidget(1, 0, nombreInsumo);
-		formularioInsumo.setWidget(1, 1, nombreInsumoTb);
+		formularioInsumo.setWidget(1, 1, nombreInsumoSb);
 		formularioInsumo.setWidget(1, 2, categoriaInsumo);
-		formularioInsumo.setWidget(1, 3, categoriaInsumoTb);
+		formularioInsumo.setWidget(1, 3, categoriaInsumoSb);
 		formularioInsumo.setWidget(1, 4, marcaInsumo);
-		formularioInsumo.setWidget(1, 5, marcaInsumoTb);
+		formularioInsumo.setWidget(1, 5, marcaInsumoSb);
 		
 		formularioInsumo.setWidget(2, 0, inventario);
 		formularioInsumo.getFlexCellFormatter().setColSpan(2, 0, 6);
@@ -358,7 +417,9 @@ public class P_FormularioInsumo  extends Composite {
 			eliminar.setStyleName("labelBorrar");
 			eliminar.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					eliminarProveedor(nombreContacto);
+					boolean confirm = Window.confirm("Está seguro de que desea eliminar el proveedor?");
+					if(confirm == true)
+						eliminarProveedor(nombreContacto);
 				}
 			});
 			
@@ -396,9 +457,9 @@ public class P_FormularioInsumo  extends Composite {
 		
 		Validaciones validar = new Validaciones();
 		
-		boolean vNombreInsumo = validar.textBoxVacio(this.nombreInsumoTb.getText());
-		boolean vCategoriaInsumo = validar.textBoxVacio(this.categoriaInsumoTb.getText());
-		boolean vMarcaInsumo = validar.textBoxVacio(this.marcaInsumoTb.getText());
+		boolean vNombreInsumo = validar.textBoxVacio(this.nombreInsumoSb.getText());
+		boolean vCategoriaInsumo = validar.textBoxVacio(this.categoriaInsumoSb.getText());
+		boolean vMarcaInsumo = validar.textBoxVacio(this.marcaInsumoSb.getText());
 		boolean vLote1 = validar.textBoxVacio(this.loteCompraInsumoTb.getText());
 		boolean vLote2 = validar.textBoxSoloNumeros(this.loteCompraInsumoTb.getText());
 		boolean vStock1 = validar.textBoxVacio(this.stockSeguridadInsumoTb.getText());
@@ -408,9 +469,9 @@ public class P_FormularioInsumo  extends Composite {
 		if(!vNombreInsumo && !vCategoriaInsumo && !vMarcaInsumo && !vLote1 && !vStock1 && vLote2 && vStock2){
 			
 			final InsumoDTO insumo = new InsumoDTO();
-			insumo.setNombre(this.nombreInsumoTb.getText());
-			insumo.setMarca(this.marcaInsumoTb.getText());
-			insumo.setCategoria(this.categoriaInsumoTb.getText());
+			insumo.setNombre(this.nombreInsumoSb.getText());
+			insumo.setMarca(this.marcaInsumoSb.getText());
+			insumo.setCategoria(this.categoriaInsumoSb.getText());
 			insumo.setObservaciones(this.observacionesTb.getText());
 			int lote = Integer.parseInt(this.loteCompraInsumoTb.getText());
 			insumo.setLoteCompra(lote);
@@ -589,7 +650,9 @@ public class P_FormularioInsumo  extends Composite {
 			eliminar.setStyleName("labelBorrar");
 			eliminar.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					eliminar(nombreProveedor);
+					boolean confirm = Window.confirm("Está seguro de que desea eliminar el proveedor?");
+					if(confirm == true)
+						eliminar(nombreProveedor);
 				}
 			});
 
@@ -640,5 +703,26 @@ public class P_FormularioInsumo  extends Composite {
 		}
 
 		return elemento;
+	}
+	
+	protected void cargarSugerenciaMarcas(List<String> result) {
+		for (String sugerencia : result) {
+			listaMarcas.add(sugerencia);
+		}
+		
+	}
+	
+	protected void cargarSugerenciaCategorias(List<String> result) {
+		for (String sugerencia : result) {
+			listaCategorias.add(sugerencia);
+		}
+		
+	}
+	
+	protected void cargarSugerenciaInsumos(List<String> result) {
+		for (String sugerencia : result) {
+			listaInsumos.add(sugerencia);
+		}
+		
 	}
 }

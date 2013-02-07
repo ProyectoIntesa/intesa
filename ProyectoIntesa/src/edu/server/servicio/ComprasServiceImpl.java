@@ -797,7 +797,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 
 	@Override
-	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException {
+	public boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden,String tipoUsuario) throws IllegalArgumentException {
 		
 		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
 		Compras adminCompras = new Compras();
@@ -808,7 +808,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		Insumos adminInsumo = new Insumos();
 		String nombre = orden.getEmpleado().split(", ")[1];
 		String apellido = orden.getEmpleado().split(", ")[0];
-		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
+		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, tipoUsuario);
 		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
 		Proveedor prov = adminProv.getProveedorPorNombre(orden.getProveedor());
 		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio());
@@ -872,14 +872,14 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 
 	@Override
-	public boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja) throws IllegalArgumentException {
+	public boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja, String tipoUsuario) throws IllegalArgumentException {
 		
 		boolean primerBandera = false;
 		boolean segundaBandera = false;
 		
-		primerBandera = this.eliminarOrdenCompraInsumos(ordenVieja);
+		primerBandera = this.eliminarOrdenCompraInsumos(ordenVieja,tipoUsuario);
 		
-		segundaBandera = this.registrarOrdenCompraInsumos(orden);
+		segundaBandera = this.registrarOrdenCompraInsumos(orden,tipoUsuario);
 		
 		if(primerBandera && segundaBandera){
 			return true;			
@@ -892,7 +892,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 	
 	@Override
-	public boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException {
+	public boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, String tipoUsuario) throws IllegalArgumentException {
 		
 		OrdenCompraInsumo nueva = new OrdenCompraInsumo();
 		Compras adminCompras = new Compras();
@@ -903,7 +903,7 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		Insumos adminInsumo = new Insumos();
 		String nombre = orden.getEmpleado().split(", ")[1];
 		String apellido = orden.getEmpleado().split(", ")[0];
-		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, "COMPRAS");
+		int idEmpleado = adEmpleado.getIdEmpleado(nombre, apellido, tipoUsuario);
 		int idEstado = adminEstado.getIdEstado(orden.getEstadoOrden());
 		Proveedor prov = adminProv.getProveedorPorNombre(orden.getProveedor());
 		int idModoEnvio = adminModo.getIdModoDeEnvio(orden.getModoEnvio());
@@ -1160,16 +1160,18 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 	}
 	
 	@Override
- 	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException {
+ 	public List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada(String rol, String nombreUsuario, String apellidoUsuario) throws IllegalArgumentException {
 
 		Administrador adminAdmin = new Administrador();
 		Compras adminCompras = new Compras();
 		Proveedores adminProv = new Proveedores();
-
+		Empleado adEmpleado = new Empleado();
+		int idEmpleado = adEmpleado.getIdEmpleado(nombreUsuario, apellidoUsuario, rol);
+		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		List<OrdenCompraInsumoDTO> listaResult = new LinkedList<OrdenCompraInsumoDTO>();
 
-		result = adminCompras.getOrdenCompraInsumoGuardada();
+		result = adminCompras.getOrdenCompraInsumoGuardada(idEmpleado);
 
 		for (OrdenCompraInsumo orden : result) {
 
@@ -1357,6 +1359,59 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 		return adminCompras.actualizarOrdenCompraInsumos(nueva);
 	}
 
+	@Override
+	public List<String> getNombresPaises() throws IllegalArgumentException {
 
+		Proveedores adminProv = new Proveedores();
+
+		return adminProv.getNombresPaises();
+
+	}
+	
+	@Override
+	public List<String> getNombresProvincias(String pais) throws IllegalArgumentException {
+
+		Proveedores adminProv = new Proveedores();
+		int prov = adminProv.getNroIdPais(pais);
+		return adminProv.getNombresProvincias(prov);
+
+	}
+	
+	@Override
+	public List<String> getNombresLocalidades(String prov) throws IllegalArgumentException {
+
+		Proveedores adminProv = new Proveedores();
+		int loc = adminProv.getNroIdProvincia(prov);
+		return adminProv.getNombresLocalidades(loc);
+
+	}
+
+	@Override
+	public List<String> getMarcas() throws IllegalArgumentException {
+
+		Insumos adminInsumos = new Insumos();
+
+		return adminInsumos.getNombresMarcas();
+
+	}
+	
+	@Override
+	public List<String> getCategorias() throws IllegalArgumentException {
+
+		Insumos adminInsumos = new Insumos();
+
+		return adminInsumos.getNombresCategorias();
+
+	}
+	
+	@Override
+	public List<String> getInsumos() throws IllegalArgumentException {
+
+		Insumos adminInsumos = new Insumos();
+
+		return adminInsumos.getNombresInsumos();
+
+	}
+	
 	
 }

@@ -91,9 +91,13 @@ public class P_Login extends Composite {
 								inicioPantallaAdministrador(result.getNombre());
 							} else if (result.getRol().compareTo("VENTAS") == 0){
 								inicioPantallaVentas(result.getNombre());
-							} else if (result.getRol().compareTo("GERENTE PRODUCCION") == 0){
+							} else if (result.getRol().compareTo("GERENTE DE PRODUCCION") == 0){
 								inicioPantallaGerenteProduccion(result.getNombre());
-							} else if (result.getRol().compareTo("SUPERVISOR PRODUCCION") == 0){
+							} else if (result.getRol().compareTo("GERENTE DE COMPRAS") == 0){
+								inicioPantallaGerenteCompras(result.getNombre());
+							} else if (result.getRol().compareTo("JEFE DE FABRICA") == 0){
+								inicioPantallaJefeFabrica(result.getNombre());
+							} else if (result.getRol().compareTo("SUPERVISOR") == 0){
 								inicioPantallaSupervisorProduccion(result.getNombre());
 							} else if (result.getRol().compareTo("INGENIERIA") == 0){
 								inicioPantallaIngenieria(result.getNombre());
@@ -220,10 +224,38 @@ public class P_Login extends Composite {
 
 
 	}
+	
+	protected void inicioPantallaGerenteCompras(String usuario) {
+
+		 P_PantallaGerenteCompras gerenteCompras = new P_PantallaGerenteCompras(usuario);
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(gerenteCompras);
+		 try {
+			 this.finalize();
+		 } catch (Throwable e) {
+			 e.printStackTrace();
+		 }
+
+
+	}
+	
+	protected void inicioPantallaJefeFabrica(String usuario) {
+
+		 P_PantallaJefeFabrica jefeFabrica = new P_PantallaJefeFabrica(usuario,"JEFE DE FABRICA");
+		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		 RootPanel.get().add(jefeFabrica);
+		 try {
+			 this.finalize();
+		 } catch (Throwable e) {
+			 e.printStackTrace();
+		 }
+
+
+	}
 
 	protected void inicioPantallaGerenteProduccion(String usuario) {
 
-		 P_PantallaGerenteProduccion produccion = new P_PantallaGerenteProduccion(usuario,"GERENTE PRODUCCION");
+		 P_PantallaGerenteProduccion produccion = new P_PantallaGerenteProduccion(usuario,"GERENTE DE PRODUCCION");
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(produccion);
 		 try {
@@ -236,7 +268,7 @@ public class P_Login extends Composite {
 	
 	protected void inicioPantallaSupervisorProduccion(String usuario) {
 
-		 P_PantallaSupervisorProduccion produccion = new P_PantallaSupervisorProduccion(usuario,"SUPERVISOR PRODUCCION");
+		 P_PantallaSupervisorProduccion produccion = new P_PantallaSupervisorProduccion(usuario,"SUPERVISOR");
 		 RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
 		 RootPanel.get().add(produccion);
 		 try {

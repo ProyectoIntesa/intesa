@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -14,11 +16,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+
+import edu.shared.DTO.InsumoDTO;
 
 public class P_PantallaGerenteProduccion extends Composite {
 
@@ -35,19 +40,18 @@ public class P_PantallaGerenteProduccion extends Composite {
 	private Button btnCerrarSesin;
 	private LayoutPanel menu;
 	private Tree menuLateral;
-	private TreeItem nuevaOrdenSuministroInsumos;
-	private TreeItem buscarOrdenSuministroInsumos;
-	private TreeItem validarOrdenSuministroInsumos;
-	private TreeItem ordenCompraInsumos;
 	private TreeItem actualizarCantidadInsumo;
+	private TreeItem insumosCargar;
+	private TreeItem insumosBuscar;
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
 	private String rolUsuario;
+	private InsumoDTO insumoSelec;
 
 	public P_PantallaGerenteProduccion(String usuarioLogueado, String rolUsuario) {
 		
-		Window.setTitle("INTESA - GERENTE PRODUCCIÓN");
+		Window.setTitle("INTESA - GERENTE DE PRODUCCIÓN");
 		
 		this.usuario = usuarioLogueado;
 		this.rolUsuario = rolUsuario;
@@ -108,33 +112,18 @@ public class P_PantallaGerenteProduccion extends Composite {
 		menuLateral = new Tree();
 		menu.add(menuLateral);
 		menuLateral.setSize("100%", "100%");
-
-		TreeItem ordenSuministro = menuLateral.addItem(constante.provisionDeInsumos());
-		ordenSuministro.setStyleName("elementoMenu");
-
-		nuevaOrdenSuministroInsumos = new TreeItem(constante.crearOrden());
-		nuevaOrdenSuministroInsumos.setStyleName("suElementoMenu");
-		ordenSuministro.addItem(nuevaOrdenSuministroInsumos);
-		
-		buscarOrdenSuministroInsumos = new TreeItem(constante.buscarOrden());
-		buscarOrdenSuministroInsumos.setStyleName("suElementoMenu");
-		ordenSuministro.addItem(buscarOrdenSuministroInsumos);
-
-		validarOrdenSuministroInsumos = new TreeItem(constante.validarOrden());
-		validarOrdenSuministroInsumos.setStyleName("suElementoMenu");
-		ordenSuministro.addItem(validarOrdenSuministroInsumos);		
-
-		
-		TreeItem validarCompras = menuLateral.addItem(constante.validarCompras());
-		validarCompras.setStyleName("elementoMenu");
-		
-		ordenCompraInsumos = new TreeItem(constante.deInsumos());
-		ordenCompraInsumos.setStyleName("suElementoMenu");
-		validarCompras.addItem(ordenCompraInsumos);
 		
 		TreeItem insumos = menuLateral.addItem(constante.insumos());
 		insumos.setStyleName("elementoMenu");
 		
+		insumosCargar = new TreeItem(constante.cargar());
+		insumosCargar.setStyleName("suElementoMenu");
+		insumos.addItem(insumosCargar);
+		
+		insumosBuscar = new TreeItem(constante.buscar());
+		insumosBuscar.setStyleName("suElementoMenu");
+		insumos.addItem(insumosBuscar);	
+
 		actualizarCantidadInsumo = new TreeItem(constante.actualizarCant());
 		actualizarCantidadInsumo.setStyleName("suElementoMenu");
 		insumos.addItem(actualizarCantidadInsumo);
@@ -189,10 +178,10 @@ public class P_PantallaGerenteProduccion extends Composite {
 
 		String titulo;
 		int tab;
-		
-		if (event.getSelectedItem() == nuevaOrdenSuministroInsumos) {
+								
+		if (event.getSelectedItem() == insumosCargar) {
 
-			titulo = constante.ordenDeProvisionDeInsumos();
+			titulo = constante.nuevoInsumo();
 			tab = numeroElemento(titulo);
 			if (tab == -1) {
 
@@ -200,47 +189,46 @@ public class P_PantallaGerenteProduccion extends Composite {
 				formulario.setTitle(titulo);
 				formulario.setStyleName("panelFormulario");
 				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-				P_FormularioOrdenProvisionInsumo provisionInsumo = new P_FormularioOrdenProvisionInsumo(panelTrabajo,this.usuario,this.rolUsuario);
-				formulario.add(provisionInsumo);
+				P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo);
+				formulario.add(insumo);
 				panelTrabajo.add(formulario, titulo, false);
 				panelTrabajo.selectTab(numeroElemento(titulo));
 			} else
 				panelTrabajo.selectTab(tab);
 			
-			
 		}
 		
-		if (event.getSelectedItem() == buscarOrdenSuministroInsumos) {
+		if (event.getSelectedItem() == insumosBuscar) {
 			
-			
-			P_BuscarOrdenProvisionInsumo popUp = new P_BuscarOrdenProvisionInsumo(this.usuario,this.rolUsuario);
-			popUp.setGlassEnabled(true);
-			popUp.center();
-			popUp.show();
+			if(this.numeroElemento(constante.modificarInsumo())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR INSUMO\"");
+			}
+			else{
+				
+				final P_BuscarInsumo popUp = new P_BuscarInsumo();
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 
-			
-			
-		}
-		
-		if (event.getSelectedItem() == validarOrdenSuministroInsumos) {
-			
-			P_ValidarCancelarOrdenProvisionInsumos popUp = new P_ValidarCancelarOrdenProvisionInsumos();
-			popUp.setGlassEnabled(true);
-			popUp.center();
-			popUp.show();
-
-			
-			
-		}
-		
-		
-		if (event.getSelectedItem() == ordenCompraInsumos) {
-			
-			P_ValidarCancelarOrdenCompraInsumos popUp = new P_ValidarCancelarOrdenCompraInsumos();
-			popUp.setGlassEnabled(true);
-			popUp.center();
-			popUp.show();
-			
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+						
+						insumoSelec= popUp.getInsumoDTO();
+						boolean modificar = popUp.getModificarInsumo();
+						boolean salirEliminar = popUp.getSalirEliminar();
+								
+						if (modificar == true)
+						{
+							modificarInsumo();
+						}
+						if (salirEliminar == true)
+							buscarInsumo();
+						
+						
+					}
+				});
+			}
 		}
 		
 		if (event.getSelectedItem() == actualizarCantidadInsumo) {
@@ -270,4 +258,52 @@ public class P_PantallaGerenteProduccion extends Composite {
 		return elemento;
 	}
 
+	protected void modificarInsumo(){
+		
+		String titulo;
+		int tab;
+		titulo = constante.modificarInsumo();
+		tab = numeroElemento(titulo);
+
+		if (tab == -1) {
+
+			formulario = new ScrollPanel();
+			formulario.setTitle(titulo);
+			formulario.setStyleName("panelFormulario");
+			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+			P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo,this.insumoSelec,titulo);
+			formulario.add(insumo);
+			panelTrabajo.add(formulario, titulo, false);
+			panelTrabajo.selectTab(numeroElemento(titulo));
+		} else
+			panelTrabajo.selectTab(tab);
+		
+	}
+	
+	protected void buscarInsumo(){
+		final P_BuscarInsumo popUp = new P_BuscarInsumo();
+		popUp.setGlassEnabled(true);
+		popUp.center();
+		popUp.show();
+		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				
+				insumoSelec= popUp.getInsumoDTO();
+				boolean modificar = popUp.getModificarInsumo();
+				boolean salirEliminar = popUp.getSalirEliminar();
+						
+				if (modificar == true)
+				{
+					modificarInsumo();
+				}
+				if (salirEliminar == true)
+					buscarInsumo();
+				
+				
+			}
+		});
+	}
+	
 }

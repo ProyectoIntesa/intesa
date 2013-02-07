@@ -102,6 +102,21 @@ public class Insumos {
 
 	}
 	
+	public List<String> getNombresInsumos() {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createSQLQuery("select nombre from Insumo").list();
+
+		sec.close();
+
+		return result;
+
+	}
+	
 	public List<String> getNombresMarcas() {
 
 		List<String> result = new LinkedList<String>();

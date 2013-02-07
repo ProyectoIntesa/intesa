@@ -50,20 +50,10 @@ public class P_PantallaCompras extends Composite {
 	private TreeItem buscar;
 	private TreeItem guardadas;
 	private TreeItem deInsumos;
-	
 
-	
-	//-------------------------------------------------------------------------------
-	private TreeItem insumos;
-	private TreeItem insumosCargar;
-	private TreeItem insumosBuscar;
-
-	//-------------------------------------------------------------------------------
-	
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private ProveedorDTO proveedorSelec;
-	private InsumoDTO insumoSelec;
 	private List<InsumoDTO> listaOrdenCompraInsumo;
 	private String proveedorElegido;
 	private String usuario;
@@ -161,22 +151,6 @@ public class P_PantallaCompras extends Composite {
 		deInsumos = new TreeItem(constante.deInsumos());
 		deInsumos.setStyleName("suElementoMenu");
 		ordenCompra.addItem(deInsumos);
-		
-		//-------------------------------------------------------------------------------
-		TreeItem insumos = menuLateral.addItem(constante.insumos());
-		insumos.setStyleName("elementoMenu");
-		
-		insumosCargar = new TreeItem(constante.cargar());
-		insumosCargar.setStyleName("suElementoMenu");
-		insumos.addItem(insumosCargar);
-		
-		insumosBuscar = new TreeItem(constante.buscar());
-		insumosBuscar.setStyleName("suElementoMenu");
-		insumos.addItem(insumosBuscar);		
-		
-	
-		
-		//-------------------------------------------------------------------------------		
 
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -295,58 +269,6 @@ public class P_PantallaCompras extends Composite {
 			
 		}
 
-		if (event.getSelectedItem() == insumosCargar) {
-
-			titulo = constante.nuevoInsumo();
-			tab = numeroElemento(titulo);
-			if (tab == -1) {
-
-				formulario = new ScrollPanel();
-				formulario.setTitle(titulo);
-				formulario.setStyleName("panelFormulario");
-				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-				P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo);
-				formulario.add(insumo);
-				panelTrabajo.add(formulario, titulo, false);
-				panelTrabajo.selectTab(numeroElemento(titulo));
-			} else
-				panelTrabajo.selectTab(tab);
-			
-		}
-		
-		if (event.getSelectedItem() == insumosBuscar) {
-			
-			if(this.numeroElemento(constante.modificarInsumo())!=-1){
-				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"MODIFICAR INSUMO\"");
-			}
-			else{
-				
-				final P_BuscarInsumo popUp = new P_BuscarInsumo();
-				popUp.setGlassEnabled(true);
-				popUp.center();
-				popUp.show();
-				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-					@Override
-					public void onClose(CloseEvent<PopupPanel> event) {
-						
-						insumoSelec= popUp.getInsumoDTO();
-						boolean modificar = popUp.getModificarInsumo();
-						boolean salirEliminar = popUp.getSalirEliminar();
-								
-						if (modificar == true)
-						{
-							modificarInsumo();
-						}
-						if (salirEliminar == true)
-							buscarInsumo();
-						
-						
-					}
-				});
-			}
-		}
-
 		
 		if (event.getSelectedItem() == guardadas) {
 
@@ -355,7 +277,7 @@ public class P_PantallaCompras extends Composite {
 			}
 			else{
 				
-				final P_VerOrdenesGuardadas popUp = new P_VerOrdenesGuardadas();
+				final P_VerOrdenesGuardadas popUp = new P_VerOrdenesGuardadas("COMPRAS", this.usuario);
 				popUp.setGlassEnabled(true);
 				popUp.center();
 				popUp.show();
@@ -466,7 +388,7 @@ public class P_PantallaCompras extends Composite {
 			formulario.setTitle(titulo);
 			formulario.setStyleName("panelFormulario");
 			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,listaOrdenCompraInsumo,proveedorElegido,titulo,usuario);
+			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,listaOrdenCompraInsumo,proveedorElegido,titulo,usuario,"COMPRAS");
 			formulario.add(ordenCompra);
 			panelTrabajo.add(formulario, titulo, false);
 			panelTrabajo.selectTab(numeroElemento(titulo));
@@ -489,7 +411,7 @@ public class P_PantallaCompras extends Composite {
 			formulario.setTitle(titulo);
 			formulario.setStyleName("panelFormulario");
 			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,titulo,ordenInsumo);
+			P_FormularioOrdenCompraInsumo ordenCompra = new P_FormularioOrdenCompraInsumo(panelTrabajo,titulo,ordenInsumo,"COMPRAS");
 			formulario.add(ordenCompra);
 			panelTrabajo.add(formulario, titulo, false);
 			panelTrabajo.selectTab(numeroElemento(titulo));
@@ -520,29 +442,7 @@ public class P_PantallaCompras extends Composite {
 		
 		
 	}
-	
-	protected void modificarInsumo(){
 		
-		String titulo;
-		int tab;
-		titulo = constante.modificarInsumo();
-		tab = numeroElemento(titulo);
-
-		if (tab == -1) {
-
-			formulario = new ScrollPanel();
-			formulario.setTitle(titulo);
-			formulario.setStyleName("panelFormulario");
-			formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
-			P_FormularioInsumo insumo = new P_FormularioInsumo(panelTrabajo,this.insumoSelec,titulo);
-			formulario.add(insumo);
-			panelTrabajo.add(formulario, titulo, false);
-			panelTrabajo.selectTab(numeroElemento(titulo));
-		} else
-			panelTrabajo.selectTab(tab);
-		
-	}
-	
 	private int numeroElemento(String titulo) {
 
 		int elemento = -1;
@@ -559,31 +459,7 @@ public class P_PantallaCompras extends Composite {
 		return elemento;
 	}
 	
-	protected void buscarInsumo(){
-		final P_BuscarInsumo popUp = new P_BuscarInsumo();
-		popUp.setGlassEnabled(true);
-		popUp.center();
-		popUp.show();
-		popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
 
-			@Override
-			public void onClose(CloseEvent<PopupPanel> event) {
-				
-				insumoSelec= popUp.getInsumoDTO();
-				boolean modificar = popUp.getModificarInsumo();
-				boolean salirEliminar = popUp.getSalirEliminar();
-						
-				if (modificar == true)
-				{
-					modificarInsumo();
-				}
-				if (salirEliminar == true)
-					buscarInsumo();
-				
-				
-			}
-		});
-	}
 	
 	protected void buscar(){
 				

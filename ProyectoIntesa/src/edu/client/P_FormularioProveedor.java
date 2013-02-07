@@ -1,6 +1,7 @@
 package edu.client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -8,14 +9,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 import edu.client.VentasService.VentasService;
 import edu.client.VentasService.VentasServiceAsync;
@@ -88,10 +93,10 @@ public class P_FormularioProveedor extends Composite {
 	private TextBox pisoTb;
 	private TextBox oficinaTb;
 	private TextBox cpaTb;
-	private TextBox localidadTb;
+	private SuggestBox localidadSb;
 	private TextBox codigoPostalTb;
-	private TextBox provinciaTb;
-	private TextBox paisTb;
+	private SuggestBox provinciaSb;
+	private SuggestBox paisSb;
 	private TextBox telefonoTb;
 	private TextBox webTb;
 	private TextBox faxTb;
@@ -99,6 +104,10 @@ public class P_FormularioProveedor extends Composite {
 	private TextBox tipoProveedorTb;
 	private TextArea observacionTb;
 
+	private MultiWordSuggestOracle listaLocalidades;
+	private MultiWordSuggestOracle listaProvincias;
+	private MultiWordSuggestOracle listaPaises;
+	
 	// botones
 	private Button btnAgregar;
 	private Button btnCancelar;
@@ -173,10 +182,7 @@ public class P_FormularioProveedor extends Composite {
 		pisoTb.setStyleName("textoCorto");
 		oficinaTb = new TextBox();
 		cpaTb = new TextBox();
-		localidadTb = new TextBox();
 		codigoPostalTb = new TextBox();
-		provinciaTb = new TextBox();
-		paisTb = new TextBox();
 		telefonoTb = new TextBox();
 		webTb = new TextBox();
 		faxTb = new TextBox();
@@ -186,6 +192,75 @@ public class P_FormularioProveedor extends Composite {
 		observacionTb.setDirectionEstimator(false);
 		observacionTb.setWidth("100%");
 
+		
+		listaLocalidades = new MultiWordSuggestOracle();
+		listaProvincias = new MultiWordSuggestOracle();
+		listaPaises = new MultiWordSuggestOracle();
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.getNombresPaises(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaPaises(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		
+			
+		paisSb = new SuggestBox(listaPaises);
+		
+		provinciaSb = new SuggestBox(listaProvincias);
+		provinciaSb.addClickListener(new ClickListener() {
+						
+			@Override
+			public void onClick(Widget sender) {
+				
+				final String pais = paisSb.getText();
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getNombresProvincias(pais, new AsyncCallback<List<String>>() {
+					@Override
+					public void onSuccess(List<String> result) {
+						cargarSugerenciaProvincias(result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+		});
+
+		localidadSb = new SuggestBox(listaLocalidades);
+		localidadSb.addClickListener(new ClickListener() {
+			
+			@Override
+			public void onClick(Widget sender) {
+				
+				final String prov = provinciaSb.getText();
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getNombresLocalidades(prov, new AsyncCallback<List<String>>() {
+					@Override
+					public void onSuccess(List<String> result) {
+						cargarSugerenciaLocalidades(result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+		});
+		
+		
+		
 		btnNuevoContacto = new Button(constante.agregarContacto());
 		btnNuevoContacto.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -258,11 +333,11 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.getFlexCellFormatter().setColSpan(3, 0, 10);
 
 		formularioCliente.setWidget(4, 0, pais);
-		formularioCliente.setWidget(4, 1, paisTb);
+		formularioCliente.setWidget(4, 1, paisSb);
 		formularioCliente.setWidget(4, 2, provincia);
-		formularioCliente.setWidget(4, 3, provinciaTb);
+		formularioCliente.setWidget(4, 3, provinciaSb);
 		formularioCliente.setWidget(4, 4, localidad);
-		formularioCliente.setWidget(4, 5, localidadTb);
+		formularioCliente.setWidget(4, 5, localidadSb);
 		formularioCliente.setWidget(4, 6, codigoPostal);
 		formularioCliente.setWidget(4, 7, codigoPostalTb);
 		formularioCliente.setWidget(4, 8, sugerenciaCPA);
@@ -337,6 +412,23 @@ public class P_FormularioProveedor extends Composite {
 		this.proveedor = proveedorSeleccionado;
 		this.titulo = titulo;
 		
+		listaLocalidades = new MultiWordSuggestOracle();
+		listaProvincias = new MultiWordSuggestOracle();
+		listaPaises = new MultiWordSuggestOracle();
+		
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.getNombresPaises(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> result) {
+				cargarSugerenciaPaises(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+			}
+		});
+		
 		elementos = new ArrayList<String>();
 		datosEmpresa = new Label(constante.datosEmpresa());
 		datosEmpresa.setStyleName("labelTitulo");
@@ -410,14 +502,14 @@ public class P_FormularioProveedor extends Composite {
 		oficinaTb.setText(this.proveedor.getDireccion().getOficina());
 		cpaTb = new TextBox();
 		cpaTb.setText(this.proveedor.getDireccion().getCpa());
-		localidadTb = new TextBox();
-		localidadTb.setText(this.proveedor.getDireccion().getLocalidad());
+		localidadSb = new SuggestBox(listaLocalidades);
+		localidadSb.setText(this.proveedor.getDireccion().getLocalidad());
 		codigoPostalTb = new TextBox();
 		codigoPostalTb.setText(this.proveedor.getDireccion().getCodigoLocalidad());
-		provinciaTb = new TextBox();
-		provinciaTb.setText(this.proveedor.getDireccion().getProvincia());
-		paisTb = new TextBox();
-		paisTb.setText(this.proveedor.getDireccion().getPais());
+		provinciaSb = new SuggestBox(listaProvincias);
+		provinciaSb.setText(this.proveedor.getDireccion().getProvincia());
+		paisSb = new SuggestBox(listaPaises);
+		paisSb.setText(this.proveedor.getDireccion().getPais());
 		telefonoTb = new TextBox();
 		telefonoTb.setText(this.proveedor.getTelefono());
 		webTb = new TextBox();
@@ -433,6 +525,50 @@ public class P_FormularioProveedor extends Composite {
 		tipoProveedorTb = new TextBox();
 		tipoProveedorTb.setText(this.proveedor.getTipoProveedor());
 
+		provinciaSb.addClickListener(new ClickListener() {
+			
+			@Override
+			public void onClick(Widget sender) {
+				
+				final String pais = paisSb.getText();
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getNombresProvincias(pais, new AsyncCallback<List<String>>() {
+					@Override
+					public void onSuccess(List<String> result) {
+						cargarSugerenciaProvincias(result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+		});
+
+		localidadSb.addClickListener(new ClickListener() {
+			
+			@Override
+			public void onClick(Widget sender) {
+				
+				final String prov = provinciaSb.getText();
+				
+				ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+				comprasService.getNombresLocalidades(prov, new AsyncCallback<List<String>>() {
+					@Override
+					public void onSuccess(List<String> result) {
+						cargarSugerenciaLocalidades(result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR EN EL SERVICIO");
+					}
+				});
+			}
+		});
+		
 		btnNuevoContacto = new Button(constante.agregarContacto());
 		btnNuevoContacto.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -506,11 +642,11 @@ public class P_FormularioProveedor extends Composite {
 		formularioCliente.getFlexCellFormatter().setColSpan(3, 0, 10);
 
 		formularioCliente.setWidget(4, 0, pais);
-		formularioCliente.setWidget(4, 1, paisTb);
+		formularioCliente.setWidget(4, 1, paisSb);
 		formularioCliente.setWidget(4, 2, provincia);
-		formularioCliente.setWidget(4, 3, provinciaTb);
+		formularioCliente.setWidget(4, 3, provinciaSb);
 		formularioCliente.setWidget(4, 4, localidad);
-		formularioCliente.setWidget(4, 5, localidadTb);
+		formularioCliente.setWidget(4, 5, localidadSb);
 		formularioCliente.setWidget(4, 6, codigoPostal);
 		formularioCliente.setWidget(4, 7, codigoPostalTb);
 		formularioCliente.setWidget(4, 8, sugerenciaCPA);
@@ -580,7 +716,9 @@ public class P_FormularioProveedor extends Composite {
 			eliminar.setStyleName("labelBorrar");
 			eliminar.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					eliminarContacto(nombreContacto);
+					boolean confirm = Window.confirm("Está seguro de que desea eliminar el contacto?");
+					if(confirm == true)
+						eliminarContacto(nombreContacto);
 				}
 			});
 			
@@ -620,18 +758,18 @@ public class P_FormularioProveedor extends Composite {
 		boolean vCuit = validar.textBoxVacio(this.nroCuitTb.getText());
 		boolean vResponsable = validar.textBoxVacio(this.responsableTb.getText());
 		boolean vTipoProveedor = validar.textBoxVacio(this.tipoProveedorTb.getText());
-		boolean vPais = validar.textBoxVacio(this.paisTb.getText());
-		boolean vProv = validar.textBoxVacio(this.provinciaTb.getText());
-		boolean vLocalidad = validar.textBoxVacio(this.localidadTb.getText());
+		boolean vPais = validar.textBoxVacio(this.paisSb.getText());
+		boolean vProv = validar.textBoxVacio(this.provinciaSb.getText());
+		boolean vLocalidad = validar.textBoxVacio(this.localidadSb.getText());
 		boolean vCalle = validar.textBoxVacio(this.calleTb.getText());
 		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
 		
 		if(!vNombreEmpresa && !vCuit && !vResponsable && !vTipoProveedor && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
 			
 			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisTb.getText());
-			direccion.setProvincia(this.provinciaTb.getText());
-			direccion.setLocalidad(this.localidadTb.getText());
+			direccion.setPais(this.paisSb.getText());
+			direccion.setProvincia(this.provinciaSb.getText());
+			direccion.setLocalidad(this.localidadSb.getText());
 			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
 			direccion.setCalle(this.calleTb.getText());
 			direccion.setAltura(this.alturaTb.getText());
@@ -703,17 +841,17 @@ public class P_FormularioProveedor extends Composite {
 		boolean vCuit = validar.textBoxVacio(this.nroCuitTb.getText());
 		boolean vResponsable = validar.textBoxVacio(this.responsableTb.getText());
 		boolean vTipoProveedor = validar.textBoxVacio(this.tipoProveedorTb.getText());
-		boolean vPais = validar.textBoxVacio(this.paisTb.getText());
-		boolean vProv = validar.textBoxVacio(this.provinciaTb.getText());
-		boolean vLocalidad = validar.textBoxVacio(this.localidadTb.getText());
+		boolean vPais = validar.textBoxVacio(this.paisSb.getText());
+		boolean vProv = validar.textBoxVacio(this.provinciaSb.getText());
+		boolean vLocalidad = validar.textBoxVacio(this.localidadSb.getText());
 		boolean vCalle = validar.textBoxVacio(this.calleTb.getText());
 		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
 		
 		if(!vCuit && !vResponsable && !vTipoProveedor && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
 			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisTb.getText());
-			direccion.setProvincia(this.provinciaTb.getText());
-			direccion.setLocalidad(this.localidadTb.getText());
+			direccion.setPais(this.paisSb.getText());
+			direccion.setProvincia(this.provinciaSb.getText());
+			direccion.setLocalidad(this.localidadSb.getText());
 			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
 			direccion.setCalle(this.calleTb.getText());
 			direccion.setAltura(this.alturaTb.getText());
@@ -789,7 +927,9 @@ public class P_FormularioProveedor extends Composite {
 		eliminar.setStyleName("labelBorrar");
 		eliminar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eliminar(nombreContacto);
+				boolean confirm = Window.confirm("Está seguro de que desea eliminar el contacto?");
+				if(confirm == true)
+					eliminar(nombreContacto);
 			}
 		});
 
@@ -859,5 +999,28 @@ public class P_FormularioProveedor extends Composite {
 		return elemento;
 	}
 
+	protected void cargarSugerenciaPaises(List<String> result) {
+		for (String sugerencia : result) {
+			listaPaises.add(sugerencia);
+		}
+		
+	}
+	
+	protected void cargarSugerenciaProvincias(List<String> result) {
+		listaProvincias.clear();
+		for (String sugerencia : result) {
+			listaProvincias.add(sugerencia);
+		}
+		
+	}
+	
+	protected void cargarSugerenciaLocalidades(List<String> result) {
+		listaLocalidades.clear();
+		for (String sugerencia : result) {
+			listaLocalidades.add(sugerencia);
+		}
+		
+	}
+	
 }
 

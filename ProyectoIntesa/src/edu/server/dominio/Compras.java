@@ -563,12 +563,15 @@ public class Compras {
 	 *  retorna una lista de órdenes de compras de insumos en estado de edición
 	 * @return
 	 */
-	public List<OrdenCompraInsumo> getOrdenCompraInsumoGuardada() {
+	public List<OrdenCompraInsumo> getOrdenCompraInsumoGuardada(int idEmpleado) {
 
+		
+		
+		
 		List<OrdenCompraInsumo> result = new LinkedList<OrdenCompraInsumo>();
 		Estado adminEstado = new Estado();
 
-		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("EDICION");
+		String criterios = " where id_Estado_Orden = " + adminEstado.getIdEstado("EDICION") + " and id_Generado_Por = " + idEmpleado;
 
 		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
 		sec.beginTransaction();

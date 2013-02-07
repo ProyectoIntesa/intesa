@@ -304,7 +304,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 			nueva.getRenglonOrdenProvisionInsumos().add(renglon);
 		}
 		
-		if(rol.compareTo("SUPERVISOR PRODUCCION") == 0){
+		if(rol.compareTo("SUPERVISOR") == 0){
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
 			produccionService.registrarOrdenProvisionInsumo(nueva, new AsyncCallback<Long>() {
 
@@ -326,7 +326,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 			});
 		}
 		
-		if(rol.compareTo("GERENTE PRODUCCION") == 0){
+		if(rol.compareTo("JEFE DE FABRICA") == 0){
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
 			produccionService.registrarOrdenProvisionInsumoGerente(nueva, new AsyncCallback<Long>() {
 

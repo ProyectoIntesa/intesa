@@ -55,14 +55,22 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 	List<OrdenCompraInsumoDTO> ordenes;
 	private boolean modificarOrden;
 	private OrdenCompraInsumoDTO orden;
+	final String rolUsuario;
+	final String nombreUsuario;
+	final String apellidoUsuario;
 	
-	public P_VerOrdenesGuardadas() {
+	public P_VerOrdenesGuardadas(String rol, String usuario) {
 
 		super(false);
 
 		setStyleName("fondoPopup");
 		modificarOrden = false;
+		
+		this.rolUsuario = rol;
+		this.nombreUsuario = usuario.split(", ")[1];
+		this.apellidoUsuario = usuario.split(", ")[0];
 
+		
 		tipo_orden = new Label(constante.tipoOrden());
 		tipo_orden.setStyleName("gwt-LabelFormulario");
 		ver = new Label(constante.buscarPor());
@@ -147,7 +155,7 @@ public class P_VerOrdenesGuardadas extends PopupPanel {
 
 			case 0: {
 					
-				comprasService.getOrdenCompraInsumoGuardada(new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
+				comprasService.getOrdenCompraInsumoGuardada(this.rolUsuario, this.nombreUsuario, this.apellidoUsuario, new AsyncCallback<List<OrdenCompraInsumoDTO>>() {
 					
 					@Override
 					public void onSuccess(List<OrdenCompraInsumoDTO> result) {

@@ -96,8 +96,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	private List<InsumoDTO> listaOrdenCompraInsumo;
 	private String proveedorElegido;
 
-	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo, String responsable) {
+	public P_FormularioOrdenCompraInsumo(TabPanel padre, List<InsumoDTO> insumose, String prov, String titulo, String responsable,String tipoUsu) {
 
+		final String tipoUsuario = tipoUsu;
 		this.usuario = responsable;
 		this.padre = padre;
 		this.insumos = insumose;
@@ -172,7 +173,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		generar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				actualizaValores();
-				registrarOrden("GENERADA");
+				registrarOrden("GENERADA",tipoUsuario);
 			}
 		});
 
@@ -180,7 +181,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		guardar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				actualizaValores();
-				registrarOrden("EDICION");
+				registrarOrden("EDICION",tipoUsuario);
 			}
 		});
 
@@ -283,8 +284,9 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 	}
 	
 	//constructor llamado a la hora de modificar la orden de compra de insumo que fue guardada y vuelta a abrir
-	public P_FormularioOrdenCompraInsumo(TabPanel padre, String titulo, OrdenCompraInsumoDTO ordenInsumo) {
+	public P_FormularioOrdenCompraInsumo(TabPanel padre, String titulo, OrdenCompraInsumoDTO ordenInsumo,String tipoUsu) {
 
+		final String tipoUsuario = tipoUsu;
 		this.padre = padre;
 		this.titulo = titulo;
 		this.ordenInsumo = ordenInsumo;
@@ -378,7 +380,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 						
 			public void onClick(ClickEvent event) {
 				actualizaValoresEnModificacion();
-				registrarCambiosEnOrden("GENERADA",fechaEd,ordenVieja);
+				registrarCambiosEnOrden("GENERADA",fechaEd,ordenVieja,tipoUsuario);
 			}
 		});
 
@@ -386,7 +388,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		guardar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				actualizaValoresEnModificacion();
-				registrarCambiosEnOrden("EDICION",fechaEd,ordenVieja);
+				registrarCambiosEnOrden("EDICION",fechaEd,ordenVieja,tipoUsuario);
 			}
 		});
 
@@ -406,7 +408,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 				
 				boolean confirm = Window.confirm("Está seguro de que desea \"cancelar\" la orden de compra de insumo?");
 				if(confirm == true)
-					cancelarOrden(event,ordenVieja);
+					cancelarOrden(event,ordenVieja,tipoUsuario);
 			}
 		});
 		
@@ -575,9 +577,14 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		
 	}
 	
-	protected void registrarOrden(final String estado) {
+	protected void registrarOrden(final String estado,String tipoUsuario) {
 		OrdenCompraInsumoDTO nuevaOrden = new OrdenCompraInsumoDTO();
-		nuevaOrden.setEstadoOrden(estado);
+		
+		if(estado.compareTo("GENERADA") == 0 && tipoUsuario.compareTo("GERENTE DE COMPRAS") == 0)
+			nuevaOrden.setEstadoOrden("VALIDADA");
+		else
+			nuevaOrden.setEstadoOrden(estado);
+		
 		nuevaOrden.setEmpleado(usuario);
 		nuevaOrden.setFechaEdicion(new Date());
 		boolean banderita = false;
@@ -636,7 +643,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		
 		if(banderita == false){
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.registrarOrdenCompraInsumos(nuevaOrden, new AsyncCallback<Boolean>() {
+			comprasService.registrarOrdenCompraInsumos(nuevaOrden,tipoUsuario, new AsyncCallback<Boolean>() {
 
 				@Override
 				public void onSuccess(Boolean result) {
@@ -667,10 +674,16 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 	}
 	
-	protected void registrarCambiosEnOrden(final String estado, Date fechaEdicion, OrdenCompraInsumoDTO ordenVieja) {
+	protected void registrarCambiosEnOrden(final String estado, Date fechaEdicion, OrdenCompraInsumoDTO ordenVieja, String tipoUsuario) {
 		
 		OrdenCompraInsumoDTO nuevaOrden = new OrdenCompraInsumoDTO();
-		nuevaOrden.setEstadoOrden(estado);
+		
+		if(estado.compareTo("GENERADA") == 0 && tipoUsuario.compareTo("GERENTE DE COMPRAS") == 0)
+			nuevaOrden.setEstadoOrden("VALIDADA");
+		else
+			nuevaOrden.setEstadoOrden(estado);		
+		
+		
 		nuevaOrden.setEmpleado(usuario);
 		nuevaOrden.setFechaEdicion(fechaEdicion);
 		boolean banderita = false;
@@ -725,7 +738,7 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 		
 		if(banderita == false){
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.registrarModificacionOrdenCompraInsumos(nuevaOrden, ordenVieja, new AsyncCallback<Boolean>() {
+			comprasService.registrarModificacionOrdenCompraInsumos(nuevaOrden, ordenVieja, tipoUsuario, new AsyncCallback<Boolean>() {
 
 				@Override
 				public void onSuccess(Boolean result) {
@@ -872,10 +885,10 @@ public class P_FormularioOrdenCompraInsumo extends Composite {
 
 	}
 
-	public void cancelarOrden(ClickEvent event, OrdenCompraInsumoDTO ordenVieja) {
+	public void cancelarOrden(ClickEvent event, OrdenCompraInsumoDTO ordenVieja, String tipoUsuario) {
 				
 		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-		comprasService.eliminarOrdenCompraInsumos(ordenVieja, new AsyncCallback<Boolean>() {
+		comprasService.eliminarOrdenCompraInsumos(ordenVieja, tipoUsuario, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {

@@ -319,10 +319,82 @@ public class Proveedores {
 		sec.close();
 		return prov;
 	}
+
+	public List<String> getNombresPaises() {
+
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		
+		result = sec.createQuery("select nombre from Pais").list();
+
+		sec.close();
+		
+		return result;
+
+	}
 	
+	public List<String> getNombresProvincias(int idPais) {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createQuery("select nombre from Provincia where id_Pais = " + idPais).list();
+
+		sec.close();
+
+		return result;
+
+	}
 	
+	public List<String> getNombresLocalidades(int idProvincia) {
+
+		List<String> result = new LinkedList<String>();
+
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		result = sec.createQuery("select nombre from Localidad where id_Provincia = " + idProvincia).list();
+
+		sec.close();
+
+		return result;
+
+	}
 	
+	public int getNroIdPais(String pais){
+		
+		Object idPais = new Object();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		idPais = sec.createSQLQuery("select id_Pais from Pais where nombre like '" + pais + "'").uniqueResult();
+		if (idPais == null)
+			idPais = -1;
+		sec.close();
+		
+		return (int) idPais;
+		
+	}
 	
+	public int getNroIdProvincia(String prov){
+		
+		Object idProv = new Object();
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+
+		idProv = sec.createSQLQuery("select id_Provincia from Provincia where nombre like '" + prov + "'").uniqueResult();
+		if (idProv == null)
+			idProv = -1;
+		sec.close();
+		
+		return (int) idProv;
+		
+	}
 	
 	
 }

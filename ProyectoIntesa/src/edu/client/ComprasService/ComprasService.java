@@ -75,7 +75,7 @@ public interface ComprasService extends RemoteService {
 
 	List<String> getModoDeEnvio() throws IllegalArgumentException;
 
-	boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
+	boolean registrarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, String tipoUsuario) throws IllegalArgumentException;
 
 	List<String> getNombreEstados() throws IllegalArgumentException;
 
@@ -85,7 +85,7 @@ public interface ComprasService extends RemoteService {
 
 	boolean cancelarOrdencompraInsumo(long idOrden, String estado) throws IllegalArgumentException;
 
-	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada() throws IllegalArgumentException;
+	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoGuardada(String rolUsuario, String nombreUsuario, String apellidoUsuario) throws IllegalArgumentException;
 
 	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviada() throws IllegalArgumentException;
 
@@ -95,9 +95,9 @@ public interface ComprasService extends RemoteService {
 
 	boolean actualizarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
 
-	boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja) throws IllegalArgumentException;
+	boolean registrarModificacionOrdenCompraInsumos(OrdenCompraInsumoDTO orden, OrdenCompraInsumoDTO ordenVieja, String tipoUsuario) throws IllegalArgumentException;
 
-	boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden) throws IllegalArgumentException;
+	boolean eliminarOrdenCompraInsumos(OrdenCompraInsumoDTO orden, String tipoUsuario) throws IllegalArgumentException;
 
 	Boolean cancelarOrdenCompraInsumo(List<Long> listaOrdenes) throws IllegalArgumentException;
 
@@ -112,6 +112,22 @@ public interface ComprasService extends RemoteService {
 	Boolean getExistenciaInsumo(String nombreInsumo, String marcaInsumo) throws IllegalArgumentException;
 
 	List<OrdenCompraInsumoDTO> getOrdenCompraInsumoEnviadaRecibidaCerrada() throws IllegalArgumentException;
+
+	List<String> getNombresPaises() throws IllegalArgumentException;
+
+	List<String> getNombresProvincias(String pais) throws IllegalArgumentException;
+
+	List<String> getNombresLocalidades(String prov) throws IllegalArgumentException;
+
+	List<String> getInsumos() throws IllegalArgumentException;
+
+	List<String> getCategorias() throws IllegalArgumentException;
+
+	List<String> getMarcas() throws IllegalArgumentException;
+
+	
+
+
 
 
 	
