@@ -746,65 +746,31 @@ public class P_FormularioCliente extends Composite {
 		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
 		
 		if(!vNombreEmpresa && !vCuit && !vResponsable && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
-			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisSb.getText());
-			direccion.setProvincia(this.provinciaSb.getText());
-			direccion.setLocalidad(this.localidadSb.getText());
-			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-			direccion.setCalle(this.calleTb.getText());
-			direccion.setAltura(this.alturaTb.getText());
-			direccion.setPiso(this.pisoTb.getText());
-			direccion.setOficina(this.oficinaTb.getText());
-			direccion.setCpa(this.cpaTb.getText());
-
-			ClienteDTO cliente = new ClienteDTO();
-			cliente.setNombre(this.nombreEmpresaTb.getText());
-			cliente.setCuit(this.nroCuitTb.getText());
-			cliente.setResponsable(this.responsableTb.getText());
-			cliente.setRubro(this.rubroTb.getText());
-			cliente.setTelefono(this.telefonoTb.getText());
-			cliente.setFax(this.faxTb.getText());
-			cliente.setMail(this.emailTb.getText());
-			cliente.setPaginaWeb(this.webTb.getText());
-			cliente.setDireccion(direccion);
-			cliente.setObservaciones(this.observacionTb.getText());
-
-			if (tablaElemento.getRowCount() > 1) {
-
-				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-					
-					ContactoDTO contacto = new ContactoDTO();
-					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
-
-					cliente.getContacto().add(contacto);
-				}
-
-			}
-
-			VentasServiceAsync ventasService = GWT.create(VentasService.class);
-			ventasService.registrarNuevoCliente(cliente, new AsyncCallback<Boolean>() {
-
+			
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.getExistenciaCliente(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+				
 				@Override
 				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("El cliente ha sido registrado de manera exitosa");
-						padre.remove(numeroElemento(constante.nuevoCliente()));
-					} else
-						Window.alert("No se ha podido registrar el cliente");
+					
+					if(result == true)
+						Window.alert("Ya existe un cliente con el nombre ingresado");
+					else{
+						registrarCliente();
+					}
+					
 				}
-
+				
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("ERROR EN EL SERVICIO");
-
+					
 				}
+				
+				
 			});
+			
+
 		}
 		else{
 			Window.alert("Los campos que poseen (*) son oblicatorios");
@@ -815,6 +781,134 @@ public class P_FormularioCliente extends Composite {
 		
 	}
 		
+	public void registrarCliente(){
+		DireccionDTO direccion = new DireccionDTO();
+		direccion.setPais(this.paisSb.getText());
+		direccion.setProvincia(this.provinciaSb.getText());
+		direccion.setLocalidad(this.localidadSb.getText());
+		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+		direccion.setCalle(this.calleTb.getText());
+		direccion.setAltura(this.alturaTb.getText());
+		direccion.setPiso(this.pisoTb.getText());
+		direccion.setOficina(this.oficinaTb.getText());
+		direccion.setCpa(this.cpaTb.getText());
+
+		ClienteDTO cliente = new ClienteDTO();
+		cliente.setNombre(this.nombreEmpresaTb.getText());
+		cliente.setCuit(this.nroCuitTb.getText());
+		cliente.setResponsable(this.responsableTb.getText());
+		cliente.setRubro(this.rubroTb.getText());
+		cliente.setTelefono(this.telefonoTb.getText());
+		cliente.setFax(this.faxTb.getText());
+		cliente.setMail(this.emailTb.getText());
+		cliente.setPaginaWeb(this.webTb.getText());
+		cliente.setDireccion(direccion);
+		cliente.setObservaciones(this.observacionTb.getText());
+
+		if (tablaElemento.getRowCount() > 1) {
+
+			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+				
+				ContactoDTO contacto = new ContactoDTO();
+				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+
+				cliente.getContacto().add(contacto);
+			}
+
+		}
+
+		VentasServiceAsync ventasService = GWT.create(VentasService.class);
+		ventasService.registrarNuevoCliente(cliente, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("El cliente ha sido registrado de manera exitosa");
+					padre.remove(numeroElemento(constante.nuevoCliente()));
+				} else
+					Window.alert("No se ha podido registrar el cliente");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+
+			}
+		});
+	}
+	
+	public void registrarCambiosCliente(){
+		DireccionDTO direccion = new DireccionDTO();
+		direccion.setPais(this.paisSb.getText());
+		direccion.setProvincia(this.provinciaSb.getText());
+		direccion.setLocalidad(this.localidadSb.getText());
+		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+		direccion.setCalle(this.calleTb.getText());
+		direccion.setAltura(this.alturaTb.getText());
+		direccion.setPiso(this.pisoTb.getText());
+		direccion.setOficina(this.oficinaTb.getText());
+		direccion.setCpa(this.cpaTb.getText());
+		
+		ClienteDTO clienteModificado = new ClienteDTO();
+		clienteModificado.setNombre(this.nombreEmpresaTb.getText());
+		clienteModificado.setCuit(this.nroCuitTb.getText());
+		clienteModificado.setResponsable(this.responsableTb.getText());
+		clienteModificado.setRubro(this.rubroTb.getText());
+		clienteModificado.setTelefono(this.telefonoTb.getText());
+		clienteModificado.setFax(this.faxTb.getText());
+		clienteModificado.setMail(this.emailTb.getText());
+		clienteModificado.setPaginaWeb(this.webTb.getText());
+		clienteModificado.setDireccion(direccion);
+		clienteModificado.setObservaciones(this.observacionTb.getText());
+		
+		if (tablaElemento.getRowCount() > 1) {
+
+			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+								
+				ContactoDTO contacto = new ContactoDTO();
+				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+
+				clienteModificado.getContacto().add(contacto);
+			}
+
+		}
+
+		
+		VentasServiceAsync ventasService = GWT.create(VentasService.class);
+		
+		
+		
+		ventasService.registrarCambioCliente(clienteModificado, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("El cliente ha sido modificado de manera exitosa");
+					padre.remove(numeroElemento(constante.modificarCliente()));
+				} else
+					Window.alert("No se ha podido modificar el cliente");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+
+			}
+		});
+	}
+	
 	public void guardarCambiosCliente(ClickEvent event) {
 		
 		
@@ -829,69 +923,32 @@ public class P_FormularioCliente extends Composite {
 		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
 		
 		if(!vCuit && !vResponsable && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
-			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisSb.getText());
-			direccion.setProvincia(this.provinciaSb.getText());
-			direccion.setLocalidad(this.localidadSb.getText());
-			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-			direccion.setCalle(this.calleTb.getText());
-			direccion.setAltura(this.alturaTb.getText());
-			direccion.setPiso(this.pisoTb.getText());
-			direccion.setOficina(this.oficinaTb.getText());
-			direccion.setCpa(this.cpaTb.getText());
 			
-			ClienteDTO clienteModificado = new ClienteDTO();
-			clienteModificado.setNombre(this.nombreEmpresaTb.getText());
-			clienteModificado.setCuit(this.nroCuitTb.getText());
-			clienteModificado.setResponsable(this.responsableTb.getText());
-			clienteModificado.setRubro(this.rubroTb.getText());
-			clienteModificado.setTelefono(this.telefonoTb.getText());
-			clienteModificado.setFax(this.faxTb.getText());
-			clienteModificado.setMail(this.emailTb.getText());
-			clienteModificado.setPaginaWeb(this.webTb.getText());
-			clienteModificado.setDireccion(direccion);
-			clienteModificado.setObservaciones(this.observacionTb.getText());
-			
-			if (tablaElemento.getRowCount() > 1) {
-
-				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-									
-					ContactoDTO contacto = new ContactoDTO();
-					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
-
-					clienteModificado.getContacto().add(contacto);
-				}
-
-			}
-
-			
-			VentasServiceAsync ventasService = GWT.create(VentasService.class);
-			
-			
-			
-			ventasService.registrarCambioCliente(clienteModificado, new AsyncCallback<Boolean>() {
-
+			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+			comprasService.getExistenciaCliente(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+				
 				@Override
 				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("El cliente ha sido modificado de manera exitosa");
-						padre.remove(numeroElemento(constante.modificarCliente()));
-					} else
-						Window.alert("No se ha podido modificar el cliente");
+					
+					if(result == true)
+						Window.alert("Ya existe un cliente con el nombre ingresado");
+					else{
+						registrarCambiosCliente();
+					}
+					
 				}
-
+				
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("ERROR EN EL SERVICIO");
-
+					
 				}
+				
+				
 			});
+			
+			
+
 		}
 		else{
 			Window.alert("Los campos que poseen (*) son oblicatorios");

@@ -1413,5 +1413,17 @@ public class ComprasServiceImpl extends RemoteServiceServlet implements ComprasS
 
 	}
 	
+	@Override
+	public Boolean getExistenciaCliente(String nombre) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		return adminCompras.getExistenciaCliente(nombre);
+	}
 	
+	@Override
+	public Boolean getExistenciaProveedor(String nombre) throws IllegalArgumentException {
+		
+		Compras adminCompras = new Compras();
+		return adminCompras.getExistenciaProveedor(nombre);
+	}
 }

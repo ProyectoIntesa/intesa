@@ -125,6 +125,10 @@ public interface ComprasService extends RemoteService {
 
 	List<String> getMarcas() throws IllegalArgumentException;
 
+	Boolean getExistenciaCliente(String nombre) throws IllegalArgumentException;
+
+	Boolean getExistenciaProveedor(String nombre) throws IllegalArgumentException;
+
 	
 
 

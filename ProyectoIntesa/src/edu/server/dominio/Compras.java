@@ -709,5 +709,31 @@ public class Compras {
 
 		return result;
 	}
+
+	public boolean getExistenciaCliente(String nombre){
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String consultaMarca = "select id_Cliente from Cliente where nombre like '"+nombre+"'";
+		Object idCliente = sec.createSQLQuery(consultaMarca).uniqueResult();
+		sec.close();
+		
+		if(idCliente == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	public boolean getExistenciaProveedor(String nombre){
+		Session sec = HibernateUtil.getSessionFactory().getCurrentSession();
+		sec.beginTransaction();
+		String consultaMarca = "select codigo_Proveedor from Proveedor where nombre like '"+nombre+"'";
+		Object idCliente = sec.createSQLQuery(consultaMarca).uniqueResult();
+		sec.close();
+		
+		if(idCliente == null)
+			return false;
+		else 
+			return true;
+	}
 	
 }

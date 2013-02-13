@@ -111,17 +111,21 @@ public interface ComprasServiceAsync {
 
 	void getOrdenCompraInsumoEnviadaRecibidaCerrada(AsyncCallback<List<OrdenCompraInsumoDTO>> callback) throws IllegalArgumentException;
 
-	void getNombresPaises(AsyncCallback<List<String>> callback);
+	void getNombresPaises(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
-	void getNombresProvincias(String pais, AsyncCallback<List<String>> callback);
+	void getNombresProvincias(String pais, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
-	void getNombresLocalidades(String prov, AsyncCallback<List<String>> callback);
+	void getNombresLocalidades(String prov, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
-	void getInsumos(AsyncCallback<List<String>> callback);
+	void getInsumos(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
-	void getCategorias(AsyncCallback<List<String>> callback);
+	void getCategorias(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 
-	void getMarcas(AsyncCallback<List<String>> callback);
+	void getMarcas(AsyncCallback<List<String>> callback) throws IllegalArgumentException;
+
+	void getExistenciaCliente(String nombre, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+
+	void getExistenciaProveedor(String nombre, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 
 

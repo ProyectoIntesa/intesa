@@ -47,6 +47,7 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 	private FlexTable botones1;
 	
 	private TextBox cantRealTb;
+	private TextBox cantDisponibleTb;
 	
 	private InsumoDTO insumoBuscado;
 	
@@ -73,6 +74,8 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 		cantReal.setStyleName("gwt-LabelFormulario");
 		
 		cantRealTb = new TextBox();
+		cantDisponibleTb = new TextBox();
+		cantDisponibleTb.setEnabled(false);
 		
 		insumoBuscado = new InsumoDTO();
 		
@@ -184,6 +187,7 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 		contenedor.getFlexCellFormatter().setColSpan(4, 0, 2);
 		
 		contenedor.setWidget(5, 0, cantDisponible);
+		contenedor.setWidget(5, 1, cantDisponibleTb);
 		
 		contenedor.setWidget(6, 0, cantReal);
 		contenedor.setWidget(6, 1, cantRealTb);	
@@ -210,8 +214,8 @@ public class P_ActualizarCantidadInsumo extends PopupPanel {
 				@Override
 				public void onSuccess(InsumoDTO result) {
 					insumoBuscado = result;
-					cantDisponible = new Label(constante.cantDisponible()+": "+insumoBuscado.getCantidad());
-					contenedor.setWidget(5, 0, cantDisponible);
+					cantDisponibleTb.setText(""+insumoBuscado.getCantidad());
+					contenedor.setWidget(5, 1, cantDisponibleTb);
 				}
 
 				@Override

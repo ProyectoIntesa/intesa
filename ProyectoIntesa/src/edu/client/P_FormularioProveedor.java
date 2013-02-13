@@ -766,66 +766,32 @@ public class P_FormularioProveedor extends Composite {
 		
 		if(!vNombreEmpresa && !vCuit && !vResponsable && !vTipoProveedor && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
 			
-			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisSb.getText());
-			direccion.setProvincia(this.provinciaSb.getText());
-			direccion.setLocalidad(this.localidadSb.getText());
-			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-			direccion.setCalle(this.calleTb.getText());
-			direccion.setAltura(this.alturaTb.getText());
-			direccion.setPiso(this.pisoTb.getText());
-			direccion.setOficina(this.oficinaTb.getText());
-			direccion.setCpa(this.cpaTb.getText());
-
-			ProveedorDTO proveedor = new ProveedorDTO();
-			proveedor.setNombre(this.nombreEmpresaTb.getText());
-			proveedor.setCuit(this.nroCuitTb.getText());
-			proveedor.setResponsable(this.responsableTb.getText());
-			proveedor.setRubro(this.rubroTb.getText());
-			proveedor.setTelefono(this.telefonoTb.getText());
-			proveedor.setFax(this.faxTb.getText());
-			proveedor.setMail(this.emailTb.getText());
-			proveedor.setPaginaWeb(this.webTb.getText());
-			proveedor.setDireccion(direccion);
-			proveedor.setObservaciones(this.observacionTb.getText());
-			proveedor.setTipoProveedor(this.tipoProveedorTb.getText());
-
-			if (tablaElemento.getRowCount() > 1) {
-
-				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-
-					ContactoDTO contacto = new ContactoDTO();
-					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
-
-					proveedor.getContacto().add(contacto);
-				}
-
-			}
-
+			
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.registrarNuevoProveedor(proveedor, new AsyncCallback<Boolean>() {
-
+			comprasService.getExistenciaProveedor(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+				
 				@Override
 				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("El proveedor ha sido registrado de manera exitosa");
-						padre.remove(numeroElemento(constante.nuevoProveedor()));
-					} else
-						Window.alert("No se ha podido registrar el proveedor");
+					
+					if(result == true)
+						Window.alert("Ya existe un cliente con el nombre ingresado");
+					else{
+						registrarProveedor();
+					}
+					
 				}
-
+				
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("ERROR EN EL SERVICIO");
-
+					
 				}
+				
+				
 			});
+			
+			
+
 			
 			
 		}
@@ -834,6 +800,138 @@ public class P_FormularioProveedor extends Composite {
 		}
 	}
 		
+	public void registrarProveedor(){
+		DireccionDTO direccion = new DireccionDTO();
+		direccion.setPais(this.paisSb.getText());
+		direccion.setProvincia(this.provinciaSb.getText());
+		direccion.setLocalidad(this.localidadSb.getText());
+		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+		direccion.setCalle(this.calleTb.getText());
+		direccion.setAltura(this.alturaTb.getText());
+		direccion.setPiso(this.pisoTb.getText());
+		direccion.setOficina(this.oficinaTb.getText());
+		direccion.setCpa(this.cpaTb.getText());
+
+		ProveedorDTO proveedor = new ProveedorDTO();
+		proveedor.setNombre(this.nombreEmpresaTb.getText());
+		proveedor.setCuit(this.nroCuitTb.getText());
+		proveedor.setResponsable(this.responsableTb.getText());
+		proveedor.setRubro(this.rubroTb.getText());
+		proveedor.setTelefono(this.telefonoTb.getText());
+		proveedor.setFax(this.faxTb.getText());
+		proveedor.setMail(this.emailTb.getText());
+		proveedor.setPaginaWeb(this.webTb.getText());
+		proveedor.setDireccion(direccion);
+		proveedor.setObservaciones(this.observacionTb.getText());
+		proveedor.setTipoProveedor(this.tipoProveedorTb.getText());
+
+		if (tablaElemento.getRowCount() > 1) {
+
+			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+
+				ContactoDTO contacto = new ContactoDTO();
+				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+
+				proveedor.getContacto().add(contacto);
+			}
+
+		}
+
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.registrarNuevoProveedor(proveedor, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("El proveedor ha sido registrado de manera exitosa");
+					padre.remove(numeroElemento(constante.nuevoProveedor()));
+				} else
+					Window.alert("No se ha podido registrar el proveedor");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+
+			}
+		});
+		
+	}
+	
+	
+	public void registrarCambiosProveedor(){
+		
+		
+		
+		DireccionDTO direccion = new DireccionDTO();
+		direccion.setPais(this.paisSb.getText());
+		direccion.setProvincia(this.provinciaSb.getText());
+		direccion.setLocalidad(this.localidadSb.getText());
+		direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
+		direccion.setCalle(this.calleTb.getText());
+		direccion.setAltura(this.alturaTb.getText());
+		direccion.setPiso(this.pisoTb.getText());
+		direccion.setOficina(this.oficinaTb.getText());
+		direccion.setCpa(this.cpaTb.getText());
+
+		ProveedorDTO proveedorModificado = new ProveedorDTO();
+		proveedorModificado.setNombre(this.nombreEmpresaTb.getText());
+		proveedorModificado.setCuit(this.nroCuitTb.getText());
+		proveedorModificado.setResponsable(this.responsableTb.getText());
+		proveedorModificado.setRubro(this.rubroTb.getText());
+		proveedorModificado.setTelefono(this.telefonoTb.getText());
+		proveedorModificado.setFax(this.faxTb.getText());
+		proveedorModificado.setMail(this.emailTb.getText());
+		proveedorModificado.setPaginaWeb(this.webTb.getText());
+		proveedorModificado.setDireccion(direccion);
+		proveedorModificado.setObservaciones(this.observacionTb.getText());
+		proveedorModificado.setTipoProveedor(this.tipoProveedorTb.getText());
+
+		if (tablaElemento.getRowCount() > 1) {
+
+			for (int i = 1; i < tablaElemento.getRowCount(); i++) {
+
+				ContactoDTO contacto = new ContactoDTO();
+				contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
+				contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
+				contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
+				contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
+				contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
+				contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
+				contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
+
+				proveedorModificado.getContacto().add(contacto);
+			}
+
+		}
+
+		ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+		comprasService.registrarCambioProveedor(proveedorModificado, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Window.alert("El proveedor ha sido modificado de manera exitosa");
+					padre.remove(numeroElemento(constante.modificarProveedor()));
+				} else
+					Window.alert("No se ha podido modificar el proveedor");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("ERROR EN EL SERVICIO");
+
+			}
+		});
+		
+	}
+	
 	public void guardarCambiosProveedor(ClickEvent event) {
 		
 		Validaciones validar = new Validaciones();
@@ -848,66 +946,31 @@ public class P_FormularioProveedor extends Composite {
 		boolean vAltura = validar.textBoxVacio(this.alturaTb.getText());
 		
 		if(!vCuit && !vResponsable && !vTipoProveedor && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
-			DireccionDTO direccion = new DireccionDTO();
-			direccion.setPais(this.paisSb.getText());
-			direccion.setProvincia(this.provinciaSb.getText());
-			direccion.setLocalidad(this.localidadSb.getText());
-			direccion.setCodigoLocalidad(this.codigoPostalTb.getText());
-			direccion.setCalle(this.calleTb.getText());
-			direccion.setAltura(this.alturaTb.getText());
-			direccion.setPiso(this.pisoTb.getText());
-			direccion.setOficina(this.oficinaTb.getText());
-			direccion.setCpa(this.cpaTb.getText());
-
-			ProveedorDTO proveedorModificado = new ProveedorDTO();
-			proveedorModificado.setNombre(this.nombreEmpresaTb.getText());
-			proveedorModificado.setCuit(this.nroCuitTb.getText());
-			proveedorModificado.setResponsable(this.responsableTb.getText());
-			proveedorModificado.setRubro(this.rubroTb.getText());
-			proveedorModificado.setTelefono(this.telefonoTb.getText());
-			proveedorModificado.setFax(this.faxTb.getText());
-			proveedorModificado.setMail(this.emailTb.getText());
-			proveedorModificado.setPaginaWeb(this.webTb.getText());
-			proveedorModificado.setDireccion(direccion);
-			proveedorModificado.setObservaciones(this.observacionTb.getText());
-			proveedorModificado.setTipoProveedor(this.tipoProveedorTb.getText());
-
-			if (tablaElemento.getRowCount() > 1) {
-
-				for (int i = 1; i < tablaElemento.getRowCount(); i++) {
-
-					ContactoDTO contacto = new ContactoDTO();
-					contacto.setNombre(((Label) tablaElemento.getWidget(i, COL_NOMBRE)).getText());
-					contacto.setCargo(((Label) tablaElemento.getWidget(i, COL_CARGO)).getText());
-					contacto.setTelefonoEmpresa(((Label) tablaElemento.getWidget(i, COL_TELEMPRESA)).getText());
-					contacto.setInternoEmpresa(((Label) tablaElemento.getWidget(i, COL_INTERNO)).getText());
-					contacto.setTelefonoParticular(((Label) tablaElemento.getWidget(i, COL_TELPARTICULAR)).getText());
-					contacto.setCelular(((Label) tablaElemento.getWidget(i, COL_CELULAR)).getText());
-					contacto.setMail(((Label) tablaElemento.getWidget(i, COL_CORREO)).getText());
-
-					proveedorModificado.getContacto().add(contacto);
-				}
-
-			}
-
+			
+			
 			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.registrarCambioProveedor(proveedorModificado, new AsyncCallback<Boolean>() {
-
+			comprasService.getExistenciaProveedor(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+				
 				@Override
 				public void onSuccess(Boolean result) {
-					if (result) {
-						Window.alert("El proveedor ha sido modificado de manera exitosa");
-						padre.remove(numeroElemento(constante.modificarProveedor()));
-					} else
-						Window.alert("No se ha podido modificar el proveedor");
+					
+					if(result == true)
+						Window.alert("Ya existe un cliente con el nombre ingresado");
+					else{
+						registrarCambiosProveedor();
+					}
+					
 				}
-
+				
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("ERROR EN EL SERVICIO");
-
+					
 				}
+				
+				
 			});
+
 		}
 		else{
 			Window.alert("Los campos que poseen (*) son oblicatorios");
