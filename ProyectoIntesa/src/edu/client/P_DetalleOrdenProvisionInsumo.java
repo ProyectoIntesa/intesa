@@ -155,7 +155,7 @@ public class P_DetalleOrdenProvisionInsumo  extends PopupPanel {
 		
 		
 		int item = 1;
-		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumos()) {
+		for (RenglonOrdenProvisionInsumoDTO renglon : orden.getRenglonOrdenProvisionInsumosOrdenado()) {
 			
 			tablaElementos.setWidget(item, COL_ITEM, new Label("" + renglon.getIdRenglon()));
 			tablaElementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));

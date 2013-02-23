@@ -322,8 +322,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			
 		}
 		
-		return listaResult;
-		
+		return listaResult;		
 	}
 	
 	@Override
@@ -381,7 +380,9 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 						
 
 		}
-					
+				
+		
+		
 		
 		return orden;
 	}
@@ -413,9 +414,13 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 				
 				ProveedorDeInsumosDTO proveedor = new ProveedorDeInsumosDTO();
 				
-				Double precio = Double.parseDouble(prov.getPrecio().toString());
+				if(prov.getPrecio() == null)
+					proveedor.setPrecio();
+				else{
+					Double precio = Double.parseDouble(prov.getPrecio().toString());
+					proveedor.setPrecio(precio);
+				}
 				
-				proveedor.setPrecio(precio);
 				proveedor.setNombre(prov.getProveedor().getNombre());
 				proveedor.setObservaciones(prov.getObservaciones());
 				
@@ -424,6 +429,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 			}
 			
 		
+			
 		return result;
 	}
 
@@ -925,5 +931,7 @@ public class ProduccionServiceImpl extends RemoteServiceServlet implements Produ
 		}
 		return result;	
 	}	
+	
+	
 	
 }

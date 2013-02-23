@@ -1,7 +1,7 @@
 package edu.shared.DTO;
 
 
-public class RenglonOrdenProvisionInsumoDTO implements java.io.Serializable{
+public class RenglonOrdenProvisionInsumoDTO implements java.io.Serializable, Comparable<RenglonOrdenProvisionInsumoDTO>{
 
 	/**
 	 * 
@@ -39,6 +39,16 @@ public class RenglonOrdenProvisionInsumoDTO implements java.io.Serializable{
 	}
 	public void setCantidadRequerida(Double cantidadRequerida) {
 		this.cantidadRequerida = cantidadRequerida;
+	}
+
+	@Override
+	public int compareTo(RenglonOrdenProvisionInsumoDTO o) {
+		if(this.idRenglon == o.idRenglon)
+			return 0;
+		else if(this.idRenglon < o.idRenglon)
+			return -1;
+		else
+			return 1;
 	}
 	
 	

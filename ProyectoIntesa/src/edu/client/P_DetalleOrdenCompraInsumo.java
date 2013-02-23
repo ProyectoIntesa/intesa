@@ -448,12 +448,11 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 			panel.getFlexCellFormatter().setColSpan(9, 0, 4);
 			panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);		
 		}
+				
 		
-
-
 		int item = 1;
 		
-		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {
+		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumosOrdenado()) {
 
 			tablaElementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));
 			tablaElementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));
@@ -528,7 +527,7 @@ public class P_DetalleOrdenCompraInsumo extends PopupPanel {
 		elementos.getRowFormatter().addStyleName(0, "tablaEncabezado");
 
 		int item = 1;
-		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {
+		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumosOrdenado()) {
 
 			elementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));
 			elementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));

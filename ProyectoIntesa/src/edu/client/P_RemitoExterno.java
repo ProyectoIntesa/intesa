@@ -512,7 +512,7 @@ public class P_RemitoExterno extends PopupPanel {
 				
 		int item = 1;
 		
-		for (RenglonOrdenCompraInsumoDTO renglon : ordenInsumo.getRenglonOrdenCompraInsumos()) {
+		for (RenglonOrdenCompraInsumoDTO renglon : ordenInsumo.getRenglonOrdenCompraInsumosOrdenado()) {
 			
 			final RenglonOrdenCompraInsumoDTO ren = renglon;
 			final int itemInterno = item;
@@ -553,7 +553,7 @@ public class P_RemitoExterno extends PopupPanel {
 		
 		int item = 1;
 		
-		for (RenglonRemitoExternoDTO renglon : remito.getRenglonRemitoExterno()) {
+		for (RenglonRemitoExternoDTO renglon : remito.getRenglonRemitoExternoOrdenado()) {
 			
 			
 			tablaElementos.setWidget(item, COL_INSUMO_RESULT, new Label(renglon.getInsumo().getNombre()));

@@ -517,7 +517,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 		int item = 1;
 		
-		for(RenglonRemitoProvisionInsumoDTO renglon : this.remitoLocal.getRenglonRemitoProvisionInsumos()) {
+		for(RenglonRemitoProvisionInsumoDTO renglon : this.remitoLocal.getRenglonRemitoProvisionInsumosOrdenado()) {
 			
 			elementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));
 			elementos.setWidget(item, COL_INSUMO, new Label(renglon.getInsumo().getNombre()));
@@ -642,7 +642,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 		int item = 1;
 			
-		for (RenglonOrdenProvisionInsumoDTO renglon : result.getRenglonOrdenProvisionInsumos()) {
+		for (RenglonOrdenProvisionInsumoDTO renglon : result.getRenglonOrdenProvisionInsumosOrdenado()) {
 		
 			final RenglonOrdenProvisionInsumoDTO ren = renglon;
 			final int itemInterno = item;
@@ -707,7 +707,7 @@ public class P_RemitoProvisionInsumo  extends PopupPanel{
 		
 		int item=1;	
 		
-		for (RenglonRemitoProvisionInsumoDTO renglon : remito.getRenglonRemitoProvisionInsumos()) {	
+		for (RenglonRemitoProvisionInsumoDTO renglon : remito.getRenglonRemitoProvisionInsumosOrdenado()) {	
 			tablaElementos.setWidget(item, COL_INSUMO2, new Label(renglon.getInsumo().getNombre()));
 			tablaElementos.setWidget(item, COL_MARCA2, new Label(renglon.getInsumo().getMarca()));
 			tablaElementos.setWidget(item, COL_CANTENV2, new Label(""+renglon.getCantidadEntregada()));	

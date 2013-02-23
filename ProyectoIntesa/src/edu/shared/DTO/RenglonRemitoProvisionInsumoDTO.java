@@ -4,7 +4,7 @@ import edu.server.repositorio.Insumo;
 import edu.server.repositorio.RemitoInternoInsumo;
 import edu.server.repositorio.RenglonRemitoInternoInsumoId;
 
-public class RenglonRemitoProvisionInsumoDTO implements java.io.Serializable{
+public class RenglonRemitoProvisionInsumoDTO implements java.io.Serializable, Comparable<RenglonRemitoProvisionInsumoDTO>{
 
 	
 	/**
@@ -55,6 +55,18 @@ public class RenglonRemitoProvisionInsumoDTO implements java.io.Serializable{
 
 	public void setCantidadEntregada(double cantidadEntregada) {
 		this.cantidadEntregada = cantidadEntregada;
+	}
+
+
+
+	@Override
+	public int compareTo(RenglonRemitoProvisionInsumoDTO o) {
+		if(this.item == o.item)
+			return 0;
+		else if(this.item < o.item)
+			return -1;
+		else
+			return 1;
 	}
 	
 	

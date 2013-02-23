@@ -3,6 +3,7 @@ package edu.shared.DTO;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class RemitoExternoDTO implements java.io.Serializable{
 
@@ -71,7 +72,20 @@ public class RemitoExternoDTO implements java.io.Serializable{
 	}
 	
 	
-	
+	public Set<RenglonRemitoExternoDTO> getRenglonRemitoExternoOrdenado() {
+		
+		
+		Set <RenglonRemitoExternoDTO> roci = this.renglonRemitoExterno;
+		Set <RenglonRemitoExternoDTO>renglonRemitoExternoSalida = new TreeSet<RenglonRemitoExternoDTO>();
+		
+		for (RenglonRemitoExternoDTO renglon : roci) {	
+			renglonRemitoExternoSalida.add(renglon);
+			
+		}
+		
+		
+		return renglonRemitoExternoSalida;
+	}
 	
 	
 	

@@ -1,7 +1,7 @@
 package edu.shared.DTO;
 
 
-public class RenglonOrdenCompraInsumoDTO implements java.io.Serializable{
+public class RenglonOrdenCompraInsumoDTO implements java.io.Serializable, Comparable{
 	
 	/**
 	 * 
@@ -64,6 +64,17 @@ public class RenglonOrdenCompraInsumoDTO implements java.io.Serializable{
 	}
 	public void setPrecio() {
 		this.precio = null;
+	}
+	
+	@Override
+	public int compareTo(Object idItem) {
+				
+		if(this.item == ((RenglonOrdenCompraInsumoDTO)idItem).item)
+			return 0;
+		else if(this.item < ((RenglonOrdenCompraInsumoDTO)idItem).item)
+			return -1;
+		else
+			return 1;
 	}
 	
 }

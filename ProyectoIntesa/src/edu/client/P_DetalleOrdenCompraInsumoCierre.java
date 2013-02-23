@@ -220,7 +220,7 @@ public class P_DetalleOrdenCompraInsumoCierre extends PopupPanel {
 		panel.getCellFormatter().setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_RIGHT);	
 
 		int item = 1;
-		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumos()) {
+		for (RenglonOrdenCompraInsumoDTO renglon : orden.getRenglonOrdenCompraInsumosOrdenado()) {
 			TextBox precioUnitario = new TextBox();
 			precioUnitario.setText(renglon.getPrecio() + "");
 			tablaElementos.setWidget(item, COL_ITEM, new Label("" + renglon.getItem()));

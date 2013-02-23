@@ -3,6 +3,7 @@ package edu.shared.DTO;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class RemitoProvisionInsumoDTO implements java.io.Serializable{
 
@@ -146,5 +147,19 @@ public class RemitoProvisionInsumoDTO implements java.io.Serializable{
 		return serialVersionUID;
 	}
 	
+public Set<RenglonRemitoProvisionInsumoDTO>  getRenglonRemitoProvisionInsumosOrdenado() {
+		
+		
+		Set <RenglonRemitoProvisionInsumoDTO> roci = this.renglonRemitoProvisionInsumos;
+		Set <RenglonRemitoProvisionInsumoDTO>renglonRemitoProvisionInsumosSalida = new TreeSet<RenglonRemitoProvisionInsumoDTO>();
+		
+		for (RenglonRemitoProvisionInsumoDTO renglon : roci) {	
+			renglonRemitoProvisionInsumosSalida.add(renglon);
+			
+		}
+		
+		
+		return renglonRemitoProvisionInsumosSalida;
+	}
 	
 }

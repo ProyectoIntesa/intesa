@@ -1,8 +1,12 @@
 package edu.shared.DTO;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class OrdenCompraInsumoDTO implements java.io.Serializable{
 
@@ -126,4 +130,20 @@ public class OrdenCompraInsumoDTO implements java.io.Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public Set<RenglonOrdenCompraInsumoDTO> getRenglonOrdenCompraInsumosOrdenado() {
+		
+		
+		Set <RenglonOrdenCompraInsumoDTO> roci = this.renglonOrdenCompraInsumos;
+		Set <RenglonOrdenCompraInsumoDTO>renglonOrdenCompraInsumosSalida = new TreeSet<RenglonOrdenCompraInsumoDTO>();
+		
+		for (RenglonOrdenCompraInsumoDTO renglon : roci) {	
+			renglonOrdenCompraInsumosSalida.add(renglon);
+			
+		}
+		
+		
+		return renglonOrdenCompraInsumosSalida;
+	}
+
 }

@@ -1,6 +1,6 @@
 package edu.shared.DTO;
 
-public class RenglonRemitoExternoDTO implements java.io.Serializable{
+public class RenglonRemitoExternoDTO implements java.io.Serializable, Comparable<RenglonRemitoExternoDTO>{
 
 	/**
 	 * 
@@ -54,6 +54,17 @@ public class RenglonRemitoExternoDTO implements java.io.Serializable{
 
 	public void setCantIngresada(double cantIngresada) {
 		this.cantIngresada = cantIngresada;
+	}
+
+
+	@Override
+	public int compareTo(RenglonRemitoExternoDTO o) {
+		if(this.item == o.item)
+			return 0;
+		else if(this.item < o.item)
+			return -1;
+		else
+			return 1;
 	}
 	
 	

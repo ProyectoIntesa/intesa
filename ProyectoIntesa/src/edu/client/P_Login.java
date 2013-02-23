@@ -78,10 +78,16 @@ public class P_Login extends Composite {
 		iniciarSesion.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 
+				iniciarSesion.setEnabled(false);
+				
 				loginServie.getUsuario(usuarioTb.getText(), contraseniaTb.getText(), new AsyncCallback<UsuarioDTO>() {
+										
 					public void onFailure(Throwable caught) {
-						Window.alert("Usuario y contraseña incorrectas");
+									
+						Window.alert("ERROR EN EL SISTEMA");						
 					}
+
+
 
 					public void onSuccess(UsuarioDTO result) {
 						if (result != null) {
@@ -138,6 +144,7 @@ public class P_Login extends Composite {
 								
 							}
 						} else {
+							iniciarSesion.setEnabled(true);
 							Window.alert("Usuario y contraseña incorrectas");
 						}
 					}

@@ -114,7 +114,6 @@ public class Produccion {
 		
 		orden = (OrdenProvisionInsumo) sec.get(orden.getClass(), idOrden);
 		
-		
 		sec.close();
 		return orden;
 		
