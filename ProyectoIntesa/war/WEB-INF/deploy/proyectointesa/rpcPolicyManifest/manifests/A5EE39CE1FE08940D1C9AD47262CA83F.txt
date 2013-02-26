@@ -1,2 +1,0 @@
-serviceClass: edu.client.AlmacenService.AlmacenService
-path: 5D3ED6ADDAC582B913B9446492938FAB.gwt.rpc

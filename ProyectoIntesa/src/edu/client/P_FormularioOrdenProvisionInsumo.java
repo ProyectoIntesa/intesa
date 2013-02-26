@@ -326,7 +326,7 @@ public class P_FormularioOrdenProvisionInsumo extends Composite {
 			});
 		}
 		
-		if(rol.compareTo("JEFE DE FABRICA") == 0){
+		if(rol.compareTo("JEFE DE FABRICA") == 0 || rol.compareTo("GERENTE DE PRODUCCION") == 0){
 			ProduccionServiceAsync produccionService = GWT.create(ProduccionService.class);
 			produccionService.registrarOrdenProvisionInsumoGerente(nueva, new AsyncCallback<Long>() {
 

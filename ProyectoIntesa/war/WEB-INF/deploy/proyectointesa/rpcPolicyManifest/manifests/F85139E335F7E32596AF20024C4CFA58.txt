@@ -1,2 +1,0 @@
-serviceClass: edu.client.ComprasService.ComprasService
-path: 8D94572798DE1ECCD11531D4A20071E4.gwt.rpc

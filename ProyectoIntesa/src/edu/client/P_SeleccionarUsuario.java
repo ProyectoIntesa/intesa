@@ -12,12 +12,15 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class P_SeleccionarUsuario extends PopupPanel {
 
-	private static final int COL_ROL_VENTAS = 1;
-	private static final int COL_ROL_GERENTE_PRODUCCION = 2;
-	private static final int COL_ROL_SUPERVISOR_PRODUCCION = 3;
-	private static final int COL_ROL_INGENIERIA = 4;
-	private static final int COL_ROL_COMPRAS = 5;
-	private static final int COL_ROL_ALMACEN = 6;
+	private static final int COL_ROL_VENTAS = 0;
+	private static final int COL_ROL_GERENTE_COMPRAS = 1;
+	private static final int COL_ROL_COMPRAS = 2;
+	private static final int COL_ROL_INGENIERIA = 3;
+	
+	private static final int COL_ROL_GERENTE_PRODUCCION = 0;
+	private static final int COL_ROL_JEFE_FABRICA = 1;
+	private static final int COL_ROL_SUPERVISOR_PRODUCCION = 2;
+	private static final int COL_ROL_ALMACEN = 3;
 
 	private FlexTable panel;
 	private FlexTable tablaElementos;
@@ -31,7 +34,9 @@ public class P_SeleccionarUsuario extends PopupPanel {
 	
 	private Label ventas;
 	private Label gerenteProduccion;
-	private Label supervisorProduccion;
+	private Label supervisor;
+	private Label jefeFabrica;
+	private Label gerenteCompras;
 	private Label ingenieria;
 	private Label compras;
 	private Label almacen;
@@ -54,9 +59,17 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		gerenteProduccion.setSize("48px", "48px");
 		gerenteProduccion.addStyleName("labelGerenteProduccion");
 		
-		supervisorProduccion = new Label("");
-		supervisorProduccion.setSize("48px", "48px");
-		supervisorProduccion.addStyleName("labelSupervisorProduccion");
+		jefeFabrica = new Label("");
+		jefeFabrica.setSize("48px", "48px");
+		jefeFabrica.addStyleName("labelGerenteProduccion");
+		
+		gerenteCompras = new Label("");
+		gerenteCompras.setSize("48px", "48px");
+		gerenteCompras.addStyleName("labelGerenteProduccion");
+		
+		supervisor = new Label("");
+		supervisor.setSize("48px", "48px");
+		supervisor.addStyleName("labelSupervisorProduccion");
 		
 		ingenieria = new Label("");
 		ingenieria.setSize("48px", "48px");
@@ -77,80 +90,107 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		
 		contenedorTabla = new ScrollPanel();
 		contenedorTabla.setStyleName("tablaSeleccionarUsuario");
-		contenedorTabla.setHeight("90px");
+		contenedorTabla.setHeight("200px");
 		tablaElementos = new FlexTable();
 		contenedorTabla.setWidget(tablaElementos);
 		tablaElementos.setSize("100%", "100%");
+		
+		
+		
 		tablaElementos.setText(0, COL_ROL_VENTAS, constante.ventas());
 		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_VENTAS, "16%");
-		tablaElementos.setText(0, COL_ROL_GERENTE_PRODUCCION, constante.gerenteProduccion());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_GERENTE_PRODUCCION, "16%");
-		tablaElementos.setText(0, COL_ROL_SUPERVISOR_PRODUCCION, constante.supervisorProduccion());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_SUPERVISOR_PRODUCCION, "16%");
-		tablaElementos.setText(0, COL_ROL_INGENIERIA, constante.ingenieria());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_INGENIERIA, "16%");
+		tablaElementos.setText(0, COL_ROL_GERENTE_COMPRAS, constante.gerenteDeCompras());
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_GERENTE_COMPRAS, "16%");
 		tablaElementos.setText(0, COL_ROL_COMPRAS, constante.compras());
 		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_COMPRAS, "16%");
-		tablaElementos.setText(0, COL_ROL_ALMACEN, constante.almacen());
-		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_ALMACEN, "16%");
+		tablaElementos.setText(0, COL_ROL_INGENIERIA, constante.ingenieria());
+		tablaElementos.getCellFormatter().setWidth(0, COL_ROL_INGENIERIA, "16%");
 		
+		
+		tablaElementos.setText(2, COL_ROL_GERENTE_PRODUCCION, constante.gerenteDeProduccion());
+		tablaElementos.getCellFormatter().setWidth(2, COL_ROL_GERENTE_PRODUCCION, "16%");
+		tablaElementos.setText(2, COL_ROL_JEFE_FABRICA, constante.jefeDeFabrica());
+		tablaElementos.getCellFormatter().setWidth(2, COL_ROL_JEFE_FABRICA, "16%");
+		tablaElementos.setText(2, COL_ROL_SUPERVISOR_PRODUCCION, constante.supervisor());
+		tablaElementos.getCellFormatter().setWidth(2, COL_ROL_SUPERVISOR_PRODUCCION, "16%");
+		tablaElementos.setText(2, COL_ROL_ALMACEN, constante.almacen());
+		tablaElementos.getCellFormatter().setWidth(2, COL_ROL_ALMACEN, "16%");
+		
+		
+
 		
 		tablaElementos.setWidget(1, COL_ROL_VENTAS, ventas);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_VENTAS, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		ventas.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				rolSeleccionado("ventas");
+				rolSeleccionado("VENTAS");
 			}
 		});		
+		tablaElementos.setWidget(1, COL_ROL_GERENTE_COMPRAS, gerenteCompras);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_COMPRAS, HasHorizontalAlignment.ALIGN_CENTER);
 		
-		tablaElementos.setWidget(1, COL_ROL_GERENTE_PRODUCCION, gerenteProduccion);
-		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_GERENTE_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		gerenteProduccion.addClickHandler(new ClickHandler() {
+		gerenteCompras.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				rolSeleccionado("gerente produccion");
+				rolSeleccionado("GERENTE DE COMPRAS");
 			}
 		});
-		
-		tablaElementos.setWidget(1, COL_ROL_SUPERVISOR_PRODUCCION, supervisorProduccion);
-		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_SUPERVISOR_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		supervisorProduccion.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				rolSeleccionado("supervisor produccion");
-			}
-		});
-		
-		tablaElementos.setWidget(1, COL_ROL_INGENIERIA, ingenieria);
-		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_INGENIERIA, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		ingenieria.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				rolSeleccionado("ingenieria");
-			}
-		});
-		
 		tablaElementos.setWidget(1, COL_ROL_COMPRAS, compras);
 		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_COMPRAS, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		compras.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				rolSeleccionado("compras");
+				rolSeleccionado("COMPRAS");
+			}
+		});
+		tablaElementos.setWidget(1, COL_ROL_INGENIERIA, ingenieria);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_INGENIERIA, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		ingenieria.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("INGENIERIA");
 			}
 		});
 		
-		tablaElementos.setWidget(1, COL_ROL_ALMACEN, almacen);
-		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(1, COL_ROL_ALMACEN, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		
+		
+		tablaElementos.setWidget(3, COL_ROL_GERENTE_PRODUCCION, gerenteProduccion);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(3, COL_ROL_GERENTE_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		gerenteProduccion.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("GERENTE DE PRODUCCION");
+			}
+		});
+		tablaElementos.setWidget(3, COL_ROL_JEFE_FABRICA, jefeFabrica);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(3, COL_ROL_JEFE_FABRICA, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		jefeFabrica.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("JEFE DE FABRICA");
+			}
+		});
+		tablaElementos.setWidget(3, COL_ROL_SUPERVISOR_PRODUCCION, supervisor);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(3, COL_ROL_SUPERVISOR_PRODUCCION, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		supervisor.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rolSeleccionado("SUPERVISOR");
+			}
+		});
+		tablaElementos.setWidget(3, COL_ROL_ALMACEN, almacen);
+		tablaElementos.getFlexCellFormatter().setHorizontalAlignment(3, COL_ROL_ALMACEN, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		almacen.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				rolSeleccionado("almacen");
+				rolSeleccionado("ALMACEN");
 				
 			}
 		});
 		
 		tablaElementos.getRowFormatter().addStyleName(0, "tablaEncabezadoSeleccionarUsuario");
+		tablaElementos.getRowFormatter().addStyleName(2, "tablaEncabezadoSeleccionarUsuario");
 
 		
 		
@@ -180,12 +220,13 @@ public class P_SeleccionarUsuario extends PopupPanel {
 		panel.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_CENTER);
 
 		setWidget(panel);
-		panel.setSize("850px", "130px");
+		panel.setSize("400px", "80px");
 
 	}
 
 
 	protected void salir() {
+		rolSeleccionado("SALIR");
 		this.hide();
 
 	}

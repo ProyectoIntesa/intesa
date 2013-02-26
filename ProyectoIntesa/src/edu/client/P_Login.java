@@ -124,18 +124,24 @@ public class P_Login extends Composite {
 										
 										rolSeleccionado= popUp.devolverRolSeleccionado();
 									
-										if (rolSeleccionado.compareTo("ventas") == 0){
+										if (rolSeleccionado.compareTo("VENTAS") == 0){
 											inicioPantallaVentas(nombre);
-										} else if (rolSeleccionado.compareTo("gerente produccion") == 0){
-											inicioPantallaGerenteProduccion(nombre);
-										} else if (rolSeleccionado.compareTo("supervisor produccion") == 0){
-											inicioPantallaSupervisorProduccion(nombre);
-										} else if (rolSeleccionado.compareTo("ingenieria") == 0){
-											inicioPantallaIngenieria(nombre);
-										} else if (rolSeleccionado.compareTo("compras") == 0){
+										} else if (rolSeleccionado.compareTo("COMPRAS") == 0){
 											inicioPantallaCompras(nombre);
-										} else if (rolSeleccionado.compareTo("almacen") == 0){
+										} else if (rolSeleccionado.compareTo("GERENTE DE COMPRAS") == 0){
+											inicioPantallaGerenteCompras(nombre);
+										} else if (rolSeleccionado.compareTo("INGENIERIA") == 0){
+											inicioPantallaIngenieria(nombre);
+										} else if (rolSeleccionado.compareTo("SUPERVISOR") == 0){
+											inicioPantallaSupervisorProduccion(nombre);
+										} else if (rolSeleccionado.compareTo("JEFE DE FABRICA") == 0){
+											inicioPantallaJefeFabrica(nombre);
+										} else if (rolSeleccionado.compareTo("GERENTE DE PRODUCCION") == 0){
+											inicioPantallaGerenteProduccion(nombre);
+										} else if (rolSeleccionado.compareTo("ALMACEN") == 0){
 											inicioPantallaAlmacen(nombre);
+										} else if (rolSeleccionado.compareTo("SALIR") == 0){
+											cerrar();
 										}
 										
 									}
@@ -308,6 +314,19 @@ public class P_Login extends Composite {
 		} catch(Throwable e) 
 		{ e.printStackTrace(); }
 		 
+	}
+	
+	protected void cerrar() {
+
+		int cantidad = RootPanel.get().getWidgetIndex(this);
+		RootPanel.get().remove(cantidad);
+		P_Login log = new P_Login();
+		RootPanel.get().add(log);
+		try {
+			this.finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 }

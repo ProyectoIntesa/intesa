@@ -14,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -43,6 +44,14 @@ public class P_PantallaGerenteProduccion extends Composite {
 	private TreeItem actualizarCantidadInsumo;
 	private TreeItem insumosCargar;
 	private TreeItem insumosBuscar;
+	private TreeItem ingresarRemitoEx;
+	private TreeItem buscarRemitoEx;
+	private TreeItem ingresarRemitoIn;
+	private TreeItem buscarRemitoIn;
+	private TreeItem cerrarRemitoIn;
+	private TreeItem nuevaOrdenSuministroInsumos;
+	private TreeItem buscarOrdenSuministroInsumos;
+	private TreeItem validarOrdenSuministroInsumos;
 	private TabPanel panelTrabajo;
 	private ScrollPanel formulario;
 	private String usuario;
@@ -127,6 +136,49 @@ public class P_PantallaGerenteProduccion extends Composite {
 		actualizarCantidadInsumo = new TreeItem(constante.actualizarCant());
 		actualizarCantidadInsumo.setStyleName("suElementoMenu");
 		insumos.addItem(actualizarCantidadInsumo);
+		
+		
+		TreeItem remitoEx = menuLateral.addItem(constante.IngresoDeMateriales());
+		remitoEx.setStyleName("elementoMenu");
+
+		ingresarRemitoEx = new TreeItem(constante.ingresarRemito());
+		ingresarRemitoEx.setStyleName("suElementoMenu");
+		remitoEx.addItem(ingresarRemitoEx);
+		
+		buscarRemitoEx = new TreeItem(constante.buscarRemito());
+		buscarRemitoEx.setStyleName("suElementoMenu");
+		remitoEx.addItem(buscarRemitoEx);
+
+
+		TreeItem remitoIn = menuLateral.addItem(constante.egresoDeMateriales());
+		remitoIn.setStyleName("elementoMenu");
+
+		ingresarRemitoIn = new TreeItem(constante.generarRemito());
+		ingresarRemitoIn.setStyleName("suElementoMenu");
+		remitoIn.addItem(ingresarRemitoIn);
+		
+		buscarRemitoIn = new TreeItem(constante.buscarRemito());
+		buscarRemitoIn.setStyleName("suElementoMenu");
+		remitoIn.addItem(buscarRemitoIn);
+		
+		cerrarRemitoIn = new TreeItem(constante.cerrarRemito());
+		cerrarRemitoIn.setStyleName("suElementoMenu");
+		remitoIn.addItem(cerrarRemitoIn);
+		
+		TreeItem ordenSuministro = menuLateral.addItem(constante.provisionDeInsumos());
+		ordenSuministro.setStyleName("elementoMenu");
+
+		nuevaOrdenSuministroInsumos = new TreeItem(constante.crearOrden());
+		nuevaOrdenSuministroInsumos.setStyleName("suElementoMenu");
+		ordenSuministro.addItem(nuevaOrdenSuministroInsumos);
+		
+		buscarOrdenSuministroInsumos = new TreeItem(constante.buscarOrden());
+		buscarOrdenSuministroInsumos.setStyleName("suElementoMenu");
+		ordenSuministro.addItem(buscarOrdenSuministroInsumos);
+
+		validarOrdenSuministroInsumos = new TreeItem(constante.validarOrden());
+		validarOrdenSuministroInsumos.setStyleName("suElementoMenu");
+		ordenSuministro.addItem(validarOrdenSuministroInsumos);			
 		
 		
 		menuLateral.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -239,6 +291,114 @@ public class P_PantallaGerenteProduccion extends Composite {
 			popUp.show();
 			
 		}
+		
+		if (event.getSelectedItem() == ingresarRemitoEx) {
+
+			if(this.numeroElemento(constante.remitoExterno())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"REMITO EXTERNO\"");
+			}
+			else{
+				
+				P_PreguntaPorNroOrdenCompra popUp = new P_PreguntaPorNroOrdenCompra(this.usuario);
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+			}
+			
+		}
+		
+		if (event.getSelectedItem() == buscarRemitoEx) {
+
+			P_PreguntaPorNroOrdenCompraYRemito popUp = new P_PreguntaPorNroOrdenCompraYRemito();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();			
+			
+		}
+
+		if (event.getSelectedItem() == ingresarRemitoIn) {
+			
+			if(this.numeroElemento(constante.remitoExterno())!=-1){
+				Window.alert("Para realizar una nueva busqueda debe cerrar previamente la pestaña \"REMITO INTERNO\"");
+			}
+			else{
+				final P_PreguntarPorOrdenProvision popUp = new P_PreguntarPorOrdenProvision(this.usuario);
+				popUp.setGlassEnabled(true);
+				popUp.center();
+				popUp.show();
+				popUp.addCloseHandler(new CloseHandler<PopupPanel>() {
+					
+					@Override
+					public void onClose(CloseEvent<PopupPanel> event) {
+											
+						if(popUp.getImprimir() == true)
+							abrirPantallaImpresion(popUp.getOrdenImprimir());
+						
+					}
+				});
+			}
+		}
+		
+		if (event.getSelectedItem() == buscarRemitoIn) {
+			
+			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito("buscar");
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+				
+		}
+
+		if (event.getSelectedItem() == cerrarRemitoIn) {
+			
+			P_PreguntaPorOrdenProvisionYRemito popUp = new P_PreguntaPorOrdenProvisionYRemito("cerrar");
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+				
+		}
+		
+		if (event.getSelectedItem() == nuevaOrdenSuministroInsumos) {
+
+			titulo = constante.ordenDeProvisionDeInsumos();
+			tab = numeroElemento(titulo);
+			if (tab == -1) {
+
+				formulario = new ScrollPanel();
+				formulario.setTitle(titulo);
+				formulario.setStyleName("panelFormulario");
+				formulario.setSize((ancho - anchoLateral - 25) + "px",(alto - 145) + "px");
+				P_FormularioOrdenProvisionInsumo provisionInsumo = new P_FormularioOrdenProvisionInsumo(panelTrabajo,this.usuario,this.rolUsuario);
+				formulario.add(provisionInsumo);
+				panelTrabajo.add(formulario, titulo, false);
+				panelTrabajo.selectTab(numeroElemento(titulo));
+			} else
+				panelTrabajo.selectTab(tab);
+			
+			
+		}
+		
+		if (event.getSelectedItem() == buscarOrdenSuministroInsumos) {
+			
+			
+			P_BuscarOrdenProvisionInsumo popUp = new P_BuscarOrdenProvisionInsumo(this.usuario,this.rolUsuario);
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+
+			
+			
+		}
+		
+		if (event.getSelectedItem() == validarOrdenSuministroInsumos) {
+			
+			P_ValidarCancelarOrdenProvisionInsumos popUp = new P_ValidarCancelarOrdenProvisionInsumos();
+			popUp.setGlassEnabled(true);
+			popUp.center();
+			popUp.show();
+
+			
+			
+		}
 
 	}
 
@@ -306,4 +466,17 @@ public class P_PantallaGerenteProduccion extends Composite {
 		});
 	}
 	
+	protected void abrirPantallaImpresion(FlexTable formu) {
+		
+		P_ImpresionAlmacen imprime = new P_ImpresionAlmacen(formu, usuario);
+		RootPanel.get().remove(RootPanel.get().getWidgetIndex(this));
+		RootPanel.get().add(imprime); 
+		try { 
+			 this.finalize(); 
+		} 
+		catch(Throwable e) { 
+			e.printStackTrace(); 
+		}
+		 
+	}
 }

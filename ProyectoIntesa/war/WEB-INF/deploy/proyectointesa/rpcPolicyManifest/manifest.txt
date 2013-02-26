@@ -1,2 +1,8 @@
 # Module proyectointesa
 # RPC service class, partial path of RPC policy file
+edu.client.VentasService.VentasService, DEBA5292AAC5C834D8B0D072443AC272.gwt.rpc
+edu.client.ComprasService.ComprasService, 8C8059C4B5B8A9E6A36F30CE0F770CDF.gwt.rpc
+edu.client.AdministradorService.AdministradorService, 9A72AB2989DD3A8A4266EAC65CE5AF0A.gwt.rpc
+edu.client.LoginService.LoginService, A117D45D624383A19C88CEFFDB7C2603.gwt.rpc
+edu.client.AlmacenService.AlmacenService, C7643245951F28CDBB24D042C42E3909.gwt.rpc
+edu.client.ProduccionService.ProduccionService, D1C501A4D2144D51067DA99C76B8781A.gwt.rpc

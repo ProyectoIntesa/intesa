@@ -8,6 +8,18 @@ public interface Constantes extends Constants {
 	 @DefaultStringValue("IMPRIMIR")
 	  String imprimir();
 	 
+	 @DefaultStringValue("JEFE DE FABRICA")
+	  String jefeDeFabrica();
+	 
+	 @DefaultStringValue("SUPERVISOR")
+	  String supervisor();
+	 
+	 @DefaultStringValue("GERENTE DE PRODUCCION")
+	  String gerenteDeProduccion();
+	 
+	 @DefaultStringValue("GERENTE DE COMPRAS")
+	  String gerenteDeCompras();
+	 
 	 @DefaultStringValue("USUARIO (*)")
 	  String usuarioAsterisco();
 	 
