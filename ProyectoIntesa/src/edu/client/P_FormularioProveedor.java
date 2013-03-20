@@ -863,8 +863,7 @@ public class P_FormularioProveedor extends Composite {
 		});
 		
 	}
-	
-	
+		
 	public void registrarCambiosProveedor(){
 		
 		
@@ -947,29 +946,31 @@ public class P_FormularioProveedor extends Composite {
 		
 		if(!vCuit && !vResponsable && !vTipoProveedor && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
 			
+			registrarCambiosProveedor();
 			
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.getExistenciaProveedor(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
-				
-				@Override
-				public void onSuccess(Boolean result) {
-					
-					if(result == true)
-						Window.alert("Ya existe un cliente con el nombre ingresado");
-					else{
-						registrarCambiosProveedor();
-					}
-					
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-					
-				}
-				
-				
-			});
+			
+//			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+//			comprasService.getExistenciaProveedor(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+//				
+//				@Override
+//				public void onSuccess(Boolean result) {
+//					
+//					if(result == true)
+//						Window.alert("Ya existe un cliente con el nombre ingresado");
+//					else{
+//						registrarCambiosProveedor();
+//					}
+//					
+//				}
+//				
+//				@Override
+//				public void onFailure(Throwable caught) {
+//					Window.alert("ERROR EN EL SERVICIO");
+//					
+//				}
+//				
+//				
+//			});
 
 		}
 		else{

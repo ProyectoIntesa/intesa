@@ -924,28 +924,30 @@ public class P_FormularioCliente extends Composite {
 		
 		if(!vCuit && !vResponsable && !vPais && !vProv && !vLocalidad && !vCalle && !vAltura){
 			
-			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
-			comprasService.getExistenciaCliente(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
-				
-				@Override
-				public void onSuccess(Boolean result) {
-					
-					if(result == true)
-						Window.alert("Ya existe un cliente con el nombre ingresado");
-					else{
-						registrarCambiosCliente();
-					}
-					
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("ERROR EN EL SERVICIO");
-					
-				}
-				
-				
-			});
+			registrarCambiosCliente();
+			
+//			ComprasServiceAsync comprasService = GWT.create(ComprasService.class);
+//			comprasService.getExistenciaCliente(this.nombreEmpresaTb.getText(), new AsyncCallback<Boolean>() {
+//				
+//				@Override
+//				public void onSuccess(Boolean result) {
+//					
+//					if(result == true)
+//						Window.alert("Ya existe un cliente con el nombre ingresado");
+//					else{
+//						registrarCambiosCliente();
+//					}
+//					
+//				}
+//				
+//				@Override
+//				public void onFailure(Throwable caught) {
+//					Window.alert("ERROR EN EL SERVICIO");
+//					
+//				}
+//				
+//				
+//			});
 			
 			
 
